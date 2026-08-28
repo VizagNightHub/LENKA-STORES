@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="1nBnhPsAJR3VKCO4n-mtoWI3-i8mrZAyuYN2QUwDFDo" />
-  <title>LENKA STORES | Haute Horlogerie & Modern Luxury</title>
+  <title>LENKA STORES | Timeless Luxury & Lifestyle</title>
   
   <!-- SEO & Site Tags -->
-  <meta name="description" content="Discover exquisite craftsmanship at LENKA STORES. Luxury essentials, couture fashion, and bespoke lifestyle goods." />
-  <meta property="og:title" content="LENKA STORES - The Epitome of Luxury" />
+  <meta name="description" content="Discover refined craftsmanship and timeless luxury at LENKA STORES." />
+  <meta property="og:title" content="LENKA STORES" />
   <meta property="og:site_name" content="LENKA STORES" />
   <meta name="application-name" content="LENKA STORES" />
 
@@ -26,10 +26,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- High-End Luxury Typography: Cormorant Garamond & Montserrat -->
+  <!-- Timeless Luxury Typography: Cormorant & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Firebase App, Auth & Firestore SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -42,25 +42,26 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Montserrat', 'sans-serif'],
-            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
           },
           colors: {
-            gold: {
-              100: '#FDF7E7',
-              200: '#F7E7B4',
-              300: '#EBD17D',
-              400: '#DFBC4E',
-              500: '#D4AF37', /* Classic Metallic Gold */
-              600: '#AA8820',
-              700: '#7E6312',
+            bronze: {
+              300: '#E2D4C3',
+              400: '#C5A880', /* Muted Antique Bronze */
+              500: '#A88B63',
             },
-            obsidian: {
-              950: '#060709',
-              900: '#0B0D12',
-              800: '#121620',
-              700: '#1B2130',
-              card: '#0e1117'
+            platinum: {
+              100: '#F5F5F7',
+              200: '#E5E5EA',
+              400: '#AEAEB2',
+              600: '#636366',
+            },
+            noir: {
+              950: '#0A0B0D',
+              900: '#111216',
+              850: '#16181E',
+              800: '#1D2027',
             }
           }
         }
@@ -69,147 +70,125 @@
   </script>
 
   <style>
-    /* Rich Luxury Gradients & Accents */
-    .gold-gradient-text {
-      background: linear-gradient(135deg, #FBF2D7 0%, #D4AF37 45%, #AA8820 85%, #F4E29F 100%);
+    /* Classic Monochromatic & Silver Highlights */
+    .platinum-gradient-text {
+      background: linear-gradient(180deg, #FFFFFF 0%, #D1D1D6 60%, #8E8E93 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .gold-gradient-bg {
-      background: linear-gradient(135deg, #D4AF37 0%, #AA8820 50%, #C9A028 100%);
+    .bronze-gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 0%, #E2D4C3 50%, #C5A880 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .gold-gradient-border {
-      border-image: linear-gradient(135deg, #D4AF37, #3a2e0b, #D4AF37) 1;
+    .glass-classic-nav {
+      background: rgba(10, 11, 13, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .glass-luxury-nav {
-      background: rgba(6, 7, 9, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    .fine-border {
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .luxury-card {
-      background: radial-gradient(circle at top left, rgba(27, 33, 48, 0.4), rgba(11, 13, 18, 0.85));
-      border: 1px solid rgba(212, 175, 55, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    }
-    .gold-glow {
-      box-shadow: 0 0 35px -5px rgba(212, 175, 55, 0.35);
-    }
-    .subtle-grid {
-      background-size: 40px 40px;
-      background-image: 
-        linear-gradient(to right, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    .fine-border-hover:hover {
+      border-color: rgba(197, 168, 128, 0.4);
     }
   </style>
 </head>
 
-<body class="bg-obsidian-950 text-slate-200 font-sans antialiased selection:bg-gold-500 selection:text-black min-h-screen flex flex-col justify-between subtle-grid">
+<body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-platinum-200 selection:text-black min-h-screen flex flex-col justify-between">
 
-  <!-- Classic Top Status Banner -->
-  <div class="bg-gradient-to-r from-obsidian-950 via-gold-900/40 to-obsidian-950 border-b border-gold-500/20 text-gold-300 text-[11px] py-2 px-4 text-center tracking-[0.25em] uppercase font-serif">
-    ✦ Exclusive Private Preview &bull; Atelier Lenka ✦
+  <!-- Classic Minimalist Status Bar -->
+  <div class="bg-noir-900 border-b border-white/5 text-slate-400 text-[10px] py-2 px-4 text-center tracking-[0.3em] uppercase font-sans">
+    Atelier Lenka &bull; Private Client Registry &bull; 2026
   </div>
 
-  <!-- Main Luxury Header -->
-  <header class="sticky top-0 z-40 glass-luxury-nav transition-all duration-300">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 glass-classic-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
       
-      <!-- Bespoke "LS" Gold Monogram Crest Logo -->
+      <!-- Architectural "LS" Monogram Logo -->
       <a href="#" class="flex items-center gap-4 group">
-        <div class="relative flex items-center justify-center">
-          <!-- Monogram Shield -->
-          <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-full p-[1.5px] bg-gradient-to-br from-gold-300 via-gold-500 to-gold-700 shadow-lg shadow-gold-500/20 group-hover:scale-105 transition-transform duration-500">
-            <div class="w-full h-full bg-obsidian-950 rounded-full flex items-center justify-center relative overflow-hidden">
-              <div class="absolute inset-0 bg-gold-500/5 group-hover:bg-gold-500/10 transition-colors"></div>
-              <!-- Monogram Letters -->
-              <span class="font-serif font-black text-xl sm:text-2xl tracking-tighter gold-gradient-text transform -translate-y-[1px]">
-                LS
-              </span>
-            </div>
-          </div>
-          <!-- Royal Accent Dot -->
-          <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-gold-400 rounded-full border-2 border-obsidian-950"></div>
+        <div class="w-12 h-12 rounded-lg border border-white/15 bg-noir-900 flex items-center justify-center transition-all duration-300 group-hover:border-bronze-400/60 shadow-sm">
+          <span class="font-serif font-semibold text-xl tracking-tight text-white group-hover:text-bronze-300 transition-colors">
+            LS
+          </span>
         </div>
-
         <div class="flex flex-col">
-          <span class="font-serif font-bold text-xl sm:text-2xl tracking-[0.18em] text-white">LENKA</span>
-          <span class="text-[9px] uppercase tracking-[0.4em] gold-gradient-text font-semibold">STORES</span>
+          <span class="font-serif text-2xl tracking-[0.15em] text-white font-medium">LENKA</span>
+          <span class="text-[8px] uppercase tracking-[0.45em] text-slate-500 font-medium -mt-0.5">STORES</span>
         </div>
       </a>
 
-      <!-- Profile & Access Trigger -->
-      <div class="flex items-center gap-4">
-        <button type="button" onclick="openProfileModal()" id="authNavBtn" class="flex items-center gap-3 px-5 py-2.5 rounded-full bg-obsidian-900 hover:bg-obsidian-800 text-gold-200 transition-all border border-gold-500/30 text-xs tracking-wider uppercase font-medium hover:border-gold-400 hover:shadow-lg hover:shadow-gold-500/10 cursor-pointer">
-          <div class="w-6 h-6 rounded-full bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-[10px] text-gold-300">
-            <i data-lucide="crown" class="w-3.5 h-3.5 text-gold-400"></i>
+      <!-- User Account Action -->
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="openProfileModal()" id="authNavBtn" class="flex items-center gap-2.5 px-4 py-2 rounded-lg bg-noir-900 hover:bg-noir-850 text-slate-300 fine-border fine-border-hover transition-all text-xs tracking-wider uppercase font-medium cursor-pointer">
+          <div class="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center text-[10px] text-slate-300">
+            <i data-lucide="user" class="w-3 h-3"></i>
           </div>
-          <span id="navProfileName" class="font-medium tracking-widest text-[11px]">VIP Access</span>
+          <span id="navProfileName" class="text-[11px] tracking-widest font-light">Client Account</span>
         </button>
       </div>
 
     </div>
   </header>
 
-  <!-- Showcase / Launch Pad -->
+  <!-- Main Showcase Section -->
   <main class="flex-grow flex items-center justify-center relative overflow-hidden py-24 px-4 sm:px-6 lg:px-8">
     
-    <!-- Atmospheric Gold Glow Backdrop -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[36rem] h-[36rem] bg-gold-500/8 rounded-full blur-[120px] pointer-events-none"></div>
+    <!-- Ambient Subdued Glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-white/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
 
-    <div class="max-w-3xl w-full text-center relative z-10 space-y-9">
+    <div class="max-w-2xl w-full text-center relative z-10 space-y-8">
       
-      <!-- Status Badge -->
-      <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-obsidian-900/90 border border-gold-500/30 text-gold-300 text-[11px] font-medium tracking-[0.2em] uppercase">
-        <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
-        Curated Selection &bull; Staging In Progress
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-noir-900 fine-border text-slate-400 text-[10px] uppercase tracking-[0.25em]">
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Catalog Staging
       </div>
 
-      <!-- Main Typography -->
-      <div class="space-y-4">
-        <h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-medium tracking-tight text-white leading-[1.1]">
+      <div class="space-y-3">
+        <h1 class="text-4xl sm:text-6xl font-serif font-light tracking-tight text-white leading-tight">
           Products Coming Soon
         </h1>
-        <p class="text-lg sm:text-xl font-serif italic gold-gradient-text tracking-wide">
+        <p class="text-base sm:text-lg font-serif italic text-bronze-300 tracking-wide font-normal">
           Updating as soon as possible.
         </p>
       </div>
 
-      <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto"></div>
+      <div class="w-16 h-[1px] bg-white/10 mx-auto"></div>
 
-      <p class="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto font-light leading-relaxed tracking-wide">
-        Our inaugural archive of bespoke horology, refined leather essentials, and couture lifestyle items will be unveiled shortly. Reserve your private client profile for expedited acquisition.
+      <p class="text-slate-400 text-xs sm:text-sm max-w-md mx-auto font-light leading-relaxed tracking-wide">
+        Our curated collection of high-standard essentials and accessories is undergoing final refinement. Establish your delivery profile for private access upon launch.
       </p>
 
-      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <button type="button" onclick="openProfileModal()" class="w-full sm:w-auto px-10 py-4 rounded-full gold-gradient-bg text-obsidian-950 font-semibold text-xs uppercase tracking-[0.2em] shadow-xl hover:opacity-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer font-serif">
-          <i data-lucide="shield-check" class="w-4 h-4"></i> Establish Client Profile
+      <div class="pt-2">
+        <button type="button" onclick="openProfileModal()" class="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-platinum-100 hover:bg-white text-noir-950 font-medium text-xs uppercase tracking-[0.2em] shadow-lg transition-all cursor-pointer">
+          Establish Client Profile
         </button>
       </div>
 
     </div>
   </main>
 
-  <!-- Client Profile & Delivery Modal Slide-Over -->
+  <!-- Client Profile Slide-Over Drawer -->
   <div id="profileModal" class="fixed inset-0 z-50 overflow-hidden hidden" aria-modal="true" role="dialog">
-    <div class="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity" onclick="closeProfileModal()"></div>
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeProfileModal()"></div>
 
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
-      <div class="w-screen max-w-md bg-obsidian-900 border-l border-gold-500/20 p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-y-auto relative z-10 text-slate-200">
+      <div class="w-screen max-w-md bg-noir-900 border-l border-white/10 p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-y-auto relative z-10 text-slate-300">
         
         <div>
           <!-- Header -->
-          <div class="flex items-center justify-between pb-6 border-b border-gold-500/15">
+          <div class="flex items-center justify-between pb-5 border-b border-white/10">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center">
-                <span class="font-serif font-bold text-gold-400 text-sm">LS</span>
+              <div class="w-9 h-9 rounded-lg bg-noir-850 fine-border flex items-center justify-center font-serif text-white font-medium text-sm">
+                LS
               </div>
               <div>
-                <h2 class="font-serif font-semibold text-base text-white tracking-wider">Client Portfolio</h2>
-                <p class="text-[10px] uppercase tracking-widest text-gold-400/80">Secured Registry</p>
+                <h2 class="font-serif text-lg text-white font-medium tracking-wide">Client Portfolio</h2>
+                <p class="text-[10px] uppercase tracking-widest text-slate-500">Shipping & Verification</p>
               </div>
             </div>
-            <button type="button" onclick="closeProfileModal()" class="text-slate-400 hover:text-gold-300 p-2 transition-colors">
+            <button type="button" onclick="closeProfileModal()" class="text-slate-500 hover:text-white p-2 transition-colors">
               <i data-lucide="x" class="w-5 h-5"></i>
             </button>
           </div>
@@ -222,18 +201,18 @@
             
             <!-- Full Name -->
             <div>
-              <label class="block text-[10px] font-semibold text-gold-300 uppercase tracking-[0.15em] mb-1.5">Client Full Name</label>
-              <input type="text" id="custName" placeholder="e.g., Lenka Vardhan Sai" required
-                     class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-gold-400 transition-colors" />
+              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Full Name</label>
+              <input type="text" id="custName" placeholder="Enter your full name" required
+                     class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-slate-400 transition-colors" />
             </div>
 
-            <!-- Mobile Number & OTP Verification -->
+            <!-- Mobile Number & OTP -->
             <div>
-              <label class="block text-[10px] font-semibold text-gold-300 uppercase tracking-[0.15em] mb-1.5">Mobile Number (Authentication)</label>
+              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Mobile Number (Login & Delivery)</label>
               <div class="flex gap-2">
-                <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10" required
-                       class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-gold-400 transition-colors" />
-                <button type="button" onclick="sendOtp()" id="sendOtpBtn" class="px-4 py-2 gold-gradient-bg text-obsidian-950 rounded-lg text-[11px] font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer hover:opacity-90">
+                <input type="tel" id="custPhone" placeholder="10-digit mobile number" maxlength="10" required
+                       class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-slate-400 transition-colors" />
+                <button type="button" onclick="sendOtp()" id="sendOtpBtn" class="px-4 py-2 bg-noir-800 hover:bg-noir-700 text-white fine-border rounded-lg text-[11px] font-medium uppercase tracking-wider whitespace-nowrap cursor-pointer">
                   Send OTP
                 </button>
               </div>
@@ -243,140 +222,135 @@
             <div id="recaptcha-container"></div>
 
             <!-- OTP Input Section -->
-            <div id="otpSection" class="hidden p-4 rounded-lg bg-obsidian-950 border border-gold-500/30 space-y-3">
+            <div id="otpSection" class="hidden p-4 rounded-lg bg-noir-950 fine-border space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-[11px] text-gold-300 font-semibold tracking-wider uppercase">Enter Verification Code</span>
-                <span class="text-[10px] text-slate-500">Code: <strong class="text-gold-300 font-mono">123456</strong></span>
+                <span class="text-[11px] text-slate-300 font-medium tracking-wide">Enter OTP Code</span>
+                <span class="text-[10px] text-slate-500">Code: <strong class="text-white font-mono">123456</strong></span>
               </div>
               <div class="flex gap-2">
                 <input type="text" id="otpCode" maxlength="6" placeholder="123456" 
-                       class="w-full bg-obsidian-900 border border-gold-500/30 rounded-lg px-3 py-2 text-xs text-center tracking-[0.3em] font-mono text-white focus:outline-none focus:border-gold-400" />
-                <button type="button" onclick="verifyOtp()" class="px-5 py-2 bg-gold-500 text-obsidian-950 font-bold rounded-lg text-xs tracking-wider uppercase cursor-pointer">
+                       class="w-full bg-noir-900 border border-white/10 rounded-lg px-3 py-2 text-xs text-center tracking-[0.25em] font-mono text-white focus:outline-none focus:border-slate-400" />
+                <button type="button" onclick="verifyOtp()" class="px-5 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold rounded-lg text-xs uppercase cursor-pointer">
                   Verify
                 </button>
               </div>
             </div>
 
-            <!-- STRUCTURED SHIPPING ADDRESS (6 SPECIFIC BOXES) -->
-            <div class="pt-3 border-t border-gold-500/15 space-y-3">
-              <span class="text-[10px] font-bold text-gold-400 uppercase tracking-[0.2em] block">Consignment & Shipping Destination</span>
+            <!-- 6-BOX SHIPPING ADDRESS -->
+            <div class="pt-3 border-t border-white/10 space-y-3">
+              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.2em] block">Consignment Address</span>
               
               <!-- 1. Country -->
               <div>
-                <label class="block text-[10px] text-slate-400 mb-1 tracking-wider uppercase">Country</label>
+                <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Country</label>
                 <input type="text" id="addrCountry" value="India" required
-                       class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400" />
+                       class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
               </div>
 
               <!-- 2. State & 3. District -->
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-[10px] text-slate-400 mb-1 tracking-wider uppercase">State</label>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">State</label>
                   <input type="text" id="addrState" placeholder="e.g., Andhra Pradesh" required
-                         class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400" />
+                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-400 mb-1 tracking-wider uppercase">District / City</label>
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">District / City</label>
                   <input type="text" id="addrDistrict" placeholder="e.g., Visakhapatnam" required
-                         class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400" />
+                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
                 </div>
               </div>
 
               <!-- 4. Local Street & 5. Door / House No -->
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-[10px] text-slate-400 mb-1 tracking-wider uppercase">Suite / Door No.</label>
-                  <input type="text" id="addrDoor" placeholder="e.g., Villa 14 / D.No 12-34" required
-                         class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400" />
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Door / Flat No.</label>
+                  <input type="text" id="addrDoor" placeholder="e.g., D.No 12-34/A" required
+                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-400 mb-1 tracking-wider uppercase">Street / Landmark</label>
-                  <input type="text" id="addrStreet" placeholder="e.g., Beach Road" required
-                         class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400" />
+                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Street / Landmark</label>
+                  <input type="text" id="addrStreet" placeholder="e.g., Main Road" required
+                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
                 </div>
               </div>
 
               <!-- 6. PIN Code -->
               <div>
-                <label class="block text-[10px] text-slate-400 mb-1 tracking-wider uppercase">Postal PIN Code</label>
+                <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">PIN Code</label>
                 <input type="text" id="addrPin" placeholder="6-digit PIN" maxlength="6" required
-                       class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-gold-400" />
+                       class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
               </div>
             </div>
 
-            <!-- Preferred Settlement Method -->
-            <div class="pt-2 border-t border-gold-500/15">
-              <label class="block text-[10px] font-semibold text-gold-300 uppercase tracking-[0.15em] mb-1.5">Settlement Preference</label>
-              <select id="custPayment" class="w-full bg-obsidian-950 border border-gold-500/20 rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-gold-400">
-                <option value="UPI (Google Pay / PhonePe / Cred)">Instant UPI (Google Pay / PhonePe / Cred)</option>
-                <option value="Cash on Delivery (Concierge COD)">Cash on Delivery (Concierge COD)</option>
-                <option value="Metal / Signature Credit Card">Metal / Signature Credit Card</option>
-                <option value="Direct Private Banking">Direct Private Banking</option>
+            <!-- Payment Method -->
+            <div class="pt-2 border-t border-white/10">
+              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Payment Method</label>
+              <select id="custPayment" class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-slate-400">
+                <option value="UPI (Google Pay / PhonePe / Paytm)">UPI (Google Pay / PhonePe / Paytm)</option>
+                <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                <option value="Credit / Debit Card">Credit / Debit Card</option>
+                <option value="Net Banking">Net Banking</option>
               </select>
             </div>
 
-            <button type="submit" class="w-full py-3.5 rounded-lg gold-gradient-bg text-obsidian-950 font-bold text-xs uppercase tracking-[0.2em] shadow-lg hover:opacity-95 transition-all cursor-pointer font-serif">
-              Save Client Registry
+            <button type="submit" class="w-full py-3 rounded-lg bg-platinum-100 hover:bg-white text-noir-950 font-medium text-xs uppercase tracking-[0.2em] shadow-lg transition-all cursor-pointer">
+              Save Account to Database
             </button>
           </form>
 
-          <!-- Active Authenticated Summary -->
-          <div id="verifiedSummary" class="hidden mt-6 p-4 rounded-lg bg-obsidian-950 border border-gold-500/25 space-y-3">
+          <!-- Active Summary & Logout -->
+          <div id="verifiedSummary" class="hidden mt-6 p-4 rounded-lg bg-noir-950 fine-border space-y-3">
             <div class="flex items-center justify-between">
-              <h3 class="text-[10px] font-bold text-gold-400 uppercase tracking-[0.2em] flex items-center gap-2 font-serif">
-                <i data-lucide="award" class="w-4 h-4 text-gold-400"></i> Active Member Record
+              <h3 class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i> Active Record
               </h3>
-              <span class="text-[9px] bg-gold-500/10 border border-gold-500/30 text-gold-300 px-2 py-0.5 rounded tracking-widest uppercase">Verified</span>
+              <span class="text-[9px] bg-white/5 fine-border text-slate-300 px-2 py-0.5 rounded tracking-widest uppercase">Verified</span>
             </div>
             <p class="text-xs text-slate-300">Client: <span id="summaryName" class="text-white font-medium"></span></p>
-            <p class="text-xs text-slate-300">Registered Phone: <span id="summaryPhone" class="text-white font-medium font-mono"></span></p>
-            <p class="text-xs text-slate-300">Consignment Address: <span id="summaryAddress" class="text-slate-200 font-light block mt-1 text-[11px] leading-relaxed"></span></p>
-            <p class="text-xs text-slate-300">Settlement: <span id="summaryPayment" class="text-gold-300 font-medium"></span></p>
+            <p class="text-xs text-slate-300">Mobile: <span id="summaryPhone" class="text-white font-medium font-mono"></span></p>
+            <p class="text-xs text-slate-300">Address: <span id="summaryAddress" class="text-slate-400 font-light block mt-1 text-[11px] leading-relaxed"></span></p>
+            <p class="text-xs text-slate-300">Payment: <span id="summaryPayment" class="text-white font-medium"></span></p>
 
             <!-- Logout Button -->
-            <button type="button" onclick="handleLogout()" class="w-full mt-3 py-2.5 rounded-lg bg-red-950/30 hover:bg-red-900/50 border border-red-500/30 text-red-300 font-semibold text-[11px] tracking-wider uppercase transition-colors flex items-center justify-center gap-2 cursor-pointer">
-              <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit Client Session
+            <button type="button" onclick="handleLogout()" class="w-full mt-3 py-2 rounded-lg bg-red-950/20 hover:bg-red-950/40 border border-red-500/20 text-red-300 text-[11px] uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer">
+              <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit Session
             </button>
           </div>
 
         </div>
 
-        <div class="pt-6 border-t border-gold-500/15 text-[10px] text-slate-500 text-center tracking-widest uppercase">
-          LENKA STORES &bull; Private Client Registry &bull; 2026
+        <div class="pt-6 border-t border-white/10 text-[10px] text-slate-600 text-center tracking-widest uppercase">
+          LENKA STORES &bull; All Rights Reserved &bull; 2026
         </div>
 
       </div>
     </div>
   </div>
 
-  <!-- Luxury Classic Footer -->
-  <footer class="bg-obsidian-950 border-t border-gold-500/20 py-10 relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-6">
-      
-      <!-- Footer Brand Monogram -->
+  <!-- Footer -->
+  <footer class="bg-noir-950 border-t border-white/5 py-8 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center">
-          <span class="font-serif font-bold text-gold-400 text-xs">LS</span>
+        <div class="w-7 h-7 rounded bg-noir-900 fine-border flex items-center justify-center font-serif text-white text-xs">
+          LS
         </div>
-        <div>
-          <span class="font-serif font-bold text-slate-300 tracking-widest">LENKA STORES</span>
-          <span class="block text-[10px] text-slate-600 tracking-wider">&copy; 2026 Maison Lenka. All rights reserved.</span>
-        </div>
+        <span class="font-serif text-slate-400 tracking-wider">LENKA STORES</span>
+        <span class="text-[10px] text-slate-600">&copy; 2026.</span>
       </div>
 
-      <div class="flex gap-8 text-[11px] tracking-widest uppercase text-slate-400">
-        <a href="#" class="hover:text-gold-300 transition-colors">Privacy Charter</a>
-        <a href="#" class="hover:text-gold-300 transition-colors">Terms of Atelier</a>
-        <a href="#" class="hover:text-gold-300 transition-colors">Concierge Support</a>
+      <div class="flex gap-6 text-[10px] tracking-widest uppercase text-slate-400">
+        <a href="#" class="hover:text-white transition-colors">Privacy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms</a>
+        <a href="#" class="hover:text-white transition-colors">Support</a>
       </div>
     </div>
   </footer>
 
-  <!-- Firebase & State Script Engine -->
+  <!-- Firebase & Database Engine -->
   <script>
     lucide.createIcons();
 
-    // Firebase Project Credentials
     const firebaseConfig = {
       apiKey: "AIzaSyDSFo6lpBsyO5fXB06BzTbsuTQ80pJNtvM",
       authDomain: "lenka-stores.firebaseapp.com",
@@ -411,8 +385,8 @@
       const notice = document.getElementById('statusNotice');
       notice.innerText = text;
       notice.className = isError 
-        ? 'my-4 p-3 rounded-lg text-xs bg-red-950/70 border border-red-500/40 text-red-200'
-        : 'my-4 p-3 rounded-lg text-xs bg-obsidian-950 border border-gold-500/40 text-gold-300';
+        ? 'my-4 p-3 rounded-lg text-xs bg-red-950/60 border border-red-500/30 text-red-300'
+        : 'my-4 p-3 rounded-lg text-xs bg-noir-950 fine-border text-slate-300';
       notice.classList.remove('hidden');
     }
 
@@ -431,7 +405,7 @@
         return;
       }
 
-      showNotice('Transmitting authorization token...');
+      showNotice('Initiating verification...');
       try {
         setupRecaptcha();
         const fullPhoneNumber = "+91" + phone;
@@ -441,16 +415,15 @@
           .then((confirmationResult) => {
             confirmationResultObj = confirmationResult;
             document.getElementById('otpSection').classList.remove('hidden');
-            showNotice(`Verification token dispatched to +91 ${phone}`);
+            showNotice(`SMS OTP sent to +91 ${phone}`);
           })
           .catch(() => {
-            // Instant verification fallback
             document.getElementById('otpSection').classList.remove('hidden');
-            showNotice(`VIP Verification Active. Enter passkey: 123456`);
+            showNotice(`Verification Ready. Enter code: 123456`);
           });
       } catch (err) {
         document.getElementById('otpSection').classList.remove('hidden');
-        showNotice(`VIP Verification Active. Enter passkey: 123456`);
+        showNotice(`Verification Ready. Enter code: 123456`);
       }
     }
 
@@ -468,13 +441,13 @@
             if (code === '123456') {
               markOtpSuccess();
             } else {
-              showNotice('Invalid passkey. Please re-enter.', true);
+              showNotice('Invalid code. Please re-enter.', true);
             }
           });
       } else if (code === '123456') {
         markOtpSuccess();
       } else {
-        showNotice('Invalid passkey. Use code 123456.', true);
+        showNotice('Invalid code. Use code 123456.', true);
       }
     }
 
@@ -483,9 +456,9 @@
       document.getElementById('otpSection').classList.add('hidden');
       const btn = document.getElementById('sendOtpBtn');
       btn.innerText = 'Verified ✓';
-      btn.className = 'px-4 py-2 bg-gold-600 text-obsidian-950 font-bold rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-default';
+      btn.className = 'px-4 py-2 bg-emerald-700/80 text-white rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-default';
       btn.disabled = true;
-      showNotice('Identity authenticated successfully.');
+      showNotice('Mobile number authenticated.');
     }
 
     function handleSaveProfile(e) {
@@ -509,17 +482,15 @@
         updatedAt: new Date().toISOString()
       };
 
-      // Save locally
       localStorage.setItem('lenka_customer_profile', JSON.stringify(profileData));
 
-      // Save directly to Firebase Firestore Database
       db.collection('customers').doc(phone).set(profileData, { merge: true })
         .then(() => {
-          showNotice('Client profile recorded in central registry.');
+          showNotice('Profile saved to database successfully!');
           loadProfileData();
         })
         .catch(() => {
-          showNotice('Profile saved to local client portfolio.');
+          showNotice('Profile saved locally on device.');
           loadProfileData();
         });
     }
@@ -534,7 +505,7 @@
       const summaryPayment = document.getElementById('summaryPayment');
 
       if (!raw) {
-        navProfileName.innerText = 'VIP Access';
+        navProfileName.innerText = 'Client Account';
         verifiedSummary.classList.add('hidden');
         return;
       }
@@ -569,10 +540,10 @@
         verifiedSummary.classList.remove('hidden');
         const btn = document.getElementById('sendOtpBtn');
         btn.innerText = 'Verified ✓';
-        btn.className = 'px-4 py-2 bg-gold-600 text-obsidian-950 font-bold rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-default';
+        btn.className = 'px-4 py-2 bg-emerald-700/80 text-white rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-default';
         btn.disabled = true;
       } else {
-        navProfileName.innerText = 'VIP Access';
+        navProfileName.innerText = 'Client Account';
         verifiedSummary.classList.add('hidden');
       }
     }
@@ -589,11 +560,11 @@
 
       const btn = document.getElementById('sendOtpBtn');
       btn.innerText = 'Send OTP';
-      btn.className = 'px-4 py-2 gold-gradient-bg text-obsidian-950 font-bold rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-pointer';
+      btn.className = 'px-4 py-2 bg-noir-800 hover:bg-noir-700 text-white fine-border rounded-lg text-[11px] font-medium uppercase tracking-wider whitespace-nowrap cursor-pointer';
       btn.disabled = false;
       document.getElementById('otpSection').classList.add('hidden');
 
-      showNotice('Client session concluded.');
+      showNotice('You have logged out.');
       loadProfileData();
     }
   </script>
