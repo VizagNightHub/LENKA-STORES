@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <!-- STUDIO HEADER WITH NAVIGATION TABS -->
+  <!-- STUDIO HEADER WITH NAVIGATION -->
   <header class="sticky top-0 z-40 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
@@ -88,125 +88,196 @@
         </div>
         <div>
           <span class="font-serif text-xl tracking-wider text-white font-medium">LENKA STUDIO</span>
-          <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Control Terminal</span>
+          <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Executive Terminal</span>
         </div>
       </div>
 
-      <!-- INDIVIDUAL PAGE NAVIGATION BUTTONS -->
-      <nav class="hidden md:flex items-center gap-2">
-        <button id="navBtn-dashboard" onclick="switchPage('dashboard')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all bg-bronze-400 text-noir-950 font-semibold shadow-sm">
-          Overview Hub
+      <!-- TABS -->
+      <nav class="hidden lg:flex items-center gap-2">
+        <button id="navBtn-dashboard" onclick="switchPage('dashboard')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-bronze-400 text-noir-950 shadow-sm">
+          Analytics Hub
         </button>
         <button id="navBtn-orders" onclick="switchPage('orders')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
           Orders & Tracking
         </button>
+        <button id="navBtn-customers" onclick="switchPage('customers')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
+          Registered Customers
+        </button>
         <button id="navBtn-feedback" onclick="switchPage('feedback')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
-          Customer Feedback
+          Client Feedback
         </button>
         <button id="navBtn-catalog" onclick="switchPage('catalog')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
           Product Catalog
         </button>
       </nav>
 
-      <!-- LIVE STORE LINK -->
+      <!-- LIVE STORE -->
       <div class="flex items-center gap-3">
         <a href="index.html" target="_blank" class="px-3.5 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-1.5 shadow-sm">
-          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> <span class="hidden sm:inline">Storefront</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> Storefront
         </a>
       </div>
 
     </div>
   </header>
 
-  <!-- WORKSPACE CONTENT AREA -->
+  <!-- WORKSPACE -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
-    <!-- ================= PAGE 1: OVERVIEW HUB (DASHBOARD) ================= -->
+    <!-- ================= PAGE 1: ANALYTICS & GRAPHIC SHEET ================= -->
     <section id="page-dashboard" class="space-y-8">
-      <!-- HEADER SUMMARY -->
       <div>
-        <h1 class="font-serif text-3xl text-white">Executive Command Hub</h1>
-        <p class="text-xs text-slate-400 mt-1">Overview of latest store activities, orders, and inquiries</p>
+        <h1 class="font-serif text-3xl text-white">Performance & Graphic Analytics Sheet</h1>
+        <p class="text-xs text-slate-400 mt-1">Real-time graphic projection of store revenue, customer registrations, and consignments</p>
       </div>
 
       <!-- METRIC CARDS -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div onclick="switchPage('orders')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
-          <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs uppercase tracking-wider">Total Consignments</span>
-            <i data-lucide="truck" class="w-5 h-5 text-bronze-400"></i>
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+        <div onclick="switchPage('orders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>TOTAL ORDERS</span>
+            <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
           </div>
           <div id="statOrdersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[11px] text-bronze-400 flex items-center gap-1 pt-1">
-            Click to manage all orders <i data-lucide="arrow-right" class="w-3 h-3"></i>
-          </p>
+          <span class="text-[10px] text-bronze-400">View consignments →</span>
         </div>
 
-        <div onclick="switchPage('feedback')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
-          <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs uppercase tracking-wider">Client Reviews</span>
-            <i data-lucide="message-square" class="w-5 h-5 text-blue-400"></i>
+        <div onclick="switchPage('customers')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>REGISTERED CLIENTS</span>
+            <i data-lucide="users" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <div id="statCustomersCount" class="font-serif text-3xl text-white font-medium">0</div>
+          <span class="text-[10px] text-emerald-400">View directory →</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-noir-900 fine-border space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>TOTAL STORE VALUATION</span>
+            <i data-lucide="indian-rupee" class="w-4 h-4 text-amber-400"></i>
+          </div>
+          <div id="statTotalValuation" class="font-serif text-3xl text-white font-medium">₹0</div>
+          <span class="text-[10px] text-slate-500">Gross reservation volume</span>
+        </div>
+
+        <div onclick="switchPage('feedback')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>FEEDBACK MESSAGES</span>
+            <i data-lucide="message-square" class="w-4 h-4 text-blue-400"></i>
           </div>
           <div id="statFeedbackCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[11px] text-blue-400 flex items-center gap-1 pt-1">
-            Click to read all feedback <i data-lucide="arrow-right" class="w-3 h-3"></i>
-          </p>
-        </div>
-
-        <div onclick="switchPage('catalog')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
-          <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs uppercase tracking-wider">Active Inventory</span>
-            <i data-lucide="package" class="w-5 h-5 text-emerald-400"></i>
-          </div>
-          <div id="statCatalogCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[11px] text-emerald-400 flex items-center gap-1 pt-1">
-            Click to publish products <i data-lucide="arrow-right" class="w-3 h-3"></i>
-          </p>
+          <span class="text-[10px] text-blue-400">Read inquiries →</span>
         </div>
       </div>
 
-      <!-- LATEST UPDATES SNAPSHOTS -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
-        <!-- LATEST ORDER PREVIEW -->
-        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-4">
+      <!-- VISUAL GRAPHIC SHEET / CHARTS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- GRAPH 1: CONSIGNMENT STATUS DISTRIBUTION -->
+        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl">
           <div class="flex items-center justify-between pb-3 border-b border-white/5">
             <h3 class="font-serif text-lg text-white flex items-center gap-2">
-              <i data-lucide="clock" class="w-4 h-4 text-bronze-400"></i> Latest Order Received
+              <i data-lucide="bar-chart-2" class="w-4 h-4 text-bronze-400"></i> Order Fulfillment Distribution
             </h3>
-            <button onclick="switchPage('orders')" class="text-xs text-bronze-400 hover:underline">View All</button>
+            <span class="text-[10px] text-slate-500 uppercase tracking-widest">LIVE GRAPH</span>
           </div>
-          <div id="latestOrderSnapshot" class="text-xs text-slate-400 py-4">
-            Loading latest order...
+
+          <div class="space-y-4 pt-2">
+            <!-- Confirmed Bar -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">1. Confirmed Orders</span>
+                <span id="graphConfirmedCount" class="font-mono text-bronze-400">0</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
+                <div id="graphConfirmedBar" class="h-full bg-bronze-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Dispatched Bar -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">2. In Transit / Dispatched</span>
+                <span id="graphDispatchedCount" class="font-mono text-blue-400">0</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
+                <div id="graphDispatchedBar" class="h-full bg-blue-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Delivered Bar -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">3. Successfully Delivered</span>
+                <span id="graphDeliveredCount" class="font-mono text-green-400">0</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
+                <div id="graphDeliveredBar" class="h-full bg-green-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- LATEST FEEDBACK PREVIEW -->
-        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-4">
+        <!-- GRAPH 2: PRODUCT CATEGORY INVENTORY METRIC -->
+        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl">
           <div class="flex items-center justify-between pb-3 border-b border-white/5">
             <h3 class="font-serif text-lg text-white flex items-center gap-2">
-              <i data-lucide="message-circle" class="w-4 h-4 text-blue-400"></i> Latest Client Feedback
+              <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i> Active Atelier Catalog Spread
             </h3>
-            <button onclick="switchPage('feedback')" class="text-xs text-blue-400 hover:underline">View All</button>
+            <span class="text-[10px] text-slate-500 uppercase tracking-widest">INVENTORY GRAPH</span>
           </div>
-          <div id="latestFeedbackSnapshot" class="text-xs text-slate-400 py-4">
-            Loading latest feedback...
+
+          <div class="space-y-4 pt-2">
+            <!-- Earbuds -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">Audio & Wireless Earbuds</span>
+                <span id="graphCatAudioCount" class="font-mono text-slate-300">0</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
+                <div id="graphCatAudioBar" class="h-full bg-slate-300 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Power Gear -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">Battery Banks & Power Gear</span>
+                <span id="graphCatPowerCount" class="font-mono text-bronze-400">0</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
+                <div id="graphCatPowerBar" class="h-full bg-bronze-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Apparel -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300">Men's Apparel & Fashion</span>
+                <span id="graphCatFashionCount" class="font-mono text-purple-400">0</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
+                <div id="graphCatFashionBar" class="h-full bg-purple-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- ================= PAGE 2: ORDERS & TRACKING DEDICATED PAGE ================= -->
+    <!-- ================= PAGE 2: ORDERS & TRACKING DEDICATED ================= -->
     <section id="page-orders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
           <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Overview
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
           </button>
           <h1 class="font-serif text-3xl text-white">Live Customer Consignments & Tracking</h1>
           <p class="text-xs text-slate-400 mt-0.5">Manage statuses and update Confirmed, Shipping Start, and Delivery Dates</p>
         </div>
         <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Orders Feed
+          Refresh Feed
         </button>
       </div>
 
@@ -215,8 +286,8 @@
           <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
             <tr>
               <th class="p-3.5">Order ID</th>
-              <th class="p-3.5">Customer & Phone</th>
-              <th class="p-3.5">Full Shipping Address</th>
+              <th class="p-3.5">Customer Info</th>
+              <th class="p-3.5">Shipping Address</th>
               <th class="p-3.5">Product Summary</th>
               <th class="p-3.5">Update Live Status</th>
               <th class="p-3.5">Broadcast Dates (Confirmed / Shipped / Delivery)</th>
@@ -231,15 +302,50 @@
       </div>
     </section>
 
-    <!-- ================= PAGE 3: FEEDBACK DEDICATED PAGE ================= -->
+    <!-- ================= PAGE 3: REGISTERED CUSTOMERS DIRECTORY ================= -->
+    <section id="page-customers" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+        <div>
+          <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          </button>
+          <h1 class="font-serif text-3xl text-white">Registered VIP Customers Directory</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Direct address records and verified profiles registered on Lenka Stores</p>
+        </div>
+        <button onclick="renderAdminCustomers()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
+          Refresh Customers
+        </button>
+      </div>
+
+      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
+            <tr>
+              <th class="p-3.5">Client Profile</th>
+              <th class="p-3.5">Mobile Contact</th>
+              <th class="p-3.5">Country & State</th>
+              <th class="p-3.5">Street, Area & House No.</th>
+              <th class="p-3.5">PIN Code</th>
+              <th class="p-3.5">Orders Placed</th>
+            </tr>
+          </thead>
+          <tbody id="adminCustomersBody" class="divide-y divide-white/5"></tbody>
+        </table>
+        <div id="noCustomersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No registered customer accounts found yet.
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 4: CLIENT FEEDBACK DEDICATED ================= -->
     <section id="page-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
           <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Overview
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
           </button>
           <h1 class="font-serif text-3xl text-white">Client Feedback & Support Messages</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Direct suggestions, inquiries, and customer feedback submissions</p>
+          <p class="text-xs text-slate-400 mt-0.5">Suggestions, inquiries, and customer feedback submissions</p>
         </div>
         <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
           Refresh Feedback
@@ -265,18 +371,18 @@
       </div>
     </section>
 
-    <!-- ================= PAGE 4: PRODUCT CATALOG DEDICATED PAGE ================= -->
+    <!-- ================= PAGE 5: PRODUCT CATALOG DEDICATED ================= -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
         <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
-          <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Overview
+          <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
         </button>
         <h1 class="font-serif text-3xl text-white">Product Catalog & Atelier Engine</h1>
         <p class="text-xs text-slate-400 mt-0.5">Publish new products or manage existing live items</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- PUBLISH NEW PRODUCT -->
+        <!-- PUBLISH FORM -->
         <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
           <h2 class="font-serif text-2xl text-white">Publish New Product</h2>
 
@@ -331,7 +437,7 @@
           </form>
         </div>
 
-        <!-- ACTIVE PRODUCTS INVENTORY -->
+        <!-- INVENTORY -->
         <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
           <div>
             <h2 class="font-serif text-2xl text-white">Live Store Inventory</h2>
@@ -356,9 +462,9 @@
       }
     }
 
-    // MULTI-PAGE VIEW SWITCHER
+    // MULTI-PAGE SWITCHER
     function switchPage(pageId) {
-      const pages = ['dashboard', 'orders', 'feedback', 'catalog'];
+      const pages = ['dashboard', 'orders', 'customers', 'feedback', 'catalog'];
       pages.forEach(p => {
         const pageEl = document.getElementById(`page-${p}`);
         const navBtn = document.getElementById(`navBtn-${p}`);
@@ -376,68 +482,73 @@
         }
       });
 
-      // Refresh data on page switch
-      if (pageId === 'dashboard') updateDashboardMetrics();
+      if (pageId === 'dashboard') renderGraphicSheet();
       if (pageId === 'orders') renderAdminOrders();
+      if (pageId === 'customers') renderAdminCustomers();
       if (pageId === 'feedback') renderAdminFeedbacks();
       if (pageId === 'catalog') renderAdminCatalog();
 
       lucide.createIcons();
     }
 
-    // DASHBOARD OVERVIEW METRICS & SNAPSHOTS
-    function updateDashboardMetrics() {
+    // GRAPHIC SHEET & ANALYTICS CALCULATION
+    function renderGraphicSheet() {
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+
+      // Unique customers set
+      const customerMap = new Map();
+      if (savedProfile) customerMap.set(savedProfile.phone, savedProfile);
+      orders.forEach(o => {
+        if (!customerMap.has(o.customerPhone)) {
+          customerMap.set(o.customerPhone, {
+            name: o.customerName,
+            phone: o.customerPhone,
+            avatar: o.customerAvatar,
+            address: o.customerAddress
+          });
+        }
+      });
+
+      const totalValuation = orders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
 
       document.getElementById('statOrdersCount').innerText = orders.length;
+      document.getElementById('statCustomersCount').innerText = customerMap.size;
+      document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
       document.getElementById('statFeedbackCount').innerText = feedbacks.length;
-      document.getElementById('statCatalogCount').innerText = catalog.length;
 
-      // Latest Order Snapshot
-      const orderSnap = document.getElementById('latestOrderSnapshot');
-      if (orders.length > 0) {
-        const latest = orders[0];
-        orderSnap.innerHTML = `
-          <div class="p-4 rounded-xl bg-noir-850 fine-border space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="font-mono text-bronze-400 font-semibold">#${latest.orderId}</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-bronze-400/10 text-bronze-400 uppercase font-semibold">${latest.status}</span>
-            </div>
-            <p class="text-white font-medium text-xs">${latest.customerName} (${latest.customerPhone})</p>
-            <p class="text-slate-400 text-[11px] truncate">${latest.itemsSummary}</p>
-            <div class="text-[10px] text-slate-500 pt-1 border-t border-white/5 flex justify-between">
-              <span>Valuation: ₹${latest.totalAmount}</span>
-              <span>Date: ${latest.timestamp || ''}</span>
-            </div>
-          </div>
-        `;
-      } else {
-        orderSnap.innerHTML = `<p class="text-slate-500 text-xs">No orders recorded yet.</p>`;
-      }
+      // Calculate Order Status Counts
+      const confirmedCount = orders.filter(o => o.status === 'Confirmed').length;
+      const dispatchedCount = orders.filter(o => o.status === 'Dispatched').length;
+      const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
+      const totalO = orders.length || 1;
 
-      // Latest Feedback Snapshot
-      const fbSnap = document.getElementById('latestFeedbackSnapshot');
-      if (feedbacks.length > 0) {
-        const latestFb = feedbacks[0];
-        fbSnap.innerHTML = `
-          <div class="p-4 rounded-xl bg-noir-850 fine-border space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="text-white font-medium text-xs">${latestFb.name}</span>
-              <span class="font-mono text-[10px] text-slate-400">${latestFb.phone}</span>
-            </div>
-            <p class="text-slate-300 text-xs italic">"${latestFb.message}"</p>
-            <p class="text-[10px] text-slate-500 pt-1 border-t border-white/5">${latestFb.timestamp || ''}</p>
-          </div>
-        `;
-      } else {
-        fbSnap.innerHTML = `<p class="text-slate-500 text-xs">No client feedback received yet.</p>`;
-      }
-      lucide.createIcons();
+      document.getElementById('graphConfirmedCount').innerText = confirmedCount;
+      document.getElementById('graphDispatchedCount').innerText = dispatchedCount;
+      document.getElementById('graphDeliveredCount').innerText = deliveredCount;
+
+      document.getElementById('graphConfirmedBar').style.width = `${(confirmedCount / totalO) * 100}%`;
+      document.getElementById('graphDispatchedBar').style.width = `${(dispatchedCount / totalO) * 100}%`;
+      document.getElementById('graphDeliveredBar').style.width = `${(deliveredCount / totalO) * 100}%`;
+
+      // Calculate Inventory Categories
+      const audioCount = catalog.filter(c => c.category.includes('Audio')).length;
+      const powerCount = catalog.filter(c => c.category.includes('Battery') || c.category.includes('Power')).length;
+      const fashionCount = catalog.filter(c => c.category.includes('Apparel') || c.category.includes('Fashion')).length;
+      const totalC = catalog.length || 1;
+
+      document.getElementById('graphCatAudioCount').innerText = audioCount;
+      document.getElementById('graphCatPowerCount').innerText = powerCount;
+      document.getElementById('graphCatFashionCount').innerText = fashionCount;
+
+      document.getElementById('graphCatAudioBar').style.width = `${(audioCount / totalC) * 100}%`;
+      document.getElementById('graphCatPowerBar').style.width = `${(powerCount / totalC) * 100}%`;
+      document.getElementById('graphCatFashionBar').style.width = `${(fashionCount / totalC) * 100}%`;
     }
 
-    // ORDERS MANAGEMENT
+    // ORDERS PAGE
     function renderAdminOrders() {
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const tbody = document.getElementById('adminOrdersBody');
@@ -521,7 +632,77 @@
       }
     }
 
-    // FEEDBACK MANAGEMENT
+    // REGISTERED CUSTOMERS DIRECTORY
+    function renderAdminCustomers() {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+      const tbody = document.getElementById('adminCustomersBody');
+      const emptyMsg = document.getElementById('noCustomersMessage');
+      tbody.innerHTML = '';
+
+      const customerMap = new Map();
+
+      if (savedProfile) {
+        customerMap.set(savedProfile.phone, {
+          name: savedProfile.name,
+          phone: savedProfile.phone,
+          avatar: savedProfile.avatar,
+          country: savedProfile.address?.country || 'India',
+          state: savedProfile.address?.state || 'Telangana',
+          area: savedProfile.address?.area || 'LIG-530, KPHB Colony',
+          pin: savedProfile.address?.pin || '500072',
+          ordersCount: orders.filter(o => o.customerPhone === savedProfile.phone).length
+        });
+      }
+
+      orders.forEach(o => {
+        if (!customerMap.has(o.customerPhone)) {
+          customerMap.set(o.customerPhone, {
+            name: o.customerName,
+            phone: o.customerPhone,
+            avatar: o.customerAvatar,
+            country: 'India',
+            state: 'Recorded',
+            area: o.customerAddress,
+            pin: 'Verified',
+            ordersCount: orders.filter(x => x.customerPhone === o.customerPhone).length
+          });
+        }
+      });
+
+      if (customerMap.size === 0) {
+        emptyMsg.classList.remove('hidden');
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      customerMap.forEach(cust => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-noir-850/50 transition-colors";
+        tr.innerHTML = `
+          <td class="p-3.5">
+            <div class="flex items-center gap-2.5">
+              <img src="${cust.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-8 h-8 rounded-full object-cover fine-border border-bronze-400/40" />
+              <div>
+                <span class="text-white font-medium block">${cust.name}</span>
+                <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-1.5 py-0.5 rounded font-semibold uppercase">VIP CLIENT</span>
+              </div>
+            </div>
+          </td>
+          <td class="p-3.5 font-mono text-bronze-400">${cust.phone}</td>
+          <td class="p-3.5 text-slate-300 text-xs">${cust.country} / ${cust.state}</td>
+          <td class="p-3.5 text-slate-300 max-w-xs text-xs">${cust.area}</td>
+          <td class="p-3.5 font-mono text-white text-xs">${cust.pin}</td>
+          <td class="p-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-noir-950 fine-border font-serif text-bronze-400 text-xs font-semibold">${cust.ordersCount} Consignments</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    // FEEDBACK PAGE
     function renderAdminFeedbacks() {
       const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       const tbody = document.getElementById('adminFeedbackBody');
@@ -565,7 +746,7 @@
       }
     }
 
-    // CATALOG PUBLISHING
+    // CATALOG MANAGEMENT
     function handleProductPublish(e) {
       e.preventDefault();
       const category = document.getElementById('prodCategory').value;
