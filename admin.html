@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LENKA STUDIO | Operator Command Terminal</title>
+  <title>LENKA STUDIO | Executive Commerce Terminal</title>
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23111827'/%3E%3Ctext x='50' y='68' font-family='sans-serif' font-size='50' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
+  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -24,13 +25,7 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
-            serif: ['Cormorant Garamond', 'serif'],
             mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            bronze: { 300: '#E2D4C3', 400: '#C5A880', 500: '#A88B63' },
-            platinum: { 100: '#F5F5F7', 200: '#E5E5EA', 400: '#AEAEB2' },
-            noir: { 950: '#0A0B0D', 900: '#111216', 850: '#16181E', 800: '#1D2027' }
           }
         }
       }
@@ -38,376 +33,390 @@
   </script>
   
   <style>
-    .glass-nav {
-      background: rgba(10, 11, 13, 0.94);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
-    .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
-    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
-    @keyframes barGlow {
-      0%, 100% { filter: drop-shadow(0 0 4px rgba(197, 168, 128, 0.3)); }
-      50% { filter: drop-shadow(0 0 10px rgba(197, 168, 128, 0.8)); }
-    }
-    .motion-bar-glow { animation: barGlow 2.5s infinite ease-in-out; }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #F3F4F6; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
   </style>
 </head>
 
-<body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col selection:bg-bronze-400 selection:text-noir-950">
+<body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col selection:bg-black selection:text-white">
 
-  <div id="authGate" class="fixed inset-0 z-50 bg-noir-950 flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6">
-      <div class="w-14 h-14 mx-auto rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
-        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-          <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
-          <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-          <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-        </svg>
+  <!-- AUTHENTICATION GATE -->
+  <div id="authGate" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white border border-gray-200 p-8 rounded-2xl shadow-2xl text-center space-y-6">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-black flex items-center justify-center text-white text-xl font-bold font-mono shadow-md">
+        LS
       </div>
       <div>
-        <h2 class="font-serif text-2xl text-white font-medium">Lenka Studio Access</h2>
-        <p class="text-xs text-slate-500 mt-1">Authorized Operator Portal Only</p>
+        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Lenka Studio Portal</h2>
+        <p class="text-xs text-gray-500 mt-1">Authorized E-Commerce Terminal Only</p>
       </div>
       <div class="space-y-3">
-        <input type="password" id="adminPassKey" placeholder="Enter Operator Passkey" class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white text-center tracking-widest focus:outline-none focus:border-bronze-400" />
-        <button type="button" onclick="unlockStudio()" class="w-full py-3 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer">
+        <input type="password" id="adminPassKey" placeholder="Enter Operator Passkey" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm text-center text-gray-900 font-mono tracking-widest focus:outline-none focus:border-black focus:bg-white transition-all" />
+        <button type="button" onclick="unlockStudio()" class="w-full py-3 bg-black hover:bg-gray-800 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer">
           Authorize Session
         </button>
       </div>
-      <p id="gateError" class="text-xs text-red-400 hidden">Invalid Studio Passkey</p>
+      <p id="gateError" class="text-xs text-red-600 font-medium hidden">Invalid Operator Passkey</p>
     </div>
   </div>
 
-  <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm hidden transition-opacity"></div>
+  <!-- SLIDE-OUT SIDEBAR NAVIGATION -->
+  <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden transition-opacity"></div>
   
-  <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-noir-900 border-r border-white/10 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+  <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white border-r border-gray-200 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
     <div class="space-y-6">
-      <div class="flex items-center justify-between pb-4 border-b border-white/5">
+      <!-- HEADER -->
+      <div class="flex items-center justify-between pb-4 border-b border-gray-100">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
-            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-              <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
-              <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-              <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-            </svg>
+          <div class="w-9 h-9 rounded-xl bg-black text-white font-mono font-bold flex items-center justify-center text-sm shadow">
+            LS
           </div>
           <div>
-            <span class="font-serif text-lg tracking-wider text-white font-medium block">LENKA STUDIO</span>
-            <span class="text-[8px] uppercase tracking-[0.25em] text-bronze-400 block -mt-0.5">Control Menu</span>
+            <span class="text-sm font-bold text-gray-900 tracking-wide block">LENKA STUDIO</span>
+            <span class="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block">Commerce Terminal</span>
           </div>
         </div>
-        <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">
+        <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-gray-400 hover:text-black hover:bg-gray-100 cursor-pointer">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <nav class="space-y-1.5 text-xs">
-        <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl bg-bronze-400 text-noir-950 font-semibold transition-all cursor-pointer">
+      <!-- NAV BUTTONS -->
+      <nav class="space-y-1.5 text-xs font-medium">
+        <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-sm transition-all cursor-pointer">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>Analytics Hub</span>
+          <span>Analytics Overview</span>
         </button>
 
-        <button onclick="selectMenu('confirmedOrders')" id="sideBtn-confirmedOrders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+        <button onclick="selectMenu('confirmedOrders')" id="sideBtn-confirmedOrders" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
           <div class="flex items-center gap-3">
-            <i data-lucide="truck" class="w-4 h-4 text-bronze-400"></i>
+            <i data-lucide="truck" class="w-4 h-4 text-gray-700"></i>
             <span>Confirmed Orders</span>
           </div>
-          <span id="sideConfirmedBadge" class="text-[10px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-full font-bold">0</span>
+          <span id="sideConfirmedBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
         </button>
 
-        <button onclick="selectMenu('cancelledOrders')" id="sideBtn-cancelledOrders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+        <button onclick="selectMenu('cancelledOrders')" id="sideBtn-cancelledOrders" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
           <div class="flex items-center gap-3">
-            <i data-lucide="ban" class="w-4 h-4 text-red-400"></i>
+            <i data-lucide="ban" class="w-4 h-4 text-red-600"></i>
             <span>Cancelled Orders</span>
           </div>
-          <span id="sideCancelledBadge" class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold">0</span>
+          <span id="sideCancelledBadge" class="text-[10px] bg-red-50 text-red-700 px-2 py-0.5 rounded-full font-bold border border-red-200">0</span>
         </button>
 
-        <button onclick="selectMenu('catalog')" id="sideBtn-catalog" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+        <button onclick="selectMenu('catalog')" id="sideBtn-catalog" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
           <div class="flex items-center gap-3">
-            <i data-lucide="package-plus" class="w-4 h-4 text-emerald-400"></i>
+            <i data-lucide="package" class="w-4 h-4 text-gray-700"></i>
             <span>Product Catalog</span>
           </div>
-          <span id="sideCatalogBadge" class="text-[10px] bg-emerald-400/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">0</span>
+          <span id="sideCatalogBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
         </button>
 
-        <button onclick="selectMenu('customers')" id="sideBtn-customers" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+        <button onclick="selectMenu('customers')" id="sideBtn-customers" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
           <div class="flex items-center gap-3">
-            <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
-            <span>Registered VIP Clients</span>
+            <i data-lucide="users" class="w-4 h-4 text-gray-700"></i>
+            <span>Customer Directory</span>
           </div>
-          <span id="sideCustomersBadge" class="text-[10px] bg-purple-400/20 text-purple-400 px-2 py-0.5 rounded-full font-bold">0</span>
+          <span id="sideCustomersBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
         </button>
 
-        <button onclick="selectMenu('feedback')" id="sideBtn-feedback" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+        <button onclick="selectMenu('feedback')" id="sideBtn-feedback" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
           <div class="flex items-center gap-3">
-            <i data-lucide="message-square" class="w-4 h-4 text-blue-400"></i>
-            <span>Client Feedback</span>
+            <i data-lucide="message-square" class="w-4 h-4 text-gray-700"></i>
+            <span>Customer Feedback</span>
           </div>
-          <span id="sideFeedbackBadge" class="text-[10px] bg-blue-400/20 text-blue-400 px-2 py-0.5 rounded-full font-bold">0</span>
+          <span id="sideFeedbackBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
         </button>
       </nav>
     </div>
 
-    <div class="pt-4 border-t border-white/5 space-y-2">
-      <a href="index.html" target="_blank" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-300 hover:text-white">
-        <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> Open Live Storefront
+    <!-- FOOTER ACTIONS -->
+    <div class="pt-4 border-t border-gray-100 space-y-2">
+      <button onclick="exportOrdersToCSV()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-100 border border-gray-200 text-xs font-semibold text-gray-800 hover:bg-gray-200 transition-all cursor-pointer">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Orders (CSV)
+      </button>
+      <a href="index.html" target="_blank" class="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-gray-500 hover:text-black">
+        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open Live Storefront
       </a>
-      <p class="text-[10px] text-slate-600 text-center">Vizag Night Hub • Lenka Ventures</p>
     </div>
   </aside>
 
-  <header class="sticky top-0 z-30 glass-nav">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      
       <div class="flex items-center gap-4">
-        <button onclick="toggleSidebar()" class="p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-200 transition-all flex items-center justify-center cursor-pointer">
-          <i data-lucide="menu" class="w-5 h-5 text-bronze-400"></i>
+        <button onclick="toggleSidebar()" class="p-2.5 rounded-xl bg-gray-50 border border-gray-200 hover:border-gray-400 text-gray-800 transition-all flex items-center justify-center cursor-pointer">
+          <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
         
         <div class="cursor-pointer" onclick="selectMenu('dashboard')">
-          <span class="font-serif text-xl sm:text-2xl tracking-wider text-white font-medium block">LENKA STUDIO</span>
-          <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Real-Time Executive Terminal</span>
+          <span class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 block">LENKA STUDIO</span>
+          <span class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block -mt-0.5">Control Terminal</span>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-400 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Live Sync Active
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Live Sync
         </span>
 
-        <span id="activeSectionLabel" class="hidden md:inline-block px-3 py-1 rounded-full bg-noir-850 fine-border text-[11px] text-bronze-300 font-medium">
-          Analytics Hub
+        <span id="activeSectionLabel" class="hidden md:inline-block px-3 py-1 rounded-lg bg-gray-100 border border-gray-200 text-xs text-gray-700 font-medium">
+          Analytics Overview
         </span>
-        <a href="index.html" target="_blank" class="px-3.5 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-xl text-xs text-slate-300 flex items-center gap-1.5 shadow-sm">
-          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> <span class="hidden md:inline">Storefront</span>
+
+        <a href="index.html" target="_blank" class="px-3.5 py-1.5 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-sm transition-all">
+          <i data-lucide="store" class="w-3.5 h-3.5"></i> Storefront
         </a>
       </div>
+
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+  <!-- MAIN WORKSPACE -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
 
+    <!-- 1. ANALYTICS OVERVIEW -->
     <section id="page-dashboard" class="space-y-8">
-      <div>
-        <h1 class="font-serif text-3xl sm:text-4xl text-white">Live Store Performance & Motion Analytics</h1>
-        <p class="text-xs text-slate-400 mt-1">Real-time synchronized projection of store revenue, customer registrations, and consignments</p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Executive Performance Hub</h1>
+          <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Real-time revenue metrics, order flow, and customer directory analytics</p>
+        </div>
+        <button onclick="exportOrdersToCSV()" class="self-start sm:self-auto px-4 py-2 bg-white border border-gray-300 hover:border-black text-gray-800 text-xs font-semibold rounded-xl flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Export Dispatch Sheet
+        </button>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+      <!-- METRIC CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         
-        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-1 relative overflow-hidden group shadow-lg">
-          <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider font-semibold text-bronze-400">Today's Orders</span>
-            <span class="w-2.5 h-2.5 rounded-full bg-bronze-400 animate-ping"></span>
+        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
+            <span>TODAY'S ORDERS</span>
+            <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
           </div>
           <div class="flex items-baseline gap-2">
-            <span id="statTodayOrders" class="font-serif text-3xl text-white font-medium">0</span>
-            <span class="text-[9px] text-slate-500 uppercase">Today</span>
+            <span id="statTodayOrders" class="font-mono text-3xl font-bold text-gray-900">0</span>
+            <span class="text-[10px] text-emerald-600 font-semibold uppercase">Active Today</span>
           </div>
-          <p class="text-[10px] text-bronze-400">View active orders →</p>
+          <p class="text-[11px] text-gray-500 pt-1">Review consignments →</p>
         </div>
 
-        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider">Confirmed Orders</span>
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
+            <span>CONFIRMED ORDERS</span>
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
           </div>
-          <div id="statConfirmedOrders" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[10px] text-slate-400">Active consignments</p>
+          <div id="statConfirmedOrders" class="font-mono text-3xl font-bold text-gray-900">0</div>
+          <p class="text-[11px] text-gray-500 pt-1">Scheduled for courier</p>
         </div>
 
-        <div onclick="selectMenu('cancelledOrders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider text-red-400">Cancelled Orders</span>
-            <i data-lucide="ban" class="w-4 h-4 text-red-400"></i>
+        <div onclick="selectMenu('cancelledOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
+            <span>CANCELLED ORDERS</span>
+            <i data-lucide="x-circle" class="w-4 h-4 text-red-600"></i>
           </div>
-          <div id="statCancelledOrders" class="font-serif text-3xl text-red-400 font-medium">0</div>
-          <p class="text-[10px] text-red-400">Cancelled by customer</p>
+          <div id="statCancelledOrders" class="font-mono text-3xl font-bold text-red-600">0</div>
+          <p class="text-[11px] text-gray-500 pt-1">Cancelled by client</p>
         </div>
 
-        <div class="p-5 rounded-2xl bg-noir-900 fine-border space-y-1">
-          <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider">Gross Valuation</span>
-            <i data-lucide="indian-rupee" class="w-4 h-4 text-amber-400"></i>
+        <div class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-1">
+          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
+            <span>GROSS STORE VALUE</span>
+            <i data-lucide="indian-rupee" class="w-4 h-4 text-gray-400"></i>
           </div>
-          <div id="statTotalValuation" class="font-serif text-3xl text-white font-medium">₹0</div>
-          <p class="text-[10px] text-slate-500">Active transactions</p>
+          <div id="statTotalValuation" class="font-mono text-3xl font-bold text-gray-900">₹0</div>
+          <p class="text-[11px] text-gray-500 pt-1">Total booked volume</p>
         </div>
 
-        <div onclick="selectMenu('customers')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider">Registered VIPs</span>
-            <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
+        <div onclick="selectMenu('customers')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
+            <span>REGISTERED CUSTOMERS</span>
+            <i data-lucide="users" class="w-4 h-4 text-gray-400"></i>
           </div>
-          <div id="statCustomersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[10px] text-purple-400">Address directory →</p>
+          <div id="statCustomersCount" class="font-mono text-3xl font-bold text-gray-900">0</div>
+          <p class="text-[11px] text-gray-500 pt-1">View address records →</p>
         </div>
 
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- ANALYTICS CHARTS & FEEDBACK STREAM -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <div class="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
-          <div class="flex items-center justify-between pb-4 border-b border-white/5">
-            <div class="flex items-center gap-2.5">
-              <div class="p-2 rounded-lg bg-bronze-400/10 text-bronze-400">
-                <i data-lucide="activity" class="w-4 h-4"></i>
-              </div>
-              <div>
-                <h3 class="font-serif text-xl text-white">Consignment Fulfillment Flow</h3>
-                <p class="text-[11px] text-slate-500">Live order state & cancellation metrics</p>
-              </div>
-            </div>
-            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-bronze-400 uppercase tracking-widest font-semibold">LIVE SYNC</span>
+        <!-- FULFILLMENT STATUS BAR -->
+        <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <i data-lucide="bar-chart-2" class="w-4 h-4 text-gray-700"></i> Order Fulfillment Breakdown
+            </h3>
+            <span class="text-[10px] text-gray-500 font-mono">REAL-TIME</span>
           </div>
 
-          <div class="space-y-4 pt-2">
+          <div class="space-y-4 pt-1">
             <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">1. Confirmed Reservations</span>
-                <span id="graphConfirmedCount" class="font-mono text-bronze-400 font-semibold">0 (0%)</span>
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-gray-700">1. Confirmed Reservations</span>
+                <span id="graphConfirmedCount" class="font-mono text-gray-900">0 (0%)</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphConfirmedBar" class="h-full bg-gradient-to-r from-bronze-500 to-bronze-300 rounded-full motion-bar-glow transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div id="graphConfirmedBar" class="h-full bg-black rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
             <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">2. In Transit / Dispatched</span>
-                <span id="graphDispatchedCount" class="font-mono text-blue-400 font-semibold">0 (0%)</span>
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-gray-700">2. Dispatched / In Transit</span>
+                <span id="graphDispatchedCount" class="font-mono text-blue-600">0 (0%)</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphDispatchedBar" class="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">3. Delivered Successfully</span>
-                <span id="graphDeliveredCount" class="font-mono text-green-400 font-semibold">0 (0%)</span>
-              </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphDeliveredBar" class="h-full bg-gradient-to-r from-green-600 to-green-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div id="graphDispatchedBar" class="h-full bg-blue-600 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
             <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-red-300 font-medium">4. Cancelled Consignments</span>
-                <span id="graphCancelledCount" class="font-mono text-red-400 font-semibold">0 (0%)</span>
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-gray-700">3. Delivered to Customer</span>
+                <span id="graphDeliveredCount" class="font-mono text-emerald-600">0 (0%)</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphCancelledBar" class="h-full bg-gradient-to-r from-red-600 to-red-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div id="graphDeliveredBar" class="h-full bg-emerald-600 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-medium">
+                <span class="text-gray-700">4. Cancelled Consignments</span>
+                <span id="graphCancelledCount" class="font-mono text-red-600">0 (0%)</span>
+              </div>
+              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div id="graphCancelledBar" class="h-full bg-red-600 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-4 shadow-xl flex flex-col justify-between">
-          <div class="flex items-center justify-between pb-3 border-b border-white/5">
-            <div class="flex items-center gap-2.5">
-              <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
-                <i data-lucide="message-square" class="w-4 h-4"></i>
-              </div>
-              <div>
-                <h3 class="font-serif text-xl text-white">Recent Customer Feedback</h3>
-                <p class="text-[11px] text-slate-500">Latest comments & support requests</p>
-              </div>
-            </div>
-            <button onclick="selectMenu('feedback')" class="text-xs text-bronze-400 hover:underline">View All</button>
+        <!-- RECENT CUSTOMER FEEDBACK -->
+        <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-gray-700"></i> Recent Feedback Submissions
+            </h3>
+            <button onclick="selectMenu('feedback')" class="text-xs text-black font-semibold hover:underline cursor-pointer">View All</button>
           </div>
 
-          <div id="homeFeedbackList" class="space-y-3 flex-1 overflow-y-auto max-h-[280px] custom-scrollbar"></div>
+          <div id="homeFeedbackList" class="space-y-2.5 flex-1 overflow-y-auto max-h-[260px] custom-scrollbar"></div>
         </div>
 
       </div>
     </section>
 
+    <!-- 2. CONFIRMED ORDERS -->
     <section id="page-confirmedOrders" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
           </button>
-          <h1 class="font-serif text-3xl text-white">Confirmed & Active Consignments</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Manage live order progress and update Confirmed, Shipping Start, and Delivery Dates</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Confirmed & Active Orders</h1>
+          <p class="text-xs text-gray-500 mt-0.5">Manage live dispatch schedules and update courier broadcast dates</p>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="w-full sm:w-72">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+            <input type="text" id="orderSearchInput" onkeyup="filterOrdersTable(this.value, 'confirmed')" placeholder="Search order, name, phone..." class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
+          </div>
         </div>
       </div>
 
-      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
-            <tr>
-              <th class="p-3.5">Order ID</th>
-              <th class="p-3.5">Customer & Phone</th>
-              <th class="p-3.5">Full Shipping Address</th>
-              <th class="p-3.5">Product Summary</th>
-              <th class="p-3.5">Update Live Status</th>
-              <th class="p-3.5">Broadcast Dates (Confirmed / Shipped / Delivery)</th>
-              <th class="p-3.5">Action</th>
-            </tr>
-          </thead>
-          <tbody id="adminConfirmedOrdersBody" class="divide-y divide-white/5"></tbody>
-        </table>
-        <div id="noConfirmedOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No active confirmed orders found.
+      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-gray-700">
+            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
+              <tr>
+                <th class="p-4">Order ID</th>
+                <th class="p-4">Customer Info</th>
+                <th class="p-4">Shipping Destination</th>
+                <th class="p-4">Product Summary</th>
+                <th class="p-4">Update Fulfillment Status</th>
+                <th class="p-4">Broadcast Dates (Confirmed / Shipped / Delivery)</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminConfirmedOrdersBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+        <div id="noConfirmedOrdersMessage" class="hidden text-center py-12 text-gray-400 text-xs">
+          No confirmed orders found.
         </div>
       </div>
     </section>
 
+    <!-- 3. CANCELLED ORDERS -->
     <section id="page-cancelledOrders" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
           </button>
-          <h1 class="font-serif text-3xl text-white">Cancelled Consignments Archive</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Orders cancelled by customers or operators</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Cancelled Orders Archive</h1>
+          <p class="text-xs text-gray-500 mt-0.5">Records of customer cancellations and voided reservations</p>
+        </div>
+
+        <div class="w-full sm:w-72">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+            <input type="text" onkeyup="filterOrdersTable(this.value, 'cancelled')" placeholder="Search cancelled orders..." class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
+          </div>
         </div>
       </div>
 
-      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
-            <tr>
-              <th class="p-3.5">Order ID</th>
-              <th class="p-3.5">Customer Info</th>
-              <th class="p-3.5">Shipping Address</th>
-              <th class="p-3.5">Product Summary</th>
-              <th class="p-3.5">Cancelled Valuation</th>
-              <th class="p-3.5">Status</th>
-              <th class="p-3.5">Action</th>
-            </tr>
-          </thead>
-          <tbody id="adminCancelledOrdersBody" class="divide-y divide-white/5"></tbody>
-        </table>
-        <div id="noCancelledOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-gray-700">
+            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
+              <tr>
+                <th class="p-4">Order ID</th>
+                <th class="p-4">Customer Info</th>
+                <th class="p-4">Shipping Destination</th>
+                <th class="p-4">Product Summary</th>
+                <th class="p-4">Cancelled Valuation</th>
+                <th class="p-4">Status</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminCancelledOrdersBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+        <div id="noCancelledOrdersMessage" class="hidden text-center py-12 text-gray-400 text-xs">
           No cancelled orders found.
         </div>
       </div>
     </section>
 
+    <!-- 4. PRODUCT CATALOG -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
-        <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
-          <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+        <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
         </button>
-        <h1 class="font-serif text-3xl text-white">Product Catalog & Atelier Engine</h1>
-        <p class="text-xs text-slate-400 mt-0.5">Publish new products or manage existing live items</p>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Product Catalog & Atelier Engine</h1>
+        <p class="text-xs text-gray-500 mt-0.5">Publish new products or manage live items across collections</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
-          <h2 class="font-serif text-2xl text-white">Publish New Product</h2>
+        <!-- PUBLISH FORM -->
+        <div class="lg:col-span-5 bg-white border border-gray-200 p-6 sm:p-7 rounded-2xl space-y-5 shadow-sm">
+          <h2 class="text-base font-bold text-gray-900">Add New Product</h2>
 
-          <form id="productPublishForm" class="space-y-4" onsubmit="handleProductPublish(event)">
+          <form id="productPublishForm" class="space-y-3.5" onsubmit="handleProductPublish(event)">
             <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Category</label>
-              <select id="prodCategory" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400">
+              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Collection / Category</label>
+              <select id="prodCategory" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black focus:bg-white">
                 <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
                 <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
                 <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
@@ -415,119 +424,133 @@
             </div>
 
             <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Title</label>
-              <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Product Title</label>
+              <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black focus:bg-white" />
             </div>
 
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-3 gap-2.5">
               <div>
-                <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Original (₹)</label>
-                <input type="number" id="prodOrigPrice" placeholder="4999" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+                <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Original (₹)</label>
+                <input type="number" id="prodOrigPrice" placeholder="4999" required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
               </div>
               <div>
-                <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Offer (₹)</label>
-                <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+                <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Offer (₹)</label>
+                <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
               </div>
               <div>
-                <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Discount Tag</label>
-                <input type="text" id="prodTag" placeholder="50% OFF" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+                <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Badge Tag</label>
+                <input type="text" id="prodTag" placeholder="50% OFF" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
               </div>
             </div>
 
             <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Main Image URL</label>
-              <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
+              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Image URL</label>
+              <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black focus:bg-white" />
             </div>
 
             <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Available Colors (Comma Separated)</label>
-              <input type="text" id="prodVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
+              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Color Variants (Comma Separated)</label>
+              <input type="text" id="prodVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
             </div>
 
             <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Description & Specs</label>
-              <textarea id="prodDesc" rows="3" placeholder="Highlight key features, drivers, fabric..." class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none"></textarea>
+              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Description & Specs</label>
+              <textarea id="prodDesc" rows="3" placeholder="Features, battery duration, drivers..." class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black"></textarea>
             </div>
 
-            <button type="submit" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
-              Publish Product To Store
+            <button type="submit" class="w-full py-3 bg-black hover:bg-gray-800 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow cursor-pointer">
+              Publish Product to Store
             </button>
           </form>
         </div>
 
-        <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
-          <div>
-            <h2 class="font-serif text-2xl text-white">Live Store Inventory</h2>
-            <p class="text-xs text-slate-400 mt-1">Manage active catalog items</p>
+        <!-- INVENTORY -->
+        <div class="lg:col-span-7 bg-white border border-gray-200 p-6 sm:p-7 rounded-2xl space-y-4 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-gray-900">Live Inventory</h2>
+            <span id="inventoryCountBadge" class="text-xs bg-gray-100 text-gray-800 font-semibold px-2.5 py-0.5 rounded-full border border-gray-200">0 Products</span>
           </div>
-          <div id="adminInventoryList" class="space-y-3 max-h-[620px] overflow-y-auto custom-scrollbar"></div>
+          <div id="adminInventoryList" class="space-y-2.5 max-h-[560px] overflow-y-auto custom-scrollbar"></div>
         </div>
       </div>
     </section>
 
+    <!-- 5. CUSTOMER DIRECTORY (RENAMED FROM VIP CLIENTS) -->
     <section id="page-customers" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
           </button>
-          <h1 class="font-serif text-3xl text-white">Registered VIP Clients Directory</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Customer profiles, delivery addresses, and purchase history</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Customer Directory</h1>
+          <p class="text-xs text-gray-500 mt-0.5">Verified customer profiles, shipping records, and contact channels</p>
+        </div>
+
+        <div class="w-full sm:w-72">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+            <input type="text" id="customerSearchInput" onkeyup="filterCustomersTable(this.value)" placeholder="Search by name or phone..." class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
+          </div>
         </div>
       </div>
 
-      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
-            <tr>
-              <th class="p-3.5">Client Profile</th>
-              <th class="p-3.5">Mobile Contact</th>
-              <th class="p-3.5">Country & State</th>
-              <th class="p-3.5">Street, Area & House No.</th>
-              <th class="p-3.5">PIN Code</th>
-              <th class="p-3.5">Orders Placed</th>
-            </tr>
-          </thead>
-          <tbody id="adminCustomersBody" class="divide-y divide-white/5"></tbody>
-        </table>
-        <div id="noCustomersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No registered customer accounts found yet.
+      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-gray-700">
+            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
+              <tr>
+                <th class="p-4">Customer</th>
+                <th class="p-4">Mobile Contact</th>
+                <th class="p-4">Country & State</th>
+                <th class="p-4">Street Address & House No.</th>
+                <th class="p-4">PIN Code</th>
+                <th class="p-4">Total Orders</th>
+                <th class="p-4 text-right">Quick Contact</th>
+              </tr>
+            </thead>
+            <tbody id="adminCustomersBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+        <div id="noCustomersMessage" class="hidden text-center py-12 text-gray-400 text-xs">
+          No registered customer accounts found.
         </div>
       </div>
     </section>
 
+    <!-- 6. CLIENT FEEDBACK -->
     <section id="page-feedback" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
-        <div>
-          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
-          </button>
-          <h1 class="font-serif text-3xl text-white">Client Feedback & Support Messages</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Direct suggestions, inquiries, and customer feedback submissions</p>
-        </div>
+      <div>
+        <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
+        </button>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Customer Feedback & Inquiries</h1>
+        <p class="text-xs text-gray-500 mt-0.5">Reviews, support requests, and user submissions</p>
       </div>
 
-      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
-            <tr>
-              <th class="p-3.5">Feedback ID & Date</th>
-              <th class="p-3.5">Customer Name</th>
-              <th class="p-3.5">Mobile Contact</th>
-              <th class="p-3.5">Client Review / Message</th>
-              <th class="p-3.5">Action</th>
-            </tr>
-          </thead>
-          <tbody id="adminFeedbackBody" class="divide-y divide-white/5"></tbody>
-        </table>
-        <div id="noFeedbackMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No customer feedback messages received yet.
+      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-gray-700">
+            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
+              <tr>
+                <th class="p-4">Feedback ID</th>
+                <th class="p-4">Customer Name</th>
+                <th class="p-4">Contact</th>
+                <th class="p-4">Message Details</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminFeedbackBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+        <div id="noFeedbackMessage" class="hidden text-center py-12 text-gray-400 text-xs">
+          No feedback messages received yet.
         </div>
       </div>
     </section>
 
   </main>
 
+  <!-- HYBRID REAL-TIME DATA ENGINE -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
@@ -561,7 +584,7 @@
       }
     });
 
-    // LOAD COMBINED DATA
+    // UNIFIED DATA LOADER
     function loadUnifiedData() {
       const localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const localCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
@@ -588,6 +611,7 @@
       updateSidebarBadges();
 
       if (db) {
+        // Real-time Orders Listener
         db.collection('orders').onSnapshot((snapshot) => {
           if (!snapshot.empty) {
             const cloudOrders = [];
@@ -608,6 +632,7 @@
           }
         }, (err) => console.warn(err));
 
+        // Real-time Catalog Listener
         db.collection('products').onSnapshot((snapshot) => {
           if (!snapshot.empty) {
             allCatalog = [];
@@ -618,6 +643,7 @@
           }
         }, (err) => console.warn(err));
 
+        // Real-time Feedback Listener
         db.collection('feedbacks').onSnapshot((snapshot) => {
           if (!snapshot.empty) {
             const cloudFeedbacks = [];
@@ -633,23 +659,6 @@
             renderGraphicSheet();
             renderHomeFeedbacks();
             renderAdminFeedbacks();
-            updateSidebarBadges();
-          }
-        }, (err) => console.warn(err));
-
-        db.collection('customers').onSnapshot((snapshot) => {
-          if (!snapshot.empty) {
-            const cloudCust = [];
-            snapshot.forEach(doc => cloudCust.push({ docId: doc.id, ...doc.data() }));
-            
-            const mergedCust = [...cloudCust];
-            allCustomers.forEach(lc => {
-              if (!mergedCust.find(m => m.phone === lc.phone)) {
-                mergedCust.push(lc);
-              }
-            });
-            allCustomers = mergedCust;
-            renderAdminCustomers();
             updateSidebarBadges();
           }
         }, (err) => console.warn(err));
@@ -686,12 +695,12 @@
     function selectMenu(pageId) {
       const pages = ['dashboard', 'confirmedOrders', 'cancelledOrders', 'catalog', 'customers', 'feedback'];
       const pageTitles = {
-        'dashboard': 'Analytics Hub',
+        'dashboard': 'Analytics Overview',
         'confirmedOrders': 'Confirmed & Active Orders',
         'cancelledOrders': 'Cancelled Orders Archive',
         'catalog': 'Product Catalog & Ateliers',
-        'customers': 'Registered VIP Clients',
-        'feedback': 'Client Feedback & Support'
+        'customers': 'Customer Directory',
+        'feedback': 'Customer Feedback & Support'
       };
 
       pages.forEach(p => {
@@ -701,12 +710,12 @@
         if (p === pageId) {
           pageEl.classList.remove('hidden');
           if (sideBtn) {
-            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-3 rounded-xl bg-bronze-400 text-noir-950 font-semibold shadow-sm transition-all";
+            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-sm transition-all";
           }
         } else {
           pageEl.classList.add('hidden');
           if (sideBtn) {
-            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all";
+            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all";
           }
         }
       });
@@ -749,7 +758,9 @@
 
       const totalValuation = confirmed.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
       document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
-      document.getElementById('statCustomersCount').innerText = allCustomers.length || allOrders.length;
+
+      // Update customers
+      renderAdminCustomers();
 
       const confirmedCount = allOrders.filter(o => o.status === 'Confirmed' || !o.status).length;
       const dispatchedCount = allOrders.filter(o => o.status === 'Dispatched').length;
@@ -780,78 +791,78 @@
       container.innerHTML = '';
 
       if (allFeedbacks.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">No feedback messages received yet.</p>`;
+        container.innerHTML = `<p class="text-xs text-gray-400 py-6 text-center">No feedback messages received yet.</p>`;
         return;
       }
 
       allFeedbacks.slice(0, 4).forEach(fb => {
         const item = document.createElement('div');
-        item.className = "p-3.5 rounded-xl bg-noir-850 fine-border space-y-1.5";
+        item.className = "p-3 rounded-xl bg-gray-50 border border-gray-100 space-y-1";
         item.innerHTML = `
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-white font-medium">${fb.name}</span>
-            <span class="font-mono text-bronze-400 text-[10px]">${fb.phone}</span>
+          <div class="flex items-center justify-between text-xs font-medium">
+            <span class="text-gray-900 font-semibold">${fb.name}</span>
+            <span class="font-mono text-gray-500 text-[10px]">${fb.phone}</span>
           </div>
-          <p class="text-xs text-slate-300 italic line-clamp-2">"${fb.message}"</p>
-          <span class="text-[9px] text-slate-500 block pt-0.5">${fb.timestamp || ''}</span>
+          <p class="text-xs text-gray-600 line-clamp-2">"${fb.message}"</p>
+          <span class="text-[9px] text-gray-400 block pt-0.5">${fb.timestamp || ''}</span>
         `;
         container.appendChild(item);
       });
       lucide.createIcons();
     }
 
-    // CONFIRMED ORDERS PAGE
-    function renderAdminConfirmedOrders() {
+    // CONFIRMED ORDERS TABLE
+    function renderAdminConfirmedOrders(filteredList = null) {
       const tbody = document.getElementById('adminConfirmedOrdersBody');
       const emptyMsg = document.getElementById('noConfirmedOrdersMessage');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      const confirmed = allOrders.filter(o => o.status !== 'Cancelled');
+      const list = filteredList || allOrders.filter(o => o.status !== 'Cancelled');
 
-      if (confirmed.length === 0) {
+      if (list.length === 0) {
         if (emptyMsg) emptyMsg.classList.remove('hidden');
         return;
       }
 
       if (emptyMsg) emptyMsg.classList.add('hidden');
-      confirmed.forEach((ord) => {
+      list.forEach((ord) => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-noir-850/50 transition-colors";
+        tr.className = "hover:bg-gray-50 transition-colors";
         tr.innerHTML = `
-          <td class="p-3.5 font-mono text-bronze-400 font-semibold">
+          <td class="p-4 font-mono font-semibold text-gray-900">
             #${ord.orderId}<br/>
-            <span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span>
+            <span class="text-[10px] text-gray-400 font-normal">${ord.timestamp || ''}</span>
           </td>
-          <td class="p-3.5">
-            <div class="flex items-center gap-2">
-              <img src="${ord.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-8 h-8 rounded-full object-cover fine-border" />
+          <td class="p-4">
+            <div class="flex items-center gap-2.5">
+              <img src="${ord.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-8 h-8 rounded-full object-cover border border-gray-200" />
               <div>
-                <span class="text-white font-medium block">${ord.customerName}</span>
-                <span class="text-slate-400 font-mono text-[11px]">${ord.customerPhone}</span>
+                <span class="text-gray-900 font-semibold block">${ord.customerName}</span>
+                <span class="text-gray-500 font-mono text-[11px]">${ord.customerPhone}</span>
               </div>
             </div>
           </td>
-          <td class="p-3.5 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
-          <td class="p-3.5 text-white max-w-xs text-[11px]">
-            <span class="font-medium">${ord.itemsSummary}</span><br/>
-            <span class="text-bronze-400 font-serif text-xs">Valuation: ₹${ord.totalAmount}</span>
+          <td class="p-4 text-gray-600 max-w-xs text-xs">${ord.customerAddress}</td>
+          <td class="p-4 text-gray-900 max-w-xs text-xs font-medium">
+            <span>${ord.itemsSummary}</span><br/>
+            <span class="text-gray-900 font-bold">₹${ord.totalAmount}</span>
           </td>
-          <td class="p-3.5">
-            <select onchange="updateUnifiedOrderStatus('${ord.orderId}', this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
+          <td class="p-4">
+            <select onchange="updateUnifiedOrderStatus('${ord.orderId}', this.value)" class="bg-white border border-gray-300 text-xs rounded-lg px-2.5 py-1.5 text-gray-900 font-medium focus:outline-none focus:border-black">
               <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
-              <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
-              <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
+              <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Dispatched / In Transit</option>
+              <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered Successfully</option>
               <option value="Cancelled">❌ Move to Cancelled</option>
             </select>
           </td>
-          <td class="p-3.5 space-y-1">
-            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
-            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateUnifiedOrderDate('${ord.orderId}', 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
-            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+          <td class="p-4 space-y-1">
+            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'confirmedDate', this.value)" class="bg-gray-50 border border-gray-200 rounded px-2 py-0.5 text-[10px] text-gray-900 w-32 block focus:bg-white focus:border-black focus:outline-none" />
+            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateUnifiedOrderDate('${ord.orderId}', 'shippingDate', this.value)" class="bg-gray-50 border border-gray-200 rounded px-2 py-0.5 text-[10px] text-gray-900 w-32 block focus:bg-white focus:border-black focus:outline-none" />
+            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'deliveryDate', this.value)" class="bg-gray-50 border border-gray-200 rounded px-2 py-0.5 text-[10px] text-gray-900 w-32 block focus:bg-white focus:border-black focus:outline-none" />
           </td>
-          <td class="p-3.5">
-            <button onclick="deleteUnifiedOrder('${ord.orderId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
+          <td class="p-4 text-right">
+            <button onclick="deleteUnifiedOrder('${ord.orderId}')" title="Delete record" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-gray-100 transition-all cursor-pointer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -861,41 +872,41 @@
       lucide.createIcons();
     }
 
-    // CANCELLED ORDERS PAGE
-    function renderAdminCancelledOrders() {
+    // CANCELLED ORDERS TABLE
+    function renderAdminCancelledOrders(filteredList = null) {
       const tbody = document.getElementById('adminCancelledOrdersBody');
       const emptyMsg = document.getElementById('noCancelledOrdersMessage');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      const cancelled = allOrders.filter(o => o.status === 'Cancelled');
+      const list = filteredList || allOrders.filter(o => o.status === 'Cancelled');
 
-      if (cancelled.length === 0) {
+      if (list.length === 0) {
         if (emptyMsg) emptyMsg.classList.remove('hidden');
         return;
       }
 
       if (emptyMsg) emptyMsg.classList.add('hidden');
-      cancelled.forEach((ord) => {
+      list.forEach((ord) => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-noir-850/50 transition-colors opacity-75 bg-red-950/10";
+        tr.className = "hover:bg-gray-50 transition-colors opacity-80";
         tr.innerHTML = `
-          <td class="p-3.5 font-mono text-bronze-400">
+          <td class="p-4 font-mono font-semibold text-gray-500">
             #${ord.orderId}<br/>
-            <span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span>
+            <span class="text-[10px] text-gray-400 font-normal">${ord.timestamp || ''}</span>
           </td>
-          <td class="p-3.5">
-            <span class="text-white font-medium block">${ord.customerName}</span>
-            <span class="text-slate-400 font-mono text-[11px]">${ord.customerPhone}</span>
+          <td class="p-4">
+            <span class="text-gray-900 font-semibold block">${ord.customerName}</span>
+            <span class="text-gray-500 font-mono text-[11px]">${ord.customerPhone}</span>
           </td>
-          <td class="p-3.5 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
-          <td class="p-3.5 text-white max-w-xs text-[11px]">${ord.itemsSummary}</td>
-          <td class="p-3.5 text-red-400 font-serif text-xs font-semibold">₹${ord.totalAmount}</td>
-          <td class="p-3.5">
-            <span class="px-2.5 py-1 rounded-md bg-red-500/15 border border-red-500/30 text-red-400 font-semibold text-[10px]">Cancelled</span>
+          <td class="p-4 text-gray-600 max-w-xs text-xs">${ord.customerAddress}</td>
+          <td class="p-4 text-gray-700 max-w-xs text-xs">${ord.itemsSummary}</td>
+          <td class="p-4 text-red-600 font-mono font-bold text-xs">₹${ord.totalAmount}</td>
+          <td class="p-4">
+            <span class="px-2.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-700 font-semibold text-[10px]">Cancelled</span>
           </td>
-          <td class="p-3.5">
-            <button onclick="deleteUnifiedOrder('${ord.orderId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
+          <td class="p-4 text-right">
+            <button onclick="deleteUnifiedOrder('${ord.orderId}')" title="Delete record" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-gray-100 transition-all cursor-pointer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -903,6 +914,22 @@
         tbody.appendChild(tr);
       });
       lucide.createIcons();
+    }
+
+    // SEARCH FILTER FOR ORDERS
+    function filterOrdersTable(query, type) {
+      const q = query.toLowerCase().trim();
+      const baseList = allOrders.filter(o => type === 'confirmed' ? o.status !== 'Cancelled' : o.status === 'Cancelled');
+      
+      const filtered = baseList.filter(o => 
+        (o.orderId && o.orderId.toLowerCase().includes(q)) ||
+        (o.customerName && o.customerName.toLowerCase().includes(q)) ||
+        (o.customerPhone && o.customerPhone.includes(q)) ||
+        (o.itemsSummary && o.itemsSummary.toLowerCase().includes(q))
+      );
+
+      if (type === 'confirmed') renderAdminConfirmedOrders(filtered);
+      if (type === 'cancelled') renderAdminCancelledOrders(filtered);
     }
 
     function updateUnifiedOrderStatus(orderId, newStatus) {
@@ -938,7 +965,7 @@
     }
 
     function deleteUnifiedOrder(orderId) {
-      if (confirm(`Remove consignment #${orderId}?`)) {
+      if (confirm(`Remove consignment record #${orderId}?`)) {
         allOrders = allOrders.filter(o => o.orderId !== orderId);
         localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
         if (db) {
@@ -953,19 +980,104 @@
       }
     }
 
-    // CUSTOMERS DIRECTORY
-    function renderAdminCustomers() {
+    // CUSTOMER DIRECTORY TABLE & SEARCH
+    function renderAdminCustomers(filteredMap = null) {
       const tbody = document.getElementById('adminCustomersBody');
       const emptyMsg = document.getElementById('noCustomersMessage');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      const customerMap = new Map();
+      let customerMap = new Map();
+
+      if (filteredMap) {
+        customerMap = filteredMap;
+      } else {
+        allCustomers.forEach(c => {
+          if (c && c.phone) {
+            customerMap.set(c.phone, {
+              name: c.name || 'Customer',
+              phone: c.phone,
+              avatar: c.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
+              country: c.address?.country || 'India',
+              state: c.address?.state || 'Telangana',
+              area: c.address?.area || c.formattedAddress || 'Registered Address',
+              pin: c.address?.pin || '500072',
+              ordersCount: allOrders.filter(x => x.customerPhone === c.phone && x.status !== 'Cancelled').length
+            });
+          }
+        });
+
+        allOrders.forEach(o => {
+          if (o.customerPhone && !customerMap.has(o.customerPhone)) {
+            customerMap.set(o.customerPhone, {
+              name: o.customerName || 'Customer',
+              phone: o.customerPhone,
+              avatar: o.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
+              country: 'India',
+              state: 'Recorded',
+              area: o.customerAddress || 'Direct Order Address',
+              pin: 'Verified',
+              ordersCount: allOrders.filter(x => x.customerPhone === o.customerPhone && x.status !== 'Cancelled').length
+            });
+          }
+        });
+      }
+
+      const totalCount = customerMap.size;
+      const statElem = document.getElementById('statCustomersCount');
+      const badgeElem = document.getElementById('sideCustomersBadge');
+      if (statElem && !filteredMap) statElem.innerText = totalCount;
+      if (badgeElem && !filteredMap) badgeElem.innerText = totalCount;
+
+      if (totalCount === 0) {
+        if (emptyMsg) emptyMsg.classList.remove('hidden');
+        return;
+      }
+
+      if (emptyMsg) emptyMsg.classList.add('hidden');
+      customerMap.forEach(cust => {
+        const cleanPhone = cust.phone.replace(/[^0-9]/g, '');
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-gray-50 transition-colors";
+        tr.innerHTML = `
+          <td class="p-4">
+            <div class="flex items-center gap-3">
+              <img src="${cust.avatar}" class="w-9 h-9 rounded-full object-cover border border-gray-200" />
+              <div>
+                <span class="text-gray-900 font-bold block">${cust.name}</span>
+                <span class="text-[10px] text-gray-500 font-medium">Verified Customer</span>
+              </div>
+            </div>
+          </td>
+          <td class="p-4 font-mono font-semibold text-gray-900">${cust.phone}</td>
+          <td class="p-4 text-gray-600 text-xs">${cust.country} • ${cust.state}</td>
+          <td class="p-4 text-gray-600 max-w-xs text-xs">${cust.area}</td>
+          <td class="p-4 font-mono text-gray-900 text-xs">${cust.pin}</td>
+          <td class="p-4">
+            <span class="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 font-semibold text-gray-900 text-xs">${cust.ordersCount} Orders</span>
+          </td>
+          <td class="p-4 text-right space-x-1.5">
+            <a href="https://wa.me/${cleanPhone}" target="_blank" title="WhatsApp Customer" class="inline-flex p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg border border-emerald-200">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </a>
+            <a href="tel:${cust.phone}" title="Call Customer" class="inline-flex p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg border border-gray-300">
+              <i data-lucide="phone" class="w-4 h-4"></i>
+            </a>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function filterCustomersTable(query) {
+      const q = query.toLowerCase().trim();
+      const filteredMap = new Map();
 
       allCustomers.forEach(c => {
-        if (c && c.phone) {
-          customerMap.set(c.phone, {
-            name: c.name || 'VIP Client',
+        if (c && (c.name?.toLowerCase().includes(q) || c.phone?.includes(q))) {
+          filteredMap.set(c.phone, {
+            name: c.name || 'Customer',
             phone: c.phone,
             avatar: c.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
             country: c.address?.country || 'India',
@@ -977,79 +1089,61 @@
         }
       });
 
-      allOrders.forEach(o => {
-        if (o.customerPhone && !customerMap.has(o.customerPhone)) {
-          customerMap.set(o.customerPhone, {
-            name: o.customerName || 'VIP Customer',
-            phone: o.customerPhone,
-            avatar: o.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
-            country: 'India',
-            state: 'Recorded',
-            area: o.customerAddress || 'Direct Order Address',
-            pin: 'Verified',
-            ordersCount: allOrders.filter(x => x.customerPhone === o.customerPhone && x.status !== 'Cancelled').length
-          });
-        }
-      });
+      renderAdminCustomers(filteredMap);
+    }
 
-      const totalCount = customerMap.size;
-      const statElem = document.getElementById('statCustomersCount');
-      const badgeElem = document.getElementById('sideCustomersBadge');
-      if (statElem) statElem.innerText = totalCount;
-      if (badgeElem) badgeElem.innerText = totalCount;
-
-      if (totalCount === 0) {
-        if (emptyMsg) emptyMsg.classList.remove('hidden');
+    // EXPORT ORDERS TO CSV FOR EXCEL / DISPATCH
+    function exportOrdersToCSV() {
+      if (allOrders.length === 0) {
+        alert('No orders available to export.');
         return;
       }
 
-      if (emptyMsg) emptyMsg.classList.add('hidden');
-      customerMap.forEach(cust => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-noir-850/50 transition-colors";
-        tr.innerHTML = `
-          <td class="p-3.5">
-            <div class="flex items-center gap-2.5">
-              <img src="${cust.avatar}" class="w-8 h-8 rounded-full object-cover fine-border border-bronze-400/40" />
-              <div>
-                <span class="text-white font-medium block">${cust.name}</span>
-                <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-1.5 py-0.5 rounded font-semibold uppercase">VIP CLIENT</span>
-              </div>
-            </div>
-          </td>
-          <td class="p-3.5 font-mono text-bronze-400">${cust.phone}</td>
-          <td class="p-3.5 text-slate-300 text-xs">${cust.country} / ${cust.state}</td>
-          <td class="p-3.5 text-slate-300 max-w-xs text-xs">${cust.area}</td>
-          <td class="p-3.5 font-mono text-white text-xs">${cust.pin}</td>
-          <td class="p-3.5">
-            <span class="px-2.5 py-1 rounded-md bg-noir-950 fine-border font-serif text-bronze-400 text-xs font-semibold">${cust.ordersCount} Consignments</span>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-      lucide.createIcons();
+      const headers = ['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Products', 'Amount (INR)', 'Status'];
+      const rows = allOrders.map(o => [
+        `"${o.orderId || ''}"`,
+        `"${o.timestamp || ''}"`,
+        `"${(o.customerName || '').replace(/"/g, '""')}"`,
+        `"${o.customerPhone || ''}"`,
+        `"${(o.customerAddress || '').replace(/"/g, '""')}"`,
+        `"${(o.itemsSummary || '').replace(/"/g, '""')}"`,
+        `"${o.totalAmount || 0}"`,
+        `"${o.status || 'Confirmed'}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `Lenka_Stores_Orders_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
-    // CATALOG
+    // CATALOG MANAGEMENT
     function renderAdminCatalog() {
       const container = document.getElementById('adminInventoryList');
+      const badge = document.getElementById('inventoryCountBadge');
       if (!container) return;
       container.innerHTML = '';
 
+      if (badge) badge.innerText = `${allCatalog.length} Products`;
+
       allCatalog.forEach((prod, index) => {
         const card = document.createElement('div');
-        card.className = "p-3.5 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
+        card.className = "p-3 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-between gap-3";
         card.innerHTML = `
-          <img src="${prod.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-900" />
+          <img src="${prod.image}" class="w-12 h-12 rounded-lg object-cover bg-white border border-gray-200" />
           <div class="flex-1 min-w-0">
-            <h4 class="text-xs text-white font-medium truncate">${prod.title}</h4>
-            <div class="flex items-center gap-2 text-[10px] text-slate-400">
-              <span class="text-bronze-400 font-serif text-xs">₹${prod.offerPrice}</span>
+            <h4 class="text-xs text-gray-900 font-bold truncate">${prod.title}</h4>
+            <div class="flex items-center gap-2 text-[10px] text-gray-500 font-medium">
+              <span class="text-gray-900 font-mono font-bold">₹${prod.offerPrice}</span>
               <span>•</span>
               <span>${prod.category}</span>
             </div>
           </div>
-          <button onclick="deleteCatalogItem(${index})" class="text-slate-500 hover:text-red-400 p-2 transition-colors cursor-pointer">
+          <button onclick="deleteCatalogItem(${index})" title="Delete Product" class="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-white transition-colors cursor-pointer">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         `;
@@ -1059,10 +1153,11 @@
     }
 
     function deleteCatalogItem(index) {
-      if (confirm(`Remove "${allCatalog[index].title}"?`)) {
+      if (confirm(`Remove "${allCatalog[index].title}" from store inventory?`)) {
         allCatalog.splice(index, 1);
         localStorage.setItem('lenka_catalog', JSON.stringify(allCatalog));
         renderAdminCatalog();
+        updateSidebarBadges();
       }
     }
 
@@ -1099,7 +1194,8 @@
 
       document.getElementById('productPublishForm').reset();
       renderAdminCatalog();
-      alert(`"${title}" published successfully!`);
+      updateSidebarBadges();
+      alert(`"${title}" published to live store!`);
     }
 
     // FEEDBACK
@@ -1117,17 +1213,17 @@
       if (emptyMsg) emptyMsg.classList.add('hidden');
       allFeedbacks.forEach((fb, index) => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-noir-850/50 transition-colors";
+        tr.className = "hover:bg-gray-50 transition-colors";
         tr.innerHTML = `
-          <td class="p-3.5 font-mono text-bronze-400">
+          <td class="p-4 font-mono font-semibold text-gray-900">
             #${fb.feedbackId || 'FB' + index}<br/>
-            <span class="text-[9px] text-slate-500">${fb.timestamp || ''}</span>
+            <span class="text-[10px] text-gray-400 font-normal">${fb.timestamp || ''}</span>
           </td>
-          <td class="p-3.5 text-white font-medium">${fb.name}</td>
-          <td class="p-3.5 font-mono text-bronze-400">${fb.phone}</td>
-          <td class="p-3.5 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
-          <td class="p-3.5">
-            <button onclick="deleteFeedbackItem('${fb.feedbackId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
+          <td class="p-4 text-gray-900 font-bold">${fb.name}</td>
+          <td class="p-4 font-mono text-gray-600 font-medium">${fb.phone}</td>
+          <td class="p-4 text-gray-700 max-w-sm text-xs leading-relaxed">${fb.message}</td>
+          <td class="p-4 text-right">
+            <button onclick="deleteFeedbackItem('${fb.feedbackId}')" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-gray-100 transition-all cursor-pointer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -1138,7 +1234,7 @@
     }
 
     function deleteFeedbackItem(feedbackId) {
-      if (confirm('Delete this feedback?')) {
+      if (confirm('Delete this feedback message?')) {
         let local = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
         local = local.filter(f => f.feedbackId !== feedbackId);
         localStorage.setItem('lenka_feedbacks', JSON.stringify(local));
@@ -1154,6 +1250,7 @@
         renderAdminFeedbacks();
         renderHomeFeedbacks();
         renderGraphicSheet();
+        updateSidebarBadges();
       }
     }
 
@@ -1162,4 +1259,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
