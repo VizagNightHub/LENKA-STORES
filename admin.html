@@ -41,6 +41,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
+    .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
   </style>
@@ -72,10 +73,12 @@
     </div>
   </div>
 
-  <!-- STUDIO HEADER -->
+  <!-- STUDIO HEADER WITH NAVIGATION TABS -->
   <header class="sticky top-0 z-40 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-3.5">
+      
+      <!-- LOGO -->
+      <div class="flex items-center gap-3.5 cursor-pointer" onclick="switchPage('dashboard')">
         <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
           <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
             <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
@@ -88,171 +91,353 @@
           <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Control Terminal</span>
         </div>
       </div>
+
+      <!-- INDIVIDUAL PAGE NAVIGATION BUTTONS -->
+      <nav class="hidden md:flex items-center gap-2">
+        <button id="navBtn-dashboard" onclick="switchPage('dashboard')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all bg-bronze-400 text-noir-950 font-semibold shadow-sm">
+          Overview Hub
+        </button>
+        <button id="navBtn-orders" onclick="switchPage('orders')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
+          Orders & Tracking
+        </button>
+        <button id="navBtn-feedback" onclick="switchPage('feedback')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
+          Customer Feedback
+        </button>
+        <button id="navBtn-catalog" onclick="switchPage('catalog')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
+          Product Catalog
+        </button>
+      </nav>
+
+      <!-- LIVE STORE LINK -->
       <div class="flex items-center gap-3">
-        <a href="index.html" target="_blank" class="px-4 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-1.5">
-          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> View Live Store
+        <a href="index.html" target="_blank" class="px-3.5 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> <span class="hidden sm:inline">Storefront</span>
         </a>
       </div>
+
     </div>
   </header>
 
-  <!-- WORKSPACE -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-12">
-    
-    <!-- ROW 1: LIVE ORDERS & DATE FULFILLMENT -->
-    <section class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-2">
-        <div class="flex items-center gap-2.5">
-          <div class="p-2 rounded-lg bg-bronze-400/10 text-bronze-400">
-            <i data-lucide="truck" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h2 class="font-serif text-2xl text-white">Live Customer Order Management & Dispatch Center</h2>
-            <p class="text-xs text-slate-400">Update status and dates (Confirmed, Shipping Start, Delivered) broadcast to customer timeline</p>
-          </div>
-        </div>
-        <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3 py-1.5 rounded-lg bg-noir-850 hover:bg-noir-800">Refresh Feed</button>
+  <!-- WORKSPACE CONTENT AREA -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- ================= PAGE 1: OVERVIEW HUB (DASHBOARD) ================= -->
+    <section id="page-dashboard" class="space-y-8">
+      <!-- HEADER SUMMARY -->
+      <div>
+        <h1 class="font-serif text-3xl text-white">Executive Command Hub</h1>
+        <p class="text-xs text-slate-400 mt-1">Overview of latest store activities, orders, and inquiries</p>
       </div>
 
-      <div class="overflow-x-auto">
+      <!-- METRIC CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div onclick="switchPage('orders')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs uppercase tracking-wider">Total Consignments</span>
+            <i data-lucide="truck" class="w-5 h-5 text-bronze-400"></i>
+          </div>
+          <div id="statOrdersCount" class="font-serif text-3xl text-white font-medium">0</div>
+          <p class="text-[11px] text-bronze-400 flex items-center gap-1 pt-1">
+            Click to manage all orders <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </p>
+        </div>
+
+        <div onclick="switchPage('feedback')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs uppercase tracking-wider">Client Reviews</span>
+            <i data-lucide="message-square" class="w-5 h-5 text-blue-400"></i>
+          </div>
+          <div id="statFeedbackCount" class="font-serif text-3xl text-white font-medium">0</div>
+          <p class="text-[11px] text-blue-400 flex items-center gap-1 pt-1">
+            Click to read all feedback <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </p>
+        </div>
+
+        <div onclick="switchPage('catalog')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs uppercase tracking-wider">Active Inventory</span>
+            <i data-lucide="package" class="w-5 h-5 text-emerald-400"></i>
+          </div>
+          <div id="statCatalogCount" class="font-serif text-3xl text-white font-medium">0</div>
+          <p class="text-[11px] text-emerald-400 flex items-center gap-1 pt-1">
+            Click to publish products <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </p>
+        </div>
+      </div>
+
+      <!-- LATEST UPDATES SNAPSHOTS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
+        <!-- LATEST ORDER PREVIEW -->
+        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-white/5">
+            <h3 class="font-serif text-lg text-white flex items-center gap-2">
+              <i data-lucide="clock" class="w-4 h-4 text-bronze-400"></i> Latest Order Received
+            </h3>
+            <button onclick="switchPage('orders')" class="text-xs text-bronze-400 hover:underline">View All</button>
+          </div>
+          <div id="latestOrderSnapshot" class="text-xs text-slate-400 py-4">
+            Loading latest order...
+          </div>
+        </div>
+
+        <!-- LATEST FEEDBACK PREVIEW -->
+        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-white/5">
+            <h3 class="font-serif text-lg text-white flex items-center gap-2">
+              <i data-lucide="message-circle" class="w-4 h-4 text-blue-400"></i> Latest Client Feedback
+            </h3>
+            <button onclick="switchPage('feedback')" class="text-xs text-blue-400 hover:underline">View All</button>
+          </div>
+          <div id="latestFeedbackSnapshot" class="text-xs text-slate-400 py-4">
+            Loading latest feedback...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 2: ORDERS & TRACKING DEDICATED PAGE ================= -->
+    <section id="page-orders" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+        <div>
+          <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Overview
+          </button>
+          <h1 class="font-serif text-3xl text-white">Live Customer Consignments & Tracking</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Manage statuses and update Confirmed, Shipping Start, and Delivery Dates</p>
+        </div>
+        <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
+          Refresh Orders Feed
+        </button>
+      </div>
+
+      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
         <table class="w-full text-left text-xs text-slate-300">
           <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
             <tr>
-              <th class="p-3">Order ID</th>
-              <th class="p-3">Customer Info</th>
-              <th class="p-3">Shipping Address</th>
-              <th class="p-3">Product Summary</th>
-              <th class="p-3">Status</th>
-              <th class="p-3">Tracking Dates (Confirmed / Shipped / Delivery)</th>
+              <th class="p-3.5">Order ID</th>
+              <th class="p-3.5">Customer & Phone</th>
+              <th class="p-3.5">Full Shipping Address</th>
+              <th class="p-3.5">Product Summary</th>
+              <th class="p-3.5">Update Live Status</th>
+              <th class="p-3.5">Broadcast Dates (Confirmed / Shipped / Delivery)</th>
+              <th class="p-3.5">Action</th>
             </tr>
           </thead>
           <tbody id="adminOrdersBody" class="divide-y divide-white/5"></tbody>
         </table>
-        <div id="noOrdersMessage" class="hidden text-center py-10 text-slate-500 text-xs">
-          No customer orders found yet.
+        <div id="noOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No customer orders placed yet.
         </div>
       </div>
     </section>
 
-    <!-- ROW 2: FEEDBACK & INQUIRIES COMMAND BOX -->
-    <section class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-      <div class="flex items-center justify-between pb-4 border-b border-white/5">
-        <div class="flex items-center gap-2.5">
-          <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
-            <i data-lucide="message-square" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h2 class="font-serif text-2xl text-white">Client Feedback & Support Messages</h2>
-            <p class="text-xs text-slate-400">Review feedback, suggestions, and customer contact information</p>
-          </div>
+    <!-- ================= PAGE 3: FEEDBACK DEDICATED PAGE ================= -->
+    <section id="page-feedback" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+        <div>
+          <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Overview
+          </button>
+          <h1 class="font-serif text-3xl text-white">Client Feedback & Support Messages</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Direct suggestions, inquiries, and customer feedback submissions</p>
         </div>
-        <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3 py-1.5 rounded-lg bg-noir-850 hover:bg-noir-800">Refresh Messages</button>
+        <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
+          Refresh Feedback
+        </button>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
         <table class="w-full text-left text-xs text-slate-300">
           <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
             <tr>
-              <th class="p-3">Feedback ID & Date</th>
-              <th class="p-3">Customer Name</th>
-              <th class="p-3">Mobile Contact</th>
-              <th class="p-3">Client Review / Message</th>
-              <th class="p-3">Action</th>
+              <th class="p-3.5">Feedback ID & Date</th>
+              <th class="p-3.5">Customer Name</th>
+              <th class="p-3.5">Mobile Contact</th>
+              <th class="p-3.5">Client Review / Message</th>
+              <th class="p-3.5">Action</th>
             </tr>
           </thead>
           <tbody id="adminFeedbackBody" class="divide-y divide-white/5"></tbody>
         </table>
-        <div id="noFeedbackMessage" class="hidden text-center py-10 text-slate-500 text-xs">
-          No client feedback or messages received yet.
+        <div id="noFeedbackMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No customer feedback messages received yet.
         </div>
       </div>
     </section>
 
-    <!-- ROW 3: CATALOG MANAGEMENT -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <!-- PUBLISH FORM -->
-      <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
-        <div>
-          <h2 class="font-serif text-2xl text-white">Catalog Management</h2>
-          <p class="text-xs text-slate-400 mt-1">Publish products live to the customer storefront</p>
-        </div>
-
-        <form id="productPublishForm" class="space-y-4" onsubmit="handleProductPublish(event)">
-          <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Category</label>
-            <select id="prodCategory" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400">
-              <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
-              <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
-              <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Title</label>
-            <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
-          </div>
-
-          <div class="grid grid-cols-3 gap-3">
-            <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Original Price (₹)</label>
-              <input type="number" id="prodOrigPrice" placeholder="4999" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
-            </div>
-            <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Offer Price (₹)</label>
-              <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
-            </div>
-            <div>
-              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Discount Tag</label>
-              <input type="text" id="prodTag" placeholder="50% OFF" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
-            </div>
-          </div>
-
-          <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Main Image URL</label>
-            <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Available Colors (Comma Separated)</label>
-            <input type="text" id="prodVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Description & Specs</label>
-            <textarea id="prodDesc" rows="3" placeholder="Highlight key features, drivers, fabric..." class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none"></textarea>
-          </div>
-
-          <button type="submit" class="w-full py-3.5 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md">
-            Publish Product To Store
-          </button>
-        </form>
+    <!-- ================= PAGE 4: PRODUCT CATALOG DEDICATED PAGE ================= -->
+    <section id="page-catalog" class="hidden space-y-8">
+      <div>
+        <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+          <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Overview
+        </button>
+        <h1 class="font-serif text-3xl text-white">Product Catalog & Atelier Engine</h1>
+        <p class="text-xs text-slate-400 mt-0.5">Publish new products or manage existing live items</p>
       </div>
 
-      <!-- LIVE INVENTORY -->
-      <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
-        <div>
-          <h2 class="font-serif text-2xl text-white">Live Catalog Inventory</h2>
-          <p class="text-xs text-slate-400 mt-1">Manage or remove active products</p>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- PUBLISH NEW PRODUCT -->
+        <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
+          <h2 class="font-serif text-2xl text-white">Publish New Product</h2>
+
+          <form id="productPublishForm" class="space-y-4" onsubmit="handleProductPublish(event)">
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Category</label>
+              <select id="prodCategory" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400">
+                <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
+                <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
+                <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Title</label>
+              <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Original (₹)</label>
+                <input type="number" id="prodOrigPrice" placeholder="4999" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Offer (₹)</label>
+                <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Discount Tag</label>
+                <input type="text" id="prodTag" placeholder="50% OFF" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Main Image URL</label>
+              <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Available Colors (Comma Separated)</label>
+              <input type="text" id="prodVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Description & Specs</label>
+              <textarea id="prodDesc" rows="3" placeholder="Highlight key features, drivers, fabric..." class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md">
+              Publish Product To Store
+            </button>
+          </form>
         </div>
-        <div id="adminInventoryList" class="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar"></div>
+
+        <!-- ACTIVE PRODUCTS INVENTORY -->
+        <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
+          <div>
+            <h2 class="font-serif text-2xl text-white">Live Store Inventory</h2>
+            <p class="text-xs text-slate-400 mt-1">Manage active catalog items</p>
+          </div>
+          <div id="adminInventoryList" class="space-y-3 max-h-[620px] overflow-y-auto custom-scrollbar"></div>
+        </div>
       </div>
     </section>
 
   </main>
 
+  <!-- SCRIPTS -->
   <script>
     function unlockStudio() {
       const key = document.getElementById('adminPassKey').value.trim();
       if (key === 'lenka2026' || key === 'admin') {
         document.getElementById('authGate').classList.add('hidden');
-        renderAdminOrders();
-        renderAdminFeedbacks();
-        renderAdminCatalog();
+        switchPage('dashboard');
       } else {
         document.getElementById('gateError').classList.remove('hidden');
       }
     }
 
+    // MULTI-PAGE VIEW SWITCHER
+    function switchPage(pageId) {
+      const pages = ['dashboard', 'orders', 'feedback', 'catalog'];
+      pages.forEach(p => {
+        const pageEl = document.getElementById(`page-${p}`);
+        const navBtn = document.getElementById(`navBtn-${p}`);
+        
+        if (p === pageId) {
+          pageEl.classList.remove('hidden');
+          if (navBtn) {
+            navBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-bronze-400 text-noir-950 shadow-sm transition-all";
+          }
+        } else {
+          pageEl.classList.add('hidden');
+          if (navBtn) {
+            navBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all";
+          }
+        }
+      });
+
+      // Refresh data on page switch
+      if (pageId === 'dashboard') updateDashboardMetrics();
+      if (pageId === 'orders') renderAdminOrders();
+      if (pageId === 'feedback') renderAdminFeedbacks();
+      if (pageId === 'catalog') renderAdminCatalog();
+
+      lucide.createIcons();
+    }
+
+    // DASHBOARD OVERVIEW METRICS & SNAPSHOTS
+    function updateDashboardMetrics() {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+
+      document.getElementById('statOrdersCount').innerText = orders.length;
+      document.getElementById('statFeedbackCount').innerText = feedbacks.length;
+      document.getElementById('statCatalogCount').innerText = catalog.length;
+
+      // Latest Order Snapshot
+      const orderSnap = document.getElementById('latestOrderSnapshot');
+      if (orders.length > 0) {
+        const latest = orders[0];
+        orderSnap.innerHTML = `
+          <div class="p-4 rounded-xl bg-noir-850 fine-border space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-mono text-bronze-400 font-semibold">#${latest.orderId}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-bronze-400/10 text-bronze-400 uppercase font-semibold">${latest.status}</span>
+            </div>
+            <p class="text-white font-medium text-xs">${latest.customerName} (${latest.customerPhone})</p>
+            <p class="text-slate-400 text-[11px] truncate">${latest.itemsSummary}</p>
+            <div class="text-[10px] text-slate-500 pt-1 border-t border-white/5 flex justify-between">
+              <span>Valuation: ₹${latest.totalAmount}</span>
+              <span>Date: ${latest.timestamp || ''}</span>
+            </div>
+          </div>
+        `;
+      } else {
+        orderSnap.innerHTML = `<p class="text-slate-500 text-xs">No orders recorded yet.</p>`;
+      }
+
+      // Latest Feedback Snapshot
+      const fbSnap = document.getElementById('latestFeedbackSnapshot');
+      if (feedbacks.length > 0) {
+        const latestFb = feedbacks[0];
+        fbSnap.innerHTML = `
+          <div class="p-4 rounded-xl bg-noir-850 fine-border space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-white font-medium text-xs">${latestFb.name}</span>
+              <span class="font-mono text-[10px] text-slate-400">${latestFb.phone}</span>
+            </div>
+            <p class="text-slate-300 text-xs italic">"${latestFb.message}"</p>
+            <p class="text-[10px] text-slate-500 pt-1 border-t border-white/5">${latestFb.timestamp || ''}</p>
+          </div>
+        `;
+      } else {
+        fbSnap.innerHTML = `<p class="text-slate-500 text-xs">No client feedback received yet.</p>`;
+      }
+      lucide.createIcons();
+    }
+
+    // ORDERS MANAGEMENT
     function renderAdminOrders() {
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const tbody = document.getElementById('adminOrdersBody');
@@ -269,35 +454,40 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
-          <td class="p-3 font-mono text-bronze-400 font-semibold">
+          <td class="p-3.5 font-mono text-bronze-400 font-semibold">
             #${ord.orderId}<br/>
             <span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span>
           </td>
-          <td class="p-3">
+          <td class="p-3.5">
             <div class="flex items-center gap-2">
-              <img src="${ord.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-7 h-7 rounded-full object-cover fine-border" />
+              <img src="${ord.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-8 h-8 rounded-full object-cover fine-border" />
               <div>
                 <span class="text-white font-medium block">${ord.customerName}</span>
-                <span class="text-slate-400 font-mono text-[10px]">${ord.customerPhone}</span>
+                <span class="text-slate-400 font-mono text-[11px]">${ord.customerPhone}</span>
               </div>
             </div>
           </td>
-          <td class="p-3 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
-          <td class="p-3 text-white max-w-xs text-[11px] font-medium">
-            ${ord.itemsSummary}<br/>
-            <span class="text-bronze-400 font-serif">₹${ord.totalAmount}</span>
+          <td class="p-3.5 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
+          <td class="p-3.5 text-white max-w-xs text-[11px]">
+            <span class="font-medium">${ord.itemsSummary}</span><br/>
+            <span class="text-bronze-400 font-serif text-xs">Valuation: ₹${ord.totalAmount}</span>
           </td>
-          <td class="p-3">
+          <td class="p-3.5">
             <select onchange="updateOrderStatus(${index}, this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
               <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
               <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
               <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
             </select>
           </td>
-          <td class="p-3 space-y-1">
-            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateOrderDates(${index}, 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-28 block" />
-            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateOrderDates(${index}, 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-28 block" />
-            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateOrderDates(${index}, 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-28 block" />
+          <td class="p-3.5 space-y-1">
+            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateOrderDates(${index}, 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateOrderDates(${index}, 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateOrderDates(${index}, 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+          </td>
+          <td class="p-3.5">
+            <button onclick="deleteOrder(${index})" class="text-slate-500 hover:text-red-400 p-1">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -322,7 +512,16 @@
       }
     }
 
-    // FEEDBACK ADMIN RENDER
+    function deleteOrder(index) {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      if (confirm(`Remove consignment #${orders[index].orderId}?`)) {
+        orders.splice(index, 1);
+        localStorage.setItem('lenka_orders', JSON.stringify(orders));
+        renderAdminOrders();
+      }
+    }
+
+    // FEEDBACK MANAGEMENT
     function renderAdminFeedbacks() {
       const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       const tbody = document.getElementById('adminFeedbackBody');
@@ -339,14 +538,14 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
-          <td class="p-3 font-mono text-bronze-400">
+          <td class="p-3.5 font-mono text-bronze-400">
             #${fb.feedbackId}<br/>
             <span class="text-[9px] text-slate-500">${fb.timestamp || ''}</span>
           </td>
-          <td class="p-3 text-white font-medium">${fb.name}</td>
-          <td class="p-3 font-mono text-bronze-400">${fb.phone}</td>
-          <td class="p-3 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
-          <td class="p-3">
+          <td class="p-3.5 text-white font-medium">${fb.name}</td>
+          <td class="p-3.5 font-mono text-bronze-400">${fb.phone}</td>
+          <td class="p-3.5 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
+          <td class="p-3.5">
             <button onclick="deleteFeedback(${index})" class="text-slate-500 hover:text-red-400 p-1">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
@@ -408,7 +607,7 @@
 
       catalog.forEach((prod, index) => {
         const card = document.createElement('div');
-        card.className = "p-3 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
+        card.className = "p-3.5 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
         card.innerHTML = `
           <img src="${prod.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-900" />
           <div class="flex-1 min-w-0">
