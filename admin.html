@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LENKA STUDIO | Operator Command Center</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+          },
+          colors: {
+            bronze: { 300: '#E2D4C3', 400: '#C5A880', 500: '#A88B63' },
+            platinum: { 100: '#F5F5F7', 200: '#E5E5EA', 400: '#AEAEB2' },
+            noir: { 950: '#0A0B0D', 900: '#111216', 850: '#16181E', 800: '#1D2027' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-nav {
+      background: rgba(10, 11, 13, 0.94);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
+</head>
+
+<body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col">
+
+  <div id="authGate" class="fixed inset-0 z-50 bg-noir-950 flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6">
+      <div class="w-14 h-14 mx-auto rounded-xl bg-noir-850 fine-border flex items-center justify-center">
+        <span class="font-serif font-bold text-2xl text-white">LS</span>
+      </div>
+      <div>
+        <h2 class="font-serif text-2xl text-white font-medium">Lenka Studio Access</h2>
+        <p class="text-xs text-slate-500 mt-1">Authorized Operator Portal Only</p>
+      </div>
+      <div class="space-y-3">
+        <input type="password" id="adminPassKey" placeholder="Enter Operator Passkey" 
+               class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white text-center tracking-widest focus:outline-none focus:border-bronze-400" />
+        <button type="button" onclick="unlockStudio()" class="w-full py-3 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all">
+          Authorize Session
+        </button>
+      </div>
+      <p id="gateError" class="text-xs text-red-400 hidden">Invalid Studio Passkey</p>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-lg bg-noir-850 fine-border flex items-center justify-center font-serif text-white font-semibold">
+          LS
+        </div>
+        <div>
+          <span class="font-serif text-xl tracking-wider text-white font-medium">LENKA STUDIO</span>
+          <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Control Terminal</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" target="_blank" class="px-4 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-2">
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> View Live Store
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
+      <div class="border-b border-white/10 pb-4 flex items-center justify-between">
+        <div>
+          <h2 class="font-serif text-xl text-white font-medium">Catalog Management</h2>
+          <p class="text-xs text-slate-500">Publish products live to the customer storefront</p>
+        </div>
+        <span class="text-[10px] px-2.5 py-1 rounded bg-bronze-400/10 text-bronze-300 uppercase tracking-widest font-mono">Live Engine</span>
+      </div>
+
+      <form id="productForm" onsubmit="handleProductPublish(event)" class="space-y-5">
+        
+        <div>
+          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Category</label>
+          <select id="prodCategory" required class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-bronze-400">
+            <option value="Electronics">Audio & Wireless Earbuds</option>
+            <option value="Power">Battery Banks & Power Gear</option>
+            <option value="MensFashion">Men's Apparel & Fashion</option>
+            <option value="WomensFashion">Women's Apparel & Fashion</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Title</label>
+          <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required
+                 class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Original Price (₹)</label>
+            <input type="number" id="prodOriginalPrice" placeholder="e.g., 4999" required
+                   class="w-full bg-noir-950 fine-border rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Offer Price (₹)</label>
+            <input type="number" id="prodOfferPrice" placeholder="e.g., 2499" required
+                   class="w-full bg-noir-950 fine-border rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Discount Tag</label>
+            <input type="text" id="prodBadge" placeholder="e.g., 50% OFF"
+                   class="w-full bg-noir-950 fine-border rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Main Image URL</label>
+            <input type="url" id="prodImage" placeholder="https://... (Direct Image Link)" required
+                   class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
+          </div>
+          <div>
+            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Video URL (Optional)</label>
+            <input type="url" id="prodVideo" placeholder="https://... (.mp4 link or YouTube embed)"
+                   class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Available Color Variants (Comma Separated)</label>
+          <input type="text" id="prodVariants" placeholder="e.g., Midnight Obsidian, Champagne Gold, Frost White" required
+                 class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
+        </div>
+
+        <div>
+          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Description & Specs</label>
+          <textarea id="prodDesc" rows="3" placeholder="Highlight key features, battery life, sound drivers, or fabrics..." required
+                    class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full py-4 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs uppercase tracking-[0.2em] rounded-xl transition-all cursor-pointer">
+          Publish Product to Store
+        </button>
+      </form>
+    </div>
+
+    <div class="lg:col-span-5 bg-noir-900 fine-border p-6 rounded-2xl space-y-4 flex flex-col h-[760px]">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-serif text-lg text-white font-medium">Live Catalog Inventory</h3>
+        <span id="itemCount" class="text-xs text-slate-500 font-mono">0 Items</span>
+      </div>
+
+      <div id="adminProductList" class="flex-grow overflow-y-auto space-y-3 pr-1">
+        </div>
+    </div>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    // Passkey security
+    function unlockStudio() {
+      const pass = document.getElementById('adminPassKey').value;
+      if (pass === 'lenka2026' || pass === 'admin') {
+        document.getElementById('authGate').classList.add('hidden');
+      } else {
+        document.getElementById('gateError').classList.remove('hidden');
+      }
+    }
+
+    // Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyDSFo6lpBsyO5fXB06BzTbsuTQ80pJNtvM",
+      authDomain: "lenka-stores.firebaseapp.com",
+      projectId: "lenka-stores",
+      storageBucket: "lenka-stores.firebasestorage.app",
+      messagingSenderId: "41062494605",
+      appId: "1:41062494605:web:56ffab077c1ed5d54ccdc4"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Real-Time Inventory Listener
+    db.collection('products').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+      const container = document.getElementById('adminProductList');
+      const countLabel = document.getElementById('itemCount');
+      container.innerHTML = '';
+      countLabel.innerText = `${snapshot.size} Items`;
+
+      if (snapshot.empty) {
+        container.innerHTML = `<div class="text-center py-16 text-slate-600 text-xs">No products in catalog. Add your first item.</div>`;
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        const p = doc.data();
+        const card = document.createElement('div');
+        card.className = 'bg-noir-950 fine-border p-3.5 rounded-xl flex items-center justify-between gap-3';
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <img src="${p.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-850" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200'" />
+            <div>
+              <h4 class="text-xs font-medium text-white line-clamp-1">${p.title}</h4>
+              <p class="text-[11px] text-bronze-300 font-mono mt-0.5">₹${Number(p.offerPrice).toLocaleString('en-IN')} <span class="line-through text-slate-600 text-[10px]">₹${Number(p.originalPrice).toLocaleString('en-IN')}</span></p>
+              <span class="text-[9px] text-slate-500 uppercase tracking-widest">${p.category}</span>
+            </div>
+          </div>
+          <button onclick="deleteProduct('${doc.id}')" class="text-slate-600 hover:text-red-400 p-2 transition-colors">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    });
+
+    // Publish Product
+    function handleProductPublish(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.innerText = 'Publishing...';
+      submitBtn.disabled = true;
+
+      const variants = document.getElementById('prodVariants').value.split(',').map(s => s.trim()).filter(Boolean);
+
+      const product = {
+        category: document.getElementById('prodCategory').value,
+        title: document.getElementById('prodTitle').value.trim(),
+        originalPrice: Number(document.getElementById('prodOriginalPrice').value),
+        offerPrice: Number(document.getElementById('prodOfferPrice').value),
+        badge: document.getElementById('prodBadge').value.trim() || 'NEW',
+        image: document.getElementById('prodImage').value.trim(),
+        video: document.getElementById('prodVideo').value.trim(),
+        variants: variants,
+        description: document.getElementById('prodDesc').value.trim(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      db.collection('products').add(product).then(() => {
+        document.getElementById('productForm').reset();
+        submitBtn.innerText = 'Publish Product to Store';
+        submitBtn.disabled = false;
+      }).catch(err => {
+        alert('Error publishing product: ' + err.message);
+        submitBtn.innerText = 'Publish Product to Store';
+        submitBtn.disabled = false;
+      });
+    }
+
+    // Delete Product
+    function deleteProduct(id) {
+      if (confirm('Delete this product from live customer store?')) {
+        db.collection('products').doc(id).delete();
+      }
+    }
+  </script>
+</body>
+</html>
