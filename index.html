@@ -204,7 +204,7 @@
     </div>
   </div>
 
-  <!-- DEDICATED FULL ORDERS & STATUS PAGE (CONFIRMED + CANCELLED + FAVORITES) -->
+  <!-- DEDICATED FULL ORDERS & STATUS PAGE -->
   <div id="ordersPageModal" class="fixed inset-0 z-50 bg-noir-950/95 backdrop-blur-xl hidden flex flex-col justify-between overflow-y-auto custom-scrollbar p-4 sm:p-8">
     <div class="max-w-4xl w-full mx-auto space-y-8 flex-1">
       
@@ -224,7 +224,7 @@
         </button>
       </div>
 
-      <!-- TABS: CONFIRMED ORDERS | CANCELLED ORDERS | FAVORITES -->
+      <!-- TABS -->
       <div class="flex flex-wrap gap-2 border-b border-white/5 pb-4">
         <button onclick="switchOrderTab('confirmed')" id="tabBtn-confirmed" class="px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm">
           Active / Confirmed Orders
@@ -293,7 +293,7 @@
           <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
           <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
         </div>
-        <button type="submit" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+        <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
           <span>Submit Feedback</span>
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
         </button>
@@ -525,10 +525,15 @@
       measurementId: "G-S5GNTV03XM"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
+    let db = null;
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      db = firebase.firestore();
+    } catch (err) {
+      console.warn("Firebase Init note:", err);
     }
-    const db = firebase.firestore();
 
     let cloudCatalog = [];
     let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
@@ -537,18 +542,64 @@
     let currentCategoryFilter = 'all';
 
     // REAL-TIME CATALOG LISTENER
-    db.collection('products').onSnapshot((snapshot) => {
-      cloudCatalog = [];
-      snapshot.forEach(doc => {
-        cloudCatalog.push({ id: doc.id, ...doc.data() });
-      });
+    if (db) {
+      db.collection('products').onSnapshot((snapshot) => {
+        cloudCatalog = [];
+        snapshot.forEach(doc => {
+          cloudCatalog.push({ id: doc.id, ...doc.data() });
+        });
 
-      if (cloudCatalog.length === 0) {
-        seedInitialProducts();
-      } else {
-        renderCatalog(currentCategoryFilter);
-      }
-    });
+        if (cloudCatalog.length === 0) {
+          seedInitialProducts();
+        } else {
+          renderCatalog(currentCategoryFilter);
+        }
+      }, (err) => {
+        console.warn("Catalog sync fallback to defaults:", err);
+        fallbackLocalCatalog();
+      });
+    } else {
+      fallbackLocalCatalog();
+    }
+
+    function fallbackLocalCatalog() {
+      cloudCatalog = [
+        {
+          id: 'prod_101',
+          category: 'Audio & Wireless Earbuds',
+          title: 'Lenka Horizon ANC Earbuds Pro',
+          originalPrice: 4999,
+          offerPrice: 2499,
+          discountTag: '50% OFF',
+          image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+          variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
+          description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
+        },
+        {
+          id: 'prod_102',
+          category: 'Battery Banks & Power Gear',
+          title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
+          originalPrice: 3999,
+          offerPrice: 1999,
+          discountTag: '50% OFF',
+          image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&auto=format&fit=crop&q=80',
+          variants: ['Matte Carbon', 'Slate Silver'],
+          description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
+        },
+        {
+          id: 'prod_103',
+          category: 'Men\'s Apparel & Fashion',
+          title: 'Lenka Signature Tailored Oxford Shirt',
+          originalPrice: 2999,
+          offerPrice: 1499,
+          discountTag: 'LIMITED EDITION',
+          image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80',
+          variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
+          description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
+        }
+      ];
+      renderCatalog(currentCategoryFilter);
+    }
 
     function seedInitialProducts() {
       const defaultProducts = [
@@ -583,7 +634,9 @@
           description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
         }
       ];
-      defaultProducts.forEach(p => db.collection('products').add(p));
+      if (db) {
+        defaultProducts.forEach(p => db.collection('products').add(p));
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -644,7 +697,7 @@
               <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
               
               <!-- FAVORITES HEART BUTTON -->
-              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg">
+              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
                 <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                 </svg>
@@ -665,7 +718,7 @@
                   <span class="text-xs text-slate-500 line-through mr-1.5">₹${prod.originalPrice}</span>
                   <span class="text-lg font-serif text-white font-semibold">₹${prod.offerPrice}</span>
                 </div>
-                <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md">
+                <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
                   <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add To Bag
                 </button>
               </div>
@@ -725,7 +778,7 @@
             <h4 class="text-xs text-white truncate font-medium">${item.title}</h4>
             <span class="text-xs text-bronze-400 font-serif">₹${item.offerPrice}</span>
           </div>
-          <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-red-400 p-1">
+          <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         `;
@@ -744,7 +797,7 @@
     function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
     function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
 
-    // FEEDBACK
+    // ZERO-FREEZE DIRECT FEEDBACK SUBMISSION
     function openFeedbackModal() {
       if (currentProfile) {
         document.getElementById('fbName').value = currentProfile.name || '';
@@ -757,8 +810,9 @@
     function openFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.remove('hidden'); }
     function closeFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.add('hidden'); }
 
-    async function handleFeedbackSubmit(e) {
-      e.preventDefault();
+    function handleFeedbackSubmit(e) {
+      if (e) e.preventDefault();
+      
       const name = document.getElementById('fbName').value.trim();
       const phone = document.getElementById('fbPhone').value.trim();
       const message = document.getElementById('fbMessage').value.trim();
@@ -773,22 +827,27 @@
         name: name,
         phone: phone,
         message: message,
-        timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
       };
 
-      // 1. Instant local backup
+      // 1. Instant local persistence so it never freezes
       let localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       localFeedbacks.unshift(newFeedback);
       localStorage.setItem('lenka_feedbacks', JSON.stringify(localFeedbacks));
 
-      // 2. Cloud Firestore write
+      // 2. Background Firestore write
       try {
-        await db.collection('feedbacks').add(newFeedback);
+        if (db) {
+          db.collection('feedbacks').add({
+            ...newFeedback,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }).catch(err => console.warn('Background sync note:', err));
+        }
       } catch (err) {
-        console.warn('Feedback background sync note:', err);
+        console.warn('Firebase error bypassed:', err);
       }
       
+      // 3. Instant UI feedback
       document.getElementById('feedbackForm').reset();
       closeFeedbackModal();
       openFeedbackSuccessModal();
@@ -838,13 +897,15 @@
 
       localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
 
-      try {
-        await db.collection('customers').doc(phone).set({
-          ...currentProfile,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      } catch (e) {
-        console.log(e);
+      if (db) {
+        try {
+          db.collection('customers').doc(phone).set({
+            ...currentProfile,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(e => console.warn(e));
+        } catch (e) {
+          console.log(e);
+        }
       }
 
       document.getElementById('cancelEditBtn').classList.add('hidden');
@@ -1032,7 +1093,7 @@
             <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
               <span>Valuation: <strong class="text-white font-serif text-sm">₹${ord.totalAmount}</strong></span>
               ${ord.status !== 'Delivered' ? `
-                <button onclick="requestCancelOrderDirect('${ord.orderId}')" class="text-xs text-red-400 hover:text-red-300 font-medium px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all">
+                <button onclick="requestCancelOrderDirect('${ord.orderId}')" class="text-xs text-red-400 hover:text-red-300 font-medium px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all cursor-pointer">
                   Cancel Consignment
                 </button>
               ` : ''}
@@ -1084,14 +1145,14 @@
           <div>
             <div class="relative aspect-square rounded-xl overflow-hidden bg-noir-850 mb-3">
               <img src="${prod.image}" class="w-full h-full object-cover" />
-              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-noir-950/80 fine-border">
+              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-noir-950/80 fine-border cursor-pointer">
                 <svg viewBox="0 0 24 24" class="w-4 h-4 fill-red-500 stroke-red-500"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
               </button>
             </div>
             <h4 class="text-xs text-white font-medium">${prod.title}</h4>
             <span class="text-xs text-bronze-400 font-serif">₹${prod.offerPrice}</span>
           </div>
-          <button onclick="addToBag('${prod.id}')" class="w-full py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl uppercase tracking-wider">
+          <button onclick="addToBag('${prod.id}')" class="w-full py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl uppercase tracking-wider cursor-pointer">
             Add to Bag
           </button>
         `;
@@ -1110,11 +1171,13 @@
           localStorage.setItem('lenka_orders', JSON.stringify(local));
         }
 
-        try {
-          const snap = await db.collection('orders').where('orderId', '==', orderId).get();
-          snap.forEach(d => d.ref.update({ status: 'Cancelled' }));
-        } catch (e) {
-          console.log(e);
+        if (db) {
+          try {
+            const snap = await db.collection('orders').where('orderId', '==', orderId).get();
+            snap.forEach(d => d.ref.update({ status: 'Cancelled' }));
+          } catch (e) {
+            console.log(e);
+          }
         }
 
         renderOrdersTabs();
@@ -1125,7 +1188,6 @@
     function triggerCelebrationBlast() {
       try {
         if (typeof confetti === 'function') {
-          // Left side cannon
           confetti({
             particleCount: 120,
             angle: 60,
@@ -1134,7 +1196,6 @@
             colors: ['#C5A880', '#E2D4C3', '#FFD700', '#FFFFFF', '#A88B63']
           });
 
-          // Right side cannon
           confetti({
             particleCount: 120,
             angle: 120,
@@ -1143,7 +1204,6 @@
             colors: ['#C5A880', '#E2D4C3', '#FFD700', '#FFFFFF', '#A88B63']
           });
 
-          // Center sparkle spray
           setTimeout(() => {
             confetti({
               particleCount: 100,
@@ -1172,7 +1232,7 @@
       }
     }
 
-    // INSTANT CHECKOUT (ZERO-FREEZE EXECUTION)
+    // INSTANT CHECKOUT
     function proceedToCheckout() {
       if (currentCart.length === 0) {
         alert('Your bag is empty.');
@@ -1206,20 +1266,20 @@
         timestamp: today
       };
 
-      // 1. Instant local persistence
+      // 1. Local backup
       let localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       localOrders.unshift(newOrder);
       localStorage.setItem('lenka_orders', JSON.stringify(localOrders));
 
-      // 2. Background Firestore Sync
-      try {
-        if (typeof db !== 'undefined') {
+      // 2. Background Firestore write
+      if (db) {
+        try {
           db.collection('orders').add({
             ...newOrder,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           }).catch(e => console.warn('Background sync note:', e));
-        }
-      } catch (e) {}
+        } catch (e) {}
+      }
 
       // 3. Clear Bag
       currentCart = [];
@@ -1227,7 +1287,7 @@
       updateCartUI();
       closeCartDrawer();
 
-      // 4. Instant Celebration Modal & Confetti Blast
+      // 4. Modal & Confetti
       openOrderSuccessModal(orderId);
     }
   </script>
