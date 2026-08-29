@@ -14,7 +14,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   
-  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -58,7 +57,6 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col selection:bg-bronze-400 selection:text-noir-950">
 
-  <!-- AUTHENTICATION GATE -->
   <div id="authGate" class="fixed inset-0 z-50 bg-noir-950 flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6">
       <div class="w-14 h-14 mx-auto rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
@@ -82,7 +80,6 @@
     </div>
   </div>
 
-  <!-- LEFT SLIDE DRAWER -->
   <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm hidden transition-opacity"></div>
   
   <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-noir-900 border-r border-white/10 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
@@ -162,7 +159,6 @@
     </div>
   </aside>
 
-  <!-- TOP HEADER -->
   <header class="sticky top-0 z-30 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <div class="flex items-center gap-4">
@@ -192,17 +188,14 @@
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
-    <!-- 1. ANALYTICS & GRAPHIC MOTION SHEET (WITH HOME SCREEN FEEDBACKS) -->
     <section id="page-dashboard" class="space-y-8">
       <div>
         <h1 class="font-serif text-3xl sm:text-4xl text-white">Live Store Performance & Motion Analytics</h1>
         <p class="text-xs text-slate-400 mt-1">Real-time synchronized projection of store revenue, customer registrations, and consignments</p>
       </div>
 
-      <!-- METRICS GRID -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
         
         <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-1 relative overflow-hidden group shadow-lg">
@@ -255,10 +248,8 @@
 
       </div>
 
-      <!-- CHARTS & HOME FEEDBACK STREAM -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- FULFILLMENT MOTION BARS -->
         <div class="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
           <div class="flex items-center justify-between pb-4 border-b border-white/5">
             <div class="flex items-center gap-2.5">
@@ -316,7 +307,6 @@
           </div>
         </div>
 
-        <!-- RECENT CLIENT FEEDBACK STREAM ON HOME SCREEN -->
         <div class="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-4 shadow-xl flex flex-col justify-between">
           <div class="flex items-center justify-between pb-3 border-b border-white/5">
             <div class="flex items-center gap-2.5">
@@ -337,7 +327,6 @@
       </div>
     </section>
 
-    <!-- 2. CONFIRMED ORDERS DEDICATED VIEW -->
     <section id="page-confirmedOrders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -370,7 +359,6 @@
       </div>
     </section>
 
-    <!-- 3. CANCELLED ORDERS DEDICATED VIEW -->
     <section id="page-cancelledOrders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -403,7 +391,6 @@
       </div>
     </section>
 
-    <!-- 4. PRODUCT CATALOG VIEW -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
         <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
@@ -478,7 +465,6 @@
       </div>
     </section>
 
-    <!-- 5. REGISTERED VIP CLIENTS VIEW -->
     <section id="page-customers" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -510,7 +496,6 @@
       </div>
     </section>
 
-    <!-- 6. CLIENT FEEDBACK VIEW -->
     <section id="page-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -543,7 +528,6 @@
 
   </main>
 
-  <!-- HYBRID REAL-TIME ENGINE (FIRESTORE + CROSS-TAB BROADCAST SYNC) -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
@@ -572,7 +556,7 @@
 
     // REAL-TIME CROSS-TAB SYNC
     window.addEventListener('storage', (event) => {
-      if (['lenka_orders', 'lenka_feedbacks', 'lenka_catalog', 'lenka_profile'].includes(event.key)) {
+      if (['lenka_orders', 'lenka_feedbacks', 'lenka_catalog', 'lenka_profile', 'lenka_registered_customers'].includes(event.key)) {
         loadUnifiedData();
       }
     });
@@ -583,13 +567,15 @@
       const localCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       const localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       const localProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+      const registeredCustomers = JSON.parse(localStorage.getItem('lenka_registered_customers') || '[]');
 
       allOrders = localOrders;
       allCatalog = localCatalog;
       allFeedbacks = localFeedbacks;
 
-      if (localProfile) {
-        allCustomers = [localProfile];
+      allCustomers = registeredCustomers;
+      if (localProfile && !allCustomers.find(c => c.phone === localProfile.phone)) {
+        allCustomers.push(localProfile);
       }
 
       renderGraphicSheet();
@@ -647,6 +633,23 @@
             renderGraphicSheet();
             renderHomeFeedbacks();
             renderAdminFeedbacks();
+            updateSidebarBadges();
+          }
+        }, (err) => console.warn(err));
+
+        db.collection('customers').onSnapshot((snapshot) => {
+          if (!snapshot.empty) {
+            const cloudCust = [];
+            snapshot.forEach(doc => cloudCust.push({ docId: doc.id, ...doc.data() }));
+            
+            const mergedCust = [...cloudCust];
+            allCustomers.forEach(lc => {
+              if (!mergedCust.find(m => m.phone === lc.phone)) {
+                mergedCust.push(lc);
+              }
+            });
+            allCustomers = mergedCust;
+            renderAdminCustomers();
             updateSidebarBadges();
           }
         }, (err) => console.warn(err));
@@ -959,12 +962,27 @@
 
       const customerMap = new Map();
 
+      allCustomers.forEach(c => {
+        if (c && c.phone) {
+          customerMap.set(c.phone, {
+            name: c.name || 'VIP Client',
+            phone: c.phone,
+            avatar: c.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
+            country: c.address?.country || 'India',
+            state: c.address?.state || 'Telangana',
+            area: c.address?.area || c.formattedAddress || 'Registered Address',
+            pin: c.address?.pin || '500072',
+            ordersCount: allOrders.filter(x => x.customerPhone === c.phone && x.status !== 'Cancelled').length
+          });
+        }
+      });
+
       allOrders.forEach(o => {
         if (o.customerPhone && !customerMap.has(o.customerPhone)) {
           customerMap.set(o.customerPhone, {
             name: o.customerName || 'VIP Customer',
             phone: o.customerPhone,
-            avatar: o.customerAvatar,
+            avatar: o.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
             country: 'India',
             state: 'Recorded',
             area: o.customerAddress || 'Direct Order Address',
@@ -974,7 +992,13 @@
         }
       });
 
-      if (customerMap.size === 0) {
+      const totalCount = customerMap.size;
+      const statElem = document.getElementById('statCustomersCount');
+      const badgeElem = document.getElementById('sideCustomersBadge');
+      if (statElem) statElem.innerText = totalCount;
+      if (badgeElem) badgeElem.innerText = totalCount;
+
+      if (totalCount === 0) {
         if (emptyMsg) emptyMsg.classList.remove('hidden');
         return;
       }
@@ -986,7 +1010,7 @@
         tr.innerHTML = `
           <td class="p-3.5">
             <div class="flex items-center gap-2.5">
-              <img src="${cust.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-8 h-8 rounded-full object-cover fine-border border-bronze-400/40" />
+              <img src="${cust.avatar}" class="w-8 h-8 rounded-full object-cover fine-border border-bronze-400/40" />
               <div>
                 <span class="text-white font-medium block">${cust.name}</span>
                 <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-1.5 py-0.5 rounded font-semibold uppercase">VIP CLIENT</span>
