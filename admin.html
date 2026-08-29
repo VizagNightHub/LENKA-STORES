@@ -986,15 +986,25 @@
     function renderAdminFeedbacks() {
       const tbody = document.getElementById('adminFeedbackBody');
       const emptyMsg = document.getElementById('noFeedbackMessage');
+      if (!tbody) return;
       tbody.innerHTML = '';
 
-      if (allFeedbacks.length === 0) {
-        emptyMsg.classList.remove('hidden');
+      const localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+      const mergedFeedbacks = [...allFeedbacks];
+      
+      localFeedbacks.forEach(lf => {
+        if (!mergedFeedbacks.find(m => m.feedbackId === lf.feedbackId)) {
+          mergedFeedbacks.push(lf);
+        }
+      });
+
+      if (mergedFeedbacks.length === 0) {
+        if (emptyMsg) emptyMsg.classList.remove('hidden');
         return;
       }
 
-      emptyMsg.classList.add('hidden');
-      allFeedbacks.forEach((fb, index) => {
+      if (emptyMsg) emptyMsg.classList.add('hidden');
+      mergedFeedbacks.forEach((fb, index) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
@@ -1006,7 +1016,7 @@
           <td class="p-3.5 font-mono text-bronze-400">${fb.phone}</td>
           <td class="p-3.5 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
           <td class="p-3.5">
-            <button onclick="deleteFeedbackItem(${index})" class="text-slate-500 hover:text-red-400 p-1">
+            <button onclick="deleteFeedbackItem(${index}, '${fb.feedbackId}')" class="text-slate-500 hover:text-red-400 p-1">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -1016,11 +1026,22 @@
       lucide.createIcons();
     }
 
-    function deleteFeedbackItem(index) {
-      if (confirm(`Remove feedback?`)) {
-        allFeedbacks.splice(index, 1);
-        localStorage.setItem('lenka_feedbacks', JSON.stringify(allFeedbacks));
+    function deleteFeedbackItem(index, feedbackId) {
+      if (confirm('Delete this feedback?')) {
+        let local = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+        local = local.filter(f => f.feedbackId !== feedbackId);
+        localStorage.setItem('lenka_feedbacks', JSON.stringify(local));
+
+        allFeedbacks = allFeedbacks.filter(f => f.feedbackId !== feedbackId);
+
+        if (db) {
+          db.collection('feedbacks').where('feedbackId', '==', feedbackId).get().then(snap => {
+            snap.forEach(doc => doc.ref.delete());
+          }).catch(e => console.warn(e));
+        }
+
         renderAdminFeedbacks();
+        renderGraphicSheet();
       }
     }
 
