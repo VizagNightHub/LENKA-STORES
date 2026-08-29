@@ -99,7 +99,7 @@
   <!-- WORKSPACE -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-12">
     
-    <!-- LIVE ORDERS & DATE FULFILLMENT -->
+    <!-- ROW 1: LIVE ORDERS & DATE FULFILLMENT -->
     <section class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-2">
         <div class="flex items-center gap-2.5">
@@ -134,7 +134,41 @@
       </div>
     </section>
 
-    <!-- CATALOG MANAGEMENT -->
+    <!-- ROW 2: FEEDBACK & INQUIRIES COMMAND BOX -->
+    <section class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+      <div class="flex items-center justify-between pb-4 border-b border-white/5">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="font-serif text-2xl text-white">Client Feedback & Support Messages</h2>
+            <p class="text-xs text-slate-400">Review feedback, suggestions, and customer contact information</p>
+          </div>
+        </div>
+        <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3 py-1.5 rounded-lg bg-noir-850 hover:bg-noir-800">Refresh Messages</button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
+            <tr>
+              <th class="p-3">Feedback ID & Date</th>
+              <th class="p-3">Customer Name</th>
+              <th class="p-3">Mobile Contact</th>
+              <th class="p-3">Client Review / Message</th>
+              <th class="p-3">Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminFeedbackBody" class="divide-y divide-white/5"></tbody>
+        </table>
+        <div id="noFeedbackMessage" class="hidden text-center py-10 text-slate-500 text-xs">
+          No client feedback or messages received yet.
+        </div>
+      </div>
+    </section>
+
+    <!-- ROW 3: CATALOG MANAGEMENT -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <!-- PUBLISH FORM -->
       <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
@@ -212,6 +246,7 @@
       if (key === 'lenka2026' || key === 'admin') {
         document.getElementById('authGate').classList.add('hidden');
         renderAdminOrders();
+        renderAdminFeedbacks();
         renderAdminCatalog();
       } else {
         document.getElementById('gateError').classList.remove('hidden');
@@ -287,6 +322,51 @@
       }
     }
 
+    // FEEDBACK ADMIN RENDER
+    function renderAdminFeedbacks() {
+      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+      const tbody = document.getElementById('adminFeedbackBody');
+      const emptyMsg = document.getElementById('noFeedbackMessage');
+      tbody.innerHTML = '';
+
+      if (feedbacks.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      feedbacks.forEach((fb, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-noir-850/50 transition-colors";
+        tr.innerHTML = `
+          <td class="p-3 font-mono text-bronze-400">
+            #${fb.feedbackId}<br/>
+            <span class="text-[9px] text-slate-500">${fb.timestamp || ''}</span>
+          </td>
+          <td class="p-3 text-white font-medium">${fb.name}</td>
+          <td class="p-3 font-mono text-bronze-400">${fb.phone}</td>
+          <td class="p-3 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
+          <td class="p-3">
+            <button onclick="deleteFeedback(${index})" class="text-slate-500 hover:text-red-400 p-1">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function deleteFeedback(index) {
+      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+      if (confirm(`Remove feedback from ${feedbacks[index].name}?`)) {
+        feedbacks.splice(index, 1);
+        localStorage.setItem('lenka_feedbacks', JSON.stringify(feedbacks));
+        renderAdminFeedbacks();
+      }
+    }
+
+    // CATALOG PUBLISHING
     function handleProductPublish(e) {
       e.preventDefault();
       const category = document.getElementById('prodCategory').value;
