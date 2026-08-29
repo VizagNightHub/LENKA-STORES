@@ -12,14 +12,12 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Confetti & Cracker Engine -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   
-  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   
@@ -66,17 +64,13 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
-  <!-- TOP ANNOUNCEMENT -->
   <aside class="bg-noir-900 border-b border-white/5 py-2 px-4 text-center text-xs tracking-widest text-slate-400 font-light flex items-center justify-center gap-2">
     <span class="w-1.5 h-1.5 rounded-full bg-bronze-400 animate-pulse"></span>
     COMPLIMENTARY CONCIERGE EXPRESS COURIER & TRANSIT INSURANCE ON ALL ORDERS
   </aside>
 
-  <!-- NAVIGATION -->
   <header class="sticky top-0 z-40 glass-nav transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- LOGO -->
       <a href="#" class="flex items-center gap-3.5 group">
         <div class="w-11 h-11 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center transition-all group-hover:border-bronze-400/60 shadow-lg">
           <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
@@ -91,7 +85,6 @@
         </div>
       </a>
 
-      <!-- CATEGORY NAV -->
       <nav class="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
         <button onclick="filterCategory('all')" class="hover:text-bronze-400 transition-colors">All Ateliers</button>
         <button onclick="filterCategory('Audio & Wireless Earbuds')" class="hover:text-bronze-400 transition-colors">Audio Earbuds</button>
@@ -99,32 +92,26 @@
         <button onclick="filterCategory('Men\'s Apparel & Fashion')" class="hover:text-bronze-400 transition-colors">Men's Fashion</button>
       </nav>
 
-      <!-- USER ACTIONS -->
       <div class="flex items-center gap-3">
-        <!-- ORDERS & TRACKING PAGE BUTTON -->
-        <button onclick="openOrdersPageModal()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all">
+        <button onclick="openOrdersPageModal()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all cursor-pointer">
           <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i>
           <span class="hidden sm:inline font-medium">My Orders</span>
         </button>
 
-        <!-- PROFILE BUTTON -->
-        <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all">
+        <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all cursor-pointer">
           <img id="navProfileAvatar" src="" class="w-6 h-6 rounded-full object-cover fine-border hidden" />
           <i id="navProfileIcon" data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
           <span id="navProfileLabel" class="hidden sm:inline font-medium">Profile</span>
         </button>
 
-        <!-- CART BUTTON -->
-        <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all">
+        <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all cursor-pointer">
           <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
           <span id="cartBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-bronze-400 text-noir-950 font-bold text-[10px] flex items-center justify-center">0</span>
         </button>
       </div>
-
     </div>
   </header>
 
-  <!-- LUXURY VIDEO BANNER HERO -->
   <section class="relative w-full h-[360px] sm:h-[460px] overflow-hidden border-b border-white/10 flex items-center justify-center text-center">
     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-45 scale-105 pointer-events-none">
       <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-gold-lines-motion-background-42999-large.mp4" type="video/mp4" />
@@ -146,17 +133,15 @@
     </div>
   </section>
 
-  <!-- CATALOG SECTION -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-white/5 gap-4">
       <div>
         <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
-        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory streamed live from Firebase Cloud</p>
+        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory direct from Lenka Vault</p>
       </div>
       <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs"></div>
     </div>
 
-    <!-- PRODUCT GRID -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"></div>
     <div id="emptyCatalogState" class="hidden text-center py-20">
       <i data-lucide="package-open" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
@@ -164,10 +149,8 @@
     </div>
   </main>
 
-  <!-- CELEBRATION MODAL (CONFIRMED ORDER + PARTY BLAST) -->
   <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6 border-bronze-400/50 relative overflow-hidden">
-      
       <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-bronze-500/20 to-bronze-300/30 fine-border flex items-center justify-center text-bronze-400 shadow-2xl active-tracker-glow">
         <i data-lucide="sparkles" class="w-10 h-10 text-bronze-400"></i>
       </div>
@@ -192,23 +175,19 @@
       </div>
 
       <div class="flex gap-3">
-        <button onclick="closeOrderSuccessModal(true)" class="flex-1 py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+        <button onclick="closeOrderSuccessModal(true)" class="flex-1 py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
           <span>Track Order Status</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
-        <button onclick="closeOrderSuccessModal(false)" class="px-5 py-3.5 bg-noir-850 hover:bg-noir-800 fine-border text-slate-300 text-xs rounded-xl">
+        <button onclick="closeOrderSuccessModal(false)" class="px-5 py-3.5 bg-noir-850 hover:bg-noir-800 fine-border text-slate-300 text-xs rounded-xl cursor-pointer">
           Close
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- DEDICATED FULL ORDERS & STATUS PAGE -->
   <div id="ordersPageModal" class="fixed inset-0 z-50 bg-noir-950/95 backdrop-blur-xl hidden flex flex-col justify-between overflow-y-auto custom-scrollbar p-4 sm:p-8">
     <div class="max-w-4xl w-full mx-auto space-y-8 flex-1">
-      
-      <!-- TOP BAR -->
       <div class="flex items-center justify-between pb-6 border-b border-white/10">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
@@ -219,54 +198,47 @@
             <p class="text-xs text-slate-400">Manage active consignments, review cancellations, and access saved wishlist items</p>
           </div>
         </div>
-        <button onclick="closeOrdersPageModal()" class="p-2.5 rounded-xl bg-noir-850 fine-border text-slate-400 hover:text-white hover:border-bronze-400/50 transition-all">
+        <button onclick="closeOrdersPageModal()" class="p-2.5 rounded-xl bg-noir-850 fine-border text-slate-400 hover:text-white hover:border-bronze-400/50 transition-all cursor-pointer">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- TABS -->
       <div class="flex flex-wrap gap-2 border-b border-white/5 pb-4">
-        <button onclick="switchOrderTab('confirmed')" id="tabBtn-confirmed" class="px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm">
+        <button onclick="switchOrderTab('confirmed')" id="tabBtn-confirmed" class="px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm cursor-pointer">
           Active / Confirmed Orders
         </button>
-        <button onclick="switchOrderTab('cancelled')" id="tabBtn-cancelled" class="px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all">
+        <button onclick="switchOrderTab('cancelled')" id="tabBtn-cancelled" class="px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all cursor-pointer">
           Cancelled Orders
         </button>
-        <button onclick="switchOrderTab('favorites')" id="tabBtn-favorites" class="px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all flex items-center gap-1.5">
+        <button onclick="switchOrderTab('favorites')" id="tabBtn-favorites" class="px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all flex items-center gap-1.5 cursor-pointer">
           <i data-lucide="heart" class="w-3.5 h-3.5 text-red-400 fill-red-400"></i>
           <span>Saved Favorites</span>
         </button>
       </div>
 
-      <!-- TAB 1: CONFIRMED / ACTIVE ORDERS -->
       <div id="orderTab-confirmed" class="space-y-4">
         <div id="confirmedOrdersList" class="space-y-4"></div>
       </div>
 
-      <!-- TAB 2: CANCELLED ORDERS -->
       <div id="orderTab-cancelled" class="hidden space-y-4">
         <div id="cancelledOrdersList" class="space-y-4"></div>
       </div>
 
-      <!-- TAB 3: SAVED FAVORITES -->
       <div id="orderTab-favorites" class="hidden space-y-4">
         <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
-
     </div>
 
-    <!-- FOOTER CLOSE BAR -->
     <div class="max-w-4xl w-full mx-auto pt-6 border-t border-white/10 text-center">
-      <button onclick="closeOrdersPageModal()" class="px-8 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-400 hover:text-white transition-all">
+      <button onclick="closeOrdersPageModal()" class="px-8 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-400 hover:text-white transition-all cursor-pointer">
         Return to Atelier Catalog
       </button>
     </div>
   </div>
 
-  <!-- FEEDBACK MODAL -->
   <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
-      <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+      <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
@@ -293,7 +265,7 @@
           <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
           <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
         </div>
-        <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+        <button type="submit" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
           <span>Submit Feedback</span>
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
         </button>
@@ -301,7 +273,6 @@
     </div>
   </div>
 
-  <!-- FEEDBACK SUCCESS MODAL -->
   <div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
       <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
@@ -314,36 +285,31 @@
           <span class="text-bronze-400 font-serif text-sm">Have a wonderful and pleasant day.</span>
         </p>
       </div>
-      <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md">
+      <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
         Continue Shopping
       </button>
     </div>
   </div>
 
-  <!-- PROFILE DRAWER -->
   <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
     <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
-      
       <div>
-        <!-- DRAWER HEADER -->
         <div class="flex items-center justify-between pb-5 border-b border-white/10">
           <div class="flex items-center gap-2">
             <i data-lucide="user-check" class="w-5 h-5 text-bronze-400"></i>
             <h3 class="font-serif text-xl text-white">Client Profile Setup</h3>
           </div>
-          <button onclick="closeProfileDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white">
+          <button onclick="closeProfileDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
 
-        <!-- AUTH / EDIT FORM -->
         <div id="authSection" class="mt-6 space-y-5">
           <div class="flex items-center justify-between">
             <span class="text-xs text-bronze-400 font-medium uppercase tracking-wider">Profile Info</span>
-            <button id="cancelEditBtn" onclick="cancelProfileEdit()" class="text-[10px] text-slate-500 hover:text-white hidden">Cancel</button>
+            <button id="cancelEditBtn" onclick="cancelProfileEdit()" class="text-[10px] text-slate-500 hover:text-white hidden cursor-pointer">Cancel</button>
           </div>
 
-          <!-- PROFILE PHOTO UPLOADER -->
           <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-noir-850 fine-border">
             <div class="relative group">
               <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-14 h-14 rounded-full object-cover fine-border border-bronze-400/40 shadow-md" />
@@ -366,930 +332,4 @@
           </div>
 
           <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact / WhatsApp</label>
-            <input id="userPhoneInput" type="tel" placeholder="+91 89776 27028" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
-          </div>
-
-          <!-- STRUCTURED ADDRESS -->
-          <div class="pt-2 border-t border-white/5 space-y-3">
-            <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold block">Shipping Address</span>
-            
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Country</label>
-                <input id="addrCountry" type="text" value="India" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
-              </div>
-              <div>
-                <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">State</label>
-                <input id="addrState" type="text" placeholder="Telangana / AP" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
-              </div>
-            </div>
-
-            <div>
-              <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Area, Street & House No.</label>
-              <input id="addrArea" type="text" placeholder="LIG-530, KPHB Colony, Road No 1" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
-            </div>
-
-            <div>
-              <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">PIN Code</label>
-              <input id="addrPin" type="text" placeholder="500072" maxlength="6" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
-            </div>
-          </div>
-
-          <button onclick="saveUserProfile()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg">
-            Save Profile & Address
-          </button>
-        </div>
-
-        <!-- LOGGED-IN VIP CARD -->
-        <div id="profileSavedCard" class="hidden mt-6 space-y-6">
-          <div class="p-5 rounded-2xl bg-noir-850 fine-border relative overflow-hidden space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <img id="cardProfileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-12 h-12 rounded-xl object-cover fine-border" />
-                <div>
-                  <h4 id="displayUserName" class="text-base font-serif text-white font-medium"></h4>
-                  <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-md uppercase tracking-wider font-semibold">VERIFIED VIP</span>
-                </div>
-              </div>
-              <button onclick="startProfileEdit()" class="px-3 py-1.5 rounded-lg bg-noir-950 fine-border text-[11px] text-bronze-300 hover:text-white flex items-center gap-1.5">
-                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
-              </button>
-            </div>
-
-            <div class="pt-2 border-t border-white/5 space-y-1.5 text-xs text-slate-300">
-              <p id="displayUserPhone" class="flex items-center gap-2">
-                <i data-lucide="phone" class="w-3.5 h-3.5 text-bronze-400"></i> <span></span>
-              </p>
-              <p id="displayUserAddress" class="flex items-start gap-2 pt-1 text-slate-400 text-[11px]">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bronze-400 mt-0.5"></i> <span></span>
-              </p>
-            </div>
-          </div>
-
-          <button onclick="closeProfileDrawer(); openOrdersPageModal();" class="w-full py-3 bg-noir-850 hover:bg-noir-800 fine-border text-bronze-300 hover:text-white rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
-            <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i> Open Orders & Tracking Hub
-          </button>
-        </div>
-
-      </div>
-
-      <!-- BOTTOM LOGOUT BAR -->
-      <div id="profileFooter" class="hidden pt-6 border-t border-white/10">
-        <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all flex items-center justify-center gap-2">
-          <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- CART DRAWER -->
-  <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
-    <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
-      <div>
-        <div class="flex items-center justify-between pb-5 border-b border-white/10">
-          <div class="flex items-center gap-2">
-            <i data-lucide="shopping-bag" class="w-5 h-5 text-bronze-400"></i>
-            <h3 class="font-serif text-xl text-white">Your Atelier Bag</h3>
-          </div>
-          <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-        <div id="cartItemsList" class="mt-6 space-y-4"></div>
-      </div>
-
-      <div id="cartSummaryBox" class="pt-6 border-t border-white/10 space-y-4">
-        <div class="flex justify-between items-center text-sm">
-          <span class="text-slate-400">Total Valuation:</span>
-          <span id="cartTotalPrice" class="text-xl font-serif text-white font-medium">₹0</span>
-        </div>
-        <button type="button" onclick="proceedToCheckout()" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-          <span>Complete Reservation Order</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 space-y-6">
-      <div class="font-serif text-2xl text-white tracking-wider">LENKA STORES</div>
-      
-      <!-- SOCIAL MEDIA -->
-      <div class="flex items-center justify-center gap-4 pt-1">
-        <a href="https://www.instagram.com/the_lenka_8116?utm_source=qr&igsi=MWZoNGtpZHMyM2dscA==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
-          <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-          </svg>
-          <span class="text-xs font-medium tracking-wider">Instagram</span>
-        </a>
-
-        <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
-          <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
-            <polygon points="10 15 15 12 10 9 10 15" class="fill-[#C5A880] stroke-none"/>
-          </svg>
-          <span class="text-xs font-medium tracking-wider">YouTube</span>
-        </a>
-      </div>
-
-      <div class="py-1">
-        <button onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-xs text-bronze-300 hover:text-white transition-all shadow-md">
-          <i data-lucide="message-square" class="w-3.5 h-3.5 text-bronze-400"></i> Share Website Feedback & Support
-        </button>
-      </div>
-
-      <div class="pt-4 border-t border-white/5 space-y-1">
-        <p class="text-xs text-slate-300 font-medium">
-          Developed & Crafted by <span class="text-bronze-400">Vizag Night Hub</span> under <span class="text-white">Lenka Ventures Pvt Ltd</span>
-        </p>
-        <p class="text-[10px] text-slate-600">© 2026 Lenka Ventures Pvt Ltd. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- CLIENT SCRIPTS -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
-      authDomain: "lenkastores-studio.firebaseapp.com",
-      projectId: "lenkastores-studio",
-      storageBucket: "lenkastores-studio.firebasestorage.app",
-      messagingSenderId: "198057972058",
-      appId: "1:198057972058:web:c1e0742dcaa3b476472363",
-      measurementId: "G-S5GNTV03XM"
-    };
-
-    let db = null;
-    try {
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
-      db = firebase.firestore();
-    } catch (err) {
-      console.warn("Firebase Init note:", err);
-    }
-
-    let cloudCatalog = [];
-    let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
-    let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-    let favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
-    let currentCategoryFilter = 'all';
-
-    // REAL-TIME CATALOG LISTENER
-    if (db) {
-      db.collection('products').onSnapshot((snapshot) => {
-        cloudCatalog = [];
-        snapshot.forEach(doc => {
-          cloudCatalog.push({ id: doc.id, ...doc.data() });
-        });
-
-        if (cloudCatalog.length === 0) {
-          seedInitialProducts();
-        } else {
-          renderCatalog(currentCategoryFilter);
-        }
-      }, (err) => {
-        console.warn("Catalog sync fallback to defaults:", err);
-        fallbackLocalCatalog();
-      });
-    } else {
-      fallbackLocalCatalog();
-    }
-
-    function fallbackLocalCatalog() {
-      cloudCatalog = [
-        {
-          id: 'prod_101',
-          category: 'Audio & Wireless Earbuds',
-          title: 'Lenka Horizon ANC Earbuds Pro',
-          originalPrice: 4999,
-          offerPrice: 2499,
-          discountTag: '50% OFF',
-          image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
-          variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
-          description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
-        },
-        {
-          id: 'prod_102',
-          category: 'Battery Banks & Power Gear',
-          title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
-          originalPrice: 3999,
-          offerPrice: 1999,
-          discountTag: '50% OFF',
-          image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&auto=format&fit=crop&q=80',
-          variants: ['Matte Carbon', 'Slate Silver'],
-          description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
-        },
-        {
-          id: 'prod_103',
-          category: 'Men\'s Apparel & Fashion',
-          title: 'Lenka Signature Tailored Oxford Shirt',
-          originalPrice: 2999,
-          offerPrice: 1499,
-          discountTag: 'LIMITED EDITION',
-          image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80',
-          variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
-          description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
-        }
-      ];
-      renderCatalog(currentCategoryFilter);
-    }
-
-    function seedInitialProducts() {
-      const defaultProducts = [
-        {
-          category: 'Audio & Wireless Earbuds',
-          title: 'Lenka Horizon ANC Earbuds Pro',
-          originalPrice: 4999,
-          offerPrice: 2499,
-          discountTag: '50% OFF',
-          image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
-          variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
-          description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
-        },
-        {
-          category: 'Battery Banks & Power Gear',
-          title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
-          originalPrice: 3999,
-          offerPrice: 1999,
-          discountTag: '50% OFF',
-          image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&auto=format&fit=crop&q=80',
-          variants: ['Matte Carbon', 'Slate Silver'],
-          description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
-        },
-        {
-          category: 'Men\'s Apparel & Fashion',
-          title: 'Lenka Signature Tailored Oxford Shirt',
-          originalPrice: 2999,
-          offerPrice: 1499,
-          discountTag: 'LIMITED EDITION',
-          image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80',
-          variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
-          description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
-        }
-      ];
-      if (db) {
-        defaultProducts.forEach(p => db.collection('products').add(p));
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      updateCartUI();
-      checkSavedProfile();
-    });
-
-    // FAVORITES / WISHLIST TOGGLE
-    function toggleFavorite(prodId, event) {
-      if (event) event.stopPropagation();
-      const index = favorites.indexOf(prodId);
-      if (index === -1) {
-        favorites.push(prodId);
-      } else {
-        favorites.splice(index, 1);
-      }
-      localStorage.setItem('lenka_favorites', JSON.stringify(favorites));
-      renderCatalog(currentCategoryFilter);
-      renderFavoritesTab();
-    }
-
-    function renderCatalog(filter = 'all') {
-      currentCategoryFilter = filter;
-      const grid = document.getElementById('productGrid');
-      const empty = document.getElementById('emptyCatalogState');
-      grid.innerHTML = '';
-
-      const items = filter === 'all' 
-        ? cloudCatalog 
-        : cloudCatalog.filter(p => p.category === filter);
-
-      if (items.length === 0) {
-        empty.classList.remove('hidden');
-      } else {
-        empty.classList.add('hidden');
-        items.forEach(prod => {
-          const isFav = favorites.includes(prod.id);
-          const card = document.createElement('div');
-          card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group relative";
-          
-          let variantHTML = '';
-          if (prod.variants && prod.variants.length > 0) {
-            variantHTML = `
-              <div class="mt-3">
-                <span class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1.5">Color Edition</span>
-                <div class="flex flex-wrap gap-1.5">
-                  ${prod.variants.map((v, idx) => `
-                    <button onclick="selectVariant(this)" class="variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border ${idx === 0 ? 'bg-bronze-400 text-noir-950 font-medium' : 'bg-noir-850 text-slate-300'} transition-all">${v}</button>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-          }
-
-          card.innerHTML = `
-            <div class="relative overflow-hidden bg-noir-850 aspect-square">
-              <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-              
-              <!-- FAVORITES HEART BUTTON -->
-              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
-                <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-              </button>
-
-              ${prod.discountTag ? `<span class="absolute top-3 left-3 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider">${prod.discountTag}</span>` : ''}
-            </div>
-
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <span class="text-[10px] text-bronze-400 uppercase tracking-widest font-semibold">${prod.category}</span>
-                <h3 class="font-serif text-lg text-white font-medium mt-0.5">${prod.title}</h3>
-                <p class="text-xs text-slate-400 mt-1 line-clamp-2">${prod.description || ''}</p>
-                ${variantHTML}
-              </div>
-              <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                <div>
-                  <span class="text-xs text-slate-500 line-through mr-1.5">₹${prod.originalPrice}</span>
-                  <span class="text-lg font-serif text-white font-semibold">₹${prod.offerPrice}</span>
-                </div>
-                <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
-                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add To Bag
-                </button>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-      lucide.createIcons();
-    }
-
-    function selectVariant(btn) {
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.variant-pill').forEach(b => {
-        b.className = 'variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border bg-noir-850 text-slate-300 transition-all';
-      });
-      btn.className = 'variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border bg-bronze-400 text-noir-950 font-medium transition-all';
-    }
-
-    function filterCategory(cat) {
-      document.getElementById('currentCategoryHeading').innerText = cat === 'all' ? 'Live Catalog' : cat;
-      renderCatalog(cat);
-    }
-
-    // CART
-    function addToBag(prodId) {
-      const prod = cloudCatalog.find(p => p.id === prodId);
-      if (!prod) return;
-      currentCart.push({ ...prod, cartItemId: Date.now() });
-      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
-      updateCartUI();
-      openCartDrawer();
-    }
-
-    function updateCartUI() {
-      const badge = document.getElementById('cartBadge');
-      badge.innerText = currentCart.length;
-
-      const list = document.getElementById('cartItemsList');
-      const totalDisplay = document.getElementById('cartTotalPrice');
-      list.innerHTML = '';
-
-      if (currentCart.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-10">Your atelier bag is empty.</p>`;
-        totalDisplay.innerText = '₹0';
-        return;
-      }
-
-      let total = 0;
-      currentCart.forEach((item, index) => {
-        total += Number(item.offerPrice || 0);
-        const row = document.createElement('div');
-        row.className = "p-3 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
-        row.innerHTML = `
-          <img src="${item.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-900" />
-          <div class="flex-1 min-w-0">
-            <h4 class="text-xs text-white truncate font-medium">${item.title}</h4>
-            <span class="text-xs text-bronze-400 font-serif">₹${item.offerPrice}</span>
-          </div>
-          <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
-          </button>
-        `;
-        list.appendChild(row);
-      });
-      totalDisplay.innerText = `₹${total}`;
-      lucide.createIcons();
-    }
-
-    function removeFromCart(index) {
-      currentCart.splice(index, 1);
-      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
-      updateCartUI();
-    }
-
-    function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
-    function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
-
-    // ZERO-FREEZE DIRECT FEEDBACK SUBMISSION
-    function openFeedbackModal() {
-      if (currentProfile) {
-        document.getElementById('fbName').value = currentProfile.name || '';
-        document.getElementById('fbPhone').value = currentProfile.phone || '';
-      }
-      document.getElementById('feedbackModal').classList.remove('hidden');
-    }
-
-    function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
-    function openFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.remove('hidden'); }
-    function closeFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.add('hidden'); }
-
-    function handleFeedbackSubmit(e) {
-      if (e) e.preventDefault();
-      
-      const name = document.getElementById('fbName').value.trim();
-      const phone = document.getElementById('fbPhone').value.trim();
-      const message = document.getElementById('fbMessage').value.trim();
-
-      if (!name || !phone || !message) {
-        alert('Please complete all feedback fields.');
-        return;
-      }
-
-      const newFeedback = {
-        feedbackId: 'FB' + Math.floor(10000 + Math.random() * 90000),
-        name: name,
-        phone: phone,
-        message: message,
-        timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-      };
-
-      // 1. Instant local persistence so it never freezes
-      let localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      localFeedbacks.unshift(newFeedback);
-      localStorage.setItem('lenka_feedbacks', JSON.stringify(localFeedbacks));
-
-      // 2. Background Firestore write
-      try {
-        if (db) {
-          db.collection('feedbacks').add({
-            ...newFeedback,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }).catch(err => console.warn('Background sync note:', err));
-        }
-      } catch (err) {
-        console.warn('Firebase error bypassed:', err);
-      }
-      
-      // 3. Instant UI feedback
-      document.getElementById('feedbackForm').reset();
-      closeFeedbackModal();
-      openFeedbackSuccessModal();
-    }
-
-    // PROFILE
-    let uploadedAvatarBase64 = '';
-    function handleImageUpload(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          uploadedAvatarBase64 = evt.target.result;
-          document.getElementById('editAvatarPreview').src = uploadedAvatarBase64;
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function openProfileDrawer() { 
-      document.getElementById('profileDrawer').classList.remove('hidden'); 
-      checkSavedProfile();
-    }
-    function closeProfileDrawer() { document.getElementById('profileDrawer').classList.add('hidden'); }
-
-    async function saveUserProfile() {
-      const name = document.getElementById('userNameInput').value.trim();
-      const phone = document.getElementById('userPhoneInput').value.trim();
-      const country = document.getElementById('addrCountry').value.trim() || 'India';
-      const state = document.getElementById('addrState').value.trim();
-      const area = document.getElementById('addrArea').value.trim();
-      const pin = document.getElementById('addrPin').value.trim();
-      const avatar = uploadedAvatarBase64 || (currentProfile ? currentProfile.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150');
-
-      if (!name || !phone || !area || !pin) {
-        alert('Please fill out Name, Phone, Area & PIN Code.');
-        return;
-      }
-
-      currentProfile = {
-        name,
-        phone,
-        avatar,
-        address: { country, state, area, pin },
-        formattedAddress: `${area}, ${state}, ${country} - ${pin}`
-      };
-
-      localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
-
-      if (db) {
-        try {
-          db.collection('customers').doc(phone).set({
-            ...currentProfile,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          }, { merge: true }).catch(e => console.warn(e));
-        } catch (e) {
-          console.log(e);
-        }
-      }
-
-      document.getElementById('cancelEditBtn').classList.add('hidden');
-      checkSavedProfile();
-    }
-
-    function checkSavedProfile() {
-      const authSec = document.getElementById('authSection');
-      const savedCard = document.getElementById('profileSavedCard');
-      const foot = document.getElementById('profileFooter');
-      const navLabel = document.getElementById('navProfileLabel');
-      const navAvatar = document.getElementById('navProfileAvatar');
-      const navIcon = document.getElementById('navProfileIcon');
-
-      if (currentProfile) {
-        authSec.classList.add('hidden');
-        savedCard.classList.remove('hidden');
-        foot.classList.remove('hidden');
-
-        document.getElementById('displayUserName').innerText = currentProfile.name;
-        document.getElementById('cardProfileImg').src = currentProfile.avatar;
-        document.getElementById('displayUserPhone').querySelector('span').innerText = currentProfile.phone;
-        document.getElementById('displayUserAddress').querySelector('span').innerText = currentProfile.formattedAddress || currentProfile.address;
-
-        navAvatar.src = currentProfile.avatar;
-        navAvatar.classList.remove('hidden');
-        navIcon.classList.add('hidden');
-        navLabel.innerText = currentProfile.name.split(' ')[0];
-      } else {
-        authSec.classList.remove('hidden');
-        savedCard.classList.add('hidden');
-        foot.classList.add('hidden');
-        navAvatar.classList.add('hidden');
-        navIcon.classList.remove('hidden');
-        navLabel.innerText = 'Profile';
-      }
-      lucide.createIcons();
-    }
-
-    function startProfileEdit() {
-      if (!currentProfile) return;
-      document.getElementById('userNameInput').value = currentProfile.name;
-      document.getElementById('userPhoneInput').value = currentProfile.phone;
-      
-      if (currentProfile.avatar) {
-        document.getElementById('editAvatarPreview').src = currentProfile.avatar;
-        uploadedAvatarBase64 = currentProfile.avatar;
-      }
-      
-      if (typeof currentProfile.address === 'object') {
-        document.getElementById('addrCountry').value = currentProfile.address.country || 'India';
-        document.getElementById('addrState').value = currentProfile.address.state || '';
-        document.getElementById('addrArea').value = currentProfile.address.area || '';
-        document.getElementById('addrPin').value = currentProfile.address.pin || '';
-      }
-
-      document.getElementById('authSection').classList.remove('hidden');
-      document.getElementById('profileSavedCard').classList.add('hidden');
-      document.getElementById('cancelEditBtn').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function cancelProfileEdit() { checkSavedProfile(); }
-    function resetProfile() {
-      currentProfile = null;
-      localStorage.removeItem('lenka_profile');
-      checkSavedProfile();
-    }
-
-    // DEDICATED ORDERS PAGE & TABS
-    function openOrdersPageModal() {
-      document.getElementById('ordersPageModal').classList.remove('hidden');
-      switchOrderTab('confirmed');
-    }
-
-    function closeOrdersPageModal() {
-      document.getElementById('ordersPageModal').classList.add('hidden');
-    }
-
-    function switchOrderTab(tab) {
-      const tabs = ['confirmed', 'cancelled', 'favorites'];
-      tabs.forEach(t => {
-        const tabEl = document.getElementById(`orderTab-${t}`);
-        const tabBtn = document.getElementById(`tabBtn-${t}`);
-        if (t === tab) {
-          tabEl.classList.remove('hidden');
-          tabBtn.className = "px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5";
-        } else {
-          tabEl.classList.add('hidden');
-          tabBtn.className = "px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all flex items-center gap-1.5";
-        }
-      });
-
-      if (tab === 'confirmed' || tab === 'cancelled') {
-        renderOrdersTabs();
-      }
-      if (tab === 'favorites') {
-        renderFavoritesTab();
-      }
-      lucide.createIcons();
-    }
-
-    function renderOrdersTabs() {
-      const confirmedList = document.getElementById('confirmedOrdersList');
-      const cancelledList = document.getElementById('cancelledOrdersList');
-      confirmedList.innerHTML = '';
-      cancelledList.innerHTML = '';
-
-      if (!currentProfile) {
-        confirmedList.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">Please set up your profile first to view placed orders.</p>`;
-        cancelledList.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">No profile found.</p>`;
-        return;
-      }
-
-      const allLocal = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      const myOrders = allLocal.filter(o => o.customerPhone === currentProfile.phone);
-
-      const confirmed = myOrders.filter(o => o.status !== 'Cancelled');
-      const cancelled = myOrders.filter(o => o.status === 'Cancelled');
-
-      // 1. Confirmed Orders Render
-      if (confirmed.length === 0) {
-        confirmedList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No active orders placed under ${currentProfile.phone}.</p>`;
-      } else {
-        confirmed.forEach(ord => {
-          let pct = '15%';
-          let step1Active = true;
-          let step2Active = ord.status === 'Dispatched' || ord.status === 'Delivered';
-          let step3Active = ord.status === 'Delivered';
-
-          if (ord.status === 'Dispatched') pct = '55%';
-          if (ord.status === 'Delivered') pct = '100%';
-
-          const confirmedDate = ord.confirmedDate || ord.timestamp || 'Today';
-          const shippingDate = ord.shippingDate || (ord.status !== 'Confirmed' ? 'In Transit' : 'Pending');
-          const deliveryDate = ord.deliveryDate || 'Express 48H';
-
-          const card = document.createElement('div');
-          card.className = "p-6 rounded-2xl bg-noir-900 fine-border space-y-4 shadow-xl";
-          card.innerHTML = `
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/5 gap-2">
-              <div>
-                <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId}</span>
-                <p class="text-[10px] text-slate-500 mt-0.5">Booked on: ${ord.timestamp || ''}</p>
-              </div>
-              <span class="text-[10px] px-3 py-1 rounded-full uppercase tracking-wider font-semibold self-start sm:self-auto ${ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30' : 'bg-bronze-400/10 text-bronze-400 border border-bronze-400/30'}">
-                ${ord.status === 'Dispatched' ? 'In Transit' : ord.status}
-              </span>
-            </div>
-
-            <div class="text-sm text-white font-medium">${ord.itemsSummary}</div>
-
-            <div class="pt-3 pb-1">
-              <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
-                <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
-              </div>
-
-              <div class="grid grid-cols-3 text-center relative">
-                <div class="space-y-1">
-                  <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                    <i data-lucide="check" class="w-4 h-4"></i>
-                  </div>
-                  <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
-                  <span class="text-[9px] text-slate-500 block">${confirmedDate}</span>
-                </div>
-
-                <div class="space-y-1">
-                  <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                    <i data-lucide="truck" class="w-4 h-4"></i>
-                  </div>
-                  <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
-                  <span class="text-[9px] text-slate-500 block">${shippingDate}</span>
-                </div>
-
-                <div class="space-y-1">
-                  <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                    <i data-lucide="package-check" class="w-4 h-4"></i>
-                  </div>
-                  <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
-                  <span class="text-[9px] text-slate-500 block">${deliveryDate}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
-              <span>Valuation: <strong class="text-white font-serif text-sm">₹${ord.totalAmount}</strong></span>
-              ${ord.status !== 'Delivered' ? `
-                <button onclick="requestCancelOrderDirect('${ord.orderId}')" class="text-xs text-red-400 hover:text-red-300 font-medium px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all cursor-pointer">
-                  Cancel Consignment
-                </button>
-              ` : ''}
-            </div>
-          `;
-          confirmedList.appendChild(card);
-        });
-      }
-
-      // 2. Cancelled Orders Render
-      if (cancelled.length === 0) {
-        cancelledList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No cancelled consignments.</p>`;
-      } else {
-        cancelled.forEach(ord => {
-          const card = document.createElement('div');
-          card.className = "p-5 rounded-2xl bg-noir-900 fine-border space-y-3 opacity-75 border-red-500/20";
-          card.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-mono text-slate-400">#${ord.orderId}</span>
-              <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 uppercase font-semibold">Cancelled</span>
-            </div>
-            <p class="text-xs text-slate-300 font-medium">${ord.itemsSummary}</p>
-            <div class="text-[11px] text-slate-500 flex justify-between border-t border-white/5 pt-2">
-              <span>Amount: ₹${ord.totalAmount}</span>
-              <span>Cancelled Date: ${ord.timestamp || ''}</span>
-            </div>
-          `;
-          cancelledList.appendChild(card);
-        });
-      }
-      lucide.createIcons();
-    }
-
-    function renderFavoritesTab() {
-      const container = document.getElementById('favoritesList');
-      container.innerHTML = '';
-
-      const favProds = cloudCatalog.filter(p => favorites.includes(p.id));
-
-      if (favProds.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 text-xs">No favorites added yet. Click the heart icon on any product in the catalog!</div>`;
-        return;
-      }
-
-      favProds.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = "p-4 rounded-2xl bg-noir-900 fine-border space-y-3 relative flex flex-col justify-between";
-        card.innerHTML = `
-          <div>
-            <div class="relative aspect-square rounded-xl overflow-hidden bg-noir-850 mb-3">
-              <img src="${prod.image}" class="w-full h-full object-cover" />
-              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-noir-950/80 fine-border cursor-pointer">
-                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-red-500 stroke-red-500"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-              </button>
-            </div>
-            <h4 class="text-xs text-white font-medium">${prod.title}</h4>
-            <span class="text-xs text-bronze-400 font-serif">₹${prod.offerPrice}</span>
-          </div>
-          <button onclick="addToBag('${prod.id}')" class="w-full py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl uppercase tracking-wider cursor-pointer">
-            Add to Bag
-          </button>
-        `;
-        container.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    // DIRECT CANCEL
-    async function requestCancelOrderDirect(orderId) {
-      if (confirm(`Cancel Consignment #${orderId}?`)) {
-        let local = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-        const idx = local.findIndex(o => o.orderId === orderId);
-        if (idx !== -1) {
-          local[idx].status = 'Cancelled';
-          localStorage.setItem('lenka_orders', JSON.stringify(local));
-        }
-
-        if (db) {
-          try {
-            const snap = await db.collection('orders').where('orderId', '==', orderId).get();
-            snap.forEach(d => d.ref.update({ status: 'Cancelled' }));
-          } catch (e) {
-            console.log(e);
-          }
-        }
-
-        renderOrdersTabs();
-      }
-    }
-
-    // FULL SCREEN CELEBRATION BLASTER
-    function triggerCelebrationBlast() {
-      try {
-        if (typeof confetti === 'function') {
-          confetti({
-            particleCount: 120,
-            angle: 60,
-            spread: 70,
-            origin: { x: 0, y: 0.65 },
-            colors: ['#C5A880', '#E2D4C3', '#FFD700', '#FFFFFF', '#A88B63']
-          });
-
-          confetti({
-            particleCount: 120,
-            angle: 120,
-            spread: 70,
-            origin: { x: 1, y: 0.65 },
-            colors: ['#C5A880', '#E2D4C3', '#FFD700', '#FFFFFF', '#A88B63']
-          });
-
-          setTimeout(() => {
-            confetti({
-              particleCount: 100,
-              spread: 100,
-              origin: { y: 0.5 },
-              colors: ['#FFFFFF', '#C5A880', '#FFD700']
-            });
-          }, 250);
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-
-    function openOrderSuccessModal(orderId) {
-      document.getElementById('successOrderIdDisplay').innerText = `#${orderId}`;
-      document.getElementById('orderSuccessModal').classList.remove('hidden');
-      triggerCelebrationBlast();
-      lucide.createIcons();
-    }
-
-    function closeOrderSuccessModal(openOrdersPage) {
-      document.getElementById('orderSuccessModal').classList.add('hidden');
-      if (openOrdersPage) {
-        openOrdersPageModal();
-      }
-    }
-
-    // INSTANT CHECKOUT
-    function proceedToCheckout() {
-      if (currentCart.length === 0) {
-        alert('Your bag is empty.');
-        return;
-      }
-
-      if (!currentProfile || !currentProfile.phone) {
-        closeCartDrawer();
-        openProfileDrawer();
-        alert('Please complete and save your Profile & Shipping Address before confirming your order.');
-        return;
-      }
-
-      const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      const orderId = 'LS' + Math.floor(100000 + Math.random() * 900000);
-      const total = currentCart.reduce((sum, i) => sum + Number(i.offerPrice || 0), 0);
-      const summary = currentCart.map(i => i.title).join(', ');
-
-      const newOrder = {
-        orderId: orderId,
-        customerName: currentProfile.name || 'Guest VIP',
-        customerPhone: currentProfile.phone || '',
-        customerAddress: currentProfile.formattedAddress || JSON.stringify(currentProfile.address || ''),
-        customerAvatar: currentProfile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
-        itemsSummary: summary,
-        totalAmount: total,
-        status: 'Confirmed',
-        confirmedDate: today,
-        shippingDate: 'Express Scheduled',
-        deliveryDate: 'Est. 2-3 Business Days',
-        timestamp: today
-      };
-
-      // 1. Local backup
-      let localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      localOrders.unshift(newOrder);
-      localStorage.setItem('lenka_orders', JSON.stringify(localOrders));
-
-      // 2. Background Firestore write
-      if (db) {
-        try {
-          db.collection('orders').add({
-            ...newOrder,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }).catch(e => console.warn('Background sync note:', e));
-        } catch (e) {}
-      }
-
-      // 3. Clear Bag
-      currentCart = [];
-      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
-      updateCartUI();
-      closeCartDrawer();
-
-      // 4. Modal & Confetti
-      openOrderSuccessModal(orderId);
-    }
-  </script>
-</body>
-</html>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb
