@@ -96,10 +96,10 @@
     </div>
   </header>
 
-  <!-- MAIN STUDIO WORKSPACE -->
+  <!-- WORKSPACE -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-12">
     
-    <!-- ROW 1: LIVE ORDERS & FULFILLMENT COMMAND -->
+    <!-- LIVE ORDERS & DATE FULFILLMENT -->
     <section class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-2">
         <div class="flex items-center gap-2.5">
@@ -107,39 +107,35 @@
             <i data-lucide="truck" class="w-5 h-5"></i>
           </div>
           <div>
-            <h2 class="font-serif text-2xl text-white">Live Customer Order Management</h2>
-            <p class="text-xs text-slate-400">Review incoming customer details, addresses, and broadcast instant shipping status updates</p>
+            <h2 class="font-serif text-2xl text-white">Live Customer Order Management & Dispatch Center</h2>
+            <p class="text-xs text-slate-400">Update status and dates (Confirmed, Shipping Start, Delivered) broadcast to customer timeline</p>
           </div>
         </div>
         <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3 py-1.5 rounded-lg bg-noir-850 hover:bg-noir-800">Refresh Feed</button>
       </div>
 
-      <!-- ORDERS TABLE -->
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs text-slate-300">
           <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
             <tr>
               <th class="p-3">Order ID</th>
-              <th class="p-3">Customer & Contact</th>
-              <th class="p-3">Full Shipping Address</th>
+              <th class="p-3">Customer Info</th>
+              <th class="p-3">Shipping Address</th>
               <th class="p-3">Product Summary</th>
-              <th class="p-3">Valuation</th>
-              <th class="p-3">Update Live Status</th>
+              <th class="p-3">Status</th>
+              <th class="p-3">Tracking Dates (Confirmed / Shipped / Delivery)</th>
             </tr>
           </thead>
-          <tbody id="adminOrdersBody" class="divide-y divide-white/5">
-            <!-- Order rows dynamically inject here -->
-          </tbody>
+          <tbody id="adminOrdersBody" class="divide-y divide-white/5"></tbody>
         </table>
         <div id="noOrdersMessage" class="hidden text-center py-10 text-slate-500 text-xs">
-          No customer reservations received yet. Orders placed on the storefront will appear here instantly.
+          No customer orders found yet.
         </div>
       </div>
     </section>
 
-    <!-- ROW 2: CATALOG PUBLISHING ENGINE -->
+    <!-- CATALOG MANAGEMENT -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      
       <!-- PUBLISH FORM -->
       <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
         <div>
@@ -198,23 +194,19 @@
         </form>
       </div>
 
-      <!-- LIVE CATALOG INVENTORY -->
+      <!-- LIVE INVENTORY -->
       <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
         <div>
           <h2 class="font-serif text-2xl text-white">Live Catalog Inventory</h2>
-          <p class="text-xs text-slate-400 mt-1">Manage, delete, or inspect active products</p>
+          <p class="text-xs text-slate-400 mt-1">Manage or remove active products</p>
         </div>
-        <div id="adminInventoryList" class="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
-          <!-- Inventory rows injected here -->
-        </div>
+        <div id="adminInventoryList" class="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar"></div>
       </div>
-
     </section>
 
   </main>
 
   <script>
-    // PASSKEY AUTH
     function unlockStudio() {
       const key = document.getElementById('adminPassKey').value.trim();
       if (key === 'lenka2026' || key === 'admin') {
@@ -226,7 +218,6 @@
       }
     }
 
-    // ORDERS MANAGEMENT
     function renderAdminOrders() {
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const tbody = document.getElementById('adminOrdersBody');
@@ -243,20 +234,35 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
-          <td class="p-3 font-mono text-bronze-400 font-semibold">#${ord.orderId}<br/><span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span></td>
+          <td class="p-3 font-mono text-bronze-400 font-semibold">
+            #${ord.orderId}<br/>
+            <span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span>
+          </td>
           <td class="p-3">
-            <span class="text-white font-medium block">${ord.customerName}</span>
-            <span class="text-slate-400 font-mono text-[11px]">${ord.customerPhone}</span>
+            <div class="flex items-center gap-2">
+              <img src="${ord.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-7 h-7 rounded-full object-cover fine-border" />
+              <div>
+                <span class="text-white font-medium block">${ord.customerName}</span>
+                <span class="text-slate-400 font-mono text-[10px]">${ord.customerPhone}</span>
+              </div>
+            </div>
           </td>
           <td class="p-3 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
-          <td class="p-3 text-white max-w-xs text-[11px] font-medium">${ord.itemsSummary}</td>
-          <td class="p-3 font-serif text-sm text-bronze-400">₹${ord.totalAmount}</td>
+          <td class="p-3 text-white max-w-xs text-[11px] font-medium">
+            ${ord.itemsSummary}<br/>
+            <span class="text-bronze-400 font-serif">₹${ord.totalAmount}</span>
+          </td>
           <td class="p-3">
             <select onchange="updateOrderStatus(${index}, this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
               <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
               <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
               <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
             </select>
+          </td>
+          <td class="p-3 space-y-1">
+            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateOrderDates(${index}, 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-28 block" />
+            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateOrderDates(${index}, 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-28 block" />
+            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateOrderDates(${index}, 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-28 block" />
           </td>
         `;
         tbody.appendChild(tr);
@@ -273,7 +279,14 @@
       }
     }
 
-    // CATALOG PUBLISHING
+    function updateOrderDates(index, field, val) {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      if (orders[index]) {
+        orders[index][field] = val;
+        localStorage.setItem('lenka_orders', JSON.stringify(orders));
+      }
+    }
+
     function handleProductPublish(e) {
       e.preventDefault();
       const category = document.getElementById('prodCategory').value;
