@@ -763,6 +763,11 @@
       const phone = document.getElementById('fbPhone').value.trim();
       const message = document.getElementById('fbMessage').value.trim();
 
+      if (!name || !phone || !message) {
+        alert('Please complete all feedback fields.');
+        return;
+      }
+
       const newFeedback = {
         feedbackId: 'FB' + Math.floor(10000 + Math.random() * 90000),
         name: name,
@@ -772,10 +777,16 @@
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
+      // 1. Instant local backup
+      let localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+      localFeedbacks.unshift(newFeedback);
+      localStorage.setItem('lenka_feedbacks', JSON.stringify(localFeedbacks));
+
+      // 2. Cloud Firestore write
       try {
         await db.collection('feedbacks').add(newFeedback);
       } catch (err) {
-        console.warn('Feedback fallback:', err);
+        console.warn('Feedback background sync note:', err);
       }
       
       document.getElementById('feedbackForm').reset();
