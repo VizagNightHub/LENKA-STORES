@@ -14,6 +14,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   
+  <!-- FIREBASE SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -44,7 +48,6 @@
     .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
-    
     @keyframes barGlow {
       0%, 100% { filter: drop-shadow(0 0 4px rgba(197, 168, 128, 0.3)); }
       50% { filter: drop-shadow(0 0 10px rgba(197, 168, 128, 0.8)); }
@@ -79,12 +82,11 @@
     </div>
   </div>
 
-  <!-- LEFT SLIDE DRAWER (SIDEBAR NAVIGATION) -->
+  <!-- LEFT SLIDE DRAWER -->
   <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm hidden transition-opacity"></div>
   
   <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-noir-900 border-r border-white/10 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
     <div class="space-y-6">
-      <!-- SIDEBAR LOGO & CLOSE -->
       <div class="flex items-center justify-between pb-4 border-b border-white/5">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
@@ -104,7 +106,6 @@
         </button>
       </div>
 
-      <!-- SIDEBAR NAV LINKS -->
       <nav class="space-y-1.5 text-xs">
         <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl bg-bronze-400 text-noir-950 font-semibold transition-all">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
@@ -145,7 +146,6 @@
       </nav>
     </div>
 
-    <!-- SIDEBAR FOOTER -->
     <div class="pt-4 border-t border-white/5 space-y-2">
       <a href="index.html" target="_blank" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-300 hover:text-white">
         <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> Open Live Storefront
@@ -154,11 +154,9 @@
     </div>
   </aside>
 
-  <!-- TOP HEADER (CLEAN WITH 3-LINE HAMBURGER MENU) -->
+  <!-- TOP HEADER -->
   <header class="sticky top-0 z-30 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- HAMBURGER BUTTON & TITLE -->
       <div class="flex items-center gap-4">
         <button onclick="toggleSidebar()" class="p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-200 transition-all flex items-center justify-center">
           <i data-lucide="menu" class="w-5 h-5 text-bronze-400"></i>
@@ -166,11 +164,10 @@
         
         <div class="cursor-pointer" onclick="selectMenu('dashboard')">
           <span class="font-serif text-xl sm:text-2xl tracking-wider text-white font-medium block">LENKA STUDIO</span>
-          <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Executive Terminal</span>
+          <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Cloud Executive Terminal</span>
         </div>
       </div>
 
-      <!-- ACTIVE SECTION PILL & STORE LINK -->
       <div class="flex items-center gap-3">
         <span id="activeSectionLabel" class="hidden sm:inline-block px-3 py-1 rounded-full bg-noir-850 fine-border text-[11px] text-bronze-300 font-medium">
           Analytics & Motion Hub
@@ -179,24 +176,20 @@
           <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> <span class="hidden md:inline">Storefront</span>
         </a>
       </div>
-
     </div>
   </header>
 
-  <!-- WORKSPACE CONTENT AREA -->
+  <!-- MAIN CONTENT -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
-    <!-- ================= 1. ANALYTICS & GRAPHIC MOTION SHEET ================= -->
+    <!-- 1. ANALYTICS & GRAPHIC SHEET -->
     <section id="page-dashboard" class="space-y-8">
       <div>
-        <h1 class="font-serif text-3xl sm:text-4xl text-white">Performance & Motion Analytics</h1>
-        <p class="text-xs text-slate-400 mt-1">Real-time graphic projection of store revenue, customer registrations, and orders</p>
+        <h1 class="font-serif text-3xl sm:text-4xl text-white">Cloud Performance & Motion Analytics</h1>
+        <p class="text-xs text-slate-400 mt-1">Live Firestore real-time projection of store revenue, customer registrations, and orders</p>
       </div>
 
-      <!-- PRIMARY METRICS CARDS (TODAY'S ORDERS FIRST) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <!-- 1. TODAY'S ORDERS (FIRST & PRIMARY) -->
         <div onclick="selectMenu('orders')" class="p-6 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-2 relative overflow-hidden group shadow-lg">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider font-semibold text-bronze-400">Today's New Orders</span>
@@ -211,7 +204,6 @@
           </p>
         </div>
 
-        <!-- 2. TOTAL ALL-TIME ORDERS -->
         <div onclick="selectMenu('orders')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">All Consignments</span>
@@ -221,7 +213,6 @@
           <p class="text-[11px] text-slate-400">Full order history archive</p>
         </div>
 
-        <!-- 3. TOTAL STORE VALUATION -->
         <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-2">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">Gross Valuation</span>
@@ -231,7 +222,6 @@
           <p class="text-[11px] text-slate-500">Total transaction value</p>
         </div>
 
-        <!-- 4. REGISTERED VIP CLIENTS -->
         <div onclick="selectMenu('customers')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">Registered VIPs</span>
@@ -242,13 +232,9 @@
             Open address directory <i data-lucide="arrow-right" class="w-3 h-3"></i>
           </p>
         </div>
-
       </div>
 
-      <!-- MOTION GRAPHIC SHEETS (DYNAMIC LIVE CHARTS) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
-        <!-- GRAPH 1: CONSIGNMENT FULFILLMENT STATUS -->
         <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
           <div class="flex items-center justify-between pb-4 border-b border-white/5">
             <div class="flex items-center gap-2.5">
@@ -260,11 +246,10 @@
                 <p class="text-[11px] text-slate-500">Live proportional tracking status distribution</p>
               </div>
             </div>
-            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-bronze-400 uppercase tracking-widest font-semibold">MOTION SYNC</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-bronze-400 uppercase tracking-widest font-semibold">CLOUD SYNC</span>
           </div>
 
           <div class="space-y-5 pt-2">
-            <!-- Confirmed -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">1. Confirmed Reservations</span>
@@ -275,7 +260,6 @@
               </div>
             </div>
 
-            <!-- In Transit -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">2. In Transit / Dispatched</span>
@@ -286,7 +270,6 @@
               </div>
             </div>
 
-            <!-- Delivered -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">3. Delivered to Customer</span>
@@ -299,7 +282,6 @@
           </div>
         </div>
 
-        <!-- GRAPH 2: ATELIER CATEGORY DISTRIBUTION -->
         <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
           <div class="flex items-center justify-between pb-4 border-b border-white/5">
             <div class="flex items-center gap-2.5">
@@ -311,11 +293,10 @@
                 <p class="text-[11px] text-slate-500">Live product representation across collections</p>
               </div>
             </div>
-            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-emerald-400 uppercase tracking-widest font-semibold">INVENTORY RATIO</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-emerald-400 uppercase tracking-widest font-semibold">LIVE RATIO</span>
           </div>
 
           <div class="space-y-5 pt-2">
-            <!-- Audio -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">Audio & Wireless Earbuds</span>
@@ -326,7 +307,6 @@
               </div>
             </div>
 
-            <!-- Power Gear -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">Battery Banks & Power Gear</span>
@@ -337,7 +317,6 @@
               </div>
             </div>
 
-            <!-- Fashion -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">Men's Apparel & Fashion</span>
@@ -349,11 +328,10 @@
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
-    <!-- ================= 2. ORDERS & TRACKING DEDICATED VIEW ================= -->
+    <!-- 2. ORDERS & TRACKING -->
     <section id="page-orders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -363,9 +341,6 @@
           <h1 class="font-serif text-3xl text-white">Live Customer Consignments & Tracking</h1>
           <p class="text-xs text-slate-400 mt-0.5">Manage statuses and broadcast Confirmed, Shipping Start, and Delivery Dates</p>
         </div>
-        <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Consignment Feed
-        </button>
       </div>
 
       <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
@@ -384,12 +359,12 @@
           <tbody id="adminOrdersBody" class="divide-y divide-white/5"></tbody>
         </table>
         <div id="noOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No customer orders recorded yet.
+          No customer orders recorded yet in Cloud Firestore.
         </div>
       </div>
     </section>
 
-    <!-- ================= 3. PRODUCT CATALOG DEDICATED VIEW ================= -->
+    <!-- 3. PRODUCT CATALOG -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
         <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
@@ -400,7 +375,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- ADD PRODUCT FORM -->
         <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
           <h2 class="font-serif text-2xl text-white">Publish New Product</h2>
 
@@ -450,23 +424,22 @@
             </div>
 
             <button type="submit" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md">
-              Publish Product To Store
+              Publish Product To Cloud
             </button>
           </form>
         </div>
 
-        <!-- INVENTORY LIST BY CATEGORY -->
         <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
           <div>
-            <h2 class="font-serif text-2xl text-white">Live Store Inventory</h2>
-            <p class="text-xs text-slate-400 mt-1">Manage, inspect, or delete active catalog items</p>
+            <h2 class="font-serif text-2xl text-white">Live Store Inventory (Firestore)</h2>
+            <p class="text-xs text-slate-400 mt-1">Manage active catalog items</p>
           </div>
           <div id="adminInventoryList" class="space-y-3 max-h-[620px] overflow-y-auto custom-scrollbar"></div>
         </div>
       </div>
     </section>
 
-    <!-- ================= 4. REGISTERED VIP CLIENTS DIRECTORY ================= -->
+    <!-- 4. REGISTERED VIP CLIENTS -->
     <section id="page-customers" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -476,9 +449,6 @@
           <h1 class="font-serif text-3xl text-white">Registered VIP Clients Directory</h1>
           <p class="text-xs text-slate-400 mt-0.5">Customer profiles, delivery addresses, and purchase history</p>
         </div>
-        <button onclick="renderAdminCustomers()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Directory
-        </button>
       </div>
 
       <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
@@ -501,7 +471,7 @@
       </div>
     </section>
 
-    <!-- ================= 5. CLIENT FEEDBACK DEDICATED VIEW ================= -->
+    <!-- 5. CLIENT FEEDBACK -->
     <section id="page-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -511,9 +481,6 @@
           <h1 class="font-serif text-3xl text-white">Client Feedback & Support Messages</h1>
           <p class="text-xs text-slate-400 mt-0.5">Direct suggestions, inquiries, and customer feedback submissions</p>
         </div>
-        <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Feedback
-        </button>
       </div>
 
       <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
@@ -537,12 +504,72 @@
 
   </main>
 
-  <!-- SCRIPTS -->
+  <!-- CLOUD FIRESTORE REAL-TIME SCRIPTS -->
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
+      authDomain: "lenkastores-studio.firebaseapp.com",
+      projectId: "lenkastores-studio",
+      storageBucket: "lenkastores-studio.firebasestorage.app",
+      messagingSenderId: "198057972058",
+      appId: "1:198057972058:web:c1e0742dcaa3b476472363",
+      measurementId: "G-S5GNTV03XM"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    let allOrders = [];
+    let allCatalog = [];
+    let allFeedbacks = [];
+    let allCustomers = [];
+
+    // REAL-TIME FIRESTORE LISTENERS
+    function initFirebaseListeners() {
+      // 1. Orders
+      db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+        allOrders = [];
+        snapshot.forEach(doc => allOrders.push({ docId: doc.id, ...doc.data() }));
+        renderGraphicSheet();
+        renderAdminOrders();
+        renderAdminCustomers();
+        updateSidebarBadges();
+      });
+
+      // 2. Catalog
+      db.collection('products').onSnapshot((snapshot) => {
+        allCatalog = [];
+        snapshot.forEach(doc => allCatalog.push({ docId: doc.id, ...doc.data() }));
+        renderGraphicSheet();
+        renderAdminCatalog();
+        updateSidebarBadges();
+      });
+
+      // 3. Feedbacks
+      db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+        allFeedbacks = [];
+        snapshot.forEach(doc => allFeedbacks.push({ docId: doc.id, ...doc.data() }));
+        renderGraphicSheet();
+        renderAdminFeedbacks();
+        updateSidebarBadges();
+      });
+
+      // 4. Customers
+      db.collection('customers').onSnapshot((snapshot) => {
+        allCustomers = [];
+        snapshot.forEach(doc => allCustomers.push({ docId: doc.id, ...doc.data() }));
+        renderAdminCustomers();
+        updateSidebarBadges();
+      });
+    }
+
     function unlockStudio() {
       const key = document.getElementById('adminPassKey').value.trim();
       if (key === 'lenka2026' || key === 'admin') {
         document.getElementById('authGate').classList.add('hidden');
+        initFirebaseListeners();
         selectMenu('dashboard');
       } else {
         document.getElementById('gateError').classList.remove('hidden');
@@ -566,7 +593,7 @@
       lucide.createIcons();
     }
 
-    // MENU SELECTOR (SWITCH PAGES & CLOSE DRAWER)
+    // MENU SWITCHER
     function selectMenu(pageId) {
       const pages = ['dashboard', 'orders', 'catalog', 'customers', 'feedback'];
       const pageTitles = {
@@ -596,11 +623,9 @@
 
       document.getElementById('activeSectionLabel').innerText = pageTitles[pageId] || 'Command Terminal';
 
-      // Auto close sidebar drawer
       document.getElementById('sidebarDrawer').classList.add('-translate-x-full');
       document.getElementById('sidebarBackdrop').classList.add('hidden');
 
-      // Refresh view data
       if (pageId === 'dashboard') renderGraphicSheet();
       if (pageId === 'orders') renderAdminOrders();
       if (pageId === 'catalog') renderAdminCatalog();
@@ -612,49 +637,27 @@
     }
 
     function updateSidebarBadges() {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-
-      const customerMap = new Map();
-      if (savedProfile) customerMap.set(savedProfile.phone, true);
-      orders.forEach(o => customerMap.set(o.customerPhone, true));
-
-      document.getElementById('sideOrdersBadge').innerText = orders.length;
-      document.getElementById('sideCatalogBadge').innerText = catalog.length;
-      document.getElementById('sideCustomersBadge').innerText = customerMap.size;
-      document.getElementById('sideFeedbackBadge').innerText = feedbacks.length;
+      document.getElementById('sideOrdersBadge').innerText = allOrders.length;
+      document.getElementById('sideCatalogBadge').innerText = allCatalog.length;
+      document.getElementById('sideCustomersBadge').innerText = allCustomers.length || allOrders.length;
+      document.getElementById('sideFeedbackBadge').innerText = allFeedbacks.length;
     }
 
-    // GRAPHIC SHEET & ANALYTICS CALCULATION
+    // GRAPHIC SHEET
     function renderGraphicSheet() {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-
-      // 1. Calculate Today's Orders
       const todayFormatted = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      const todayOrdersCount = orders.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted)).length;
+      const todayOrdersCount = allOrders.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted)).length;
       document.getElementById('statTodayOrders').innerText = todayOrdersCount;
 
-      // 2. Customers Count
-      const customerMap = new Map();
-      if (savedProfile) customerMap.set(savedProfile.phone, true);
-      orders.forEach(o => customerMap.set(o.customerPhone, true));
-      document.getElementById('statCustomersCount').innerText = customerMap.size;
-
-      // 3. Totals
-      const totalValuation = orders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
-      document.getElementById('statOrdersCount').innerText = orders.length;
+      const totalValuation = allOrders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+      document.getElementById('statOrdersCount').innerText = allOrders.length;
       document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
+      document.getElementById('statCustomersCount').innerText = allCustomers.length || allOrders.length;
 
-      // 4. Order Status Distribution Graph
-      const confirmedCount = orders.filter(o => o.status === 'Confirmed').length;
-      const dispatchedCount = orders.filter(o => o.status === 'Dispatched').length;
-      const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
-      const totalO = orders.length || 1;
+      const confirmedCount = allOrders.filter(o => o.status === 'Confirmed').length;
+      const dispatchedCount = allOrders.filter(o => o.status === 'Dispatched').length;
+      const deliveredCount = allOrders.filter(o => o.status === 'Delivered').length;
+      const totalO = allOrders.length || 1;
 
       const confPct = Math.round((confirmedCount / totalO) * 100);
       const dispPct = Math.round((dispatchedCount / totalO) * 100);
@@ -668,11 +671,10 @@
       document.getElementById('graphDispatchedBar').style.width = `${dispPct}%`;
       document.getElementById('graphDeliveredBar').style.width = `${delivPct}%`;
 
-      // 5. Atelier Category Graph
-      const audioCount = catalog.filter(c => c.category.includes('Audio')).length;
-      const powerCount = catalog.filter(c => c.category.includes('Battery') || c.category.includes('Power')).length;
-      const fashionCount = catalog.filter(c => c.category.includes('Apparel') || c.category.includes('Fashion')).length;
-      const totalC = catalog.length || 1;
+      const audioCount = allCatalog.filter(c => c.category && c.category.includes('Audio')).length;
+      const powerCount = allCatalog.filter(c => c.category && (c.category.includes('Battery') || c.category.includes('Power'))).length;
+      const fashionCount = allCatalog.filter(c => c.category && (c.category.includes('Apparel') || c.category.includes('Fashion'))).length;
+      const totalC = allCatalog.length || 1;
 
       document.getElementById('graphCatAudioCount').innerText = `${audioCount} Items`;
       document.getElementById('graphCatPowerCount').innerText = `${powerCount} Items`;
@@ -683,20 +685,19 @@
       document.getElementById('graphCatFashionBar').style.width = `${Math.round((fashionCount / totalC) * 100)}%`;
     }
 
-    // ORDERS PAGE
+    // ORDERS
     function renderAdminOrders() {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const tbody = document.getElementById('adminOrdersBody');
       const emptyMsg = document.getElementById('noOrdersMessage');
       tbody.innerHTML = '';
 
-      if (orders.length === 0) {
+      if (allOrders.length === 0) {
         emptyMsg.classList.remove('hidden');
         return;
       }
 
       emptyMsg.classList.add('hidden');
-      orders.forEach((ord, index) => {
+      allOrders.forEach((ord) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
@@ -719,19 +720,19 @@
             <span class="text-bronze-400 font-serif text-xs">Valuation: ₹${ord.totalAmount}</span>
           </td>
           <td class="p-3.5">
-            <select onchange="updateOrderStatus(${index}, this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
+            <select onchange="updateCloudOrderStatus('${ord.docId}', this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
               <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
               <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
               <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
             </select>
           </td>
           <td class="p-3.5 space-y-1">
-            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateOrderDates(${index}, 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
-            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateOrderDates(${index}, 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
-            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateOrderDates(${index}, 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateCloudOrderDate('${ord.docId}', 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateCloudOrderDate('${ord.docId}', 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateCloudOrderDate('${ord.docId}', 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
           </td>
           <td class="p-3.5">
-            <button onclick="deleteOrder(${index})" class="text-slate-500 hover:text-red-400 p-1">
+            <button onclick="deleteCloudOrder('${ord.docId}')" class="text-slate-500 hover:text-red-400 p-1">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -741,56 +742,44 @@
       lucide.createIcons();
     }
 
-    function updateOrderStatus(index, newStatus) {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      if (orders[index]) {
-        orders[index].status = newStatus;
-        localStorage.setItem('lenka_orders', JSON.stringify(orders));
-        renderAdminOrders();
+    async function updateCloudOrderStatus(docId, newStatus) {
+      await db.collection('orders').doc(docId).update({ status: newStatus });
+    }
+
+    async function updateCloudOrderDate(docId, field, val) {
+      const updateObj = {};
+      updateObj[field] = val;
+      await db.collection('orders').doc(docId).update(updateObj);
+    }
+
+    async function deleteCloudOrder(docId) {
+      if (confirm('Delete this consignment from Firebase?')) {
+        await db.collection('orders').doc(docId).delete();
       }
     }
 
-    function updateOrderDates(index, field, val) {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      if (orders[index]) {
-        orders[index][field] = val;
-        localStorage.setItem('lenka_orders', JSON.stringify(orders));
-      }
-    }
-
-    function deleteOrder(index) {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      if (confirm(`Remove consignment #${orders[index].orderId}?`)) {
-        orders.splice(index, 1);
-        localStorage.setItem('lenka_orders', JSON.stringify(orders));
-        renderAdminOrders();
-      }
-    }
-
-    // REGISTERED CUSTOMERS DIRECTORY
+    // CUSTOMERS DIRECTORY
     function renderAdminCustomers() {
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
       const tbody = document.getElementById('adminCustomersBody');
       const emptyMsg = document.getElementById('noCustomersMessage');
       tbody.innerHTML = '';
 
       const customerMap = new Map();
 
-      if (savedProfile) {
-        customerMap.set(savedProfile.phone, {
-          name: savedProfile.name,
-          phone: savedProfile.phone,
-          avatar: savedProfile.avatar,
-          country: savedProfile.address?.country || 'India',
-          state: savedProfile.address?.state || 'Telangana',
-          area: savedProfile.address?.area || 'LIG-530, KPHB Colony',
-          pin: savedProfile.address?.pin || '500072',
-          ordersCount: orders.filter(o => o.customerPhone === savedProfile.phone).length
+      allCustomers.forEach(c => {
+        customerMap.set(c.phone, {
+          name: c.name,
+          phone: c.phone,
+          avatar: c.avatar,
+          country: c.address?.country || 'India',
+          state: c.address?.state || 'Telangana',
+          area: c.address?.area || c.formattedAddress || 'Recorded',
+          pin: c.address?.pin || '500072',
+          ordersCount: allOrders.filter(o => o.customerPhone === c.phone).length
         });
-      }
+      });
 
-      orders.forEach(o => {
+      allOrders.forEach(o => {
         if (!customerMap.has(o.customerPhone)) {
           customerMap.set(o.customerPhone, {
             name: o.customerName,
@@ -800,7 +789,7 @@
             state: 'Recorded',
             area: o.customerAddress,
             pin: 'Verified',
-            ordersCount: orders.filter(x => x.customerPhone === o.customerPhone).length
+            ordersCount: allOrders.filter(x => x.customerPhone === o.customerPhone).length
           });
         }
       });
@@ -837,20 +826,19 @@
       lucide.createIcons();
     }
 
-    // FEEDBACK PAGE
+    // FEEDBACK
     function renderAdminFeedbacks() {
-      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       const tbody = document.getElementById('adminFeedbackBody');
       const emptyMsg = document.getElementById('noFeedbackMessage');
       tbody.innerHTML = '';
 
-      if (feedbacks.length === 0) {
+      if (allFeedbacks.length === 0) {
         emptyMsg.classList.remove('hidden');
         return;
       }
 
       emptyMsg.classList.add('hidden');
-      feedbacks.forEach((fb, index) => {
+      allFeedbacks.forEach((fb) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
@@ -862,7 +850,7 @@
           <td class="p-3.5 font-mono text-bronze-400">${fb.phone}</td>
           <td class="p-3.5 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
           <td class="p-3.5">
-            <button onclick="deleteFeedback(${index})" class="text-slate-500 hover:text-red-400 p-1">
+            <button onclick="deleteCloudFeedback('${fb.docId}')" class="text-slate-500 hover:text-red-400 p-1">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -872,17 +860,14 @@
       lucide.createIcons();
     }
 
-    function deleteFeedback(index) {
-      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      if (confirm(`Remove feedback from ${feedbacks[index].name}?`)) {
-        feedbacks.splice(index, 1);
-        localStorage.setItem('lenka_feedbacks', JSON.stringify(feedbacks));
-        renderAdminFeedbacks();
+    async function deleteCloudFeedback(docId) {
+      if (confirm('Delete this feedback entry?')) {
+        await db.collection('feedbacks').doc(docId).delete();
       }
     }
 
-    // CATALOG MANAGEMENT
-    function handleProductPublish(e) {
+    // CATALOG PUBLISH TO FIRESTORE
+    async function handleProductPublish(e) {
       e.preventDefault();
       const category = document.getElementById('prodCategory').value;
       const title = document.getElementById('prodTitle').value.trim();
@@ -896,7 +881,6 @@
       const variants = variantsRaw ? variantsRaw.split(',').map(v => v.trim()) : [];
 
       const newProduct = {
-        id: 'prod_' + Date.now(),
         category,
         title,
         originalPrice: origPrice,
@@ -904,24 +888,24 @@
         discountTag: tag,
         image,
         variants,
-        description: desc
+        description: desc,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      catalog.unshift(newProduct);
-      localStorage.setItem('lenka_catalog', JSON.stringify(catalog));
-
-      document.getElementById('productPublishForm').reset();
-      renderAdminCatalog();
-      alert(`"${title}" published to live store!`);
+      try {
+        await db.collection('products').add(newProduct);
+        document.getElementById('productPublishForm').reset();
+        alert(`"${title}" published live to Cloud Firestore!`);
+      } catch (err) {
+        alert('Error publishing product: ' + err.message);
+      }
     }
 
     function renderAdminCatalog() {
-      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       const container = document.getElementById('adminInventoryList');
       container.innerHTML = '';
 
-      catalog.forEach((prod, index) => {
+      allCatalog.forEach((prod) => {
         const card = document.createElement('div');
         card.className = "p-3.5 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
         card.innerHTML = `
@@ -934,7 +918,7 @@
               <span>${prod.category}</span>
             </div>
           </div>
-          <button onclick="deleteProduct(${index})" class="text-slate-500 hover:text-red-400 p-2 transition-colors">
+          <button onclick="deleteCloudProduct('${prod.docId}')" class="text-slate-500 hover:text-red-400 p-2 transition-colors">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         `;
@@ -943,12 +927,9 @@
       lucide.createIcons();
     }
 
-    function deleteProduct(index) {
-      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      if (confirm(`Remove "${catalog[index].title}" from live store?`)) {
-        catalog.splice(index, 1);
-        localStorage.setItem('lenka_catalog', JSON.stringify(catalog));
-        renderAdminCatalog();
+    async function deleteCloudProduct(docId) {
+      if (confirm('Delete this product from live store?')) {
+        await db.collection('products').doc(docId).delete();
       }
     }
 
