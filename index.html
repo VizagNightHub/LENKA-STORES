@@ -190,6 +190,25 @@
     </div>
   </div>
 
+  <!-- CUSTOM LUXURY FEEDBACK CONFIRMATION MODAL -->
+  <div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
+      <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
+        <i data-lucide="sparkles" class="w-7 h-7"></i>
+      </div>
+      <div>
+        <h3 class="font-serif text-2xl text-white font-medium">Thank You!</h3>
+        <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+          Thank you for your feedback!<br/>
+          <span class="text-bronze-400 font-serif text-sm">Have a wonderful and pleasant day.</span>
+        </p>
+      </div>
+      <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md">
+        Continue Shopping
+      </button>
+    </div>
+  </div>
+
   <!-- PROFILE & LIVE TRACKER DRAWER -->
   <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
     <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
@@ -351,14 +370,30 @@
     </div>
   </div>
 
-  <!-- FOOTER WITH VIZAG NIGHT HUB & FEEDBACK -->
+  <!-- LUXURY FOOTER WITH SOCIAL MEDIA & FEEDBACK -->
   <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 space-y-4">
-      <div class="font-serif text-xl text-white tracking-wider">LENKA STORES</div>
-      <p class="text-xs text-slate-400 font-light">Direct-to-Consumer Enterprise • Vizag & Global Dispatch • Encrypted Checkout Protocol</p>
+    <div class="max-w-7xl mx-auto px-4 space-y-6">
       
+      <!-- STORE TITLE -->
+      <div class="font-serif text-2xl text-white tracking-wider">LENKA STORES</div>
+      
+      <!-- SOCIAL MEDIA CHANNELS (INSTAGRAM & YOUTUBE) -->
+      <div class="flex items-center justify-center gap-4 pt-1">
+        <!-- INSTAGRAM -->
+        <a href="https://www.instagram.com/the_lenka_8116?utm_source=qr&igsi=MWZoNGtpZHMyM2dscA==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
+          <i data-lucide="instagram" class="w-4 h-4 text-bronze-400 group-hover:scale-110 transition-transform"></i>
+          <span class="text-xs font-medium tracking-wider">Instagram</span>
+        </a>
+
+        <!-- YOUTUBE -->
+        <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
+          <i data-lucide="youtube" class="w-4 h-4 text-bronze-400 group-hover:scale-110 transition-transform"></i>
+          <span class="text-xs font-medium tracking-wider">YouTube</span>
+        </a>
+      </div>
+
       <!-- FEEDBACK BUTTON -->
-      <div class="py-2">
+      <div class="py-1">
         <button onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-xs text-bronze-300 hover:text-white transition-all shadow-md">
           <i data-lucide="message-square" class="w-3.5 h-3.5 text-bronze-400"></i> Share Website Feedback & Support
         </button>
@@ -554,7 +589,7 @@
     function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
     function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
 
-    // FEEDBACK MODAL HANDLING
+    // FEEDBACK MODAL & LUXURY NOTIFICATION
     function openFeedbackModal() {
       if (currentProfile) {
         document.getElementById('fbName').value = currentProfile.name || '';
@@ -565,6 +600,14 @@
 
     function closeFeedbackModal() {
       document.getElementById('feedbackModal').classList.add('hidden');
+    }
+
+    function openFeedbackSuccessModal() {
+      document.getElementById('feedbackSuccessModal').classList.remove('hidden');
+    }
+
+    function closeFeedbackSuccessModal() {
+      document.getElementById('feedbackSuccessModal').classList.add('hidden');
     }
 
     function handleFeedbackSubmit(e) {
@@ -588,7 +631,8 @@
       document.getElementById('feedbackForm').reset();
       closeFeedbackModal();
 
-      alert('Thank you for your feedback! Have a nice day.');
+      // Show luxury dark/gold modal in the center of the screen
+      openFeedbackSuccessModal();
     }
 
     // PROFILE & IMAGE UPLOAD
