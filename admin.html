@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LENKA STUDIO | Operator Command Center</title>
+  <title>LENKA STUDIO | Operator Command Terminal</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -23,6 +22,7 @@
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
             serif: ['Cormorant Garamond', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
             bronze: { 300: '#E2D4C3', 400: '#C5A880', 500: '#A88B63' },
@@ -33,7 +33,7 @@
       }
     }
   </script>
-
+  
   <style>
     .glass-nav {
       background: rgba(10, 11, 13, 0.94);
@@ -41,27 +41,29 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
   </style>
 </head>
 
-<body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col selection:bg-bronze-400 selection:text-noir-950">
 
+  <!-- AUTHENTICATION GATE -->
   <div id="authGate" class="fixed inset-0 z-50 bg-noir-950 flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6">
-     <div class="w-14 h-14 mx-auto rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
-  <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-    <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
-    <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-    <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-  </svg>
-</div>
+      <div class="w-14 h-14 mx-auto rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
+          <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
+          <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+          <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div>
         <h2 class="font-serif text-2xl text-white font-medium">Lenka Studio Access</h2>
         <p class="text-xs text-slate-500 mt-1">Authorized Operator Portal Only</p>
       </div>
       <div class="space-y-3">
-        <input type="password" id="adminPassKey" placeholder="Enter Operator Passkey" 
-               class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white text-center tracking-widest focus:outline-none focus:border-bronze-400" />
+        <input type="password" id="adminPassKey" placeholder="Enter Operator Passkey" class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white text-center tracking-widest focus:outline-none focus:border-bronze-400" />
         <button type="button" onclick="unlockStudio()" class="w-full py-3 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all">
           Authorize Session
         </button>
@@ -70,217 +72,281 @@
     </div>
   </div>
 
+  <!-- STUDIO HEADER -->
   <header class="sticky top-0 z-40 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
-       <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
-  <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-    <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
-    <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-    <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-  </svg>
-</div>
+        <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
+            <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
+            <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+            <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div>
           <span class="font-serif text-xl tracking-wider text-white font-medium">LENKA STUDIO</span>
           <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Control Terminal</span>
         </div>
       </div>
       <div class="flex items-center gap-3">
-        <a href="index.html" target="_blank" class="px-4 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-2">
+        <a href="index.html" target="_blank" class="px-4 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-1.5">
           <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> View Live Store
         </a>
       </div>
     </div>
   </header>
 
-  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+  <!-- MAIN STUDIO WORKSPACE -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-12">
     
-    <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
-      <div class="border-b border-white/10 pb-4 flex items-center justify-between">
-        <div>
-          <h2 class="font-serif text-xl text-white font-medium">Catalog Management</h2>
-          <p class="text-xs text-slate-500">Publish products live to the customer storefront</p>
+    <!-- ROW 1: LIVE ORDERS & FULFILLMENT COMMAND -->
+    <section class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-2">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-lg bg-bronze-400/10 text-bronze-400">
+            <i data-lucide="truck" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="font-serif text-2xl text-white">Live Customer Order Management</h2>
+            <p class="text-xs text-slate-400">Review incoming customer details, addresses, and broadcast instant shipping status updates</p>
+          </div>
         </div>
-        <span class="text-[10px] px-2.5 py-1 rounded bg-bronze-400/10 text-bronze-300 uppercase tracking-widest font-mono">Live Engine</span>
+        <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3 py-1.5 rounded-lg bg-noir-850 hover:bg-noir-800">Refresh Feed</button>
       </div>
 
-      <form id="productForm" onsubmit="handleProductPublish(event)" class="space-y-5">
-        
+      <!-- ORDERS TABLE -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
+            <tr>
+              <th class="p-3">Order ID</th>
+              <th class="p-3">Customer & Contact</th>
+              <th class="p-3">Full Shipping Address</th>
+              <th class="p-3">Product Summary</th>
+              <th class="p-3">Valuation</th>
+              <th class="p-3">Update Live Status</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrdersBody" class="divide-y divide-white/5">
+            <!-- Order rows dynamically inject here -->
+          </tbody>
+        </table>
+        <div id="noOrdersMessage" class="hidden text-center py-10 text-slate-500 text-xs">
+          No customer reservations received yet. Orders placed on the storefront will appear here instantly.
+        </div>
+      </div>
+    </section>
+
+    <!-- ROW 2: CATALOG PUBLISHING ENGINE -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- PUBLISH FORM -->
+      <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
         <div>
-          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Category</label>
-          <select id="prodCategory" required class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-bronze-400">
-            <option value="Electronics">Audio & Wireless Earbuds</option>
-            <option value="Power">Battery Banks & Power Gear</option>
-            <option value="MensFashion">Men's Apparel & Fashion</option>
-            <option value="WomensFashion">Women's Apparel & Fashion</option>
-          </select>
+          <h2 class="font-serif text-2xl text-white">Catalog Management</h2>
+          <p class="text-xs text-slate-400 mt-1">Publish products live to the customer storefront</p>
         </div>
 
-        <div>
-          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Title</label>
-          <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required
-                 class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
-        </div>
-
-        <div class="grid grid-cols-3 gap-3">
+        <form id="productPublishForm" class="space-y-4" onsubmit="handleProductPublish(event)">
           <div>
-            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Original Price (₹)</label>
-            <input type="number" id="prodOriginalPrice" placeholder="e.g., 4999" required
-                   class="w-full bg-noir-950 fine-border rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Category</label>
+            <select id="prodCategory" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400">
+              <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
+              <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
+              <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
+            </select>
           </div>
+
           <div>
-            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Offer Price (₹)</label>
-            <input type="number" id="prodOfferPrice" placeholder="e.g., 2499" required
-                   class="w-full bg-noir-950 fine-border rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Title</label>
+            <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
           </div>
+
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Original Price (₹)</label>
+              <input type="number" id="prodOrigPrice" placeholder="4999" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+            </div>
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Offer Price (₹)</label>
+              <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+            </div>
+            <div>
+              <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Discount Tag</label>
+              <input type="text" id="prodTag" placeholder="50% OFF" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
+            </div>
+          </div>
+
           <div>
-            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Discount Tag</label>
-            <input type="text" id="prodBadge" placeholder="e.g., 50% OFF"
-                   class="w-full bg-noir-950 fine-border rounded-xl px-3 py-3 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Main Image URL</label>
+            <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
           </div>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Main Image URL</label>
-            <input type="url" id="prodImage" placeholder="https://... (Direct Image Link)" required
-                   class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Available Colors (Comma Separated)</label>
+            <input type="text" id="prodVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none" />
           </div>
+
           <div>
-            <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Video URL (Optional)</label>
-            <input type="url" id="prodVideo" placeholder="https://... (.mp4 link or YouTube embed)"
-                   class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Description & Specs</label>
+            <textarea id="prodDesc" rows="3" placeholder="Highlight key features, drivers, fabric..." class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none"></textarea>
           </div>
-        </div>
 
-        <div>
-          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Available Color Variants (Comma Separated)</label>
-          <input type="text" id="prodVariants" placeholder="e.g., Midnight Obsidian, Champagne Gold, Frost White" required
-                 class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400" />
-        </div>
-
-        <div>
-          <label class="block text-[10px] uppercase font-semibold text-slate-400 tracking-widest mb-1.5">Product Description & Specs</label>
-          <textarea id="prodDesc" rows="3" placeholder="Highlight key features, battery life, sound drivers, or fabrics..." required
-                    class="w-full bg-noir-950 fine-border rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-bronze-400"></textarea>
-        </div>
-
-        <button type="submit" id="submitBtn" class="w-full py-4 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs uppercase tracking-[0.2em] rounded-xl transition-all cursor-pointer">
-          Publish Product to Store
-        </button>
-      </form>
-    </div>
-
-    <div class="lg:col-span-5 bg-noir-900 fine-border p-6 rounded-2xl space-y-4 flex flex-col h-[760px]">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <h3 class="font-serif text-lg text-white font-medium">Live Catalog Inventory</h3>
-        <span id="itemCount" class="text-xs text-slate-500 font-mono">0 Items</span>
+          <button type="submit" class="w-full py-3.5 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md">
+            Publish Product To Store
+          </button>
+        </form>
       </div>
 
-      <div id="adminProductList" class="flex-grow overflow-y-auto space-y-3 pr-1">
+      <!-- LIVE CATALOG INVENTORY -->
+      <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6">
+        <div>
+          <h2 class="font-serif text-2xl text-white">Live Catalog Inventory</h2>
+          <p class="text-xs text-slate-400 mt-1">Manage, delete, or inspect active products</p>
         </div>
-    </div>
+        <div id="adminInventoryList" class="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
+          <!-- Inventory rows injected here -->
+        </div>
+      </div>
+
+    </section>
 
   </main>
 
   <script>
-    lucide.createIcons();
-
-    // Passkey security
+    // PASSKEY AUTH
     function unlockStudio() {
-      const pass = document.getElementById('adminPassKey').value;
-      if (pass === 'lenka2026' || pass === 'admin') {
+      const key = document.getElementById('adminPassKey').value.trim();
+      if (key === 'lenka2026' || key === 'admin') {
         document.getElementById('authGate').classList.add('hidden');
+        renderAdminOrders();
+        renderAdminCatalog();
       } else {
         document.getElementById('gateError').classList.remove('hidden');
       }
     }
 
-    // Firebase Init
-    const firebaseConfig = {
-      apiKey: "AIzaSyDSFo6lpBsyO5fXB06BzTbsuTQ80pJNtvM",
-      authDomain: "lenka-stores.firebaseapp.com",
-      projectId: "lenka-stores",
-      storageBucket: "lenka-stores.firebasestorage.app",
-      messagingSenderId: "41062494605",
-      appId: "1:41062494605:web:56ffab077c1ed5d54ccdc4"
-    };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // ORDERS MANAGEMENT
+    function renderAdminOrders() {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      const tbody = document.getElementById('adminOrdersBody');
+      const emptyMsg = document.getElementById('noOrdersMessage');
+      tbody.innerHTML = '';
 
-    // Real-Time Inventory Listener
-    db.collection('products').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-      const container = document.getElementById('adminProductList');
-      const countLabel = document.getElementById('itemCount');
-      container.innerHTML = '';
-      countLabel.innerText = `${snapshot.size} Items`;
-
-      if (snapshot.empty) {
-        container.innerHTML = `<div class="text-center py-16 text-slate-600 text-xs">No products in catalog. Add your first item.</div>`;
+      if (orders.length === 0) {
+        emptyMsg.classList.remove('hidden');
         return;
       }
 
-      snapshot.forEach((doc) => {
-        const p = doc.data();
+      emptyMsg.classList.add('hidden');
+      orders.forEach((ord, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-noir-850/50 transition-colors";
+        tr.innerHTML = `
+          <td class="p-3 font-mono text-bronze-400 font-semibold">#${ord.orderId}<br/><span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span></td>
+          <td class="p-3">
+            <span class="text-white font-medium block">${ord.customerName}</span>
+            <span class="text-slate-400 font-mono text-[11px]">${ord.customerPhone}</span>
+          </td>
+          <td class="p-3 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
+          <td class="p-3 text-white max-w-xs text-[11px] font-medium">${ord.itemsSummary}</td>
+          <td class="p-3 font-serif text-sm text-bronze-400">₹${ord.totalAmount}</td>
+          <td class="p-3">
+            <select onchange="updateOrderStatus(${index}, this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
+              <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
+              <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
+              <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function updateOrderStatus(index, newStatus) {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      if (orders[index]) {
+        orders[index].status = newStatus;
+        localStorage.setItem('lenka_orders', JSON.stringify(orders));
+        renderAdminOrders();
+      }
+    }
+
+    // CATALOG PUBLISHING
+    function handleProductPublish(e) {
+      e.preventDefault();
+      const category = document.getElementById('prodCategory').value;
+      const title = document.getElementById('prodTitle').value.trim();
+      const origPrice = Number(document.getElementById('prodOrigPrice').value);
+      const offerPrice = Number(document.getElementById('prodOfferPrice').value);
+      const tag = document.getElementById('prodTag').value.trim();
+      const image = document.getElementById('prodImage').value.trim();
+      const variantsRaw = document.getElementById('prodVariants').value.trim();
+      const desc = document.getElementById('prodDesc').value.trim();
+
+      const variants = variantsRaw ? variantsRaw.split(',').map(v => v.trim()) : [];
+
+      const newProduct = {
+        id: 'prod_' + Date.now(),
+        category,
+        title,
+        originalPrice: origPrice,
+        offerPrice: offerPrice,
+        discountTag: tag,
+        image,
+        variants,
+        description: desc
+      };
+
+      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      catalog.unshift(newProduct);
+      localStorage.setItem('lenka_catalog', JSON.stringify(catalog));
+
+      document.getElementById('productPublishForm').reset();
+      renderAdminCatalog();
+      alert(`"${title}" published to live store!`);
+    }
+
+    function renderAdminCatalog() {
+      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      const container = document.getElementById('adminInventoryList');
+      container.innerHTML = '';
+
+      catalog.forEach((prod, index) => {
         const card = document.createElement('div');
-        card.className = 'bg-noir-950 fine-border p-3.5 rounded-xl flex items-center justify-between gap-3';
+        card.className = "p-3 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
         card.innerHTML = `
-          <div class="flex items-center gap-3">
-            <img src="${p.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-850" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200'" />
-            <div>
-              <h4 class="text-xs font-medium text-white line-clamp-1">${p.title}</h4>
-              <p class="text-[11px] text-bronze-300 font-mono mt-0.5">₹${Number(p.offerPrice).toLocaleString('en-IN')} <span class="line-through text-slate-600 text-[10px]">₹${Number(p.originalPrice).toLocaleString('en-IN')}</span></p>
-              <span class="text-[9px] text-slate-500 uppercase tracking-widest">${p.category}</span>
+          <img src="${prod.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-900" />
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs text-white font-medium truncate">${prod.title}</h4>
+            <div class="flex items-center gap-2 text-[10px] text-slate-400">
+              <span class="text-bronze-400 font-serif text-xs">₹${prod.offerPrice}</span>
+              <span>•</span>
+              <span>${prod.category}</span>
             </div>
           </div>
-          <button onclick="deleteProduct('${doc.id}')" class="text-slate-600 hover:text-red-400 p-2 transition-colors">
+          <button onclick="deleteProduct(${index})" class="text-slate-500 hover:text-red-400 p-2 transition-colors">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         `;
         container.appendChild(card);
       });
       lucide.createIcons();
-    });
-
-    // Publish Product
-    function handleProductPublish(e) {
-      e.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.innerText = 'Publishing...';
-      submitBtn.disabled = true;
-
-      const variants = document.getElementById('prodVariants').value.split(',').map(s => s.trim()).filter(Boolean);
-
-      const product = {
-        category: document.getElementById('prodCategory').value,
-        title: document.getElementById('prodTitle').value.trim(),
-        originalPrice: Number(document.getElementById('prodOriginalPrice').value),
-        offerPrice: Number(document.getElementById('prodOfferPrice').value),
-        badge: document.getElementById('prodBadge').value.trim() || 'NEW',
-        image: document.getElementById('prodImage').value.trim(),
-        video: document.getElementById('prodVideo').value.trim(),
-        variants: variants,
-        description: document.getElementById('prodDesc').value.trim(),
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      db.collection('products').add(product).then(() => {
-        document.getElementById('productForm').reset();
-        submitBtn.innerText = 'Publish Product to Store';
-        submitBtn.disabled = false;
-      }).catch(err => {
-        alert('Error publishing product: ' + err.message);
-        submitBtn.innerText = 'Publish Product to Store';
-        submitBtn.disabled = false;
-      });
     }
 
-    // Delete Product
-    function deleteProduct(id) {
-      if (confirm('Delete this product from live customer store?')) {
-        db.collection('products').doc(id).delete();
+    function deleteProduct(index) {
+      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      if (confirm(`Remove "${catalog[index].title}" from live store?`)) {
+        catalog.splice(index, 1);
+        localStorage.setItem('lenka_catalog', JSON.stringify(catalog));
+        renderAdminCatalog();
       }
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>
