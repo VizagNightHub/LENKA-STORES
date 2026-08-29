@@ -7,20 +7,20 @@
   
   <meta name="description" content="Discover refined electronics, modern gadgets, and couture fashion at LENKA STORES by Lenka Ventures Pvt Ltd." />
   <meta property="og:title" content="LENKA STORES" />
-
- <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
-
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-
+  
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -39,280 +39,571 @@
       }
     }
   </script>
-
+  
   <style>
     .glass-nav {
-      background: rgba(10, 11, 13, 0.92);
+      background: rgba(10, 11, 13, 0.94);
       backdrop-filter: blur(24px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
     .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 0%, #E2D4C3 50%, #C5A880 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
   </style>
 </head>
 
-<body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-platinum-200 selection:text-black min-h-screen flex flex-col justify-between">
+<body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
-  <div class="bg-noir-900 border-b border-white/5 text-slate-400 text-[10px] py-2 px-4 text-center tracking-[0.3em] uppercase">
-    Lenka Stores by Lenka Ventures Pvt Ltd &bull; Curated Catalog Live
-  </div>
+  <!-- TOP ANNOUNCEMENT -->
+  <aside class="bg-noir-900 border-b border-white/5 py-2 px-4 text-center text-xs tracking-widest text-slate-400 font-light flex items-center justify-center gap-2">
+    <span class="w-1.5 h-1.5 rounded-full bg-bronze-400 animate-pulse"></span>
+    COMPLIMENTARY CONCIERGE EXPRESS COURIER & TRANSIT INSURANCE ON ALL ORDERS
+  </aside>
 
-  <header class="sticky top-0 z-40 glass-nav">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+  <!-- NAVIGATION -->
+  <header class="sticky top-0 z-40 glass-nav transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
+      <!-- LOGO -->
       <a href="#" class="flex items-center gap-3.5 group">
-        <div class="w-12 h-12 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center transition-all group-hover:border-bronze-400/60 shadow-lg">
+        <div class="w-11 h-11 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center transition-all group-hover:border-bronze-400/60 shadow-lg">
           <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
             <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
-           <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+            <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
             <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="flex flex-col">
-          <span class="font-serif text-2xl tracking-[0.16em] text-white font-medium">LENKA</span>
-          <span class="text-[8.5px] uppercase tracking-[0.45em] text-slate-500 font-medium -mt-0.5">STORES</span>
+        <div>
+          <span class="font-serif text-2xl tracking-wider text-white font-medium block">LENKA STORES</span>
+          <span class="text-[9px] uppercase tracking-[0.3em] text-bronze-400 font-light block -mt-1">HAUTE COUTURE & ELECTRONICS</span>
         </div>
       </a>
 
+      <!-- CATEGORY NAV -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
+        <button onclick="filterCategory('all')" class="hover:text-bronze-400 transition-colors">All Ateliers</button>
+        <button onclick="filterCategory('Audio & Wireless Earbuds')" class="hover:text-bronze-400 transition-colors">Audio Earbuds</button>
+        <button onclick="filterCategory('Battery Banks & Power Gear')" class="hover:text-bronze-400 transition-colors">Power Banks</button>
+        <button onclick="filterCategory('Men\'s Apparel & Fashion')" class="hover:text-bronze-400 transition-colors">Men's Fashion</button>
+      </nav>
+
+      <!-- USER ACTIONS -->
       <div class="flex items-center gap-3">
-        <button type="button" onclick="openProfileModal()" id="authNavBtn" class="flex items-center gap-2.5 px-4 py-2 rounded-lg bg-noir-900 hover:bg-noir-850 text-slate-300 fine-border fine-border-hover transition-all text-xs tracking-wider uppercase font-medium cursor-pointer">
-          <div class="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center text-[10px] text-slate-300">
-            <i data-lucide="user" class="w-3 h-3"></i>
-          </div>
-          <span id="navProfileName" class="text-[11px] tracking-widest font-light">Client Account</span>
+        <!-- PROFILE BUTTON -->
+        <button onclick="openProfileDrawer()" class="px-3 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all">
+          <i data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
+          <span id="navProfileLabel" class="hidden sm:inline">My Profile</span>
+        </button>
+
+        <!-- CART BUTTON -->
+        <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all">
+          <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
+          <span id="cartBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-bronze-400 text-noir-950 font-bold text-[10px] flex items-center justify-center">0</span>
         </button>
       </div>
 
     </div>
   </header>
 
-  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-12">
-    
-    <div class="text-center space-y-4 max-w-2xl mx-auto">
-      <h1 class="text-4xl sm:text-6xl font-serif font-light tracking-tight text-white">
-        Curated Masterpieces
+  <!-- HERO SECTION -->
+  <section class="relative py-20 px-4 sm:px-6 lg:px-8 border-b border-white/5 bg-gradient-to-b from-noir-900 to-noir-950 text-center">
+    <div class="max-w-3xl mx-auto space-y-4">
+      <span class="text-xs uppercase tracking-[0.35em] text-bronze-400 font-semibold">THE OFFICIAL REPOSITORY</span>
+      <h1 class="text-4xl sm:text-6xl font-serif text-white font-normal leading-tight">
+        Precision Engineering.<br/><span class="italic gold-gradient-text font-light">Timeless Couture.</span>
       </h1>
-      <p class="text-sm font-serif italic text-bronze-300 tracking-wide">
-        High-fidelity audio, ultra-capacity power solutions, and modern apparel.
+      <p class="text-sm text-slate-400 font-light max-w-xl mx-auto leading-relaxed">
+        Experience high-performance active noise cancellation audio, high-wattage GaN power gear, and handcrafted luxury attire.
       </p>
     </div>
+  </section>
 
-    <div class="flex items-center justify-center gap-2 flex-wrap pb-4">
-      <button onclick="filterCategory('All')" class="cat-btn active px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-platinum-100 text-noir-950 transition-all">All Collections</button>
-      <button onclick="filterCategory('Electronics')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Earbuds</button>
-      <button onclick="filterCategory('Power')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Power Banks</button>
-      <button onclick="filterCategory('MensFashion')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Men's Apparel</button>
-      <button onclick="filterCategory('WomensFashion')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Women's Apparel</button>
+  <!-- CATALOG SECTION -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-white/5 gap-4">
+      <div>
+        <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
+        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory direct from Lenka Vault</p>
+      </div>
+      <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs">
+        <!-- Category badges dynamically set -->
+      </div>
     </div>
 
-    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      </div>
-
+    <!-- PRODUCT GRID -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+      <!-- Products render here -->
+    </div>
+    <div id="emptyCatalogState" class="hidden text-center py-20">
+      <i data-lucide="package-open" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
+      <p class="text-slate-400 text-sm">No inventory items listed in this atelier.</p>
+    </div>
   </main>
 
-  <div id="profileModal" class="fixed inset-0 z-50 overflow-hidden hidden" aria-modal="true" role="dialog">
-    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProfileModal()"></div>
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
-      <div class="w-screen max-w-md bg-noir-900 border-l border-white/10 p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-y-auto relative z-10 text-slate-300">
-        <div>
-          <div class="flex items-center justify-between pb-5 border-b border-white/10">
-            <h2 class="font-serif text-lg text-white font-medium">Client Account & Address</h2>
-            <button onclick="closeProfileModal()" class="text-slate-500 hover:text-white p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+  <!-- PROFILE DRAWER (MODAL) -->
+  <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
+    <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+      
+      <div>
+        <!-- DRAWER HEADER -->
+        <div class="flex items-center justify-between pb-5 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <i data-lucide="user-check" class="w-5 h-5 text-bronze-400"></i>
+            <h3 class="font-serif text-xl text-white">Customer Profile</h3>
+          </div>
+          <button onclick="closeProfileDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- AUTH FORM (IF NOT LOGGED IN) -->
+        <div id="authSection" class="mt-6 space-y-4">
+          <p class="text-xs text-slate-400">Enter your phone or email to save your address & track live deliveries.</p>
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Full Name</label>
+            <input id="userNameInput" type="text" placeholder="e.g., Arjun Rao" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact / WhatsApp</label>
+            <input id="userPhoneInput" type="tel" placeholder="+91 98765 43210" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Shipping Address (With PIN)</label>
+            <textarea id="userAddressInput" rows="3" placeholder="Door No, Street, City, State, PIN Code" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
+          </div>
+          <button onclick="saveUserProfile()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-wider uppercase rounded-xl transition-all">
+            Save Profile & Address
+          </button>
+        </div>
+
+        <!-- LOGGED IN PROFILE CARD -->
+        <div id="profileSavedCard" class="hidden mt-6 space-y-5">
+          <div class="p-4 rounded-xl bg-noir-850 fine-border space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="displayUserName" class="text-sm font-semibold text-white"></span>
+              <span class="text-[10px] bg-bronze-400/10 text-bronze-400 px-2 py-0.5 rounded-full uppercase tracking-wider">Verified VIP</span>
+            </div>
+            <p id="displayUserPhone" class="text-xs text-slate-400 flex items-center gap-1.5">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-bronze-400"></i> <span></span>
+            </p>
+            <p id="displayUserAddress" class="text-xs text-slate-300 flex items-start gap-1.5 pt-1 border-t border-white/5">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bronze-400 mt-0.5"></i> <span></span>
+            </p>
           </div>
 
-          <div id="statusNotice" class="hidden my-4 p-3 rounded-lg text-xs tracking-wide"></div>
-
-          <form id="profileForm" onsubmit="handleSaveProfile(event)" class="space-y-4 mt-6">
-            <div>
-              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Full Name</label>
-              <input type="text" id="custName" placeholder="e.g. Lenka Vardhan Sai" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+          <!-- RECENT ORDERS & LIVE TRACKER BOX -->
+          <div class="pt-4 border-t border-white/10">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="font-serif text-base text-white flex items-center gap-1.5">
+                <i data-lucide="truck" class="w-4 h-4 text-bronze-400"></i> Live Order Tracker
+              </h4>
+              <button onclick="renderUserOrders()" class="text-[10px] text-bronze-400 underline">Refresh</button>
             </div>
-
-            <div>
-              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Mobile Number</label>
-              <input type="tel" id="custPhone" placeholder="10-digit mobile number" maxlength="10" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+            <div id="userOrdersList" class="space-y-4">
+              <!-- Orders injected here -->
             </div>
-
-            <div class="pt-3 border-t border-white/10 space-y-3">
-              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Shipping Address</span>
-              <div>
-                <label class="block text-[10px] text-slate-500 mb-1">Country</label>
-                <input type="text" id="addrCountry" value="India" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
-              </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-[10px] text-slate-500 mb-1">State</label>
-                  <input type="text" id="addrState" placeholder="Andhra Pradesh" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
-                </div>
-                <div>
-                  <label class="block text-[10px] text-slate-500 mb-1">District / City</label>
-                  <input type="text" id="addrDistrict" placeholder="Visakhapatnam" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-[10px] text-slate-500 mb-1">Door / Flat No.</label>
-                  <input type="text" id="addrDoor" placeholder="D.No 12-34" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
-                </div>
-                <div>
-                  <label class="block text-[10px] text-slate-500 mb-1">Street Name</label>
-                  <input type="text" id="addrStreet" placeholder="Beach Road" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
-                </div>
-              </div>
-              <div>
-                <label class="block text-[10px] text-slate-500 mb-1">PIN Code</label>
-                <input type="text" id="addrPin" placeholder="6-digit PIN" maxlength="6" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Payment Method</label>
-              <select id="custPayment" class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white">
-                <option value="UPI (Google Pay / PhonePe / Paytm)">UPI (Google Pay / PhonePe)</option>
-                <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-              </select>
-            </div>
-
-            <button type="submit" class="w-full py-3 rounded-lg bg-platinum-100 text-noir-950 font-bold text-xs uppercase tracking-widest cursor-pointer">
-              Save Shipping Details
-            </button>
-          </form>
+          </div>
         </div>
+
+      </div>
+
+      <!-- FOOTER ACTIONS -->
+      <div id="profileFooter" class="hidden pt-4 border-t border-white/10">
+        <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all">
+          Edit Address / Logout
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
+    <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-bronze-400"></i>
+            <h3 class="font-serif text-xl text-white">Your Atelier Bag</h3>
+          </div>
+          <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- CART ITEMS CONTAINER -->
+        <div id="cartItemsList" class="mt-6 space-y-4">
+          <!-- Items render here -->
+        </div>
+      </div>
+
+      <!-- CART TOTALS & CHECKOUT -->
+      <div id="cartSummaryBox" class="pt-6 border-t border-white/10 space-y-4">
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-slate-400">Total Valuation:</span>
+          <span id="cartTotalPrice" class="text-xl font-serif text-white font-medium">₹0</span>
+        </div>
+        <button onclick="proceedToCheckout()" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+          <span>Complete Reservation Order</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
       </div>
     </div>
   </div>
 
-  <footer class="bg-noir-950 border-t border-white/5 py-8">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
-      <p class="font-serif text-slate-400 text-sm tracking-widest">LENKA STORES</p>
-      <p>&copy; 2026 Lenka Ventures Pvt Ltd. All rights reserved.</p>
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-4">
+      <div class="font-serif text-lg text-slate-300">LENKA STORES</div>
+      <p class="text-[11px] font-light">Direct-to-Consumer Enterprise • Vizag & Global Dispatch • Encrypted Checkout Protocol</p>
+      <div class="text-[10px] text-slate-600">© 2026 Lenka Ventures Pvt Ltd. All rights reserved.</div>
     </div>
   </footer>
 
+  <!-- CLIENT SCRIPTS -->
   <script>
-    lucide.createIcons();
+    // Initialize Local Persistence Stores
+    let currentCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
+    let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+    let ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDSFo6lpBsyO5fXB06BzTbsuTQ80pJNtvM",
-      authDomain: "lenka-stores.firebaseapp.com",
-      projectId: "lenka-stores",
-      storageBucket: "lenka-stores.firebasestorage.app",
-      messagingSenderId: "41062494605",
-      appId: "1:41062494605:web:56ffab077c1ed5d54ccdc4"
-    };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    let allProducts = [];
-    let currentCategory = 'All';
-
-    // Real-Time Live Sync from Admin Studio
-    db.collection('products').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-      allProducts = [];
-      snapshot.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() }));
-      renderProducts();
-    });
-
-    function filterCategory(cat) {
-      currentCategory = cat;
-      document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.className = 'cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all';
-      });
-      event.target.className = 'cat-btn active px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-platinum-100 text-noir-950 transition-all';
-      renderProducts();
+    // Default Seed Catalog if empty
+    if (currentCatalog.length === 0) {
+      currentCatalog = [
+        {
+          id: 'item_101',
+          category: 'Audio & Wireless Earbuds',
+          title: 'Lenka Horizon ANC Earbuds Pro',
+          originalPrice: 4999,
+          offerPrice: 2499,
+          discountTag: '50% OFF',
+          image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+          variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
+          description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
+        },
+        {
+          id: 'item_102',
+          category: 'Battery Banks & Power Gear',
+          title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
+          originalPrice: 3999,
+          offerPrice: 1999,
+          discountTag: '50% OFF',
+          image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&auto=format&fit=crop&q=80',
+          variants: ['Matte Carbon', 'Slate Silver'],
+          description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
+        },
+        {
+          id: 'item_103',
+          category: 'Men\'s Apparel & Fashion',
+          title: 'Lenka Signature Tailored Oxford Shirt',
+          originalPrice: 2999,
+          offerPrice: 1499,
+          discountTag: 'LIMITED EDITION',
+          image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80',
+          variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
+          description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
+        }
+      ];
+      localStorage.setItem('lenka_catalog', JSON.stringify(currentCatalog));
     }
 
-    function renderProducts() {
+    // Window Load Init
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderCatalog('all');
+      updateCartUI();
+      checkSavedProfile();
+    });
+
+    // Render Catalog Items
+    function renderCatalog(filter = 'all') {
       const grid = document.getElementById('productGrid');
+      const empty = document.getElementById('emptyCatalogState');
       grid.innerHTML = '';
 
-      const filtered = currentCategory === 'All' 
-        ? allProducts 
-        : allProducts.filter(p => p.category === currentCategory);
+      const items = filter === 'all' 
+        ? currentCatalog 
+        : currentCatalog.filter(p => p.category === filter);
 
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-20 text-slate-600 text-sm">No items currently available in this category.</div>`;
+      if (items.length === 0) {
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        items.forEach(prod => {
+          const card = document.createElement('div');
+          card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group";
+          
+          let variantHTML = '';
+          if (prod.variants && prod.variants.length > 0) {
+            variantHTML = `
+              <div class="mt-3">
+                <span class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1.5">Color Edition</span>
+                <div class="flex flex-wrap gap-1.5">
+                  ${prod.variants.map((v, idx) => `
+                    <button onclick="selectVariant(this, '${prod.id}')" class="variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border ${idx === 0 ? 'bg-bronze-400 text-noir-950 font-medium' : 'bg-noir-850 text-slate-300'} transition-all">${v}</button>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            <div class="relative overflow-hidden bg-noir-850 aspect-square">
+              <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+              ${prod.discountTag ? `<span class="absolute top-3 left-3 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider">${prod.discountTag}</span>` : ''}
+              <span class="absolute top-3 right-3 bg-noir-950/80 backdrop-blur-md text-[10px] text-slate-400 px-2.5 py-0.5 rounded-full border border-white/10 uppercase tracking-widest">${prod.category.split(' ')[0]}</span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="font-serif text-lg text-white font-medium">${prod.title}</h3>
+                <p class="text-xs text-slate-400 mt-1 line-clamp-2">${prod.description || ''}</p>
+                ${variantHTML}
+              </div>
+              <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                <div>
+                  <span class="text-xs text-slate-500 line-through mr-1.5">₹${prod.originalPrice}</span>
+                  <span class="text-lg font-serif text-white font-semibold">₹${prod.offerPrice}</span>
+                </div>
+                <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add To Bag
+                </button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+      lucide.createIcons();
+    }
+
+    function selectVariant(btn, prodId) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.variant-pill').forEach(b => {
+        b.className = 'variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border bg-noir-850 text-slate-300 transition-all';
+      });
+      btn.className = 'variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border bg-bronze-400 text-noir-950 font-medium transition-all';
+    }
+
+    function filterCategory(cat) {
+      document.getElementById('currentCategoryHeading').innerText = cat === 'all' ? 'Live Catalog' : cat;
+      renderCatalog(cat);
+    }
+
+    // CART FUNCTIONALITY
+    function addToBag(prodId) {
+      const prod = currentCatalog.find(p => p.id === prodId);
+      if (!prod) return;
+      currentCart.push({ ...prod, cartItemId: Date.now() });
+      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
+      updateCartUI();
+      openCartDrawer();
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cartBadge');
+      badge.innerText = currentCart.length;
+
+      const list = document.getElementById('cartItemsList');
+      const totalDisplay = document.getElementById('cartTotalPrice');
+      list.innerHTML = '';
+
+      if (currentCart.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-10">Your atelier bag is empty.</p>`;
+        totalDisplay.innerText = '₹0';
         return;
       }
 
-      filtered.forEach(p => {
-        const variantsHtml = (p.variants || []).map((v, i) => `
-          <button type="button" onclick="selectVariant('${p.id}', '${v}')" class="var-btn-${p.id} text-[10px] px-2.5 py-1 rounded border border-white/10 ${i === 0 ? 'bg-white/20 text-white border-bronze-400' : 'bg-noir-900 text-slate-400'}">
-            ${v}
-          </button>
-        `).join('');
-
-        const card = document.createElement('div');
-        card.className = 'bg-noir-900 fine-border rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between group hover:border-bronze-400/40 transition-all duration-300';
-        card.innerHTML = `
-          <div>
-            <div class="relative h-64 overflow-hidden bg-noir-950">
-              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              <span class="absolute top-3 left-3 bg-noir-950/80 backdrop-blur-md text-bronze-300 text-[10px] font-bold px-2.5 py-1 rounded tracking-widest uppercase border border-white/10">
-                ${p.badge || 'EXCLUSIVE'}
-              </span>
-            </div>
-            <div class="p-6 space-y-3">
-              <h3 class="font-serif text-lg text-white font-medium">${p.title}</h3>
-              <p class="text-xs text-slate-400 font-light line-clamp-2">${p.description}</p>
-              
-              <div class="pt-2">
-                <span class="text-[9px] uppercase tracking-widest text-slate-500 block mb-1.5">Color Options:</span>
-                <div class="flex flex-wrap gap-1.5">
-                  ${variantsHtml}
-                </div>
-              </div>
-            </div>
+      let total = 0;
+      currentCart.forEach((item, index) => {
+        total += Number(item.offerPrice || 0);
+        const row = document.createElement('div');
+        row.className = "p-3 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-3";
+        row.innerHTML = `
+          <img src="${item.image}" class="w-12 h-12 rounded-lg object-cover bg-noir-900" />
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs text-white truncate font-medium">${item.title}</h4>
+            <span class="text-xs text-bronze-400 font-serif">₹${item.offerPrice}</span>
           </div>
+          <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-red-400 p-1">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        `;
+        list.appendChild(row);
+      });
+      totalDisplay.innerText = `₹${total}`;
+      lucide.createIcons();
+    }
 
-          <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between mt-4">
-            <div>
-              <span class="text-xs text-slate-500 line-through">₹${Number(p.originalPrice).toLocaleString('en-IN')}</span>
-              <span class="text-lg font-serif font-bold text-white block">₹${Number(p.offerPrice).toLocaleString('en-IN')}</span>
-            </div>
-            <button onclick="openProfileModal()" class="px-5 py-2.5 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-all">
-              Order Now
-            </button>
+    function removeFromCart(index) {
+      currentCart.splice(index, 1);
+      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
+      updateCartUI();
+    }
+
+    function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
+    function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
+
+    // PROFILE FUNCTIONALITY
+    function openProfileDrawer() { 
+      document.getElementById('profileDrawer').classList.remove('hidden'); 
+      checkSavedProfile();
+    }
+    function closeProfileDrawer() { document.getElementById('profileDrawer').classList.add('hidden'); }
+
+    function saveUserProfile() {
+      const name = document.getElementById('userNameInput').value.trim();
+      const phone = document.getElementById('userPhoneInput').value.trim();
+      const addr = document.getElementById('userAddressInput').value.trim();
+
+      if (!name || !phone || !addr) {
+        alert('Please fill out all address fields.');
+        return;
+      }
+
+      currentProfile = { name, phone, address: addr };
+      localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
+      checkSavedProfile();
+    }
+
+    function checkSavedProfile() {
+      const authSec = document.getElementById('authSection');
+      const savedCard = document.getElementById('profileSavedCard');
+      const foot = document.getElementById('profileFooter');
+      const navLabel = document.getElementById('navProfileLabel');
+
+      if (currentProfile) {
+        authSec.classList.add('hidden');
+        savedCard.classList.remove('hidden');
+        foot.classList.remove('hidden');
+
+        document.getElementById('displayUserName').innerText = currentProfile.name;
+        document.getElementById('displayUserPhone').querySelector('span').innerText = currentProfile.phone;
+        document.getElementById('displayUserAddress').querySelector('span').innerText = currentProfile.address;
+        navLabel.innerText = currentProfile.name.split(' ')[0];
+
+        renderUserOrders();
+      } else {
+        authSec.classList.remove('hidden');
+        savedCard.classList.add('hidden');
+        foot.classList.add('hidden');
+        navLabel.innerText = 'My Profile';
+      }
+      lucide.createIcons();
+    }
+
+    function resetProfile() {
+      currentProfile = null;
+      localStorage.removeItem('lenka_profile');
+      checkSavedProfile();
+    }
+
+    // LIVE ORDER TRACKER IN CUSTOMER PROFILE
+    function renderUserOrders() {
+      ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      const container = document.getElementById('userOrdersList');
+      container.innerHTML = '';
+
+      if (!currentProfile) return;
+
+      const myOrders = ordersList.filter(o => o.customerPhone === currentProfile.phone);
+
+      if (myOrders.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-3">No active orders placed yet under ${currentProfile.phone}.</p>`;
+        return;
+      }
+
+      myOrders.forEach(ord => {
+        let statusBadge = '';
+        let step1 = 'bg-bronze-400 text-noir-950 font-bold';
+        let step2 = 'bg-noir-950 text-slate-500';
+        let step3 = 'bg-noir-950 text-slate-500';
+
+        if (ord.status === 'Dispatched') {
+          step2 = 'bg-bronze-400 text-noir-950 font-bold';
+          statusBadge = '<span class="text-[10px] text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">In Transit</span>';
+        } else if (ord.status === 'Delivered') {
+          step2 = 'bg-bronze-400 text-noir-950 font-bold';
+          step3 = 'bg-green-400 text-noir-950 font-bold';
+          statusBadge = '<span class="text-[10px] text-green-400 bg-green-500/10 px-2 py-0.5 rounded">Delivered</span>';
+        } else {
+          statusBadge = '<span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Order Confirmed</span>';
+        }
+
+        const box = document.createElement('div');
+        box.className = "p-3.5 rounded-xl bg-noir-850 fine-border space-y-3";
+        box.innerHTML = `
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-mono text-bronze-400">#${ord.orderId}</span>
+            ${statusBadge}
+          </div>
+          <div class="text-xs text-white font-medium">
+            ${ord.itemsSummary}
+          </div>
+          <!-- TRACKING TIMELINE -->
+          <div class="grid grid-cols-3 gap-1 pt-2 text-center text-[9px] uppercase tracking-wider font-semibold">
+            <div class="p-1 rounded ${step1}">1. Confirmed</div>
+            <div class="p-1 rounded ${step2}">2. Shipped</div>
+            <div class="p-1 rounded ${step3}">3. Delivered</div>
+          </div>
+          <div class="text-[10px] text-slate-400 pt-1 flex justify-between border-t border-white/5">
+            <span>Valuation: ₹${ord.totalAmount}</span>
+            <span>Est: Express Air</span>
           </div>
         `;
-        grid.appendChild(card);
+        container.appendChild(box);
       });
       lucide.createIcons();
     }
 
-    function selectVariant(prodId, variant) {
-      document.querySelectorAll(`.var-btn-${prodId}`).forEach(b => {
-        b.className = `var-btn-${prodId} text-[10px] px-2.5 py-1 rounded border border-white/10 bg-noir-900 text-slate-400`;
-        if (b.innerText.trim() === variant) {
-          b.className = `var-btn-${prodId} text-[10px] px-2.5 py-1 rounded border border-bronze-400 bg-white/20 text-white`;
-        }
-      });
-    }
+    // CHECKOUT PROCEED
+    function proceedToCheckout() {
+      if (currentCart.length === 0) {
+        alert('Your bag is empty.');
+        return;
+      }
 
-    function openProfileModal() { document.getElementById('profileModal').classList.remove('hidden'); }
-    function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
+      if (!currentProfile) {
+        closeCartDrawer();
+        openProfileDrawer();
+        alert('Please save your shipping address and contact to book the delivery.');
+        return;
+      }
 
-    function handleSaveProfile(e) {
-      e.preventDefault();
-      const phone = document.getElementById('custPhone').value.trim();
-      const profile = {
-        name: document.getElementById('custName').value.trim(),
-        phone: phone,
-        address: {
-          country: document.getElementById('addrCountry').value,
-          state: document.getElementById('addrState').value,
-          district: document.getElementById('addrDistrict').value,
-          door: document.getElementById('addrDoor').value,
-          street: document.getElementById('addrStreet').value,
-          pin: document.getElementById('addrPin').value
-        },
-        payment: document.getElementById('custPayment').value,
-        updatedAt: new Date().toISOString()
+      const orderId = 'LS' + Math.floor(100000 + Math.random() * 900000);
+      const total = currentCart.reduce((sum, i) => sum + Number(i.offerPrice || 0), 0);
+      const summary = currentCart.map(i => i.title).join(', ');
+
+      const newOrder = {
+        orderId: orderId,
+        customerName: currentProfile.name,
+        customerPhone: currentProfile.phone,
+        customerAddress: currentProfile.address,
+        itemsSummary: summary,
+        totalAmount: total,
+        status: 'Confirmed',
+        timestamp: new Date().toLocaleString()
       };
-      db.collection('customers').doc(phone).set(profile, { merge: true }).then(() => {
-        alert('Shipping details saved successfully!');
-        closeProfileModal();
-      });
+
+      ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      ordersList.unshift(newOrder);
+      localStorage.setItem('lenka_orders', JSON.stringify(ordersList));
+
+      // Clear Bag
+      currentCart = [];
+      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
+      updateCartUI();
+      closeCartDrawer();
+
+      // Open Profile to view live status
+      openProfileDrawer();
+      alert(`Order #${orderId} has been confirmed. You can monitor the real-time shipping status in your profile box!`);
     }
   </script>
 </body>
