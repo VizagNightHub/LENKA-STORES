@@ -17,6 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   
+  <!-- FIREBASE SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -139,7 +143,7 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-white/5 gap-4">
       <div>
         <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
-        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory direct from Lenka Vault</p>
+        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory streamed live from Firebase Cloud</p>
       </div>
       <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs"></div>
     </div>
@@ -190,7 +194,7 @@
     </div>
   </div>
 
-  <!-- CUSTOM LUXURY FEEDBACK CONFIRMATION MODAL -->
+  <!-- LUXURY FEEDBACK CONFIRMATION MODAL -->
   <div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
       <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
@@ -322,7 +326,7 @@
               <h4 class="font-serif text-lg text-white flex items-center gap-2">
                 <i data-lucide="route" class="w-4 h-4 text-bronze-400"></i> Live Dispatch Timeline
               </h4>
-              <button onclick="renderUserOrders()" class="text-[11px] text-bronze-400 hover:underline">Refresh</button>
+              <button onclick="listenToUserOrders()" class="text-[11px] text-bronze-400 hover:underline">Refresh</button>
             </div>
             
             <div id="userOrdersList" class="space-y-4"></div>
@@ -370,16 +374,14 @@
     </div>
   </div>
 
-  <!-- LUXURY FOOTER WITH SOCIAL MEDIA & FEEDBACK -->
+  <!-- LUXURY FOOTER -->
   <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 space-y-6">
       
-      <!-- STORE TITLE -->
       <div class="font-serif text-2xl text-white tracking-wider">LENKA STORES</div>
       
- <!-- SOCIAL MEDIA CHANNELS (INSTAGRAM & YOUTUBE) -->
+      <!-- SOCIAL MEDIA -->
       <div class="flex items-center justify-center gap-4 pt-1">
-        <!-- INSTAGRAM -->
         <a href="https://www.instagram.com/the_lenka_8116?utm_source=qr&igsi=MWZoNGtpZHMyM2dscA==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
           <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
             <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
@@ -389,23 +391,21 @@
           <span class="text-xs font-medium tracking-wider">Instagram</span>
         </a>
 
-        <!-- YOUTUBE -->
         <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
           <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
             <polygon points="10 15 15 12 10 9 10 15" class="fill-[#C5A880] stroke-none"/>
           </svg>
           <span class="text-xs font-medium tracking-wider">YouTube</span>
         </a>
       </div>
-      <!-- FEEDBACK BUTTON -->
+
       <div class="py-1">
         <button onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-xs text-bronze-300 hover:text-white transition-all shadow-md">
           <i data-lucide="message-square" class="w-3.5 h-3.5 text-bronze-400"></i> Share Website Feedback & Support
         </button>
       </div>
 
-      <!-- BRANDING & CREDITS -->
       <div class="pt-4 border-t border-white/5 space-y-1">
         <p class="text-xs text-slate-300 font-medium">
           Developed & Crafted by <span class="text-bronze-400">Vizag Night Hub</span> under <span class="text-white">Lenka Ventures Pvt Ltd</span>
@@ -415,17 +415,47 @@
     </div>
   </footer>
 
-  <!-- CLIENT JAVASCRIPT -->
+  <!-- CLIENT SCRIPTS & FIREBASE REAL-TIME SYNC -->
   <script>
-    let currentCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    // 1. FIREBASE INITIALIZATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
+      authDomain: "lenkastores-studio.firebaseapp.com",
+      projectId: "lenkastores-studio",
+      storageBucket: "lenkastores-studio.firebasestorage.app",
+      messagingSenderId: "198057972058",
+      appId: "1:198057972058:web:c1e0742dcaa3b476472363",
+      measurementId: "G-S5GNTV03XM"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    let cloudCatalog = [];
     let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
     let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-    let ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+    let currentCategoryFilter = 'all';
 
-    if (currentCatalog.length === 0) {
-      currentCatalog = [
+    // 2. LISTEN TO LIVE PRODUCTS FROM FIREBASE
+    db.collection('products').onSnapshot((snapshot) => {
+      cloudCatalog = [];
+      snapshot.forEach(doc => {
+        cloudCatalog.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Seed catalog to Firestore if collection is brand new
+      if (cloudCatalog.length === 0) {
+        seedInitialProducts();
+      } else {
+        renderCatalog(currentCategoryFilter);
+      }
+    });
+
+    function seedInitialProducts() {
+      const defaultProducts = [
         {
-          id: 'item_101',
           category: 'Audio & Wireless Earbuds',
           title: 'Lenka Horizon ANC Earbuds Pro',
           originalPrice: 4999,
@@ -436,7 +466,6 @@
           description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
         },
         {
-          id: 'item_102',
           category: 'Battery Banks & Power Gear',
           title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
           originalPrice: 3999,
@@ -447,7 +476,6 @@
           description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
         },
         {
-          id: 'item_103',
           category: 'Men\'s Apparel & Fashion',
           title: 'Lenka Signature Tailored Oxford Shirt',
           originalPrice: 2999,
@@ -458,24 +486,25 @@
           description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
         }
       ];
-      localStorage.setItem('lenka_catalog', JSON.stringify(currentCatalog));
+
+      defaultProducts.forEach(p => db.collection('products').add(p));
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
-      renderCatalog('all');
       updateCartUI();
       checkSavedProfile();
     });
 
     function renderCatalog(filter = 'all') {
+      currentCategoryFilter = filter;
       const grid = document.getElementById('productGrid');
       const empty = document.getElementById('emptyCatalogState');
       grid.innerHTML = '';
 
       const items = filter === 'all' 
-        ? currentCatalog 
-        : currentCatalog.filter(p => p.category === filter);
+        ? cloudCatalog 
+        : cloudCatalog.filter(p => p.category === filter);
 
       if (items.length === 0) {
         empty.classList.remove('hidden');
@@ -543,7 +572,7 @@
 
     // CART
     function addToBag(prodId) {
-      const prod = currentCatalog.find(p => p.id === prodId);
+      const prod = cloudCatalog.find(p => p.id === prodId);
       if (!prod) return;
       currentCart.push({ ...prod, cartItemId: Date.now() });
       localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
@@ -595,7 +624,7 @@
     function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
     function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
 
-    // FEEDBACK MODAL & LUXURY NOTIFICATION
+    // FEEDBACK TO FIRESTORE
     function openFeedbackModal() {
       if (currentProfile) {
         document.getElementById('fbName').value = currentProfile.name || '';
@@ -616,7 +645,7 @@
       document.getElementById('feedbackSuccessModal').classList.add('hidden');
     }
 
-    function handleFeedbackSubmit(e) {
+    async function handleFeedbackSubmit(e) {
       e.preventDefault();
       const name = document.getElementById('fbName').value.trim();
       const phone = document.getElementById('fbPhone').value.trim();
@@ -627,21 +656,21 @@
         name: name,
         phone: phone,
         message: message,
-        timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      feedbacks.unshift(newFeedback);
-      localStorage.setItem('lenka_feedbacks', JSON.stringify(feedbacks));
-
-      document.getElementById('feedbackForm').reset();
-      closeFeedbackModal();
-
-      // Show luxury dark/gold modal in the center of the screen
-      openFeedbackSuccessModal();
+      try {
+        await db.collection('feedbacks').add(newFeedback);
+        document.getElementById('feedbackForm').reset();
+        closeFeedbackModal();
+        openFeedbackSuccessModal();
+      } catch (err) {
+        alert('Feedback submitted: ' + err.message);
+      }
     }
 
-    // PROFILE & IMAGE UPLOAD
+    // PROFILE
     let uploadedAvatarBase64 = '';
     function handleImageUpload(e) {
       const file = e.target.files[0];
@@ -661,7 +690,7 @@
     }
     function closeProfileDrawer() { document.getElementById('profileDrawer').classList.add('hidden'); }
 
-    function saveUserProfile() {
+    async function saveUserProfile() {
       const name = document.getElementById('userNameInput').value.trim();
       const phone = document.getElementById('userPhoneInput').value.trim();
       const country = document.getElementById('addrCountry').value.trim() || 'India';
@@ -685,6 +714,17 @@
       };
 
       localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
+      
+      // Save customer profile to Cloud Firestore
+      try {
+        await db.collection('customers').doc(phone).set({
+          ...currentProfile,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      } catch (e) {
+        console.log(e);
+      }
+
       document.getElementById('cancelEditBtn').classList.add('hidden');
       checkSavedProfile();
     }
@@ -712,7 +752,7 @@
         navIcon.classList.add('hidden');
         navLabel.innerText = currentProfile.name.split(' ')[0];
 
-        renderUserOrders();
+        listenToUserOrders();
       } else {
         authSec.classList.remove('hidden');
         savedCard.classList.add('hidden');
@@ -747,105 +787,104 @@
       lucide.createIcons();
     }
 
-    function cancelProfileEdit() {
-      checkSavedProfile();
-    }
-
+    function cancelProfileEdit() { checkSavedProfile(); }
     function resetProfile() {
       currentProfile = null;
       localStorage.removeItem('lenka_profile');
       checkSavedProfile();
     }
 
-    // ANIMATED LIVE TRACKER
-    function renderUserOrders() {
-      ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      const container = document.getElementById('userOrdersList');
-      container.innerHTML = '';
-
+    // REAL-TIME ORDERS LISTENER FROM FIRESTORE
+    let ordersUnsubscribe = null;
+    function listenToUserOrders() {
       if (!currentProfile) return;
+      if (ordersUnsubscribe) ordersUnsubscribe();
 
-      const myOrders = ordersList.filter(o => o.customerPhone === currentProfile.phone);
+      ordersUnsubscribe = db.collection('orders')
+        .where('customerPhone', '==', currentProfile.phone)
+        .onSnapshot((snapshot) => {
+          const container = document.getElementById('userOrdersList');
+          container.innerHTML = '';
 
-      if (myOrders.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 py-3 text-center">No active consignments booked yet under ${currentProfile.phone}.</p>`;
-        return;
-      }
+          if (snapshot.empty) {
+            container.innerHTML = `<p class="text-xs text-slate-500 py-3 text-center">No active consignments booked yet under ${currentProfile.phone}.</p>`;
+            return;
+          }
 
-      myOrders.forEach(ord => {
-        let pct = '15%';
-        let step1Active = true;
-        let step2Active = ord.status === 'Dispatched' || ord.status === 'Delivered';
-        let step3Active = ord.status === 'Delivered';
+          snapshot.forEach(doc => {
+            const ord = doc.data();
+            let pct = '15%';
+            let step1Active = true;
+            let step2Active = ord.status === 'Dispatched' || ord.status === 'Delivered';
+            let step3Active = ord.status === 'Delivered';
 
-        if (ord.status === 'Dispatched') pct = '55%';
-        if (ord.status === 'Delivered') pct = '100%';
+            if (ord.status === 'Dispatched') pct = '55%';
+            if (ord.status === 'Delivered') pct = '100%';
 
-        const confirmedDate = ord.confirmedDate || ord.timestamp || 'Today';
-        const shippingDate = ord.shippingDate || (ord.status !== 'Confirmed' ? 'In Transit' : 'Pending');
-        const deliveryDate = ord.deliveryDate || 'Express 48H';
+            const confirmedDate = ord.confirmedDate || ord.timestamp || 'Today';
+            const shippingDate = ord.shippingDate || (ord.status !== 'Confirmed' ? 'In Transit' : 'Pending');
+            const deliveryDate = ord.deliveryDate || 'Express 48H';
 
-        const box = document.createElement('div');
-        box.className = "p-5 rounded-2xl bg-noir-850 fine-border space-y-4 relative overflow-hidden";
-        box.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div>
-              <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId}</span>
-              <p class="text-[10px] text-slate-500 mt-0.5">${ord.timestamp || ''}</p>
-            </div>
-            <span class="text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold ${ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400' : 'bg-bronze-400/10 text-bronze-400'}">
-              ${ord.status === 'Dispatched' ? 'In Transit' : ord.status}
-            </span>
-          </div>
-
-          <div class="text-xs text-white font-medium">
-            ${ord.itemsSummary}
-          </div>
-
-          <div class="pt-3 pb-1">
-            <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
-              <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
-            </div>
-
-            <div class="grid grid-cols-3 text-center relative">
-              <div class="space-y-1">
-                <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                  <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            const box = document.createElement('div');
+            box.className = "p-5 rounded-2xl bg-noir-850 fine-border space-y-4 relative overflow-hidden";
+            box.innerHTML = `
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId}</span>
+                  <p class="text-[10px] text-slate-500 mt-0.5">${ord.timestamp || ''}</p>
                 </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
-                <span class="text-[9px] text-slate-500 block">${confirmedDate}</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold ${ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400' : 'bg-bronze-400/10 text-bronze-400'}">
+                  ${ord.status === 'Dispatched' ? 'In Transit' : ord.status}
+                </span>
               </div>
 
-              <div class="space-y-1">
-                <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                  <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+              <div class="text-xs text-white font-medium">${ord.itemsSummary}</div>
+
+              <div class="pt-3 pb-1">
+                <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
+                  <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
                 </div>
-                <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
-                <span class="text-[9px] text-slate-500 block">${shippingDate}</span>
+
+                <div class="grid grid-cols-3 text-center relative">
+                  <div class="space-y-1">
+                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                      <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
+                    <span class="text-[9px] text-slate-500 block">${confirmedDate}</span>
+                  </div>
+
+                  <div class="space-y-1">
+                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                      <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
+                    <span class="text-[9px] text-slate-500 block">${shippingDate}</span>
+                  </div>
+
+                  <div class="space-y-1">
+                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                      <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
+                    <span class="text-[9px] text-slate-500 block">${deliveryDate}</span>
+                  </div>
+                </div>
               </div>
 
-              <div class="space-y-1">
-                <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                  <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
-                <span class="text-[9px] text-slate-500 block">${deliveryDate}</span>
+              <div class="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400">
+                <span>Valuation: <strong class="text-white font-serif">₹${ord.totalAmount}</strong></span>
+                <span class="flex items-center gap-1 text-bronze-400"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Lenka Vault Express</span>
               </div>
-            </div>
-          </div>
-
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400">
-            <span>Valuation: <strong class="text-white font-serif">₹${ord.totalAmount}</strong></span>
-            <span class="flex items-center gap-1 text-bronze-400"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Lenka Vault Express</span>
-          </div>
-        `;
-        container.appendChild(box);
-      });
-      lucide.createIcons();
+            `;
+            container.appendChild(box);
+          });
+          lucide.createIcons();
+        });
     }
 
-    // CHECKOUT
-    function proceedToCheckout() {
+    // CHECKOUT DIRECT TO CLOUD FIRESTORE
+    async function proceedToCheckout() {
       if (currentCart.length === 0) {
         alert('Your bag is empty.');
         return;
@@ -875,20 +914,23 @@
         confirmedDate: today,
         shippingDate: 'Express Scheduled',
         deliveryDate: 'Est. 2-3 Business Days',
-        timestamp: today
+        timestamp: today,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      ordersList.unshift(newOrder);
-      localStorage.setItem('lenka_orders', JSON.stringify(ordersList));
+      try {
+        await db.collection('orders').add(newOrder);
 
-      currentCart = [];
-      localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
-      updateCartUI();
-      closeCartDrawer();
+        currentCart = [];
+        localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
+        updateCartUI();
+        closeCartDrawer();
 
-      openProfileDrawer();
-      alert(`Consignment #${orderId} booked successfully! Monitor real-time status in your tracking timeline.`);
+        openProfileDrawer();
+        alert(`Consignment #${orderId} booked successfully! Monitor real-time status in your tracking timeline.`);
+      } catch (err) {
+        alert('Error placing order: ' + err.message);
+      }
     }
   </script>
 </body>
