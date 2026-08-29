@@ -109,15 +109,23 @@
       <nav class="space-y-1.5 text-xs">
         <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl bg-bronze-400 text-noir-950 font-semibold transition-all cursor-pointer">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>Analytics & Motion Hub</span>
+          <span>Analytics Hub</span>
         </button>
 
-        <button onclick="selectMenu('orders')" id="sideBtn-orders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+        <button onclick="selectMenu('confirmedOrders')" id="sideBtn-confirmedOrders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
           <div class="flex items-center gap-3">
             <i data-lucide="truck" class="w-4 h-4 text-bronze-400"></i>
-            <span>Orders & Dispatch</span>
+            <span>Confirmed Orders</span>
           </div>
-          <span id="sideOrdersBadge" class="text-[10px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-full font-bold">0</span>
+          <span id="sideConfirmedBadge" class="text-[10px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+
+        <button onclick="selectMenu('cancelledOrders')" id="sideBtn-cancelledOrders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
+          <div class="flex items-center gap-3">
+            <i data-lucide="ban" class="w-4 h-4 text-red-400"></i>
+            <span>Cancelled Orders</span>
+          </div>
+          <span id="sideCancelledBadge" class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold">0</span>
         </button>
 
         <button onclick="selectMenu('catalog')" id="sideBtn-catalog" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all cursor-pointer">
@@ -169,14 +177,13 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <!-- LIVE SOCKET PULSE BADGE -->
         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-400 font-medium">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           Live Sync Active
         </span>
 
         <span id="activeSectionLabel" class="hidden md:inline-block px-3 py-1 rounded-full bg-noir-850 fine-border text-[11px] text-bronze-300 font-medium">
-          Analytics & Motion Hub
+          Analytics Hub
         </span>
         <a href="index.html" target="_blank" class="px-3.5 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-xl text-xs text-slate-300 flex items-center gap-1.5 shadow-sm">
           <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> <span class="hidden md:inline">Storefront</span>
@@ -188,7 +195,7 @@
   <!-- MAIN WORKSPACE -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
-    <!-- 1. ANALYTICS & GRAPHIC MOTION SHEET -->
+    <!-- 1. ANALYTICS & GRAPHIC MOTION SHEET (WITH HOME SCREEN FEEDBACKS) -->
     <section id="page-dashboard" class="space-y-8">
       <div>
         <h1 class="font-serif text-3xl sm:text-4xl text-white">Live Store Performance & Motion Analytics</h1>
@@ -198,8 +205,7 @@
       <!-- METRICS GRID -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
         
-        <!-- TODAY'S ORDERS (PRIMARY) -->
-        <div onclick="selectMenu('orders')" class="p-5 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-1 relative overflow-hidden group shadow-lg">
+        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-1 relative overflow-hidden group shadow-lg">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider font-semibold text-bronze-400">Today's Orders</span>
             <span class="w-2.5 h-2.5 rounded-full bg-bronze-400 animate-ping"></span>
@@ -208,21 +214,19 @@
             <span id="statTodayOrders" class="font-serif text-3xl text-white font-medium">0</span>
             <span class="text-[9px] text-slate-500 uppercase">Today</span>
           </div>
-          <p class="text-[10px] text-bronze-400">View orders →</p>
+          <p class="text-[10px] text-bronze-400">View active orders →</p>
         </div>
 
-        <!-- TOTAL ALL-TIME ORDERS -->
-        <div onclick="selectMenu('orders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider">Total Consignments</span>
-            <i data-lucide="shopping-bag" class="w-4 h-4 text-slate-400"></i>
+            <span class="uppercase tracking-wider">Confirmed Orders</span>
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
           </div>
-          <div id="statOrdersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[10px] text-slate-400">All-time archive</p>
+          <div id="statConfirmedOrders" class="font-serif text-3xl text-white font-medium">0</div>
+          <p class="text-[10px] text-slate-400">Active consignments</p>
         </div>
 
-        <!-- CANCELLED ORDERS -->
-        <div onclick="selectMenu('orders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+        <div onclick="selectMenu('cancelledOrders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider text-red-400">Cancelled Orders</span>
             <i data-lucide="ban" class="w-4 h-4 text-red-400"></i>
@@ -231,7 +235,6 @@
           <p class="text-[10px] text-red-400">Cancelled by customer</p>
         </div>
 
-        <!-- GROSS VALUATION -->
         <div class="p-5 rounded-2xl bg-noir-900 fine-border space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">Gross Valuation</span>
@@ -241,7 +244,6 @@
           <p class="text-[10px] text-slate-500">Active transactions</p>
         </div>
 
-        <!-- REGISTERED VIP CLIENTS -->
         <div onclick="selectMenu('customers')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">Registered VIPs</span>
@@ -253,16 +255,18 @@
 
       </div>
 
-      <!-- CHARTS & FULFILLMENT MOTION BARS -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
+      <!-- CHARTS & HOME FEEDBACK STREAM -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- FULFILLMENT MOTION BARS -->
+        <div class="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
           <div class="flex items-center justify-between pb-4 border-b border-white/5">
             <div class="flex items-center gap-2.5">
               <div class="p-2 rounded-lg bg-bronze-400/10 text-bronze-400">
                 <i data-lucide="activity" class="w-4 h-4"></i>
               </div>
               <div>
-                <h3 class="font-serif text-xl text-white">Consignment Fulfillment Status</h3>
+                <h3 class="font-serif text-xl text-white">Consignment Fulfillment Flow</h3>
                 <p class="text-[11px] text-slate-500">Live order state & cancellation metrics</p>
               </div>
             </div>
@@ -312,64 +316,36 @@
           </div>
         </div>
 
-        <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
-          <div class="flex items-center justify-between pb-4 border-b border-white/5">
+        <!-- RECENT CLIENT FEEDBACK STREAM ON HOME SCREEN -->
+        <div class="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-4 shadow-xl flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-3 border-b border-white/5">
             <div class="flex items-center gap-2.5">
-              <div class="p-2 rounded-lg bg-emerald-400/10 text-emerald-400">
-                <i data-lucide="layers" class="w-4 h-4"></i>
+              <div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
               </div>
               <div>
-                <h3 class="font-serif text-xl text-white">Active Atelier Distribution</h3>
-                <p class="text-[11px] text-slate-500">Live product representation across collections</p>
+                <h3 class="font-serif text-xl text-white">Recent Customer Feedback</h3>
+                <p class="text-[11px] text-slate-500">Latest comments & support requests</p>
               </div>
             </div>
-            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-emerald-400 uppercase tracking-widest font-semibold">LIVE RATIO</span>
+            <button onclick="selectMenu('feedback')" class="text-xs text-bronze-400 hover:underline">View All</button>
           </div>
 
-          <div class="space-y-5 pt-2">
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">Audio & Wireless Earbuds</span>
-                <span id="graphCatAudioCount" class="font-mono text-slate-200 font-semibold">0</span>
-              </div>
-              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphCatAudioBar" class="h-full bg-gradient-to-r from-slate-400 to-white rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">Battery Banks & Power Gear</span>
-                <span id="graphCatPowerCount" class="font-mono text-bronze-400 font-semibold">0</span>
-              </div>
-              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphCatPowerBar" class="h-full bg-gradient-to-r from-amber-600 to-bronze-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">Men's Apparel & Fashion</span>
-                <span id="graphCatFashionCount" class="font-mono text-purple-400 font-semibold">0</span>
-              </div>
-              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
-                <div id="graphCatFashionBar" class="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-          </div>
+          <div id="homeFeedbackList" class="space-y-3 flex-1 overflow-y-auto max-h-[280px] custom-scrollbar"></div>
         </div>
+
       </div>
     </section>
 
-    <!-- 2. ORDERS & TRACKING VIEW -->
-    <section id="page-orders" class="hidden space-y-6">
+    <!-- 2. CONFIRMED ORDERS DEDICATED VIEW -->
+    <section id="page-confirmedOrders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
           <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
           </button>
-          <h1 class="font-serif text-3xl text-white">Live Customer Consignments & Tracking</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Manage statuses, cancellations, and broadcast Confirmed, Shipping Start, and Delivery Dates</p>
+          <h1 class="font-serif text-3xl text-white">Confirmed & Active Consignments</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Manage live order progress and update Confirmed, Shipping Start, and Delivery Dates</p>
         </div>
       </div>
 
@@ -386,15 +362,48 @@
               <th class="p-3.5">Action</th>
             </tr>
           </thead>
-          <tbody id="adminOrdersBody" class="divide-y divide-white/5"></tbody>
+          <tbody id="adminConfirmedOrdersBody" class="divide-y divide-white/5"></tbody>
         </table>
-        <div id="noOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No customer orders recorded yet.
+        <div id="noConfirmedOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No active confirmed orders found.
         </div>
       </div>
     </section>
 
-    <!-- 3. PRODUCT CATALOG VIEW -->
+    <!-- 3. CANCELLED ORDERS DEDICATED VIEW -->
+    <section id="page-cancelledOrders" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+        <div>
+          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          </button>
+          <h1 class="font-serif text-3xl text-white">Cancelled Consignments Archive</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Orders cancelled by customers or operators</p>
+        </div>
+      </div>
+
+      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
+            <tr>
+              <th class="p-3.5">Order ID</th>
+              <th class="p-3.5">Customer Info</th>
+              <th class="p-3.5">Shipping Address</th>
+              <th class="p-3.5">Product Summary</th>
+              <th class="p-3.5">Cancelled Valuation</th>
+              <th class="p-3.5">Status</th>
+              <th class="p-3.5">Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminCancelledOrdersBody" class="divide-y divide-white/5"></tbody>
+        </table>
+        <div id="noCancelledOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No cancelled orders found.
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PRODUCT CATALOG VIEW -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
         <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
@@ -469,7 +478,7 @@
       </div>
     </section>
 
-    <!-- 4. REGISTERED VIP CLIENTS VIEW -->
+    <!-- 5. REGISTERED VIP CLIENTS VIEW -->
     <section id="page-customers" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -501,7 +510,7 @@
       </div>
     </section>
 
-    <!-- 5. CLIENT FEEDBACK VIEW -->
+    <!-- 6. CLIENT FEEDBACK VIEW -->
     <section id="page-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -561,16 +570,15 @@
     let allFeedbacks = [];
     let allCustomers = [];
 
-    // REAL-TIME CROSS-TAB SYNC LISTENER (AUTO-REFRESHES LIVE WHEN CUSTOMER ORDERS IN ANOTHER TAB)
+    // REAL-TIME CROSS-TAB SYNC
     window.addEventListener('storage', (event) => {
       if (['lenka_orders', 'lenka_feedbacks', 'lenka_catalog', 'lenka_profile'].includes(event.key)) {
         loadUnifiedData();
       }
     });
 
-    // LOAD COMBINED DATA (LOCAL + CLOUD)
+    // LOAD COMBINED DATA
     function loadUnifiedData() {
-      // 1. Load Local Storage immediately
       const localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const localCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       const localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
@@ -585,21 +593,20 @@
       }
 
       renderGraphicSheet();
-      renderAdminOrders();
+      renderHomeFeedbacks();
+      renderAdminConfirmedOrders();
+      renderAdminCancelledOrders();
       renderAdminCustomers();
       renderAdminCatalog();
       renderAdminFeedbacks();
       updateSidebarBadges();
 
-      // 2. Real-time Firestore Cloud Listeners
       if (db) {
-        // Orders listener
         db.collection('orders').onSnapshot((snapshot) => {
           if (!snapshot.empty) {
             const cloudOrders = [];
             snapshot.forEach(doc => cloudOrders.push({ docId: doc.id, ...doc.data() }));
             
-            // Merge cloud orders with local
             const merged = [...cloudOrders];
             localOrders.forEach(lo => {
               if (!merged.find(m => m.orderId === lo.orderId)) {
@@ -608,13 +615,13 @@
             });
             allOrders = merged;
             renderGraphicSheet();
-            renderAdminOrders();
+            renderAdminConfirmedOrders();
+            renderAdminCancelledOrders();
             renderAdminCustomers();
             updateSidebarBadges();
           }
         }, (err) => console.warn(err));
 
-        // Catalog listener
         db.collection('products').onSnapshot((snapshot) => {
           if (!snapshot.empty) {
             allCatalog = [];
@@ -625,7 +632,6 @@
           }
         }, (err) => console.warn(err));
 
-        // Feedback listener
         db.collection('feedbacks').onSnapshot((snapshot) => {
           if (!snapshot.empty) {
             const cloudFeedbacks = [];
@@ -639,6 +645,7 @@
             });
             allFeedbacks = mergedFb;
             renderGraphicSheet();
+            renderHomeFeedbacks();
             renderAdminFeedbacks();
             updateSidebarBadges();
           }
@@ -657,7 +664,6 @@
       }
     }
 
-    // SIDEBAR DRAWER TOGGLE
     function toggleSidebar() {
       const drawer = document.getElementById('sidebarDrawer');
       const backdrop = document.getElementById('sidebarBackdrop');
@@ -674,12 +680,12 @@
       lucide.createIcons();
     }
 
-    // MENU SWITCHER
     function selectMenu(pageId) {
-      const pages = ['dashboard', 'orders', 'catalog', 'customers', 'feedback'];
+      const pages = ['dashboard', 'confirmedOrders', 'cancelledOrders', 'catalog', 'customers', 'feedback'];
       const pageTitles = {
-        'dashboard': 'Analytics & Motion Hub',
-        'orders': 'Live Orders & Dispatch',
+        'dashboard': 'Analytics Hub',
+        'confirmedOrders': 'Confirmed & Active Orders',
+        'cancelledOrders': 'Cancelled Orders Archive',
         'catalog': 'Product Catalog & Ateliers',
         'customers': 'Registered VIP Clients',
         'feedback': 'Client Feedback & Support'
@@ -706,8 +712,9 @@
       document.getElementById('sidebarDrawer').classList.add('-translate-x-full');
       document.getElementById('sidebarBackdrop').classList.add('hidden');
 
-      if (pageId === 'dashboard') renderGraphicSheet();
-      if (pageId === 'orders') renderAdminOrders();
+      if (pageId === 'dashboard') { renderGraphicSheet(); renderHomeFeedbacks(); }
+      if (pageId === 'confirmedOrders') renderAdminConfirmedOrders();
+      if (pageId === 'cancelledOrders') renderAdminCancelledOrders();
       if (pageId === 'catalog') renderAdminCatalog();
       if (pageId === 'customers') renderAdminCustomers();
       if (pageId === 'feedback') renderAdminFeedbacks();
@@ -717,33 +724,34 @@
     }
 
     function updateSidebarBadges() {
-      document.getElementById('sideOrdersBadge').innerText = allOrders.length;
+      const confirmed = allOrders.filter(o => o.status !== 'Cancelled');
+      const cancelled = allOrders.filter(o => o.status === 'Cancelled');
+
+      document.getElementById('sideConfirmedBadge').innerText = confirmed.length;
+      document.getElementById('sideCancelledBadge').innerText = cancelled.length;
       document.getElementById('sideCatalogBadge').innerText = allCatalog.length;
       document.getElementById('sideCustomersBadge').innerText = allCustomers.length || allOrders.length;
       document.getElementById('sideFeedbackBadge').innerText = allFeedbacks.length;
     }
 
-    // GRAPHIC SHEET
     function renderGraphicSheet() {
       const todayFormatted = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      const todayOrdersCount = allOrders.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted || o.timestamp?.includes('2026'))).length;
-      document.getElementById('statTodayOrders').innerText = todayOrdersCount || allOrders.length;
+      const confirmed = allOrders.filter(o => o.status !== 'Cancelled');
+      const cancelled = allOrders.filter(o => o.status === 'Cancelled');
 
-      const cancelledOrders = allOrders.filter(o => o.status === 'Cancelled');
-      document.getElementById('statCancelledOrders').innerText = cancelledOrders.length;
+      const todayOrdersCount = confirmed.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted || o.timestamp?.includes('2026'))).length;
+      document.getElementById('statTodayOrders').innerText = todayOrdersCount || confirmed.length;
+      document.getElementById('statConfirmedOrders').innerText = confirmed.length;
+      document.getElementById('statCancelledOrders').innerText = cancelled.length;
 
-      const activeOrders = allOrders.filter(o => o.status !== 'Cancelled');
-      const totalValuation = activeOrders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
-      
-      document.getElementById('statOrdersCount').innerText = allOrders.length;
+      const totalValuation = confirmed.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
       document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
       document.getElementById('statCustomersCount').innerText = allCustomers.length || allOrders.length;
 
-      // Status breakdown
       const confirmedCount = allOrders.filter(o => o.status === 'Confirmed' || !o.status).length;
       const dispatchedCount = allOrders.filter(o => o.status === 'Dispatched').length;
       const deliveredCount = allOrders.filter(o => o.status === 'Delivered').length;
-      const cancelledCount = cancelledOrders.length;
+      const cancelledCount = cancelled.length;
       const totalO = allOrders.length || 1;
 
       const confPct = Math.round((confirmedCount / totalO) * 100);
@@ -760,39 +768,53 @@
       document.getElementById('graphDispatchedBar').style.width = `${dispPct}%`;
       document.getElementById('graphDeliveredBar').style.width = `${delivPct}%`;
       document.getElementById('graphCancelledBar').style.width = `${cancPct}%`;
-
-      // Category breakdown
-      const audioCount = allCatalog.filter(c => c.category && c.category.includes('Audio')).length || 1;
-      const powerCount = allCatalog.filter(c => c.category && (c.category.includes('Battery') || c.category.includes('Power'))).length || 1;
-      const fashionCount = allCatalog.filter(c => c.category && (c.category.includes('Apparel') || c.category.includes('Fashion'))).length || 1;
-      const totalC = allCatalog.length || 3;
-
-      document.getElementById('graphCatAudioCount').innerText = `${audioCount} Items`;
-      document.getElementById('graphCatPowerCount').innerText = `${powerCount} Items`;
-      document.getElementById('graphCatFashionCount').innerText = `${fashionCount} Items`;
-
-      document.getElementById('graphCatAudioBar').style.width = `${Math.round((audioCount / totalC) * 100)}%`;
-      document.getElementById('graphCatPowerBar').style.width = `${Math.round((powerCount / totalC) * 100)}%`;
-      document.getElementById('graphCatFashionBar').style.width = `${Math.round((fashionCount / totalC) * 100)}%`;
     }
 
-    // ORDERS MANAGEMENT
-    function renderAdminOrders() {
-      const tbody = document.getElementById('adminOrdersBody');
-      const emptyMsg = document.getElementById('noOrdersMessage');
+    // HOME SCREEN FEEDBACK STREAM
+    function renderHomeFeedbacks() {
+      const container = document.getElementById('homeFeedbackList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (allFeedbacks.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">No feedback messages received yet.</p>`;
+        return;
+      }
+
+      allFeedbacks.slice(0, 4).forEach(fb => {
+        const item = document.createElement('div');
+        item.className = "p-3.5 rounded-xl bg-noir-850 fine-border space-y-1.5";
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white font-medium">${fb.name}</span>
+            <span class="font-mono text-bronze-400 text-[10px]">${fb.phone}</span>
+          </div>
+          <p class="text-xs text-slate-300 italic line-clamp-2">"${fb.message}"</p>
+          <span class="text-[9px] text-slate-500 block pt-0.5">${fb.timestamp || ''}</span>
+        `;
+        container.appendChild(item);
+      });
+      lucide.createIcons();
+    }
+
+    // CONFIRMED ORDERS PAGE
+    function renderAdminConfirmedOrders() {
+      const tbody = document.getElementById('adminConfirmedOrdersBody');
+      const emptyMsg = document.getElementById('noConfirmedOrdersMessage');
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      if (allOrders.length === 0) {
+      const confirmed = allOrders.filter(o => o.status !== 'Cancelled');
+
+      if (confirmed.length === 0) {
         if (emptyMsg) emptyMsg.classList.remove('hidden');
         return;
       }
 
       if (emptyMsg) emptyMsg.classList.add('hidden');
-      allOrders.forEach((ord, index) => {
-        const isCancelled = ord.status === 'Cancelled';
+      confirmed.forEach((ord) => {
         const tr = document.createElement('tr');
-        tr.className = `hover:bg-noir-850/50 transition-colors ${isCancelled ? 'opacity-60 bg-red-950/10' : ''}`;
+        tr.className = "hover:bg-noir-850/50 transition-colors";
         tr.innerHTML = `
           <td class="p-3.5 font-mono text-bronze-400 font-semibold">
             #${ord.orderId}<br/>
@@ -813,20 +835,20 @@
             <span class="text-bronze-400 font-serif text-xs">Valuation: ₹${ord.totalAmount}</span>
           </td>
           <td class="p-3.5">
-            <select onchange="updateUnifiedOrderStatus(${index}, '${ord.orderId}', this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400 ${isCancelled ? 'border-red-500/40 text-red-400' : ''}">
+            <select onchange="updateUnifiedOrderStatus('${ord.orderId}', this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
               <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
               <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
               <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
-              <option value="Cancelled" ${isCancelled ? 'selected' : ''}>❌ Cancelled</option>
+              <option value="Cancelled">❌ Move to Cancelled</option>
             </select>
           </td>
           <td class="p-3.5 space-y-1">
-            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateUnifiedOrderDate(${index}, '${ord.orderId}', 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
-            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateUnifiedOrderDate(${index}, '${ord.orderId}', 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
-            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateUnifiedOrderDate(${index}, '${ord.orderId}', 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'confirmedDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateUnifiedOrderDate('${ord.orderId}', 'shippingDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
+            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'deliveryDate', this.value)" class="bg-noir-950 fine-border rounded px-2 py-0.5 text-[10px] text-white w-32 block" />
           </td>
           <td class="p-3.5">
-            <button onclick="deleteUnifiedOrder(${index}, '${ord.orderId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
+            <button onclick="deleteUnifiedOrder('${ord.orderId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -836,9 +858,54 @@
       lucide.createIcons();
     }
 
-    function updateUnifiedOrderStatus(index, orderId, newStatus) {
-      if (allOrders[index]) {
-        allOrders[index].status = newStatus;
+    // CANCELLED ORDERS PAGE
+    function renderAdminCancelledOrders() {
+      const tbody = document.getElementById('adminCancelledOrdersBody');
+      const emptyMsg = document.getElementById('noCancelledOrdersMessage');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const cancelled = allOrders.filter(o => o.status === 'Cancelled');
+
+      if (cancelled.length === 0) {
+        if (emptyMsg) emptyMsg.classList.remove('hidden');
+        return;
+      }
+
+      if (emptyMsg) emptyMsg.classList.add('hidden');
+      cancelled.forEach((ord) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-noir-850/50 transition-colors opacity-75 bg-red-950/10";
+        tr.innerHTML = `
+          <td class="p-3.5 font-mono text-bronze-400">
+            #${ord.orderId}<br/>
+            <span class="text-[9px] text-slate-500">${ord.timestamp || ''}</span>
+          </td>
+          <td class="p-3.5">
+            <span class="text-white font-medium block">${ord.customerName}</span>
+            <span class="text-slate-400 font-mono text-[11px]">${ord.customerPhone}</span>
+          </td>
+          <td class="p-3.5 text-slate-300 max-w-xs text-[11px]">${ord.customerAddress}</td>
+          <td class="p-3.5 text-white max-w-xs text-[11px]">${ord.itemsSummary}</td>
+          <td class="p-3.5 text-red-400 font-serif text-xs font-semibold">₹${ord.totalAmount}</td>
+          <td class="p-3.5">
+            <span class="px-2.5 py-1 rounded-md bg-red-500/15 border border-red-500/30 text-red-400 font-semibold text-[10px]">Cancelled</span>
+          </td>
+          <td class="p-3.5">
+            <button onclick="deleteUnifiedOrder('${ord.orderId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function updateUnifiedOrderStatus(orderId, newStatus) {
+      const idx = allOrders.findIndex(o => o.orderId === orderId);
+      if (idx !== -1) {
+        allOrders[idx].status = newStatus;
         localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
       }
       if (db) {
@@ -846,13 +913,16 @@
           snap.forEach(d => d.ref.update({ status: newStatus }));
         }).catch(e => console.warn(e));
       }
-      renderAdminOrders();
+      renderAdminConfirmedOrders();
+      renderAdminCancelledOrders();
       renderGraphicSheet();
+      updateSidebarBadges();
     }
 
-    function updateUnifiedOrderDate(index, orderId, field, val) {
-      if (allOrders[index]) {
-        allOrders[index][field] = val;
+    function updateUnifiedOrderDate(orderId, field, val) {
+      const idx = allOrders.findIndex(o => o.orderId === orderId);
+      if (idx !== -1) {
+        allOrders[idx][field] = val;
         localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
       }
       if (db) {
@@ -864,17 +934,19 @@
       }
     }
 
-    function deleteUnifiedOrder(index, orderId) {
+    function deleteUnifiedOrder(orderId) {
       if (confirm(`Remove consignment #${orderId}?`)) {
-        allOrders.splice(index, 1);
+        allOrders = allOrders.filter(o => o.orderId !== orderId);
         localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
         if (db) {
           db.collection('orders').where('orderId', '==', orderId).get().then(snap => {
             snap.forEach(d => d.ref.delete());
           }).catch(e => console.warn(e));
         }
-        renderAdminOrders();
+        renderAdminConfirmedOrders();
+        renderAdminCancelledOrders();
         renderGraphicSheet();
+        updateSidebarBadges();
       }
     }
 
@@ -897,7 +969,7 @@
             state: 'Recorded',
             area: o.customerAddress || 'Direct Order Address',
             pin: 'Verified',
-            ordersCount: allOrders.filter(x => x.customerPhone === o.customerPhone).length
+            ordersCount: allOrders.filter(x => x.customerPhone === o.customerPhone && x.status !== 'Cancelled').length
           });
         }
       });
@@ -1031,7 +1103,7 @@
           <td class="p-3.5 font-mono text-bronze-400">${fb.phone}</td>
           <td class="p-3.5 text-slate-300 max-w-sm text-[11px] leading-relaxed">${fb.message}</td>
           <td class="p-3.5">
-            <button onclick="deleteFeedbackItem(${index}, '${fb.feedbackId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
+            <button onclick="deleteFeedbackItem('${fb.feedbackId}')" class="text-slate-500 hover:text-red-400 p-1 cursor-pointer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </td>
@@ -1041,7 +1113,7 @@
       lucide.createIcons();
     }
 
-    function deleteFeedbackItem(index, feedbackId) {
+    function deleteFeedbackItem(feedbackId) {
       if (confirm('Delete this feedback?')) {
         let local = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
         local = local.filter(f => f.feedbackId !== feedbackId);
@@ -1056,6 +1128,7 @@
         }
 
         renderAdminFeedbacks();
+        renderHomeFeedbacks();
         renderGraphicSheet();
       }
     }
