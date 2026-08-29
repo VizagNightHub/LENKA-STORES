@@ -12,6 +12,8 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Confetti Particle Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -156,6 +158,39 @@
     </div>
   </main>
 
+  <!-- LUXURY CELEBRATION ORDER SUCCESS MODAL WITH CONFETTI -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6 border-bronze-400/40 relative overflow-hidden">
+      <!-- Top Glowing Badge -->
+      <div class="w-16 h-16 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-xl active-tracker-glow">
+        <i data-lucide="party-popper" class="w-8 h-8 text-bronze-400"></i>
+      </div>
+
+      <div class="space-y-2">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-bronze-400 font-semibold block">RESERVATION CONFIRMED</span>
+        <h3 class="font-serif text-3xl text-white font-medium">Congratulations!</h3>
+        <p class="text-xs text-slate-300 leading-relaxed pt-1">
+          Your order has been securely registered in the Lenka Vault.<br/>
+          Consignment ID: <strong id="successOrderIdDisplay" class="font-mono text-bronze-400">#LS000000</strong>
+        </p>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-noir-850 fine-border text-[11px] text-slate-400 space-y-1">
+        <p class="text-white font-medium">✨ Real-time dispatch updates have been scheduled.</p>
+        <p>You can track delivery progress anytime in your client profile.</p>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="closeOrderSuccessModal(true)" class="flex-1 py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg">
+          View Live Tracker
+        </button>
+        <button onclick="closeOrderSuccessModal(false)" class="px-4 py-3 bg-noir-850 hover:bg-noir-800 fine-border text-slate-300 text-xs rounded-xl">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- FEEDBACK MODAL -->
   <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
@@ -194,7 +229,7 @@
     </div>
   </div>
 
-  <!-- LUXURY FEEDBACK CONFIRMATION MODAL -->
+  <!-- FEEDBACK SUCCESS MODAL -->
   <div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
       <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
@@ -213,7 +248,7 @@
     </div>
   </div>
 
-  <!-- PROFILE & LIVE TRACKER DRAWER -->
+  <!-- PROFILE & LIVE TRACKER DRAWER (WITH CANCEL ORDER OPTION) -->
   <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
     <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
       
@@ -320,7 +355,7 @@
             </div>
           </div>
 
-          <!-- ANIMATED ORDER TRACKER -->
+          <!-- ANIMATED ORDER TRACKER WITH CANCELLATION OPTION -->
           <div class="pt-2 space-y-4">
             <div class="flex items-center justify-between">
               <h4 class="font-serif text-lg text-white flex items-center gap-2">
@@ -374,10 +409,9 @@
     </div>
   </div>
 
-  <!-- LUXURY FOOTER -->
+  <!-- FOOTER -->
   <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 space-y-6">
-      
       <div class="font-serif text-2xl text-white tracking-wider">LENKA STORES</div>
       
       <!-- SOCIAL MEDIA -->
@@ -393,7 +427,7 @@
 
         <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
           <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
             <polygon points="10 15 15 12 10 9 10 15" class="fill-[#C5A880] stroke-none"/>
           </svg>
           <span class="text-xs font-medium tracking-wider">YouTube</span>
@@ -415,9 +449,8 @@
     </div>
   </footer>
 
-  <!-- CLIENT SCRIPTS & FIREBASE REAL-TIME SYNC -->
+  <!-- CLIENT SCRIPTS -->
   <script>
-    // 1. FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
       authDomain: "lenkastores-studio.firebaseapp.com",
@@ -438,14 +471,13 @@
     let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
     let currentCategoryFilter = 'all';
 
-    // 2. LISTEN TO LIVE PRODUCTS FROM FIREBASE
+    // REAL-TIME CATALOG LISTENER
     db.collection('products').onSnapshot((snapshot) => {
       cloudCatalog = [];
       snapshot.forEach(doc => {
         cloudCatalog.push({ id: doc.id, ...doc.data() });
       });
 
-      // Seed catalog to Firestore if collection is brand new
       if (cloudCatalog.length === 0) {
         seedInitialProducts();
       } else {
@@ -486,7 +518,6 @@
           description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
         }
       ];
-
       defaultProducts.forEach(p => db.collection('products').add(p));
     }
 
@@ -624,7 +655,7 @@
     function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
     function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
 
-    // FEEDBACK TO FIRESTORE
+    // FEEDBACK
     function openFeedbackModal() {
       if (currentProfile) {
         document.getElementById('fbName').value = currentProfile.name || '';
@@ -633,17 +664,9 @@
       document.getElementById('feedbackModal').classList.remove('hidden');
     }
 
-    function closeFeedbackModal() {
-      document.getElementById('feedbackModal').classList.add('hidden');
-    }
-
-    function openFeedbackSuccessModal() {
-      document.getElementById('feedbackSuccessModal').classList.remove('hidden');
-    }
-
-    function closeFeedbackSuccessModal() {
-      document.getElementById('feedbackSuccessModal').classList.add('hidden');
-    }
+    function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
+    function openFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.remove('hidden'); }
+    function closeFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.add('hidden'); }
 
     async function handleFeedbackSubmit(e) {
       e.preventDefault();
@@ -666,7 +689,7 @@
         closeFeedbackModal();
         openFeedbackSuccessModal();
       } catch (err) {
-        alert('Feedback submitted: ' + err.message);
+        alert('Feedback error: ' + err.message);
       }
     }
 
@@ -697,7 +720,6 @@
       const state = document.getElementById('addrState').value.trim();
       const area = document.getElementById('addrArea').value.trim();
       const pin = document.getElementById('addrPin').value.trim();
-      
       const avatar = uploadedAvatarBase64 || (currentProfile ? currentProfile.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150');
 
       if (!name || !phone || !area || !pin) {
@@ -714,8 +736,7 @@
       };
 
       localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
-      
-      // Save customer profile to Cloud Firestore
+
       try {
         await db.collection('customers').doc(phone).set({
           ...currentProfile,
@@ -794,7 +815,7 @@
       checkSavedProfile();
     }
 
-    // REAL-TIME ORDERS LISTENER FROM FIRESTORE
+    // REAL-TIME ORDERS LISTENER (WITH CANCELLATION BUTTON)
     let ordersUnsubscribe = null;
     function listenToUserOrders() {
       if (!currentProfile) return;
@@ -813,6 +834,9 @@
 
           snapshot.forEach(doc => {
             const ord = doc.data();
+            const docId = doc.id;
+            const isCancelled = ord.status === 'Cancelled';
+
             let pct = '15%';
             let step1Active = true;
             let step2Active = ord.status === 'Dispatched' || ord.status === 'Delivered';
@@ -833,48 +857,58 @@
                   <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId}</span>
                   <p class="text-[10px] text-slate-500 mt-0.5">${ord.timestamp || ''}</p>
                 </div>
-                <span class="text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold ${ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400' : 'bg-bronze-400/10 text-bronze-400'}">
-                  ${ord.status === 'Dispatched' ? 'In Transit' : ord.status}
+                <span class="text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold ${isCancelled ? 'bg-red-500/15 text-red-400 border border-red-500/30' : ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400' : 'bg-bronze-400/10 text-bronze-400'}">
+                  ${isCancelled ? 'Cancelled' : ord.status === 'Dispatched' ? 'In Transit' : ord.status}
                 </span>
               </div>
 
               <div class="text-xs text-white font-medium">${ord.itemsSummary}</div>
 
-              <div class="pt-3 pb-1">
-                <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
-                  <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
+              ${isCancelled ? `
+                <div class="p-3 rounded-xl bg-red-950/20 border border-red-500/20 text-center text-xs text-red-300">
+                  <span class="font-medium">This consignment was cancelled.</span>
                 </div>
-
-                <div class="grid grid-cols-3 text-center relative">
-                  <div class="space-y-1">
-                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                      <i data-lucide="check" class="w-3.5 h-3.5"></i>
-                    </div>
-                    <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
-                    <span class="text-[9px] text-slate-500 block">${confirmedDate}</span>
+              ` : `
+                <div class="pt-3 pb-1">
+                  <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
+                    <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
                   </div>
 
-                  <div class="space-y-1">
-                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                      <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+                  <div class="grid grid-cols-3 text-center relative">
+                    <div class="space-y-1">
+                      <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
+                      <span class="text-[9px] text-slate-500 block">${confirmedDate}</span>
                     </div>
-                    <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
-                    <span class="text-[9px] text-slate-500 block">${shippingDate}</span>
-                  </div>
 
-                  <div class="space-y-1">
-                    <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                      <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+                    <div class="space-y-1">
+                      <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                        <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
+                      <span class="text-[9px] text-slate-500 block">${shippingDate}</span>
                     </div>
-                    <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
-                    <span class="text-[9px] text-slate-500 block">${deliveryDate}</span>
+
+                    <div class="space-y-1">
+                      <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                        <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
+                      <span class="text-[9px] text-slate-500 block">${deliveryDate}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              `}
 
               <div class="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400">
                 <span>Valuation: <strong class="text-white font-serif">₹${ord.totalAmount}</strong></span>
-                <span class="flex items-center gap-1 text-bronze-400"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Lenka Vault Express</span>
+                ${!isCancelled && ord.status !== 'Delivered' ? `
+                  <button onclick="requestCancelOrder('${docId}', '${ord.orderId}')" class="text-[10px] text-red-400 hover:text-red-300 font-medium px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-all">
+                    Cancel Order
+                  </button>
+                ` : ''}
               </div>
             `;
             container.appendChild(box);
@@ -883,7 +917,55 @@
         });
     }
 
-    // CHECKOUT DIRECT TO CLOUD FIRESTORE
+    // CANCEL ORDER FUNCTION
+    async function requestCancelOrder(docId, orderId) {
+      if (confirm(`Are you sure you want to cancel Consignment #${orderId}?`)) {
+        try {
+          await db.collection('orders').doc(docId).update({
+            status: 'Cancelled',
+            cancelledAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          alert(`Consignment #${orderId} has been successfully cancelled.`);
+        } catch (e) {
+          alert('Error cancelling order: ' + e.message);
+        }
+      }
+    }
+
+    // TRIGGER CONFETTI CELEBRATION
+    function triggerPartyBlaster() {
+      if (typeof confetti === 'function') {
+        const count = 200;
+        const defaults = { origin: { y: 0.6 } };
+
+        function fire(particleRatio, opts) {
+          confetti(Object.assign({}, defaults, opts, {
+            particleCount: Math.floor(count * particleRatio)
+          }));
+        }
+
+        fire(0.25, { spread: 26, startVelocity: 55, colors: ['#C5A880', '#E2D4C3', '#FFFFFF'] });
+        fire(0.2, { spread: 60, colors: ['#C5A880', '#A88B63'] });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#FFD700', '#C5A880', '#FFFFFF'] });
+        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        fire(0.1, { spread: 120, startVelocity: 45 });
+      }
+    }
+
+    function openOrderSuccessModal(orderId) {
+      document.getElementById('successOrderIdDisplay').innerText = `#${orderId}`;
+      document.getElementById('orderSuccessModal').classList.remove('hidden');
+      triggerPartyBlaster();
+    }
+
+    function closeOrderSuccessModal(openProfile) {
+      document.getElementById('orderSuccessModal').classList.add('hidden');
+      if (openProfile) {
+        openProfileDrawer();
+      }
+    }
+
+    // CHECKOUT
     async function proceedToCheckout() {
       if (currentCart.length === 0) {
         alert('Your bag is empty.');
@@ -926,8 +1008,8 @@
         updateCartUI();
         closeCartDrawer();
 
-        openProfileDrawer();
-        alert(`Consignment #${orderId} booked successfully! Monitor real-time status in your tracking timeline.`);
+        // Trigger the luxury popup and celebration party blast
+        openOrderSuccessModal(orderId);
       } catch (err) {
         alert('Error placing order: ' + err.message);
       }
