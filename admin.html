@@ -179,61 +179,75 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN WORKSPACE -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
-    <!-- 1. ANALYTICS & GRAPHIC SHEET -->
+    <!-- 1. ANALYTICS & GRAPHIC MOTION SHEET -->
     <section id="page-dashboard" class="space-y-8">
       <div>
         <h1 class="font-serif text-3xl sm:text-4xl text-white">Cloud Performance & Motion Analytics</h1>
         <p class="text-xs text-slate-400 mt-1">Live Firestore real-time projection of store revenue, customer registrations, and orders</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div onclick="selectMenu('orders')" class="p-6 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-2 relative overflow-hidden group shadow-lg">
+      <!-- METRICS GRID -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        
+        <!-- TODAY'S ORDERS (PRIMARY) -->
+        <div onclick="selectMenu('orders')" class="p-5 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-1 relative overflow-hidden group shadow-lg">
           <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider font-semibold text-bronze-400">Today's New Orders</span>
+            <span class="uppercase tracking-wider font-semibold text-bronze-400">Today's Orders</span>
             <span class="w-2.5 h-2.5 rounded-full bg-bronze-400 animate-ping"></span>
           </div>
           <div class="flex items-baseline gap-2">
-            <span id="statTodayOrders" class="font-serif text-4xl text-white font-medium">0</span>
-            <span class="text-[10px] text-slate-500 uppercase tracking-widest">Booked Today</span>
+            <span id="statTodayOrders" class="font-serif text-3xl text-white font-medium">0</span>
+            <span class="text-[9px] text-slate-500 uppercase">Today</span>
           </div>
-          <p class="text-[11px] text-bronze-400 flex items-center gap-1 pt-1">
-            Review today's consignments <i data-lucide="arrow-right" class="w-3 h-3"></i>
-          </p>
+          <p class="text-[10px] text-bronze-400">View orders →</p>
         </div>
 
-        <div onclick="selectMenu('orders')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
+        <!-- TOTAL ALL-TIME ORDERS -->
+        <div onclick="selectMenu('orders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span class="uppercase tracking-wider">All Consignments</span>
+            <span class="uppercase tracking-wider">Total Consignments</span>
             <i data-lucide="shopping-bag" class="w-4 h-4 text-slate-400"></i>
           </div>
           <div id="statOrdersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[11px] text-slate-400">Full order history archive</p>
+          <p class="text-[10px] text-slate-400">All-time archive</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-2">
+        <!-- CANCELLED ORDERS -->
+        <div onclick="selectMenu('orders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span class="uppercase tracking-wider text-red-400">Cancelled Orders</span>
+            <i data-lucide="ban" class="w-4 h-4 text-red-400"></i>
+          </div>
+          <div id="statCancelledOrders" class="font-serif text-3xl text-red-400 font-medium">0</div>
+          <p class="text-[10px] text-red-400">Cancelled by customer</p>
+        </div>
+
+        <!-- GROSS VALUATION -->
+        <div class="p-5 rounded-2xl bg-noir-900 fine-border space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">Gross Valuation</span>
             <i data-lucide="indian-rupee" class="w-4 h-4 text-amber-400"></i>
           </div>
           <div id="statTotalValuation" class="font-serif text-3xl text-white font-medium">₹0</div>
-          <p class="text-[11px] text-slate-500">Total transaction value</p>
+          <p class="text-[10px] text-slate-500">Active transactions</p>
         </div>
 
-        <div onclick="selectMenu('customers')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
+        <!-- REGISTERED VIP CLIENTS -->
+        <div onclick="selectMenu('customers')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
           <div class="flex items-center justify-between text-slate-400 text-xs">
             <span class="uppercase tracking-wider">Registered VIPs</span>
             <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
           </div>
           <div id="statCustomersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <p class="text-[11px] text-purple-400 flex items-center gap-1">
-            Open address directory <i data-lucide="arrow-right" class="w-3 h-3"></i>
-          </p>
+          <p class="text-[10px] text-purple-400">Address directory →</p>
         </div>
+
       </div>
 
+      <!-- CHARTS & FULFILLMENT MOTION BARS -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
           <div class="flex items-center justify-between pb-4 border-b border-white/5">
@@ -242,20 +256,20 @@
                 <i data-lucide="activity" class="w-4 h-4"></i>
               </div>
               <div>
-                <h3 class="font-serif text-xl text-white">Consignment Fulfillment Flow</h3>
-                <p class="text-[11px] text-slate-500">Live proportional tracking status distribution</p>
+                <h3 class="font-serif text-xl text-white">Consignment Fulfillment Status</h3>
+                <p class="text-[11px] text-slate-500">Live order state & cancellation metrics</p>
               </div>
             </div>
             <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-bronze-400 uppercase tracking-widest font-semibold">CLOUD SYNC</span>
           </div>
 
-          <div class="space-y-5 pt-2">
+          <div class="space-y-4 pt-2">
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
                 <span class="text-slate-300 font-medium">1. Confirmed Reservations</span>
                 <span id="graphConfirmedCount" class="font-mono text-bronze-400 font-semibold">0 (0%)</span>
               </div>
-              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
                 <div id="graphConfirmedBar" class="h-full bg-gradient-to-r from-bronze-500 to-bronze-300 rounded-full motion-bar-glow transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
@@ -265,18 +279,28 @@
                 <span class="text-slate-300 font-medium">2. In Transit / Dispatched</span>
                 <span id="graphDispatchedCount" class="font-mono text-blue-400 font-semibold">0 (0%)</span>
               </div>
-              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
                 <div id="graphDispatchedBar" class="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300 font-medium">3. Delivered to Customer</span>
+                <span class="text-slate-300 font-medium">3. Delivered Successfully</span>
                 <span id="graphDeliveredCount" class="font-mono text-green-400 font-semibold">0 (0%)</span>
               </div>
-              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
                 <div id="graphDeliveredBar" class="h-full bg-gradient-to-r from-green-600 to-green-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-red-300 font-medium">4. Cancelled Consignments</span>
+                <span id="graphCancelledCount" class="font-mono text-red-400 font-semibold">0 (0%)</span>
+              </div>
+              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphCancelledBar" class="h-full bg-gradient-to-r from-red-600 to-red-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
           </div>
@@ -289,7 +313,7 @@
                 <i data-lucide="layers" class="w-4 h-4"></i>
               </div>
               <div>
-                <h3 class="font-serif text-xl text-white">Active Atelier Catalog Distribution</h3>
+                <h3 class="font-serif text-xl text-white">Active Atelier Distribution</h3>
                 <p class="text-[11px] text-slate-500">Live product representation across collections</p>
               </div>
             </div>
@@ -331,7 +355,7 @@
       </div>
     </section>
 
-    <!-- 2. ORDERS & TRACKING -->
+    <!-- 2. ORDERS & TRACKING VIEW -->
     <section id="page-orders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -339,7 +363,7 @@
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
           </button>
           <h1 class="font-serif text-3xl text-white">Live Customer Consignments & Tracking</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Manage statuses and broadcast Confirmed, Shipping Start, and Delivery Dates</p>
+          <p class="text-xs text-slate-400 mt-0.5">Manage statuses, cancellations, and broadcast Confirmed, Shipping Start, and Delivery Dates</p>
         </div>
       </div>
 
@@ -364,7 +388,7 @@
       </div>
     </section>
 
-    <!-- 3. PRODUCT CATALOG -->
+    <!-- 3. PRODUCT CATALOG VIEW -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
         <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
@@ -439,7 +463,7 @@
       </div>
     </section>
 
-    <!-- 4. REGISTERED VIP CLIENTS -->
+    <!-- 4. REGISTERED VIP CLIENTS VIEW -->
     <section id="page-customers" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -471,7 +495,7 @@
       </div>
     </section>
 
-    <!-- 5. CLIENT FEEDBACK -->
+    <!-- 5. CLIENT FEEDBACK VIEW -->
     <section id="page-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
@@ -526,7 +550,7 @@
     let allFeedbacks = [];
     let allCustomers = [];
 
-    // REAL-TIME FIRESTORE LISTENERS
+    // FIRESTORE SYNC LISTENERS
     function initFirebaseListeners() {
       // 1. Orders
       db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
@@ -643,34 +667,45 @@
       document.getElementById('sideFeedbackBadge').innerText = allFeedbacks.length;
     }
 
-    // GRAPHIC SHEET
+    // GRAPHIC SHEET & ANALYTICS CALCULATION
     function renderGraphicSheet() {
       const todayFormatted = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const todayOrdersCount = allOrders.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted)).length;
       document.getElementById('statTodayOrders').innerText = todayOrdersCount;
 
-      const totalValuation = allOrders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+      const cancelledOrders = allOrders.filter(o => o.status === 'Cancelled');
+      document.getElementById('statCancelledOrders').innerText = cancelledOrders.length;
+
+      const activeOrders = allOrders.filter(o => o.status !== 'Cancelled');
+      const totalValuation = activeOrders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+      
       document.getElementById('statOrdersCount').innerText = allOrders.length;
       document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
       document.getElementById('statCustomersCount').innerText = allCustomers.length || allOrders.length;
 
+      // Status breakdown
       const confirmedCount = allOrders.filter(o => o.status === 'Confirmed').length;
       const dispatchedCount = allOrders.filter(o => o.status === 'Dispatched').length;
       const deliveredCount = allOrders.filter(o => o.status === 'Delivered').length;
+      const cancelledCount = cancelledOrders.length;
       const totalO = allOrders.length || 1;
 
       const confPct = Math.round((confirmedCount / totalO) * 100);
       const dispPct = Math.round((dispatchedCount / totalO) * 100);
       const delivPct = Math.round((deliveredCount / totalO) * 100);
+      const cancPct = Math.round((cancelledCount / totalO) * 100);
 
       document.getElementById('graphConfirmedCount').innerText = `${confirmedCount} (${confPct}%)`;
       document.getElementById('graphDispatchedCount').innerText = `${dispatchedCount} (${dispPct}%)`;
       document.getElementById('graphDeliveredCount').innerText = `${deliveredCount} (${delivPct}%)`;
+      document.getElementById('graphCancelledCount').innerText = `${cancelledCount} (${cancPct}%)`;
 
       document.getElementById('graphConfirmedBar').style.width = `${confPct}%`;
       document.getElementById('graphDispatchedBar').style.width = `${dispPct}%`;
       document.getElementById('graphDeliveredBar').style.width = `${delivPct}%`;
+      document.getElementById('graphCancelledBar').style.width = `${cancPct}%`;
 
+      // Category breakdown
       const audioCount = allCatalog.filter(c => c.category && c.category.includes('Audio')).length;
       const powerCount = allCatalog.filter(c => c.category && (c.category.includes('Battery') || c.category.includes('Power'))).length;
       const fashionCount = allCatalog.filter(c => c.category && (c.category.includes('Apparel') || c.category.includes('Fashion'))).length;
@@ -685,7 +720,7 @@
       document.getElementById('graphCatFashionBar').style.width = `${Math.round((fashionCount / totalC) * 100)}%`;
     }
 
-    // ORDERS
+    // ORDERS PAGE
     function renderAdminOrders() {
       const tbody = document.getElementById('adminOrdersBody');
       const emptyMsg = document.getElementById('noOrdersMessage');
@@ -698,8 +733,9 @@
 
       emptyMsg.classList.add('hidden');
       allOrders.forEach((ord) => {
+        const isCancelled = ord.status === 'Cancelled';
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-noir-850/50 transition-colors";
+        tr.className = `hover:bg-noir-850/50 transition-colors ${isCancelled ? 'opacity-60 bg-red-950/10' : ''}`;
         tr.innerHTML = `
           <td class="p-3.5 font-mono text-bronze-400 font-semibold">
             #${ord.orderId}<br/>
@@ -720,10 +756,11 @@
             <span class="text-bronze-400 font-serif text-xs">Valuation: ₹${ord.totalAmount}</span>
           </td>
           <td class="p-3.5">
-            <select onchange="updateCloudOrderStatus('${ord.docId}', this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400">
+            <select onchange="updateCloudOrderStatus('${ord.docId}', this.value)" class="bg-noir-950 fine-border text-[11px] rounded-lg px-2.5 py-1.5 text-white focus:outline-none focus:border-bronze-400 ${isCancelled ? 'border-red-500/40 text-red-400' : ''}">
               <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
               <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Shipped / In Transit</option>
               <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered</option>
+              <option value="Cancelled" ${isCancelled ? 'selected' : ''}>❌ Cancelled</option>
             </select>
           </td>
           <td class="p-3.5 space-y-1">
@@ -826,7 +863,7 @@
       lucide.createIcons();
     }
 
-    // FEEDBACK
+    // FEEDBACK PAGE
     function renderAdminFeedbacks() {
       const tbody = document.getElementById('adminFeedbackBody');
       const emptyMsg = document.getElementById('noFeedbackMessage');
@@ -866,7 +903,7 @@
       }
     }
 
-    // CATALOG PUBLISH TO FIRESTORE
+    // PRODUCT PUBLISHING
     async function handleProductPublish(e) {
       e.preventDefault();
       const category = document.getElementById('prodCategory').value;
