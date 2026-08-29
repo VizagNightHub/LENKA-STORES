@@ -17,10 +17,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -47,7 +43,6 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
-    .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
     .gold-gradient-text {
       background: linear-gradient(135deg, #FFFFFF 0%, #E2D4C3 50%, #C5A880 100%);
       -webkit-background-clip: text;
@@ -55,6 +50,11 @@
     }
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
+      50% { box-shadow: 0 0 20px rgba(197, 168, 128, 0.7); }
+    }
+    .active-tracker-glow { animation: pulseGlow 2s infinite ease-in-out; }
   </style>
 </head>
 
@@ -96,9 +96,10 @@
       <!-- USER ACTIONS -->
       <div class="flex items-center gap-3">
         <!-- PROFILE BUTTON -->
-        <button onclick="openProfileDrawer()" class="px-3 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all">
-          <i data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
-          <span id="navProfileLabel" class="hidden sm:inline">My Profile</span>
+        <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all">
+          <img id="navProfileAvatar" src="" class="w-6 h-6 rounded-full object-cover fine-border hidden" />
+          <i id="navProfileIcon" data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
+          <span id="navProfileLabel" class="hidden sm:inline font-medium">My Profile</span>
         </button>
 
         <!-- CART BUTTON -->
@@ -111,28 +112,22 @@
     </div>
   </header>
 
-<!-- LUXURY VIDEO BANNER HERO -->
+  <!-- LUXURY VIDEO BANNER HERO -->
   <section class="relative w-full h-[360px] sm:h-[460px] overflow-hidden border-b border-white/10 flex items-center justify-center text-center">
-    <!-- Atmospheric Motion Video -->
     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-45 scale-105 pointer-events-none">
       <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-gold-lines-motion-background-42999-large.mp4" type="video/mp4" />
     </video>
-
-    <!-- Dark Gradient Overlay -->
     <div class="absolute inset-0 bg-gradient-to-b from-noir-950/80 via-noir-950/40 to-noir-950 pointer-events-none"></div>
 
-    <!-- Banner Content -->
     <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 space-y-4">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-noir-850/80 fine-border backdrop-blur-md">
         <span class="w-1.5 h-1.5 rounded-full bg-bronze-400 animate-ping"></span>
         <span class="text-[10px] uppercase tracking-[0.3em] text-bronze-400 font-semibold">Welcome to the Collection</span>
       </div>
-
       <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif text-white font-light tracking-wide leading-tight drop-shadow-lg">
         Have a pleasant experience with <br/>
         <span class="italic font-normal gold-gradient-text">Lenka Stores</span>
       </h1>
-
       <p class="text-xs sm:text-sm text-slate-300/90 font-light tracking-widest uppercase pt-2 drop-shadow">
         Thank you for visiting & exploring our curated ateliers.
       </p>
@@ -146,92 +141,138 @@
         <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
         <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory direct from Lenka Vault</p>
       </div>
-      <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs">
-        <!-- Category badges dynamically set -->
-      </div>
+      <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs"></div>
     </div>
 
     <!-- PRODUCT GRID -->
-    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-      <!-- Products render here -->
-    </div>
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"></div>
     <div id="emptyCatalogState" class="hidden text-center py-20">
       <i data-lucide="package-open" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
       <p class="text-slate-400 text-sm">No inventory items listed in this atelier.</p>
     </div>
   </main>
 
-  <!-- PROFILE DRAWER (MODAL) -->
+  <!-- PROFILE & LIVE TRACKER DRAWER -->
   <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
-    <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+    <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
       
       <div>
         <!-- DRAWER HEADER -->
         <div class="flex items-center justify-between pb-5 border-b border-white/10">
           <div class="flex items-center gap-2">
             <i data-lucide="user-check" class="w-5 h-5 text-bronze-400"></i>
-            <h3 class="font-serif text-xl text-white">Customer Profile</h3>
+            <h3 class="font-serif text-xl text-white">Client Portal & Tracking</h3>
           </div>
           <button onclick="closeProfileDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
 
-        <!-- AUTH FORM (IF NOT LOGGED IN) -->
+        <!-- AUTH / EDIT FORM -->
         <div id="authSection" class="mt-6 space-y-4">
-          <p class="text-xs text-slate-400">Enter your phone or email to save your address & track live deliveries.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-bronze-400 font-medium uppercase tracking-wider">Profile Setup & 4-Box Address</span>
+            <button id="cancelEditBtn" onclick="cancelProfileEdit()" class="text-[10px] text-slate-500 hover:text-white hidden">Cancel</button>
+          </div>
+
+          <!-- Profile Photo Upload / URL -->
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Profile Photo (Image URL or Upload)</label>
+            <div class="flex gap-2 items-center">
+              <input id="userAvatarInput" type="url" placeholder="Paste Image URL (e.g. https://...)" class="flex-1 bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+              <label class="cursor-pointer px-3 py-2.5 bg-noir-800 fine-border rounded-xl text-xs hover:text-bronze-400 text-slate-300">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <input type="file" id="userAvatarFile" accept="image/*" class="hidden" onchange="handleImageUpload(event)" />
+              </label>
+            </div>
+          </div>
+
           <div>
             <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Full Name</label>
-            <input id="userNameInput" type="text" placeholder="e.g., Arjun Rao" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            <input id="userNameInput" type="text" placeholder="e.g. Sai Vardhan" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
           </div>
+
           <div>
             <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact / WhatsApp</label>
-            <input id="userPhoneInput" type="tel" placeholder="+91 98765 43210" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            <input id="userPhoneInput" type="tel" placeholder="+91 89776 27028" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
           </div>
-          <div>
-            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Shipping Address (With PIN)</label>
-            <textarea id="userAddressInput" rows="3" placeholder="Door No, Street, City, State, PIN Code" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
+
+          <!-- 4-Box Structured Address -->
+          <div class="pt-2 border-t border-white/5 space-y-3">
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold block">Shipping Address (4 Segments)</span>
+            
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Box 1: Country</label>
+                <input id="addrCountry" type="text" value="India" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+              </div>
+              <div>
+                <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Box 2: State</label>
+                <input id="addrState" type="text" placeholder="Telangana / AP" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Box 3: Area, Street & House No.</label>
+              <input id="addrArea" type="text" placeholder="LIG-530, KPHB Colony, Road No 1" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Box 4: PIN Code</label>
+              <input id="addrPin" type="text" placeholder="500072" maxlength="6" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
           </div>
-          <button onclick="saveUserProfile()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-wider uppercase rounded-xl transition-all">
+
+          <button onclick="saveUserProfile()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg">
             Save Profile & Address
           </button>
         </div>
 
-        <!-- LOGGED IN PROFILE CARD -->
-        <div id="profileSavedCard" class="hidden mt-6 space-y-5">
-          <div class="p-4 rounded-xl bg-noir-850 fine-border space-y-2">
+        <!-- LOGGED-IN VIP CARD -->
+        <div id="profileSavedCard" class="hidden mt-6 space-y-6">
+          <div class="p-5 rounded-2xl bg-noir-850 fine-border relative overflow-hidden space-y-3">
             <div class="flex items-center justify-between">
-              <span id="displayUserName" class="text-sm font-semibold text-white"></span>
-              <span class="text-[10px] bg-bronze-400/10 text-bronze-400 px-2 py-0.5 rounded-full uppercase tracking-wider">Verified VIP</span>
+              <div class="flex items-center gap-3">
+                <img id="cardProfileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-12 h-12 rounded-xl object-cover fine-border" />
+                <div>
+                  <h4 id="displayUserName" class="text-base font-serif text-white font-medium"></h4>
+                  <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-md uppercase tracking-wider font-semibold">VERIFIED VIP</span>
+                </div>
+              </div>
+              <button onclick="startProfileEdit()" class="px-3 py-1.5 rounded-lg bg-noir-950 fine-border text-[11px] text-bronze-300 hover:text-white flex items-center gap-1.5">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
+              </button>
             </div>
-            <p id="displayUserPhone" class="text-xs text-slate-400 flex items-center gap-1.5">
-              <i data-lucide="phone" class="w-3.5 h-3.5 text-bronze-400"></i> <span></span>
-            </p>
-            <p id="displayUserAddress" class="text-xs text-slate-300 flex items-start gap-1.5 pt-1 border-t border-white/5">
-              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bronze-400 mt-0.5"></i> <span></span>
-            </p>
+
+            <div class="pt-2 border-t border-white/5 space-y-1.5 text-xs text-slate-300">
+              <p id="displayUserPhone" class="flex items-center gap-2">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-bronze-400"></i> <span></span>
+              </p>
+              <p id="displayUserAddress" class="flex items-start gap-2 pt-1 text-slate-400 text-[11px]">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bronze-400 mt-0.5"></i> <span></span>
+              </p>
+            </div>
           </div>
 
-          <!-- RECENT ORDERS & LIVE TRACKER BOX -->
-          <div class="pt-4 border-t border-white/10">
-            <div class="flex items-center justify-between mb-3">
-              <h4 class="font-serif text-base text-white flex items-center gap-1.5">
-                <i data-lucide="truck" class="w-4 h-4 text-bronze-400"></i> Live Order Tracker
+          <!-- STYLISH REAL-TIME ANIMATED ORDER TRACKER -->
+          <div class="pt-2 space-y-4">
+            <div class="flex items-center justify-between">
+              <h4 class="font-serif text-lg text-white flex items-center gap-2">
+                <i data-lucide="route" class="w-4 h-4 text-bronze-400"></i> Live Dispatch Timeline
               </h4>
-              <button onclick="renderUserOrders()" class="text-[10px] text-bronze-400 underline">Refresh</button>
+              <button onclick="renderUserOrders()" class="text-[11px] text-bronze-400 hover:underline">Refresh</button>
             </div>
-            <div id="userOrdersList" class="space-y-4">
-              <!-- Orders injected here -->
-            </div>
+            
+            <div id="userOrdersList" class="space-y-4"></div>
           </div>
         </div>
 
       </div>
 
-      <!-- FOOTER ACTIONS -->
-      <div id="profileFooter" class="hidden pt-4 border-t border-white/10">
-        <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all">
-          Edit Address / Logout
+      <!-- BOTTOM LOGOUT BAR ONLY -->
+      <div id="profileFooter" class="hidden pt-6 border-t border-white/10">
+        <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all flex items-center justify-center gap-2">
+          <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
         </button>
       </div>
 
@@ -251,14 +292,9 @@
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
-
-        <!-- CART ITEMS CONTAINER -->
-        <div id="cartItemsList" class="mt-6 space-y-4">
-          <!-- Items render here -->
-        </div>
+        <div id="cartItemsList" class="mt-6 space-y-4"></div>
       </div>
 
-      <!-- CART TOTALS & CHECKOUT -->
       <div id="cartSummaryBox" class="pt-6 border-t border-white/10 space-y-4">
         <div class="flex justify-between items-center text-sm">
           <span class="text-slate-400">Total Valuation:</span>
@@ -281,15 +317,13 @@
     </div>
   </footer>
 
-  <!-- CLIENT SCRIPTS -->
+  <!-- CLIENT JAVASCRIPT -->
   <script>
-    // Initialize Local Persistence Stores
     let currentCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
     let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
     let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
     let ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
 
-    // Default Seed Catalog if empty
     if (currentCatalog.length === 0) {
       currentCatalog = [
         {
@@ -329,7 +363,6 @@
       localStorage.setItem('lenka_catalog', JSON.stringify(currentCatalog));
     }
 
-    // Window Load Init
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       renderCatalog('all');
@@ -337,7 +370,6 @@
       checkSavedProfile();
     });
 
-    // Render Catalog Items
     function renderCatalog(filter = 'all') {
       const grid = document.getElementById('productGrid');
       const empty = document.getElementById('emptyCatalogState');
@@ -362,7 +394,7 @@
                 <span class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1.5">Color Edition</span>
                 <div class="flex flex-wrap gap-1.5">
                   ${prod.variants.map((v, idx) => `
-                    <button onclick="selectVariant(this, '${prod.id}')" class="variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border ${idx === 0 ? 'bg-bronze-400 text-noir-950 font-medium' : 'bg-noir-850 text-slate-300'} transition-all">${v}</button>
+                    <button onclick="selectVariant(this)" class="variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border ${idx === 0 ? 'bg-bronze-400 text-noir-950 font-medium' : 'bg-noir-850 text-slate-300'} transition-all">${v}</button>
                   `).join('')}
                 </div>
               </div>
@@ -398,7 +430,7 @@
       lucide.createIcons();
     }
 
-    function selectVariant(btn, prodId) {
+    function selectVariant(btn) {
       const parent = btn.parentElement;
       parent.querySelectorAll('.variant-pill').forEach(b => {
         b.className = 'variant-pill px-2.5 py-1 text-[11px] rounded-lg fine-border bg-noir-850 text-slate-300 transition-all';
@@ -411,7 +443,7 @@
       renderCatalog(cat);
     }
 
-    // CART FUNCTIONALITY
+    // CART
     function addToBag(prodId) {
       const prod = currentCatalog.find(p => p.id === prodId);
       if (!prod) return;
@@ -465,7 +497,20 @@
     function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
     function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
 
-    // PROFILE FUNCTIONALITY
+    // PROFILE & IMAGE UPLOAD
+    let uploadedAvatarBase64 = '';
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          uploadedAvatarBase64 = evt.target.result;
+          document.getElementById('userAvatarInput').value = uploadedAvatarBase64;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
     function openProfileDrawer() { 
       document.getElementById('profileDrawer').classList.remove('hidden'); 
       checkSavedProfile();
@@ -475,15 +520,27 @@
     function saveUserProfile() {
       const name = document.getElementById('userNameInput').value.trim();
       const phone = document.getElementById('userPhoneInput').value.trim();
-      const addr = document.getElementById('userAddressInput').value.trim();
+      const country = document.getElementById('addrCountry').value.trim() || 'India';
+      const state = document.getElementById('addrState').value.trim();
+      const area = document.getElementById('addrArea').value.trim();
+      const pin = document.getElementById('addrPin').value.trim();
+      const avatar = document.getElementById('userAvatarInput').value.trim() || uploadedAvatarBase64 || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
 
-      if (!name || !phone || !addr) {
-        alert('Please fill out all address fields.');
+      if (!name || !phone || !area || !pin) {
+        alert('Please fill out Name, Phone, Area & PIN Code.');
         return;
       }
 
-      currentProfile = { name, phone, address: addr };
+      currentProfile = {
+        name,
+        phone,
+        avatar,
+        address: { country, state, area, pin },
+        formattedAddress: `${area}, ${state}, ${country} - ${pin}`
+      };
+
       localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
+      document.getElementById('cancelEditBtn').classList.add('hidden');
       checkSavedProfile();
     }
 
@@ -492,6 +549,8 @@
       const savedCard = document.getElementById('profileSavedCard');
       const foot = document.getElementById('profileFooter');
       const navLabel = document.getElementById('navProfileLabel');
+      const navAvatar = document.getElementById('navProfileAvatar');
+      const navIcon = document.getElementById('navProfileIcon');
 
       if (currentProfile) {
         authSec.classList.add('hidden');
@@ -499,8 +558,13 @@
         foot.classList.remove('hidden');
 
         document.getElementById('displayUserName').innerText = currentProfile.name;
+        document.getElementById('cardProfileImg').src = currentProfile.avatar;
         document.getElementById('displayUserPhone').querySelector('span').innerText = currentProfile.phone;
-        document.getElementById('displayUserAddress').querySelector('span').innerText = currentProfile.address;
+        document.getElementById('displayUserAddress').querySelector('span').innerText = currentProfile.formattedAddress || currentProfile.address;
+
+        navAvatar.src = currentProfile.avatar;
+        navAvatar.classList.remove('hidden');
+        navIcon.classList.add('hidden');
         navLabel.innerText = currentProfile.name.split(' ')[0];
 
         renderUserOrders();
@@ -508,9 +572,33 @@
         authSec.classList.remove('hidden');
         savedCard.classList.add('hidden');
         foot.classList.add('hidden');
+        navAvatar.classList.add('hidden');
+        navIcon.classList.remove('hidden');
         navLabel.innerText = 'My Profile';
       }
       lucide.createIcons();
+    }
+
+    function startProfileEdit() {
+      if (!currentProfile) return;
+      document.getElementById('userNameInput').value = currentProfile.name;
+      document.getElementById('userPhoneInput').value = currentProfile.phone;
+      document.getElementById('userAvatarInput').value = currentProfile.avatar || '';
+      
+      if (typeof currentProfile.address === 'object') {
+        document.getElementById('addrCountry').value = currentProfile.address.country || 'India';
+        document.getElementById('addrState').value = currentProfile.address.state || '';
+        document.getElementById('addrArea').value = currentProfile.address.area || '';
+        document.getElementById('addrPin').value = currentProfile.address.pin || '';
+      }
+
+      document.getElementById('authSection').classList.remove('hidden');
+      document.getElementById('profileSavedCard').classList.add('hidden');
+      document.getElementById('cancelEditBtn').classList.remove('hidden');
+    }
+
+    function cancelProfileEdit() {
+      checkSavedProfile();
     }
 
     function resetProfile() {
@@ -519,7 +607,7 @@
       checkSavedProfile();
     }
 
-    // LIVE ORDER TRACKER IN CUSTOMER PROFILE
+    // ULTRA-MODERN STYLISH LIVE TRACKER
     function renderUserOrders() {
       ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const container = document.getElementById('userOrdersList');
@@ -530,46 +618,80 @@
       const myOrders = ordersList.filter(o => o.customerPhone === currentProfile.phone);
 
       if (myOrders.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 py-3">No active orders placed yet under ${currentProfile.phone}.</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500 py-3 text-center">No active consignments booked yet under ${currentProfile.phone}.</p>`;
         return;
       }
 
       myOrders.forEach(ord => {
-        let statusBadge = '';
-        let step1 = 'bg-bronze-400 text-noir-950 font-bold';
-        let step2 = 'bg-noir-950 text-slate-500';
-        let step3 = 'bg-noir-950 text-slate-500';
+        let pct = '15%';
+        let step1Active = true;
+        let step2Active = ord.status === 'Dispatched' || ord.status === 'Delivered';
+        let step3Active = ord.status === 'Delivered';
 
-        if (ord.status === 'Dispatched') {
-          step2 = 'bg-bronze-400 text-noir-950 font-bold';
-          statusBadge = '<span class="text-[10px] text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">In Transit</span>';
-        } else if (ord.status === 'Delivered') {
-          step2 = 'bg-bronze-400 text-noir-950 font-bold';
-          step3 = 'bg-green-400 text-noir-950 font-bold';
-          statusBadge = '<span class="text-[10px] text-green-400 bg-green-500/10 px-2 py-0.5 rounded">Delivered</span>';
-        } else {
-          statusBadge = '<span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Order Confirmed</span>';
-        }
+        if (ord.status === 'Dispatched') pct = '55%';
+        if (ord.status === 'Delivered') pct = '100%';
+
+        const confirmedDate = ord.confirmedDate || ord.timestamp || 'Today';
+        const shippingDate = ord.shippingDate || (ord.status !== 'Confirmed' ? 'In Transit' : 'Pending');
+        const deliveryDate = ord.deliveryDate || 'Express 48H';
 
         const box = document.createElement('div');
-        box.className = "p-3.5 rounded-xl bg-noir-850 fine-border space-y-3";
+        box.className = "p-5 rounded-2xl bg-noir-850 fine-border space-y-4 relative overflow-hidden";
         box.innerHTML = `
-          <div class="flex items-center justify-between text-xs">
-            <span class="font-mono text-bronze-400">#${ord.orderId}</span>
-            ${statusBadge}
+          <!-- CARD TOP -->
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId}</span>
+              <p class="text-[10px] text-slate-500 mt-0.5">${ord.timestamp || ''}</p>
+            </div>
+            <span class="text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold ${ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400' : 'bg-bronze-400/10 text-bronze-400'}">
+              ${ord.status === 'Dispatched' ? 'In Transit' : ord.status}
+            </span>
           </div>
+
           <div class="text-xs text-white font-medium">
             ${ord.itemsSummary}
           </div>
-          <!-- TRACKING TIMELINE -->
-          <div class="grid grid-cols-3 gap-1 pt-2 text-center text-[9px] uppercase tracking-wider font-semibold">
-            <div class="p-1 rounded ${step1}">1. Confirmed</div>
-            <div class="p-1 rounded ${step2}">2. Shipped</div>
-            <div class="p-1 rounded ${step3}">3. Delivered</div>
+
+          <!-- ANIMATED TRACKING BAR -->
+          <div class="pt-3 pb-1">
+            <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
+              <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
+            </div>
+
+            <div class="grid grid-cols-3 text-center relative">
+              <!-- STEP 1 -->
+              <div class="space-y-1">
+                <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                  <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                </div>
+                <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
+                <span class="text-[9px] text-slate-500 block">${confirmedDate}</span>
+              </div>
+
+              <!-- STEP 2 -->
+              <div class="space-y-1">
+                <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                  <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+                </div>
+                <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
+                <span class="text-[9px] text-slate-500 block">${shippingDate}</span>
+              </div>
+
+              <!-- STEP 3 -->
+              <div class="space-y-1">
+                <div class="w-7 h-7 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
+                  <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+                </div>
+                <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
+                <span class="text-[9px] text-slate-500 block">${deliveryDate}</span>
+              </div>
+            </div>
           </div>
-          <div class="text-[10px] text-slate-400 pt-1 flex justify-between border-t border-white/5">
-            <span>Valuation: ₹${ord.totalAmount}</span>
-            <span>Est: Express Air</span>
+
+          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Valuation: <strong class="text-white font-serif">₹${ord.totalAmount}</strong></span>
+            <span class="flex items-center gap-1 text-bronze-400"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Lenka Vault Express</span>
           </div>
         `;
         container.appendChild(box);
@@ -577,7 +699,7 @@
       lucide.createIcons();
     }
 
-    // CHECKOUT PROCEED
+    // CHECKOUT
     function proceedToCheckout() {
       if (currentCart.length === 0) {
         alert('Your bag is empty.');
@@ -587,10 +709,11 @@
       if (!currentProfile) {
         closeCartDrawer();
         openProfileDrawer();
-        alert('Please save your shipping address and contact to book the delivery.');
+        alert('Please complete your profile & 4-box shipping address to confirm reservation.');
         return;
       }
 
+      const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const orderId = 'LS' + Math.floor(100000 + Math.random() * 900000);
       const total = currentCart.reduce((sum, i) => sum + Number(i.offerPrice || 0), 0);
       const summary = currentCart.map(i => i.title).join(', ');
@@ -599,26 +722,28 @@
         orderId: orderId,
         customerName: currentProfile.name,
         customerPhone: currentProfile.phone,
-        customerAddress: currentProfile.address,
+        customerAddress: currentProfile.formattedAddress || JSON.stringify(currentProfile.address),
+        customerAvatar: currentProfile.avatar,
         itemsSummary: summary,
         totalAmount: total,
         status: 'Confirmed',
-        timestamp: new Date().toLocaleString()
+        confirmedDate: today,
+        shippingDate: 'Express Scheduled',
+        deliveryDate: 'Est. 2-3 Business Days',
+        timestamp: today
       };
 
       ordersList = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       ordersList.unshift(newOrder);
       localStorage.setItem('lenka_orders', JSON.stringify(ordersList));
 
-      // Clear Bag
       currentCart = [];
       localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
       updateCartUI();
       closeCartDrawer();
 
-      // Open Profile to view live status
       openProfileDrawer();
-      alert(`Order #${orderId} has been confirmed. You can monitor the real-time shipping status in your profile box!`);
+      alert(`Consignment #${orderId} booked successfully! Monitor real-time status in your tracking timeline.`);
     }
   </script>
 </body>
