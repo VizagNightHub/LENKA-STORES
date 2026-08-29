@@ -3,37 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="google-site-verification" content="1nBnhPsAJR3VKCO4n-mtoWI3-i8mrZAyuYN2QUwDFDo" />
   <title>LENKA STORES | Timeless Luxury & Lifestyle</title>
   
-  <!-- SEO & Structured Data -->
   <meta name="description" content="Discover refined electronics, modern gadgets, and couture fashion at LENKA STORES by Lenka Ventures Pvt Ltd." />
   <meta property="og:title" content="LENKA STORES" />
-  <meta property="og:site_name" content="LENKA STORES" />
-  <meta name="application-name" content="LENKA STORES" />
 
-  <!-- SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Crect x='4' y='4' width='92' height='92' rx='16' fill='none' stroke='%23C5A880' stroke-width='2' opacity='0.4'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "LENKA STORES",
-    "url": "https://vizagnighthub.github.io/LENKA-STORES/"
-  }
-  </script>
-
-  <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Luxury Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Firebase App, Auth & Firestore SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -48,23 +31,9 @@
             serif: ['Cormorant Garamond', 'serif'],
           },
           colors: {
-            bronze: {
-              300: '#E2D4C3',
-              400: '#C5A880',
-              500: '#A88B63',
-            },
-            platinum: {
-              100: '#F5F5F7',
-              200: '#E5E5EA',
-              400: '#AEAEB2',
-              600: '#636366',
-            },
-            noir: {
-              950: '#0A0B0D',
-              900: '#111216',
-              850: '#16181E',
-              800: '#1D2027',
-            }
+            bronze: { 300: '#E2D4C3', 400: '#C5A880', 500: '#A88B63' },
+            platinum: { 100: '#F5F5F7', 200: '#E5E5EA', 400: '#AEAEB2' },
+            noir: { 950: '#0A0B0D', 900: '#111216', 850: '#16181E', 800: '#1D2027' }
           }
         }
       }
@@ -72,46 +41,31 @@
   </script>
 
   <style>
-    .glass-classic-nav {
-      background: rgba(10, 11, 13, 0.90);
+    .glass-nav {
+      background: rgba(10, 11, 13, 0.92);
       backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .fine-border {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .fine-border-hover:hover {
-      border-color: rgba(197, 168, 128, 0.4);
-    }
+    .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
+    .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
   </style>
 </head>
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-platinum-200 selection:text-black min-h-screen flex flex-col justify-between">
 
-  <!-- Classic Minimalist Status Bar -->
-  <div class="bg-noir-900 border-b border-white/5 text-slate-400 text-[10px] py-2 px-4 text-center tracking-[0.3em] uppercase font-sans">
-    Atelier Lenka &bull; Private Client Registry &bull; 2026
+  <div class="bg-noir-900 border-b border-white/5 text-slate-400 text-[10px] py-2 px-4 text-center tracking-[0.3em] uppercase">
+    Lenka Stores by Lenka Ventures Pvt Ltd &bull; Curated Catalog Live
   </div>
 
-  <!-- Header -->
-  <header class="sticky top-0 z-40 glass-classic-nav">
+  <header class="sticky top-0 z-40 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
       
-      <!-- Vector LS Crest Brand Logo -->
       <a href="#" class="flex items-center gap-3.5 group">
-        <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-noir-850 to-noir-950 border border-white/15 p-1.5 flex items-center justify-center transition-all duration-300 group-hover:border-bronze-400/60 shadow-lg shadow-black/50">
-          <svg viewBox="0 0 100 100" class="w-full h-full transform transition-transform group-hover:scale-105 duration-300" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="96" height="96" rx="16" stroke="url(#ls_gold_grad)" stroke-width="3" stroke-opacity="0.6"/>
-            <path d="M28 26V72H52" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="url(#ls_gold_grad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs>
-              <linearGradient id="ls_gold_grad" x1="20" y1="20" x2="80" y2="80" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#FFFFFF"/>
-                <stop offset="0.5" stop-color="#E2D4C3"/>
-                <stop offset="1" stop-color="#C5A880"/>
-              </linearGradient>
-            </defs>
+        <div class="w-12 h-12 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center transition-all group-hover:border-bronze-400/60 shadow-lg">
+          <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
+            <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
+            <path d="M28 26V72H52" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/>
+            <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="flex flex-col">
@@ -120,7 +74,6 @@
         </div>
       </a>
 
-      <!-- User Account Action -->
       <div class="flex items-center gap-3">
         <button type="button" onclick="openProfileModal()" id="authNavBtn" class="flex items-center gap-2.5 px-4 py-2 rounded-lg bg-noir-900 hover:bg-noir-850 text-slate-300 fine-border fine-border-hover transition-all text-xs tracking-wider uppercase font-medium cursor-pointer">
           <div class="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center text-[10px] text-slate-300">
@@ -133,233 +86,109 @@
     </div>
   </header>
 
-  <!-- Main Showcase Section -->
-  <main class="flex-grow flex items-center justify-center relative overflow-hidden py-24 px-4 sm:px-6 lg:px-8">
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-white/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
-
-    <div class="max-w-2xl w-full text-center relative z-10 space-y-8">
-      
-      <!-- Central Vector Emblem Preview -->
-      <div class="mx-auto w-20 h-20 rounded-2xl bg-noir-900 border border-white/10 p-3 shadow-2xl flex items-center justify-center">
-        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.5"/>
-          <path d="M28 26V72H52" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-noir-900 fine-border text-slate-400 text-[10px] uppercase tracking-[0.25em]">
-        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Curated Catalog Staging
-      </div>
-
-      <div class="space-y-3">
-        <h1 class="text-4xl sm:text-6xl font-serif font-light tracking-tight text-white leading-tight">
-          Products Coming Soon
-        </h1>
-        <p class="text-base sm:text-lg font-serif italic text-bronze-300 tracking-wide font-normal">
-          Updating as soon as possible.
-        </p>
-      </div>
-
-      <div class="w-16 h-[1px] bg-white/10 mx-auto"></div>
-
-      <p class="text-slate-400 text-xs sm:text-sm max-w-md mx-auto font-light leading-relaxed tracking-wide">
-        Our curated collection of high-standard personal electronics, portable power, and apparel is undergoing final preparation. Establish your profile for private access upon launch.
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full space-y-12">
+    
+    <div class="text-center space-y-4 max-w-2xl mx-auto">
+      <h1 class="text-4xl sm:text-6xl font-serif font-light tracking-tight text-white">
+        Curated Masterpieces
+      </h1>
+      <p class="text-sm font-serif italic text-bronze-300 tracking-wide">
+        High-fidelity audio, ultra-capacity power solutions, and modern apparel.
       </p>
+    </div>
 
-      <div class="pt-2">
-        <button type="button" onclick="openProfileModal()" class="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-platinum-100 hover:bg-white text-noir-950 font-medium text-xs uppercase tracking-[0.2em] shadow-lg transition-all cursor-pointer">
-          Establish Client Profile
-        </button>
+    <div class="flex items-center justify-center gap-2 flex-wrap pb-4">
+      <button onclick="filterCategory('All')" class="cat-btn active px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-platinum-100 text-noir-950 transition-all">All Collections</button>
+      <button onclick="filterCategory('Electronics')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Earbuds</button>
+      <button onclick="filterCategory('Power')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Power Banks</button>
+      <button onclick="filterCategory('MensFashion')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Men's Apparel</button>
+      <button onclick="filterCategory('WomensFashion')" class="cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all">Women's Apparel</button>
+    </div>
+
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       </div>
 
-    </div>
   </main>
 
-  <!-- Client Profile Slide-Over Drawer -->
   <div id="profileModal" class="fixed inset-0 z-50 overflow-hidden hidden" aria-modal="true" role="dialog">
-    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="closeProfileModal()"></div>
-
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm" onclick="closeProfileModal()"></div>
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
       <div class="w-screen max-w-md bg-noir-900 border-l border-white/10 p-6 sm:p-8 flex flex-col justify-between shadow-2xl overflow-y-auto relative z-10 text-slate-300">
-        
         <div>
-          <!-- Header -->
           <div class="flex items-center justify-between pb-5 border-b border-white/10">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-noir-850 border border-white/10 p-1 flex items-center justify-center">
-                <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-                  <path d="M28 26V72H52" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
-                  <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="8" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div>
-                <h2 class="font-serif text-lg text-white font-medium tracking-wide">Client Portfolio</h2>
-                <p class="text-[10px] uppercase tracking-widest text-slate-500">Shipping & Verification</p>
-              </div>
-            </div>
-            <button type="button" onclick="closeProfileModal()" class="text-slate-500 hover:text-white p-2 transition-colors">
-              <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
+            <h2 class="font-serif text-lg text-white font-medium">Client Account & Address</h2>
+            <button onclick="closeProfileModal()" class="text-slate-500 hover:text-white p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
           </div>
 
-          <!-- Notification Banner -->
           <div id="statusNotice" class="hidden my-4 p-3 rounded-lg text-xs tracking-wide"></div>
 
-          <!-- CLIENT PROFILE FORM -->
           <form id="profileForm" onsubmit="handleSaveProfile(event)" class="space-y-4 mt-6">
-            
-            <!-- Full Name -->
             <div>
               <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Full Name</label>
-              <input type="text" id="custName" placeholder="Enter your full name" required
-                     class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-slate-400 transition-colors" />
+              <input type="text" id="custName" placeholder="e.g. Lenka Vardhan Sai" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
             </div>
 
-            <!-- Mobile Number & OTP -->
             <div>
-              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Mobile Number (Login & Delivery)</label>
-              <div class="flex gap-2">
-                <input type="tel" id="custPhone" placeholder="10-digit mobile number" maxlength="10" required
-                       class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-slate-400 transition-colors" />
-                <button type="button" onclick="sendOtp()" id="sendOtpBtn" class="px-4 py-2 bg-noir-800 hover:bg-noir-700 text-white fine-border rounded-lg text-[11px] font-medium uppercase tracking-wider whitespace-nowrap cursor-pointer">
-                  Send OTP
-                </button>
-              </div>
+              <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Mobile Number</label>
+              <input type="tel" id="custPhone" placeholder="10-digit mobile number" maxlength="10" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
             </div>
 
-            <!-- reCAPTCHA Container -->
-            <div id="recaptcha-container"></div>
-
-            <!-- OTP Input Section -->
-            <div id="otpSection" class="hidden p-4 rounded-lg bg-noir-950 fine-border space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-[11px] text-slate-300 font-medium tracking-wide">Enter OTP Code</span>
-                <span class="text-[10px] text-slate-500">Code: <strong class="text-white font-mono">123456</strong></span>
-              </div>
-              <div class="flex gap-2">
-                <input type="text" id="otpCode" maxlength="6" placeholder="123456" 
-                       class="w-full bg-noir-900 border border-white/10 rounded-lg px-3 py-2 text-xs text-center tracking-[0.25em] font-mono text-white focus:outline-none focus:border-slate-400" />
-                <button type="button" onclick="verifyOtp()" class="px-5 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold rounded-lg text-xs uppercase cursor-pointer">
-                  Verify
-                </button>
-              </div>
-            </div>
-
-            <!-- 6-BOX SHIPPING ADDRESS -->
             <div class="pt-3 border-t border-white/10 space-y-3">
-              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.2em] block">Consignment Address</span>
-              
-              <!-- 1. Country -->
+              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Shipping Address</span>
               <div>
-                <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Country</label>
-                <input type="text" id="addrCountry" value="India" required
-                       class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+                <label class="block text-[10px] text-slate-500 mb-1">Country</label>
+                <input type="text" id="addrCountry" value="India" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
               </div>
-
-              <!-- 2. State & 3. District -->
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">State</label>
-                  <input type="text" id="addrState" placeholder="e.g., Andhra Pradesh" required
-                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+                  <label class="block text-[10px] text-slate-500 mb-1">State</label>
+                  <input type="text" id="addrState" placeholder="Andhra Pradesh" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">District / City</label>
-                  <input type="text" id="addrDistrict" placeholder="e.g., Visakhapatnam" required
-                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+                  <label class="block text-[10px] text-slate-500 mb-1">District / City</label>
+                  <input type="text" id="addrDistrict" placeholder="Visakhapatnam" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
                 </div>
               </div>
-
-              <!-- 4. Local Street & 5. Door / House No -->
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Door / Flat No.</label>
-                  <input type="text" id="addrDoor" placeholder="e.g., D.No 12-34/A" required
-                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+                  <label class="block text-[10px] text-slate-500 mb-1">Door / Flat No.</label>
+                  <input type="text" id="addrDoor" placeholder="D.No 12-34" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
                 </div>
                 <div>
-                  <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Street / Landmark</label>
-                  <input type="text" id="addrStreet" placeholder="e.g., Main Road" required
-                         class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+                  <label class="block text-[10px] text-slate-500 mb-1">Street Name</label>
+                  <input type="text" id="addrStreet" placeholder="Beach Road" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
                 </div>
               </div>
-
-              <!-- 6. PIN Code -->
               <div>
-                <label class="block text-[10px] text-slate-500 mb-1 uppercase tracking-wider">PIN Code</label>
-                <input type="text" id="addrPin" placeholder="6-digit PIN" maxlength="6" required
-                       class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-slate-400" />
+                <label class="block text-[10px] text-slate-500 mb-1">PIN Code</label>
+                <input type="text" id="addrPin" placeholder="6-digit PIN" maxlength="6" required class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none" />
               </div>
             </div>
 
-            <!-- Payment Method -->
-            <div class="pt-2 border-t border-white/10">
+            <div>
               <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1.5">Payment Method</label>
-              <select id="custPayment" class="w-full bg-noir-950 border border-white/10 rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-slate-400">
-                <option value="UPI (Google Pay / PhonePe / Paytm)">UPI (Google Pay / PhonePe / Paytm)</option>
+              <select id="custPayment" class="w-full bg-noir-950 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white">
+                <option value="UPI (Google Pay / PhonePe / Paytm)">UPI (Google Pay / PhonePe)</option>
                 <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-                <option value="Credit / Debit Card">Credit / Debit Card</option>
-                <option value="Net Banking">Net Banking</option>
               </select>
             </div>
 
-            <button type="submit" class="w-full py-3 rounded-lg bg-platinum-100 hover:bg-white text-noir-950 font-medium text-xs uppercase tracking-[0.2em] shadow-lg transition-all cursor-pointer">
-              Save Account to Database
+            <button type="submit" class="w-full py-3 rounded-lg bg-platinum-100 text-noir-950 font-bold text-xs uppercase tracking-widest cursor-pointer">
+              Save Shipping Details
             </button>
           </form>
-
-          <!-- Active Summary & Logout -->
-          <div id="verifiedSummary" class="hidden mt-6 p-4 rounded-lg bg-noir-950 fine-border space-y-3">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i> Active Record
-              </h3>
-              <span class="text-[9px] bg-white/5 fine-border text-slate-300 px-2 py-0.5 rounded tracking-widest uppercase">Verified</span>
-            </div>
-            <p class="text-xs text-slate-300">Client: <span id="summaryName" class="text-white font-medium"></span></p>
-            <p class="text-xs text-slate-300">Mobile: <span id="summaryPhone" class="text-white font-medium font-mono"></span></p>
-            <p class="text-xs text-slate-300">Address: <span id="summaryAddress" class="text-slate-400 font-light block mt-1 text-[11px] leading-relaxed"></span></p>
-            <p class="text-xs text-slate-300">Payment: <span id="summaryPayment" class="text-white font-medium"></span></p>
-
-            <button type="button" onclick="handleLogout()" class="w-full mt-3 py-2 rounded-lg bg-red-950/20 hover:bg-red-950/40 border border-red-500/20 text-red-300 text-[11px] uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer">
-              <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Exit Session
-            </button>
-          </div>
-
         </div>
-
-        <div class="pt-6 border-t border-white/10 text-[10px] text-slate-600 text-center tracking-widest uppercase">
-          LENKA STORES &bull; All Rights Reserved &bull; 2026
-        </div>
-
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-noir-950 border-t border-white/5 py-8 relative z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-noir-900 border border-white/10 p-1 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-            <path d="M28 26V72H52" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
-            <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="font-serif text-slate-400 tracking-wider">LENKA STORES</span>
-        <span class="text-[10px] text-slate-600">&copy; 2026.</span>
-      </div>
-
-      <div class="flex gap-6 text-[10px] tracking-widest uppercase text-slate-400">
-        <a href="#" class="hover:text-white transition-colors">Privacy</a>
-        <a href="#" class="hover:text-white transition-colors">Terms</a>
-        <a href="#" class="hover:text-white transition-colors">Support</a>
-      </div>
+  <footer class="bg-noir-950 border-t border-white/5 py-8">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
+      <p class="font-serif text-slate-400 text-sm tracking-widest">LENKA STORES</p>
+      <p>&copy; 2026 Lenka Ventures Pvt Ltd. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Firebase & Database Engine -->
   <script>
     lucide.createIcons();
 
@@ -369,215 +198,121 @@
       projectId: "lenka-stores",
       storageBucket: "lenka-stores.firebasestorage.app",
       messagingSenderId: "41062494605",
-      appId: "1:41062494605:web:56ffab077c1ed5d54ccdc4",
-      measurementId: "G-ZRLRC8K1WZ"
+      appId: "1:41062494605:web:56ffab077c1ed5d54ccdc4"
     };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let confirmationResultObj = null;
-    let isOtpVerified = false;
+    let allProducts = [];
+    let currentCategory = 'All';
 
-    window.addEventListener('DOMContentLoaded', () => {
-      loadProfileData();
+    // Real-Time Live Sync from Admin Studio
+    db.collection('products').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+      allProducts = [];
+      snapshot.forEach(doc => allProducts.push({ id: doc.id, ...doc.data() }));
+      renderProducts();
     });
 
-    function openProfileModal() {
-      document.getElementById('profileModal').classList.remove('hidden');
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.className = 'cat-btn px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-noir-900 text-slate-400 hover:text-white transition-all';
+      });
+      event.target.className = 'cat-btn active px-4 py-2 rounded-lg text-xs uppercase tracking-wider font-medium fine-border bg-platinum-100 text-noir-950 transition-all';
+      renderProducts();
     }
 
-    function closeProfileModal() {
-      document.getElementById('profileModal').classList.add('hidden');
-    }
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
 
-    function showNotice(text, isError = false) {
-      const notice = document.getElementById('statusNotice');
-      notice.innerText = text;
-      notice.className = isError 
-        ? 'my-4 p-3 rounded-lg text-xs bg-red-950/60 border border-red-500/30 text-red-300'
-        : 'my-4 p-3 rounded-lg text-xs bg-noir-950 fine-border text-slate-300';
-      notice.classList.remove('hidden');
-    }
+      const filtered = currentCategory === 'All' 
+        ? allProducts 
+        : allProducts.filter(p => p.category === currentCategory);
 
-    function setupRecaptcha() {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-          size: 'invisible'
-        });
-      }
-    }
-
-    function sendOtp() {
-      const phone = document.getElementById('custPhone').value.trim();
-      if (phone.length !== 10) {
-        showNotice('Please enter a valid 10-digit mobile number.', true);
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-20 text-slate-600 text-sm">No items currently available in this category.</div>`;
         return;
       }
 
-      showNotice('Initiating verification...');
-      try {
-        setupRecaptcha();
-        const fullPhoneNumber = "+91" + phone;
-        const appVerifier = window.recaptchaVerifier;
+      filtered.forEach(p => {
+        const variantsHtml = (p.variants || []).map((v, i) => `
+          <button type="button" onclick="selectVariant('${p.id}', '${v}')" class="var-btn-${p.id} text-[10px] px-2.5 py-1 rounded border border-white/10 ${i === 0 ? 'bg-white/20 text-white border-bronze-400' : 'bg-noir-900 text-slate-400'}">
+            ${v}
+          </button>
+        `).join('');
 
-        firebase.auth().signInWithPhoneNumber(fullPhoneNumber, appVerifier)
-          .then((confirmationResult) => {
-            confirmationResultObj = confirmationResult;
-            document.getElementById('otpSection').classList.remove('hidden');
-            showNotice(`SMS OTP sent to +91 ${phone}`);
-          })
-          .catch(() => {
-            document.getElementById('otpSection').classList.remove('hidden');
-            showNotice(`Verification Ready. Enter code: 123456`);
-          });
-      } catch (err) {
-        document.getElementById('otpSection').classList.remove('hidden');
-        showNotice(`Verification Ready. Enter code: 123456`);
-      }
+        const card = document.createElement('div');
+        card.className = 'bg-noir-900 fine-border rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between group hover:border-bronze-400/40 transition-all duration-300';
+        card.innerHTML = `
+          <div>
+            <div class="relative h-64 overflow-hidden bg-noir-950">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <span class="absolute top-3 left-3 bg-noir-950/80 backdrop-blur-md text-bronze-300 text-[10px] font-bold px-2.5 py-1 rounded tracking-widest uppercase border border-white/10">
+                ${p.badge || 'EXCLUSIVE'}
+              </span>
+            </div>
+            <div class="p-6 space-y-3">
+              <h3 class="font-serif text-lg text-white font-medium">${p.title}</h3>
+              <p class="text-xs text-slate-400 font-light line-clamp-2">${p.description}</p>
+              
+              <div class="pt-2">
+                <span class="text-[9px] uppercase tracking-widest text-slate-500 block mb-1.5">Color Options:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  ${variantsHtml}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between mt-4">
+            <div>
+              <span class="text-xs text-slate-500 line-through">₹${Number(p.originalPrice).toLocaleString('en-IN')}</span>
+              <span class="text-lg font-serif font-bold text-white block">₹${Number(p.offerPrice).toLocaleString('en-IN')}</span>
+            </div>
+            <button onclick="openProfileModal()" class="px-5 py-2.5 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs uppercase tracking-wider rounded-lg transition-all">
+              Order Now
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
     }
 
-    function verifyOtp() {
-      const code = document.getElementById('otpCode').value.trim();
-      if (!code) {
-        showNotice('Please enter the 6-digit code.', true);
-        return;
-      }
-
-      if (confirmationResultObj) {
-        confirmationResultObj.confirm(code)
-          .then(() => markOtpSuccess())
-          .catch(() => {
-            if (code === '123456') {
-              markOtpSuccess();
-            } else {
-              showNotice('Invalid code. Please re-enter.', true);
-            }
-          });
-      } else if (code === '123456') {
-        markOtpSuccess();
-      } else {
-        showNotice('Invalid code. Use code 123456.', true);
-      }
+    function selectVariant(prodId, variant) {
+      document.querySelectorAll(`.var-btn-${prodId}`).forEach(b => {
+        b.className = `var-btn-${prodId} text-[10px] px-2.5 py-1 rounded border border-white/10 bg-noir-900 text-slate-400`;
+        if (b.innerText.trim() === variant) {
+          b.className = `var-btn-${prodId} text-[10px] px-2.5 py-1 rounded border border-bronze-400 bg-white/20 text-white`;
+        }
+      });
     }
 
-    function markOtpSuccess() {
-      isOtpVerified = true;
-      document.getElementById('otpSection').classList.add('hidden');
-      const btn = document.getElementById('sendOtpBtn');
-      btn.innerText = 'Verified ✓';
-      btn.className = 'px-4 py-2 bg-emerald-700/80 text-white rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-default';
-      btn.disabled = true;
-      showNotice('Mobile number authenticated.');
-    }
+    function openProfileModal() { document.getElementById('profileModal').classList.remove('hidden'); }
+    function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
 
     function handleSaveProfile(e) {
       e.preventDefault();
-
       const phone = document.getElementById('custPhone').value.trim();
-      const profileData = {
+      const profile = {
         name: document.getElementById('custName').value.trim(),
         phone: phone,
         address: {
-          country: document.getElementById('addrCountry').value.trim(),
-          state: document.getElementById('addrState').value.trim(),
-          district: document.getElementById('addrDistrict').value.trim(),
-          door: document.getElementById('addrDoor').value.trim(),
-          street: document.getElementById('addrStreet').value.trim(),
-          pin: document.getElementById('addrPin').value.trim()
+          country: document.getElementById('addrCountry').value,
+          state: document.getElementById('addrState').value,
+          district: document.getElementById('addrDistrict').value,
+          door: document.getElementById('addrDoor').value,
+          street: document.getElementById('addrStreet').value,
+          pin: document.getElementById('addrPin').value
         },
         payment: document.getElementById('custPayment').value,
-        isLoggedIn: true,
-        verified: isOtpVerified,
         updatedAt: new Date().toISOString()
       };
-
-      localStorage.setItem('lenka_customer_profile', JSON.stringify(profileData));
-
-      db.collection('customers').doc(phone).set(profileData, { merge: true })
-        .then(() => {
-          showNotice('Profile saved to database successfully!');
-          loadProfileData();
-        })
-        .catch(() => {
-          showNotice('Profile saved locally on device.');
-          loadProfileData();
-        });
-    }
-
-    function loadProfileData() {
-      const raw = localStorage.getItem('lenka_customer_profile');
-      const navProfileName = document.getElementById('navProfileName');
-      const verifiedSummary = document.getElementById('verifiedSummary');
-      const summaryName = document.getElementById('summaryName');
-      const summaryPhone = document.getElementById('summaryPhone');
-      const summaryAddress = document.getElementById('summaryAddress');
-      const summaryPayment = document.getElementById('summaryPayment');
-
-      if (!raw) {
-        navProfileName.innerText = 'Client Account';
-        verifiedSummary.classList.add('hidden');
-        return;
-      }
-
-      const profile = JSON.parse(raw);
-
-      if (profile.name) {
-        document.getElementById('custName').value = profile.name;
-        summaryName.innerText = profile.name;
-      }
-      if (profile.phone) {
-        document.getElementById('custPhone').value = profile.phone;
-        summaryPhone.innerText = `+91 ${profile.phone}`;
-      }
-      if (profile.address) {
-        document.getElementById('addrCountry').value = profile.address.country || 'India';
-        document.getElementById('addrState').value = profile.address.state || '';
-        document.getElementById('addrDistrict').value = profile.address.district || '';
-        document.getElementById('addrDoor').value = profile.address.door || '';
-        document.getElementById('addrStreet').value = profile.address.street || '';
-        document.getElementById('addrPin').value = profile.address.pin || '';
-        
-        summaryAddress.innerText = `${profile.address.door}, ${profile.address.street}, ${profile.address.district}, ${profile.address.state} - ${profile.address.pin}, ${profile.address.country}`;
-      }
-      if (profile.payment) {
-        document.getElementById('custPayment').value = profile.payment;
-        summaryPayment.innerText = profile.payment;
-      }
-
-      if (profile.isLoggedIn || isOtpVerified) {
-        navProfileName.innerText = profile.name ? profile.name.split(' ')[0] : 'My Account';
-        verifiedSummary.classList.remove('hidden');
-        const btn = document.getElementById('sendOtpBtn');
-        btn.innerText = 'Verified ✓';
-        btn.className = 'px-4 py-2 bg-emerald-700/80 text-white rounded-lg text-[11px] uppercase tracking-wider whitespace-nowrap cursor-default';
-        btn.disabled = true;
-      } else {
-        navProfileName.innerText = 'Client Account';
-        verifiedSummary.classList.add('hidden');
-      }
-    }
-
-    function handleLogout() {
-      isOtpVerified = false;
-
-      const raw = localStorage.getItem('lenka_customer_profile');
-      if (raw) {
-        const profile = JSON.parse(raw);
-        profile.isLoggedIn = false;
-        localStorage.setItem('lenka_customer_profile', JSON.stringify(profile));
-      }
-
-      const btn = document.getElementById('sendOtpBtn');
-      btn.innerText = 'Send OTP';
-      btn.className = 'px-4 py-2 bg-noir-800 hover:bg-noir-700 text-white fine-border rounded-lg text-[11px] font-medium uppercase tracking-wider whitespace-nowrap cursor-pointer';
-      btn.disabled = false;
-      document.getElementById('otpSection').classList.add('hidden');
-
-      showNotice('You have logged out.');
-      loadProfileData();
+      db.collection('customers').doc(phone).set(profile, { merge: true }).then(() => {
+        alert('Shipping details saved successfully!');
+        closeProfileModal();
+      });
     }
   </script>
 </body>
