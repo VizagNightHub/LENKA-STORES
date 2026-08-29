@@ -44,6 +44,12 @@
     .fine-border-hover:hover { border-color: rgba(197, 168, 128, 0.4); }
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
+    
+    @keyframes barGlow {
+      0%, 100% { filter: drop-shadow(0 0 4px rgba(197, 168, 128, 0.3)); }
+      50% { filter: drop-shadow(0 0 10px rgba(197, 168, 128, 0.8)); }
+    }
+    .motion-bar-glow { animation: barGlow 2.5s infinite ease-in-out; }
   </style>
 </head>
 
@@ -73,191 +79,272 @@
     </div>
   </div>
 
-  <!-- STUDIO HEADER WITH NAVIGATION -->
-  <header class="sticky top-0 z-40 glass-nav">
+  <!-- LEFT SLIDE DRAWER (SIDEBAR NAVIGATION) -->
+  <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm hidden transition-opacity"></div>
+  
+  <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-noir-900 border-r border-white/10 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+    <div class="space-y-6">
+      <!-- SIDEBAR LOGO & CLOSE -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
+            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
+              <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
+              <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+              <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <span class="font-serif text-lg tracking-wider text-white font-medium block">LENKA STUDIO</span>
+            <span class="text-[8px] uppercase tracking-[0.25em] text-bronze-400 block -mt-0.5">Control Menu</span>
+          </div>
+        </div>
+        <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- SIDEBAR NAV LINKS -->
+      <nav class="space-y-1.5 text-xs">
+        <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl bg-bronze-400 text-noir-950 font-semibold transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span>Analytics & Motion Hub</span>
+        </button>
+
+        <button onclick="selectMenu('orders')" id="sideBtn-orders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all">
+          <div class="flex items-center gap-3">
+            <i data-lucide="truck" class="w-4 h-4 text-bronze-400"></i>
+            <span>Orders & Dispatch</span>
+          </div>
+          <span id="sideOrdersBadge" class="text-[10px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+
+        <button onclick="selectMenu('catalog')" id="sideBtn-catalog" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all">
+          <div class="flex items-center gap-3">
+            <i data-lucide="package-plus" class="w-4 h-4 text-emerald-400"></i>
+            <span>Product Catalog</span>
+          </div>
+          <span id="sideCatalogBadge" class="text-[10px] bg-emerald-400/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+
+        <button onclick="selectMenu('customers')" id="sideBtn-customers" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all">
+          <div class="flex items-center gap-3">
+            <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
+            <span>Registered VIP Clients</span>
+          </div>
+          <span id="sideCustomersBadge" class="text-[10px] bg-purple-400/20 text-purple-400 px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+
+        <button onclick="selectMenu('feedback')" id="sideBtn-feedback" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all">
+          <div class="flex items-center gap-3">
+            <i data-lucide="message-square" class="w-4 h-4 text-blue-400"></i>
+            <span>Client Feedback</span>
+          </div>
+          <span id="sideFeedbackBadge" class="text-[10px] bg-blue-400/20 text-blue-400 px-2 py-0.5 rounded-full font-bold">0</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- SIDEBAR FOOTER -->
+    <div class="pt-4 border-t border-white/5 space-y-2">
+      <a href="index.html" target="_blank" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-300 hover:text-white">
+        <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> Open Live Storefront
+      </a>
+      <p class="text-[10px] text-slate-600 text-center">Vizag Night Hub • Lenka Ventures</p>
+    </div>
+  </aside>
+
+  <!-- TOP HEADER (CLEAN WITH 3-LINE HAMBURGER MENU) -->
+  <header class="sticky top-0 z-30 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <!-- LOGO -->
-      <div class="flex items-center gap-3.5 cursor-pointer" onclick="switchPage('dashboard')">
-        <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-            <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
-            <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-            <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <span class="font-serif text-xl tracking-wider text-white font-medium">LENKA STUDIO</span>
+      <!-- HAMBURGER BUTTON & TITLE -->
+      <div class="flex items-center gap-4">
+        <button onclick="toggleSidebar()" class="p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-200 transition-all flex items-center justify-center">
+          <i data-lucide="menu" class="w-5 h-5 text-bronze-400"></i>
+        </button>
+        
+        <div class="cursor-pointer" onclick="selectMenu('dashboard')">
+          <span class="font-serif text-xl sm:text-2xl tracking-wider text-white font-medium block">LENKA STUDIO</span>
           <span class="text-[8px] uppercase tracking-[0.3em] text-bronze-400 block -mt-0.5">Executive Terminal</span>
         </div>
       </div>
 
-      <!-- TABS -->
-      <nav class="hidden lg:flex items-center gap-2">
-        <button id="navBtn-dashboard" onclick="switchPage('dashboard')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-bronze-400 text-noir-950 shadow-sm">
-          Analytics Hub
-        </button>
-        <button id="navBtn-orders" onclick="switchPage('orders')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
-          Orders & Tracking
-        </button>
-        <button id="navBtn-customers" onclick="switchPage('customers')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
-          Registered Customers
-        </button>
-        <button id="navBtn-feedback" onclick="switchPage('feedback')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
-          Client Feedback
-        </button>
-        <button id="navBtn-catalog" onclick="switchPage('catalog')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-300 hover:text-white hover:bg-noir-850 fine-border">
-          Product Catalog
-        </button>
-      </nav>
-
-      <!-- LIVE STORE -->
+      <!-- ACTIVE SECTION PILL & STORE LINK -->
       <div class="flex items-center gap-3">
-        <a href="index.html" target="_blank" class="px-3.5 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-lg text-xs text-slate-300 flex items-center gap-1.5 shadow-sm">
-          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> Storefront
+        <span id="activeSectionLabel" class="hidden sm:inline-block px-3 py-1 rounded-full bg-noir-850 fine-border text-[11px] text-bronze-300 font-medium">
+          Analytics & Motion Hub
+        </span>
+        <a href="index.html" target="_blank" class="px-3.5 py-2 bg-noir-850 hover:bg-noir-800 fine-border rounded-xl text-xs text-slate-300 flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-bronze-400"></i> <span class="hidden md:inline">Storefront</span>
         </a>
       </div>
 
     </div>
   </header>
 
-  <!-- WORKSPACE -->
+  <!-- WORKSPACE CONTENT AREA -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
-    <!-- ================= PAGE 1: ANALYTICS & GRAPHIC SHEET ================= -->
+    <!-- ================= 1. ANALYTICS & GRAPHIC MOTION SHEET ================= -->
     <section id="page-dashboard" class="space-y-8">
       <div>
-        <h1 class="font-serif text-3xl text-white">Performance & Graphic Analytics Sheet</h1>
-        <p class="text-xs text-slate-400 mt-1">Real-time graphic projection of store revenue, customer registrations, and consignments</p>
+        <h1 class="font-serif text-3xl sm:text-4xl text-white">Performance & Motion Analytics</h1>
+        <p class="text-xs text-slate-400 mt-1">Real-time graphic projection of store revenue, customer registrations, and orders</p>
       </div>
 
-      <!-- METRIC CARDS -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
-        <div onclick="switchPage('orders')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+      <!-- PRIMARY METRICS CARDS (TODAY'S ORDERS FIRST) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- 1. TODAY'S ORDERS (FIRST & PRIMARY) -->
+        <div onclick="selectMenu('orders')" class="p-6 rounded-2xl bg-gradient-to-br from-noir-900 to-noir-850 fine-border fine-border-hover cursor-pointer transition-all space-y-2 relative overflow-hidden group shadow-lg">
           <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span>TOTAL ORDERS</span>
-            <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
+            <span class="uppercase tracking-wider font-semibold text-bronze-400">Today's New Orders</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-bronze-400 animate-ping"></span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="statTodayOrders" class="font-serif text-4xl text-white font-medium">0</span>
+            <span class="text-[10px] text-slate-500 uppercase tracking-widest">Booked Today</span>
+          </div>
+          <p class="text-[11px] text-bronze-400 flex items-center gap-1 pt-1">
+            Review today's consignments <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </p>
+        </div>
+
+        <!-- 2. TOTAL ALL-TIME ORDERS -->
+        <div onclick="selectMenu('orders')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span class="uppercase tracking-wider">All Consignments</span>
+            <i data-lucide="shopping-bag" class="w-4 h-4 text-slate-400"></i>
           </div>
           <div id="statOrdersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <span class="text-[10px] text-bronze-400">View consignments →</span>
+          <p class="text-[11px] text-slate-400">Full order history archive</p>
         </div>
 
-        <div onclick="switchPage('customers')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+        <!-- 3. TOTAL STORE VALUATION -->
+        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-2">
           <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span>REGISTERED CLIENTS</span>
-            <i data-lucide="users" class="w-4 h-4 text-emerald-400"></i>
-          </div>
-          <div id="statCustomersCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <span class="text-[10px] text-emerald-400">View directory →</span>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-noir-900 fine-border space-y-1">
-          <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span>TOTAL STORE VALUATION</span>
+            <span class="uppercase tracking-wider">Gross Valuation</span>
             <i data-lucide="indian-rupee" class="w-4 h-4 text-amber-400"></i>
           </div>
           <div id="statTotalValuation" class="font-serif text-3xl text-white font-medium">₹0</div>
-          <span class="text-[10px] text-slate-500">Gross reservation volume</span>
+          <p class="text-[11px] text-slate-500">Total transaction value</p>
         </div>
 
-        <div onclick="switchPage('feedback')" class="p-5 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-1">
+        <!-- 4. REGISTERED VIP CLIENTS -->
+        <div onclick="selectMenu('customers')" class="p-6 rounded-2xl bg-noir-900 fine-border fine-border-hover cursor-pointer transition-all space-y-2">
           <div class="flex items-center justify-between text-slate-400 text-xs">
-            <span>FEEDBACK MESSAGES</span>
-            <i data-lucide="message-square" class="w-4 h-4 text-blue-400"></i>
+            <span class="uppercase tracking-wider">Registered VIPs</span>
+            <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
           </div>
-          <div id="statFeedbackCount" class="font-serif text-3xl text-white font-medium">0</div>
-          <span class="text-[10px] text-blue-400">Read inquiries →</span>
+          <div id="statCustomersCount" class="font-serif text-3xl text-white font-medium">0</div>
+          <p class="text-[11px] text-purple-400 flex items-center gap-1">
+            Open address directory <i data-lucide="arrow-right" class="w-3 h-3"></i>
+          </p>
         </div>
+
       </div>
 
-      <!-- VISUAL GRAPHIC SHEET / CHARTS -->
+      <!-- MOTION GRAPHIC SHEETS (DYNAMIC LIVE CHARTS) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        <!-- GRAPH 1: CONSIGNMENT STATUS DISTRIBUTION -->
-        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl">
-          <div class="flex items-center justify-between pb-3 border-b border-white/5">
-            <h3 class="font-serif text-lg text-white flex items-center gap-2">
-              <i data-lucide="bar-chart-2" class="w-4 h-4 text-bronze-400"></i> Order Fulfillment Distribution
-            </h3>
-            <span class="text-[10px] text-slate-500 uppercase tracking-widest">LIVE GRAPH</span>
+        <!-- GRAPH 1: CONSIGNMENT FULFILLMENT STATUS -->
+        <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
+          <div class="flex items-center justify-between pb-4 border-b border-white/5">
+            <div class="flex items-center gap-2.5">
+              <div class="p-2 rounded-lg bg-bronze-400/10 text-bronze-400">
+                <i data-lucide="activity" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="font-serif text-xl text-white">Consignment Fulfillment Flow</h3>
+                <p class="text-[11px] text-slate-500">Live proportional tracking status distribution</p>
+              </div>
+            </div>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-bronze-400 uppercase tracking-widest font-semibold">MOTION SYNC</span>
           </div>
 
-          <div class="space-y-4 pt-2">
-            <!-- Confirmed Bar -->
+          <div class="space-y-5 pt-2">
+            <!-- Confirmed -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300">1. Confirmed Orders</span>
-                <span id="graphConfirmedCount" class="font-mono text-bronze-400">0</span>
+                <span class="text-slate-300 font-medium">1. Confirmed Reservations</span>
+                <span id="graphConfirmedCount" class="font-mono text-bronze-400 font-semibold">0 (0%)</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
-                <div id="graphConfirmedBar" class="h-full bg-bronze-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphConfirmedBar" class="h-full bg-gradient-to-r from-bronze-500 to-bronze-300 rounded-full motion-bar-glow transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
-            <!-- Dispatched Bar -->
+            <!-- In Transit -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300">2. In Transit / Dispatched</span>
-                <span id="graphDispatchedCount" class="font-mono text-blue-400">0</span>
+                <span class="text-slate-300 font-medium">2. In Transit / Dispatched</span>
+                <span id="graphDispatchedCount" class="font-mono text-blue-400 font-semibold">0 (0%)</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
-                <div id="graphDispatchedBar" class="h-full bg-blue-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphDispatchedBar" class="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
-            <!-- Delivered Bar -->
+            <!-- Delivered -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300">3. Successfully Delivered</span>
-                <span id="graphDeliveredCount" class="font-mono text-green-400">0</span>
+                <span class="text-slate-300 font-medium">3. Delivered to Customer</span>
+                <span id="graphDeliveredCount" class="font-mono text-green-400 font-semibold">0 (0%)</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
-                <div id="graphDeliveredBar" class="h-full bg-green-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphDeliveredBar" class="h-full bg-gradient-to-r from-green-600 to-green-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- GRAPH 2: PRODUCT CATEGORY INVENTORY METRIC -->
-        <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl">
-          <div class="flex items-center justify-between pb-3 border-b border-white/5">
-            <h3 class="font-serif text-lg text-white flex items-center gap-2">
-              <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i> Active Atelier Catalog Spread
-            </h3>
-            <span class="text-[10px] text-slate-500 uppercase tracking-widest">INVENTORY GRAPH</span>
+        <!-- GRAPH 2: ATELIER CATEGORY DISTRIBUTION -->
+        <div class="p-6 sm:p-8 rounded-2xl bg-noir-900 fine-border space-y-6 shadow-xl relative overflow-hidden">
+          <div class="flex items-center justify-between pb-4 border-b border-white/5">
+            <div class="flex items-center gap-2.5">
+              <div class="p-2 rounded-lg bg-emerald-400/10 text-emerald-400">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h3 class="font-serif text-xl text-white">Active Atelier Catalog Distribution</h3>
+                <p class="text-[11px] text-slate-500">Live product representation across collections</p>
+              </div>
+            </div>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-noir-850 fine-border text-emerald-400 uppercase tracking-widest font-semibold">INVENTORY RATIO</span>
           </div>
 
-          <div class="space-y-4 pt-2">
-            <!-- Earbuds -->
+          <div class="space-y-5 pt-2">
+            <!-- Audio -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300">Audio & Wireless Earbuds</span>
-                <span id="graphCatAudioCount" class="font-mono text-slate-300">0</span>
+                <span class="text-slate-300 font-medium">Audio & Wireless Earbuds</span>
+                <span id="graphCatAudioCount" class="font-mono text-slate-200 font-semibold">0</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
-                <div id="graphCatAudioBar" class="h-full bg-slate-300 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphCatAudioBar" class="h-full bg-gradient-to-r from-slate-400 to-white rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
             <!-- Power Gear -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300">Battery Banks & Power Gear</span>
-                <span id="graphCatPowerCount" class="font-mono text-bronze-400">0</span>
+                <span class="text-slate-300 font-medium">Battery Banks & Power Gear</span>
+                <span id="graphCatPowerCount" class="font-mono text-bronze-400 font-semibold">0</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
-                <div id="graphCatPowerBar" class="h-full bg-bronze-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphCatPowerBar" class="h-full bg-gradient-to-r from-amber-600 to-bronze-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
 
-            <!-- Apparel -->
+            <!-- Fashion -->
             <div class="space-y-1.5">
               <div class="flex justify-between text-xs">
-                <span class="text-slate-300">Men's Apparel & Fashion</span>
-                <span id="graphCatFashionCount" class="font-mono text-purple-400">0</span>
+                <span class="text-slate-300 font-medium">Men's Apparel & Fashion</span>
+                <span id="graphCatFashionCount" class="font-mono text-purple-400 font-semibold">0</span>
               </div>
-              <div class="w-full h-3 bg-noir-950 rounded-full overflow-hidden">
-                <div id="graphCatFashionBar" class="h-full bg-purple-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
+              <div class="w-full h-3.5 bg-noir-950 rounded-full overflow-hidden p-0.5 fine-border">
+                <div id="graphCatFashionBar" class="h-full bg-gradient-to-r from-purple-600 to-purple-400 rounded-full transition-all duration-700" style="width: 0%;"></div>
               </div>
             </div>
           </div>
@@ -266,18 +353,18 @@
       </div>
     </section>
 
-    <!-- ================= PAGE 2: ORDERS & TRACKING DEDICATED ================= -->
+    <!-- ================= 2. ORDERS & TRACKING DEDICATED VIEW ================= -->
     <section id="page-orders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
         <div>
-          <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
           </button>
           <h1 class="font-serif text-3xl text-white">Live Customer Consignments & Tracking</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Manage statuses and update Confirmed, Shipping Start, and Delivery Dates</p>
+          <p class="text-xs text-slate-400 mt-0.5">Manage statuses and broadcast Confirmed, Shipping Start, and Delivery Dates</p>
         </div>
         <button onclick="renderAdminOrders()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Feed
+          Refresh Consignment Feed
         </button>
       </div>
 
@@ -286,8 +373,8 @@
           <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
             <tr>
               <th class="p-3.5">Order ID</th>
-              <th class="p-3.5">Customer Info</th>
-              <th class="p-3.5">Shipping Address</th>
+              <th class="p-3.5">Customer & Phone</th>
+              <th class="p-3.5">Full Shipping Address</th>
               <th class="p-3.5">Product Summary</th>
               <th class="p-3.5">Update Live Status</th>
               <th class="p-3.5">Broadcast Dates (Confirmed / Shipped / Delivery)</th>
@@ -297,84 +384,15 @@
           <tbody id="adminOrdersBody" class="divide-y divide-white/5"></tbody>
         </table>
         <div id="noOrdersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No customer orders placed yet.
+          No customer orders recorded yet.
         </div>
       </div>
     </section>
 
-    <!-- ================= PAGE 3: REGISTERED CUSTOMERS DIRECTORY ================= -->
-    <section id="page-customers" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
-        <div>
-          <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
-          </button>
-          <h1 class="font-serif text-3xl text-white">Registered VIP Customers Directory</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Direct address records and verified profiles registered on Lenka Stores</p>
-        </div>
-        <button onclick="renderAdminCustomers()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Customers
-        </button>
-      </div>
-
-      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
-            <tr>
-              <th class="p-3.5">Client Profile</th>
-              <th class="p-3.5">Mobile Contact</th>
-              <th class="p-3.5">Country & State</th>
-              <th class="p-3.5">Street, Area & House No.</th>
-              <th class="p-3.5">PIN Code</th>
-              <th class="p-3.5">Orders Placed</th>
-            </tr>
-          </thead>
-          <tbody id="adminCustomersBody" class="divide-y divide-white/5"></tbody>
-        </table>
-        <div id="noCustomersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No registered customer accounts found yet.
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= PAGE 4: CLIENT FEEDBACK DEDICATED ================= -->
-    <section id="page-feedback" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
-        <div>
-          <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
-          </button>
-          <h1 class="font-serif text-3xl text-white">Client Feedback & Support Messages</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Suggestions, inquiries, and customer feedback submissions</p>
-        </div>
-        <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
-          Refresh Feedback
-        </button>
-      </div>
-
-      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
-            <tr>
-              <th class="p-3.5">Feedback ID & Date</th>
-              <th class="p-3.5">Customer Name</th>
-              <th class="p-3.5">Mobile Contact</th>
-              <th class="p-3.5">Client Review / Message</th>
-              <th class="p-3.5">Action</th>
-            </tr>
-          </thead>
-          <tbody id="adminFeedbackBody" class="divide-y divide-white/5"></tbody>
-        </table>
-        <div id="noFeedbackMessage" class="hidden text-center py-12 text-slate-500 text-xs">
-          No customer feedback messages received yet.
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= PAGE 5: PRODUCT CATALOG DEDICATED ================= -->
+    <!-- ================= 3. PRODUCT CATALOG DEDICATED VIEW ================= -->
     <section id="page-catalog" class="hidden space-y-8">
       <div>
-        <button onclick="switchPage('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+        <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
           <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
         </button>
         <h1 class="font-serif text-3xl text-white">Product Catalog & Atelier Engine</h1>
@@ -382,7 +400,7 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- PUBLISH FORM -->
+        <!-- ADD PRODUCT FORM -->
         <div class="lg:col-span-5 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
           <h2 class="font-serif text-2xl text-white">Publish New Product</h2>
 
@@ -437,13 +455,82 @@
           </form>
         </div>
 
-        <!-- INVENTORY -->
+        <!-- INVENTORY LIST BY CATEGORY -->
         <div class="lg:col-span-7 bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl space-y-6 shadow-xl">
           <div>
             <h2 class="font-serif text-2xl text-white">Live Store Inventory</h2>
-            <p class="text-xs text-slate-400 mt-1">Manage active catalog items</p>
+            <p class="text-xs text-slate-400 mt-1">Manage, inspect, or delete active catalog items</p>
           </div>
           <div id="adminInventoryList" class="space-y-3 max-h-[620px] overflow-y-auto custom-scrollbar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. REGISTERED VIP CLIENTS DIRECTORY ================= -->
+    <section id="page-customers" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+        <div>
+          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          </button>
+          <h1 class="font-serif text-3xl text-white">Registered VIP Clients Directory</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Customer profiles, delivery addresses, and purchase history</p>
+        </div>
+        <button onclick="renderAdminCustomers()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
+          Refresh Directory
+        </button>
+      </div>
+
+      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
+            <tr>
+              <th class="p-3.5">Client Profile</th>
+              <th class="p-3.5">Mobile Contact</th>
+              <th class="p-3.5">Country & State</th>
+              <th class="p-3.5">Street, Area & House No.</th>
+              <th class="p-3.5">PIN Code</th>
+              <th class="p-3.5">Orders Placed</th>
+            </tr>
+          </thead>
+          <tbody id="adminCustomersBody" class="divide-y divide-white/5"></tbody>
+        </table>
+        <div id="noCustomersMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No registered customer accounts found yet.
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. CLIENT FEEDBACK DEDICATED VIEW ================= -->
+    <section id="page-feedback" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-white/5 gap-3">
+        <div>
+          <button onclick="selectMenu('dashboard')" class="text-[11px] text-bronze-400 hover:underline flex items-center gap-1 mb-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Back to Analytics Hub
+          </button>
+          <h1 class="font-serif text-3xl text-white">Client Feedback & Support Messages</h1>
+          <p class="text-xs text-slate-400 mt-0.5">Direct suggestions, inquiries, and customer feedback submissions</p>
+        </div>
+        <button onclick="renderAdminFeedbacks()" class="text-xs text-bronze-400 fine-border px-3.5 py-2 rounded-xl bg-noir-850 hover:bg-noir-800">
+          Refresh Feedback
+        </button>
+      </div>
+
+      <div class="bg-noir-900 fine-border rounded-2xl p-6 overflow-x-auto shadow-xl">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-noir-950 text-slate-400 uppercase tracking-wider text-[10px] font-semibold border-b border-white/10">
+            <tr>
+              <th class="p-3.5">Feedback ID & Date</th>
+              <th class="p-3.5">Customer Name</th>
+              <th class="p-3.5">Mobile Contact</th>
+              <th class="p-3.5">Client Review / Message</th>
+              <th class="p-3.5">Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminFeedbackBody" class="divide-y divide-white/5"></tbody>
+        </table>
+        <div id="noFeedbackMessage" class="hidden text-center py-12 text-slate-500 text-xs">
+          No customer feedback messages received yet.
         </div>
       </div>
     </section>
@@ -456,39 +543,88 @@
       const key = document.getElementById('adminPassKey').value.trim();
       if (key === 'lenka2026' || key === 'admin') {
         document.getElementById('authGate').classList.add('hidden');
-        switchPage('dashboard');
+        selectMenu('dashboard');
       } else {
         document.getElementById('gateError').classList.remove('hidden');
       }
     }
 
-    // MULTI-PAGE SWITCHER
-    function switchPage(pageId) {
-      const pages = ['dashboard', 'orders', 'customers', 'feedback', 'catalog'];
+    // SIDEBAR DRAWER TOGGLE
+    function toggleSidebar() {
+      const drawer = document.getElementById('sidebarDrawer');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const isOpen = !drawer.classList.contains('-translate-x-full');
+
+      if (isOpen) {
+        drawer.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      } else {
+        drawer.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+        updateSidebarBadges();
+      }
+      lucide.createIcons();
+    }
+
+    // MENU SELECTOR (SWITCH PAGES & CLOSE DRAWER)
+    function selectMenu(pageId) {
+      const pages = ['dashboard', 'orders', 'catalog', 'customers', 'feedback'];
+      const pageTitles = {
+        'dashboard': 'Analytics & Motion Hub',
+        'orders': 'Live Orders & Dispatch',
+        'catalog': 'Product Catalog & Ateliers',
+        'customers': 'Registered VIP Clients',
+        'feedback': 'Client Feedback & Support'
+      };
+
       pages.forEach(p => {
         const pageEl = document.getElementById(`page-${p}`);
-        const navBtn = document.getElementById(`navBtn-${p}`);
-        
+        const sideBtn = document.getElementById(`sideBtn-${p}`);
+
         if (p === pageId) {
           pageEl.classList.remove('hidden');
-          if (navBtn) {
-            navBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-bronze-400 text-noir-950 shadow-sm transition-all";
+          if (sideBtn) {
+            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-3 rounded-xl bg-bronze-400 text-noir-950 font-semibold shadow-sm transition-all";
           }
         } else {
           pageEl.classList.add('hidden');
-          if (navBtn) {
-            navBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all";
+          if (sideBtn) {
+            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-noir-850 fine-border transition-all";
           }
         }
       });
 
+      document.getElementById('activeSectionLabel').innerText = pageTitles[pageId] || 'Command Terminal';
+
+      // Auto close sidebar drawer
+      document.getElementById('sidebarDrawer').classList.add('-translate-x-full');
+      document.getElementById('sidebarBackdrop').classList.add('hidden');
+
+      // Refresh view data
       if (pageId === 'dashboard') renderGraphicSheet();
       if (pageId === 'orders') renderAdminOrders();
+      if (pageId === 'catalog') renderAdminCatalog();
       if (pageId === 'customers') renderAdminCustomers();
       if (pageId === 'feedback') renderAdminFeedbacks();
-      if (pageId === 'catalog') renderAdminCatalog();
 
+      updateSidebarBadges();
       lucide.createIcons();
+    }
+
+    function updateSidebarBadges() {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      const feedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+      const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+
+      const customerMap = new Map();
+      if (savedProfile) customerMap.set(savedProfile.phone, true);
+      orders.forEach(o => customerMap.set(o.customerPhone, true));
+
+      document.getElementById('sideOrdersBadge').innerText = orders.length;
+      document.getElementById('sideCatalogBadge').innerText = catalog.length;
+      document.getElementById('sideCustomersBadge').innerText = customerMap.size;
+      document.getElementById('sideFeedbackBadge').innerText = feedbacks.length;
     }
 
     // GRAPHIC SHEET & ANALYTICS CALCULATION
@@ -498,54 +634,53 @@
       const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       const savedProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
 
-      // Unique customers set
+      // 1. Calculate Today's Orders
+      const todayFormatted = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const todayOrdersCount = orders.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted)).length;
+      document.getElementById('statTodayOrders').innerText = todayOrdersCount;
+
+      // 2. Customers Count
       const customerMap = new Map();
-      if (savedProfile) customerMap.set(savedProfile.phone, savedProfile);
-      orders.forEach(o => {
-        if (!customerMap.has(o.customerPhone)) {
-          customerMap.set(o.customerPhone, {
-            name: o.customerName,
-            phone: o.customerPhone,
-            avatar: o.customerAvatar,
-            address: o.customerAddress
-          });
-        }
-      });
-
-      const totalValuation = orders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
-
-      document.getElementById('statOrdersCount').innerText = orders.length;
+      if (savedProfile) customerMap.set(savedProfile.phone, true);
+      orders.forEach(o => customerMap.set(o.customerPhone, true));
       document.getElementById('statCustomersCount').innerText = customerMap.size;
-      document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
-      document.getElementById('statFeedbackCount').innerText = feedbacks.length;
 
-      // Calculate Order Status Counts
+      // 3. Totals
+      const totalValuation = orders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+      document.getElementById('statOrdersCount').innerText = orders.length;
+      document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
+
+      // 4. Order Status Distribution Graph
       const confirmedCount = orders.filter(o => o.status === 'Confirmed').length;
       const dispatchedCount = orders.filter(o => o.status === 'Dispatched').length;
       const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
       const totalO = orders.length || 1;
 
-      document.getElementById('graphConfirmedCount').innerText = confirmedCount;
-      document.getElementById('graphDispatchedCount').innerText = dispatchedCount;
-      document.getElementById('graphDeliveredCount').innerText = deliveredCount;
+      const confPct = Math.round((confirmedCount / totalO) * 100);
+      const dispPct = Math.round((dispatchedCount / totalO) * 100);
+      const delivPct = Math.round((deliveredCount / totalO) * 100);
 
-      document.getElementById('graphConfirmedBar').style.width = `${(confirmedCount / totalO) * 100}%`;
-      document.getElementById('graphDispatchedBar').style.width = `${(dispatchedCount / totalO) * 100}%`;
-      document.getElementById('graphDeliveredBar').style.width = `${(deliveredCount / totalO) * 100}%`;
+      document.getElementById('graphConfirmedCount').innerText = `${confirmedCount} (${confPct}%)`;
+      document.getElementById('graphDispatchedCount').innerText = `${dispatchedCount} (${dispPct}%)`;
+      document.getElementById('graphDeliveredCount').innerText = `${deliveredCount} (${delivPct}%)`;
 
-      // Calculate Inventory Categories
+      document.getElementById('graphConfirmedBar').style.width = `${confPct}%`;
+      document.getElementById('graphDispatchedBar').style.width = `${dispPct}%`;
+      document.getElementById('graphDeliveredBar').style.width = `${delivPct}%`;
+
+      // 5. Atelier Category Graph
       const audioCount = catalog.filter(c => c.category.includes('Audio')).length;
       const powerCount = catalog.filter(c => c.category.includes('Battery') || c.category.includes('Power')).length;
       const fashionCount = catalog.filter(c => c.category.includes('Apparel') || c.category.includes('Fashion')).length;
       const totalC = catalog.length || 1;
 
-      document.getElementById('graphCatAudioCount').innerText = audioCount;
-      document.getElementById('graphCatPowerCount').innerText = powerCount;
-      document.getElementById('graphCatFashionCount').innerText = fashionCount;
+      document.getElementById('graphCatAudioCount').innerText = `${audioCount} Items`;
+      document.getElementById('graphCatPowerCount').innerText = `${powerCount} Items`;
+      document.getElementById('graphCatFashionCount').innerText = `${fashionCount} Items`;
 
-      document.getElementById('graphCatAudioBar').style.width = `${(audioCount / totalC) * 100}%`;
-      document.getElementById('graphCatPowerBar').style.width = `${(powerCount / totalC) * 100}%`;
-      document.getElementById('graphCatFashionBar').style.width = `${(fashionCount / totalC) * 100}%`;
+      document.getElementById('graphCatAudioBar').style.width = `${Math.round((audioCount / totalC) * 100)}%`;
+      document.getElementById('graphCatPowerBar').style.width = `${Math.round((powerCount / totalC) * 100)}%`;
+      document.getElementById('graphCatFashionBar').style.width = `${Math.round((fashionCount / totalC) * 100)}%`;
     }
 
     // ORDERS PAGE
