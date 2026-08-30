@@ -12,12 +12,14 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Confetti & Celebration Blaster -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   
+  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   
@@ -64,13 +66,17 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
+  <!-- TOP ANNOUNCEMENT -->
   <aside class="bg-noir-900 border-b border-white/5 py-2 px-4 text-center text-xs tracking-widest text-slate-400 font-light flex items-center justify-center gap-2">
     <span class="w-1.5 h-1.5 rounded-full bg-bronze-400 animate-pulse"></span>
     COMPLIMENTARY CONCIERGE EXPRESS COURIER & TRANSIT INSURANCE ON ALL ORDERS
   </aside>
 
+  <!-- NAVIGATION -->
   <header class="sticky top-0 z-40 glass-nav transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- LOGO -->
       <a href="#" class="flex items-center gap-3.5 group">
         <div class="w-11 h-11 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center transition-all group-hover:border-bronze-400/60 shadow-lg">
           <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
@@ -85,6 +91,7 @@
         </div>
       </a>
 
+      <!-- CATEGORY NAV -->
       <nav class="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
         <button onclick="filterCategory('all')" class="hover:text-bronze-400 transition-colors">All Ateliers</button>
         <button onclick="filterCategory('Audio & Wireless Earbuds')" class="hover:text-bronze-400 transition-colors">Audio Earbuds</button>
@@ -92,26 +99,32 @@
         <button onclick="filterCategory('Men\'s Apparel & Fashion')" class="hover:text-bronze-400 transition-colors">Men's Fashion</button>
       </nav>
 
+      <!-- USER ACTIONS -->
       <div class="flex items-center gap-3">
-        <button onclick="openOrdersPageModal()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all cursor-pointer">
+        <!-- ORDERS & TRACKING PAGE BUTTON -->
+        <button onclick="openOrdersPageModal()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all">
           <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i>
           <span class="hidden sm:inline font-medium">My Orders</span>
         </button>
 
-        <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all cursor-pointer">
+        <!-- PROFILE BUTTON -->
+        <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all">
           <img id="navProfileAvatar" src="" class="w-6 h-6 rounded-full object-cover fine-border hidden" />
           <i id="navProfileIcon" data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
           <span id="navProfileLabel" class="hidden sm:inline font-medium">Profile</span>
         </button>
 
-        <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all cursor-pointer">
+        <!-- CART BUTTON -->
+        <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all">
           <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
           <span id="cartBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-bronze-400 text-noir-950 font-bold text-[10px] flex items-center justify-center">0</span>
         </button>
       </div>
+
     </div>
   </header>
 
+  <!-- LUXURY VIDEO BANNER HERO -->
   <section class="relative w-full h-[360px] sm:h-[460px] overflow-hidden border-b border-white/10 flex items-center justify-center text-center">
     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-45 scale-105 pointer-events-none">
       <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-gold-lines-motion-background-42999-large.mp4" type="video/mp4" />
@@ -133,15 +146,17 @@
     </div>
   </section>
 
+  <!-- CATALOG SECTION -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-white/5 gap-4">
       <div>
         <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
-        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory direct from Lenka Vault</p>
+        <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory streamed live from Firebase Cloud</p>
       </div>
       <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs"></div>
     </div>
 
+    <!-- PRODUCT GRID -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"></div>
     <div id="emptyCatalogState" class="hidden text-center py-20">
       <i data-lucide="package-open" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
@@ -149,8 +164,10 @@
     </div>
   </main>
 
+  <!-- CELEBRATION MODAL (CONFIRMED ORDER + PARTY BLAST) -->
   <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6 border-bronze-400/50 relative overflow-hidden">
+      
       <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-bronze-500/20 to-bronze-300/30 fine-border flex items-center justify-center text-bronze-400 shadow-2xl active-tracker-glow">
         <i data-lucide="sparkles" class="w-10 h-10 text-bronze-400"></i>
       </div>
@@ -162,7 +179,7 @@
           <span class="italic gold-gradient-text font-serif font-medium">Your Order is Confirmed</span>
         </h3>
         <p class="text-xs text-slate-300 pt-2 leading-relaxed">
-          Your reservation has been securely logged in the Lenka Vault.<br/>
+          Your reservation has been securely logged in the Cloud Database.<br/>
           Consignment ID: <strong id="successOrderIdDisplay" class="font-mono text-bronze-400 font-semibold">#LS000000</strong>
         </p>
       </div>
@@ -183,11 +200,15 @@
           Close
         </button>
       </div>
+
     </div>
   </div>
 
+  <!-- DEDICATED FULL ORDERS & STATUS PAGE -->
   <div id="ordersPageModal" class="fixed inset-0 z-50 bg-noir-950/95 backdrop-blur-xl hidden flex flex-col justify-between overflow-y-auto custom-scrollbar p-4 sm:p-8">
     <div class="max-w-4xl w-full mx-auto space-y-8 flex-1">
+      
+      <!-- TOP BAR -->
       <div class="flex items-center justify-between pb-6 border-b border-white/10">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
@@ -203,6 +224,7 @@
         </button>
       </div>
 
+      <!-- TABS -->
       <div class="flex flex-wrap gap-2 border-b border-white/5 pb-4">
         <button onclick="switchOrderTab('confirmed')" id="tabBtn-confirmed" class="px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm cursor-pointer">
           Active / Confirmed Orders
@@ -216,19 +238,24 @@
         </button>
       </div>
 
+      <!-- TAB 1: CONFIRMED / ACTIVE ORDERS -->
       <div id="orderTab-confirmed" class="space-y-4">
         <div id="confirmedOrdersList" class="space-y-4"></div>
       </div>
 
+      <!-- TAB 2: CANCELLED ORDERS -->
       <div id="orderTab-cancelled" class="hidden space-y-4">
         <div id="cancelledOrdersList" class="space-y-4"></div>
       </div>
 
+      <!-- TAB 3: SAVED FAVORITES -->
       <div id="orderTab-favorites" class="hidden space-y-4">
         <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
+
     </div>
 
+    <!-- FOOTER CLOSE BAR -->
     <div class="max-w-4xl w-full mx-auto pt-6 border-t border-white/10 text-center">
       <button onclick="closeOrdersPageModal()" class="px-8 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-400 hover:text-white transition-all cursor-pointer">
         Return to Atelier Catalog
@@ -236,6 +263,7 @@
     </div>
   </div>
 
+  <!-- FEEDBACK MODAL -->
   <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
       <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
@@ -265,7 +293,7 @@
           <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
           <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
         </div>
-        <button type="submit" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
           <span>Submit Feedback</span>
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
         </button>
@@ -273,6 +301,7 @@
     </div>
   </div>
 
+  <!-- FEEDBACK SUCCESS MODAL -->
   <div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
       <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
@@ -291,9 +320,12 @@
     </div>
   </div>
 
+  <!-- PROFILE DRAWER -->
   <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
     <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+      
       <div>
+        <!-- DRAWER HEADER -->
         <div class="flex items-center justify-between pb-5 border-b border-white/10">
           <div class="flex items-center gap-2">
             <i data-lucide="user-check" class="w-5 h-5 text-bronze-400"></i>
@@ -304,12 +336,14 @@
           </button>
         </div>
 
+        <!-- AUTH / EDIT FORM -->
         <div id="authSection" class="mt-6 space-y-5">
           <div class="flex items-center justify-between">
             <span class="text-xs text-bronze-400 font-medium uppercase tracking-wider">Profile Info</span>
             <button id="cancelEditBtn" onclick="cancelProfileEdit()" class="text-[10px] text-slate-500 hover:text-white hidden cursor-pointer">Cancel</button>
           </div>
 
+          <!-- PROFILE PHOTO UPLOADER -->
           <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-noir-850 fine-border">
             <div class="relative group">
               <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-14 h-14 rounded-full object-cover fine-border border-bronze-400/40 shadow-md" />
@@ -336,6 +370,7 @@
             <input id="userPhoneInput" type="tel" placeholder="+91 89776 27028" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
           </div>
 
+          <!-- STRUCTURED ADDRESS -->
           <div class="pt-2 border-t border-white/5 space-y-3">
             <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold block">Shipping Address</span>
             
@@ -366,6 +401,7 @@
           </button>
         </div>
 
+        <!-- LOGGED-IN VIP CARD -->
         <div id="profileSavedCard" class="hidden mt-6 space-y-6">
           <div class="p-5 rounded-2xl bg-noir-850 fine-border relative overflow-hidden space-y-3">
             <div class="flex items-center justify-between">
@@ -395,16 +431,20 @@
             <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i> Open Orders & Tracking Hub
           </button>
         </div>
+
       </div>
 
+      <!-- BOTTOM LOGOUT BAR -->
       <div id="profileFooter" class="hidden pt-6 border-t border-white/10">
         <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
           <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
         </button>
       </div>
+
     </div>
   </div>
 
+  <!-- CART DRAWER -->
   <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
     <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
       <div>
@@ -433,10 +473,12 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 space-y-6">
       <div class="font-serif text-2xl text-white tracking-wider">LENKA STORES</div>
       
+      <!-- SOCIAL MEDIA -->
       <div class="flex items-center justify-center gap-4 pt-1">
         <a href="https://www.instagram.com/the_lenka_8116?utm_source=qr&igsi=MWZoNGtpZHMyM2dscA==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
           <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
@@ -449,7 +491,7 @@
 
         <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
           <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
             <polygon points="10 15 15 12 10 9 10 15" class="fill-[#C5A880] stroke-none"/>
           </svg>
           <span class="text-xs font-medium tracking-wider">YouTube</span>
@@ -471,6 +513,7 @@
     </div>
   </footer>
 
+  <!-- CLIENT SCRIPTS -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
@@ -498,6 +541,7 @@
     let favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
     let currentCategoryFilter = 'all';
 
+    // REAL-TIME CATALOG LISTENER
     if (db) {
       db.collection('products').onSnapshot((snapshot) => {
         cloudCatalog = [];
@@ -511,7 +555,7 @@
           renderCatalog(currentCategoryFilter);
         }
       }, (err) => {
-        console.warn("Catalog sync fallback:", err);
+        console.warn("Catalog sync fallback to defaults:", err);
         fallbackLocalCatalog();
       });
     } else {
@@ -601,6 +645,7 @@
       checkSavedProfile();
     });
 
+    // FAVORITES / WISHLIST TOGGLE
     function toggleFavorite(prodId, event) {
       if (event) event.stopPropagation();
       const index = favorites.indexOf(prodId);
@@ -651,6 +696,7 @@
             <div class="relative overflow-hidden bg-noir-850 aspect-square">
               <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
               
+              <!-- FAVORITES HEART BUTTON -->
               <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
                 <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -697,6 +743,7 @@
       renderCatalog(cat);
     }
 
+    // CART
     function addToBag(prodId) {
       const prod = cloudCatalog.find(p => p.id === prodId);
       if (!prod) return;
@@ -750,6 +797,7 @@
     function openCartDrawer() { document.getElementById('cartDrawer').classList.remove('hidden'); }
     function closeCartDrawer() { document.getElementById('cartDrawer').classList.add('hidden'); }
 
+    // FEEDBACK SUBMISSION
     function openFeedbackModal() {
       if (currentProfile) {
         document.getElementById('fbName').value = currentProfile.name || '';
@@ -782,10 +830,12 @@
         timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
       };
 
+      // 1. Instant local persistence
       let localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       localFeedbacks.unshift(newFeedback);
       localStorage.setItem('lenka_feedbacks', JSON.stringify(localFeedbacks));
 
+      // 2. Background Firestore write
       try {
         if (db) {
           db.collection('feedbacks').add({
@@ -794,7 +844,7 @@
           }).catch(err => console.warn('Background sync note:', err));
         }
       } catch (err) {
-        console.warn('Firebase sync bypassed:', err);
+        console.warn('Firebase error bypassed:', err);
       }
       
       document.getElementById('feedbackForm').reset();
@@ -802,6 +852,7 @@
       openFeedbackSuccessModal();
     }
 
+    // PROFILE
     let uploadedAvatarBase64 = '';
     function handleImageUpload(e) {
       const file = e.target.files[0];
@@ -843,18 +894,19 @@
         formattedAddress: `${area}, ${state}, ${country} - ${pin}`
       };
 
+      // 1. Save locally
       localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
 
-      // Append to the registered customer database roster
-      let registeredList = JSON.parse(localStorage.getItem('lenka_registered_customers') || '[]');
-      const existIdx = registeredList.findIndex(c => c.phone === phone);
-      if (existIdx !== -1) {
-        registeredList[existIdx] = currentProfile;
+      let masterCustomers = JSON.parse(localStorage.getItem('lenka_registered_customers') || '[]');
+      const existingIdx = masterCustomers.findIndex(c => c.phone === phone);
+      if (existingIdx !== -1) {
+        masterCustomers[existingIdx] = currentProfile;
       } else {
-        registeredList.unshift(currentProfile);
+        masterCustomers.unshift(currentProfile);
       }
-      localStorage.setItem('lenka_registered_customers', JSON.stringify(registeredList));
+      localStorage.setItem('lenka_registered_customers', JSON.stringify(masterCustomers));
 
+      // 2. Upload to Cloud Firestore
       if (db) {
         try {
           db.collection('customers').doc(phone).set({
@@ -868,6 +920,7 @@
 
       document.getElementById('cancelEditBtn').classList.add('hidden');
       checkSavedProfile();
+      alert('Profile & Address saved successfully!');
     }
 
     function checkSavedProfile() {
@@ -933,6 +986,7 @@
       checkSavedProfile();
     }
 
+    // DEDICATED ORDERS PAGE & TABS
     function openOrdersPageModal() {
       document.getElementById('ordersPageModal').classList.remove('hidden');
       switchOrderTab('confirmed');
@@ -983,6 +1037,7 @@
       const confirmed = myOrders.filter(o => o.status !== 'Cancelled');
       const cancelled = myOrders.filter(o => o.status === 'Cancelled');
 
+      // 1. Confirmed Orders Render
       if (confirmed.length === 0) {
         confirmedList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No active orders placed under ${currentProfile.phone}.</p>`;
       } else {
@@ -1059,6 +1114,7 @@
         });
       }
 
+      // 2. Cancelled Orders Render
       if (cancelled.length === 0) {
         cancelledList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No cancelled consignments.</p>`;
       } else {
@@ -1116,6 +1172,7 @@
       lucide.createIcons();
     }
 
+    // DIRECT CANCEL
     async function requestCancelOrderDirect(orderId) {
       if (confirm(`Cancel Consignment #${orderId}?`)) {
         let local = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
@@ -1138,6 +1195,7 @@
       }
     }
 
+    // CELEBRATION BLASTER
     function triggerCelebrationBlast() {
       try {
         if (typeof confetti === 'function') {
@@ -1185,6 +1243,7 @@
       }
     }
 
+    // INSTANT CHECKOUT
     function proceedToCheckout() {
       if (currentCart.length === 0) {
         alert('Your bag is empty.');
@@ -1205,7 +1264,7 @@
 
       const newOrder = {
         orderId: orderId,
-        customerName: currentProfile.name || 'Guest VIP',
+        customerName: currentProfile.name || 'Customer',
         customerPhone: currentProfile.phone || '',
         customerAddress: currentProfile.formattedAddress || JSON.stringify(currentProfile.address || ''),
         customerAvatar: currentProfile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
@@ -1218,17 +1277,12 @@
         timestamp: today
       };
 
+      // 1. Local storage save
       let localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       localOrders.unshift(newOrder);
       localStorage.setItem('lenka_orders', JSON.stringify(localOrders));
 
-      // Ensure customer entry is stored in registered customers array
-      let registeredList = JSON.parse(localStorage.getItem('lenka_registered_customers') || '[]');
-      if (!registeredList.find(c => c.phone === currentProfile.phone)) {
-        registeredList.unshift(currentProfile);
-        localStorage.setItem('lenka_registered_customers', JSON.stringify(registeredList));
-      }
-
+      // 2. Cloud Firestore write
       if (db) {
         try {
           db.collection('orders').add({
@@ -1238,11 +1292,13 @@
         } catch (e) {}
       }
 
+      // 3. Clear Bag
       currentCart = [];
       localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
       updateCartUI();
       closeCartDrawer();
 
+      // 4. Modal & Confetti
       openOrderSuccessModal(orderId);
     }
   </script>
