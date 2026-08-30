@@ -160,7 +160,7 @@
       <div class="flex items-center gap-3">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-700">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Live Sync
+          Live Sync Active
         </span>
 
         <span id="activeSectionLabel" class="hidden md:inline-block px-3 py-1 rounded-lg bg-gray-100 border border-gray-200 text-xs text-gray-700 font-medium">
@@ -475,7 +475,7 @@
       </div>
     </section>
 
-    <!-- 5. CUSTOMER DIRECTORY (RENAMED FROM VIP CLIENTS) -->
+    <!-- 5. CUSTOMER DIRECTORY -->
     <section id="page-customers" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -662,6 +662,24 @@
             updateSidebarBadges();
           }
         }, (err) => console.warn(err));
+
+        // Real-time Customers Listener
+        db.collection('customers').onSnapshot((snapshot) => {
+          if (!snapshot.empty) {
+            const cloudCust = [];
+            snapshot.forEach(doc => cloudCust.push({ docId: doc.id, ...doc.data() }));
+            
+            const mergedCust = [...cloudCust];
+            allCustomers.forEach(lc => {
+              if (!mergedCust.find(m => m.phone === lc.phone)) {
+                mergedCust.push(lc);
+              }
+            });
+            allCustomers = mergedCust;
+            renderAdminCustomers();
+            updateSidebarBadges();
+          }
+        }, (err) => console.warn(err));
       }
     }
 
@@ -759,7 +777,6 @@
       const totalValuation = confirmed.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
       document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
 
-      // Update customers
       renderAdminCustomers();
 
       const confirmedCount = allOrders.filter(o => o.status === 'Confirmed' || !o.status).length;
@@ -1259,4 +1276,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
