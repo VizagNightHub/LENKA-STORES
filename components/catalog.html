@@ -1,0 +1,15 @@
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-white/5 gap-4">
+    <div>
+      <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
+      <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory streamed live from Firebase Cloud</p>
+    </div>
+    <div id="categoryFilterBadges" class="flex flex-wrap gap-2 text-xs"></div>
+  </div>
+
+  <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"></div>
+  <div id="emptyCatalogState" class="hidden text-center py-20">
+    <i data-lucide="package-open" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
+    <p class="text-slate-400 text-sm">No inventory items listed in this atelier.</p>
+  </div>
+</main>
