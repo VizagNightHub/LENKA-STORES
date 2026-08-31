@@ -12,7 +12,6 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Confetti & Celebration Blaster -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -101,20 +100,17 @@
 
       <!-- USER ACTIONS -->
       <div class="flex items-center gap-3">
-        <!-- ORDERS & TRACKING PAGE BUTTON -->
         <button onclick="openOrdersPageModal()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all">
           <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i>
           <span class="hidden sm:inline font-medium">My Orders</span>
         </button>
 
-        <!-- PROFILE BUTTON -->
         <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all">
           <img id="navProfileAvatar" src="" class="w-6 h-6 rounded-full object-cover fine-border hidden" />
           <i id="navProfileIcon" data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
           <span id="navProfileLabel" class="hidden sm:inline font-medium">Profile</span>
         </button>
 
-        <!-- CART BUTTON -->
         <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all">
           <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
           <span id="cartBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-bronze-400 text-noir-950 font-bold text-[10px] flex items-center justify-center">0</span>
@@ -124,7 +120,7 @@
     </div>
   </header>
 
-  <!-- LUXURY VIDEO BANNER HERO -->
+  <!-- LUXURY BANNER HERO -->
   <section class="relative w-full h-[360px] sm:h-[460px] overflow-hidden border-b border-white/10 flex items-center justify-center text-center">
     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-45 scale-105 pointer-events-none">
       <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-gold-lines-motion-background-42999-large.mp4" type="video/mp4" />
@@ -164,7 +160,7 @@
     </div>
   </main>
 
-  <!-- CELEBRATION MODAL (CONFIRMED ORDER + PARTY BLAST) -->
+  <!-- CELEBRATION MODAL -->
   <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6 border-bronze-400/50 relative overflow-hidden">
       
@@ -179,14 +175,14 @@
           <span class="italic gold-gradient-text font-serif font-medium">Your Order is Confirmed</span>
         </h3>
         <p class="text-xs text-slate-300 pt-2 leading-relaxed">
-          Your reservation has been securely logged in the Cloud Database.<br/>
+          Your reservation has been securely logged.<br/>
           Consignment ID: <strong id="successOrderIdDisplay" class="font-mono text-bronze-400 font-semibold">#LS000000</strong>
         </p>
       </div>
 
       <div class="p-4 rounded-xl bg-noir-850 fine-border text-xs text-slate-300 space-y-1">
         <p class="text-white font-medium flex items-center justify-center gap-1.5 text-bronze-300">
-          <i data-lucide="shield-check" class="w-4 h-4 text-bronze-400"></i> Express Courier Dispatched
+          <i data-lucide="shield-check" class="w-4 h-4 text-bronze-400"></i> Protected under DPDP Act, 2023
         </p>
         <p class="text-[11px] text-slate-400">Track real-time delivery status or cancel in your Orders Portal.</p>
       </div>
@@ -204,11 +200,10 @@
     </div>
   </div>
 
-  <!-- DEDICATED FULL ORDERS & STATUS PAGE -->
+  <!-- ORDERS PAGE MODAL -->
   <div id="ordersPageModal" class="fixed inset-0 z-50 bg-noir-950/95 backdrop-blur-xl hidden flex flex-col justify-between overflow-y-auto custom-scrollbar p-4 sm:p-8">
     <div class="max-w-4xl w-full mx-auto space-y-8 flex-1">
       
-      <!-- TOP BAR -->
       <div class="flex items-center justify-between pb-6 border-b border-white/10">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
@@ -224,7 +219,6 @@
         </button>
       </div>
 
-      <!-- TABS -->
       <div class="flex flex-wrap gap-2 border-b border-white/5 pb-4">
         <button onclick="switchOrderTab('confirmed')" id="tabBtn-confirmed" class="px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm cursor-pointer">
           Active / Confirmed Orders
@@ -238,24 +232,20 @@
         </button>
       </div>
 
-      <!-- TAB 1: CONFIRMED / ACTIVE ORDERS -->
       <div id="orderTab-confirmed" class="space-y-4">
         <div id="confirmedOrdersList" class="space-y-4"></div>
       </div>
 
-      <!-- TAB 2: CANCELLED ORDERS -->
       <div id="orderTab-cancelled" class="hidden space-y-4">
         <div id="cancelledOrdersList" class="space-y-4"></div>
       </div>
 
-      <!-- TAB 3: SAVED FAVORITES -->
       <div id="orderTab-favorites" class="hidden space-y-4">
         <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
 
     </div>
 
-    <!-- FOOTER CLOSE BAR -->
     <div class="max-w-4xl w-full mx-auto pt-6 border-t border-white/10 text-center">
       <button onclick="closeOrdersPageModal()" class="px-8 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-400 hover:text-white transition-all cursor-pointer">
         Return to Atelier Catalog
@@ -320,12 +310,11 @@
     </div>
   </div>
 
-  <!-- PROFILE DRAWER -->
+  <!-- PROFILE DRAWER (WITH DPDP CONSENT) -->
   <div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
     <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
       
       <div>
-        <!-- DRAWER HEADER -->
         <div class="flex items-center justify-between pb-5 border-b border-white/10">
           <div class="flex items-center gap-2">
             <i data-lucide="user-check" class="w-5 h-5 text-bronze-400"></i>
@@ -336,14 +325,12 @@
           </button>
         </div>
 
-        <!-- AUTH / EDIT FORM -->
         <div id="authSection" class="mt-6 space-y-5">
           <div class="flex items-center justify-between">
-            <span class="text-xs text-bronze-400 font-medium uppercase tracking-wider">Profile Info</span>
+            <span class="text-xs text-bronze-400 font-medium uppercase tracking-wider">Profile Details</span>
             <button id="cancelEditBtn" onclick="cancelProfileEdit()" class="text-[10px] text-slate-500 hover:text-white hidden cursor-pointer">Cancel</button>
           </div>
 
-          <!-- PROFILE PHOTO UPLOADER -->
           <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-noir-850 fine-border">
             <div class="relative group">
               <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-14 h-14 rounded-full object-cover fine-border border-bronze-400/40 shadow-md" />
@@ -396,12 +383,22 @@
             </div>
           </div>
 
+          <!-- DPDP CONSENT BOX -->
+          <div class="p-3.5 rounded-xl bg-noir-850 fine-border space-y-2">
+            <label class="flex items-start gap-2.5 cursor-pointer text-xs text-slate-300">
+              <input type="checkbox" id="dpdpConsentCheckbox" checked class="mt-0.5 rounded accent-bronze-400" />
+              <span class="text-[11px] leading-relaxed">
+                I hereby grant consent under the <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> for Lenka Ventures to process my name, contact, and address strictly for order fulfillment, dispatch, and customer service.
+              </span>
+            </label>
+            <p class="text-[10px] text-bronze-400 hover:underline cursor-pointer" onclick="openDpdpPolicyModal()">Read DPDP Act Notice & Data Principal Rights →</p>
+          </div>
+
           <button onclick="saveUserProfile()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg cursor-pointer">
             Save Profile & Address
           </button>
         </div>
 
-        <!-- LOGGED-IN VIP CARD -->
         <div id="profileSavedCard" class="hidden mt-6 space-y-6">
           <div class="p-5 rounded-2xl bg-noir-850 fine-border relative overflow-hidden space-y-3">
             <div class="flex items-center justify-between">
@@ -409,7 +406,7 @@
                 <img id="cardProfileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-12 h-12 rounded-xl object-cover fine-border" />
                 <div>
                   <h4 id="displayUserName" class="text-base font-serif text-white font-medium"></h4>
-                  <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-md uppercase tracking-wider font-semibold">VERIFIED VIP</span>
+                  <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-md uppercase tracking-wider font-semibold">VERIFIED CLIENT</span>
                 </div>
               </div>
               <button onclick="startProfileEdit()" class="px-3 py-1.5 rounded-lg bg-noir-950 fine-border text-[11px] text-bronze-300 hover:text-white flex items-center gap-1.5 cursor-pointer">
@@ -434,7 +431,6 @@
 
       </div>
 
-      <!-- BOTTOM LOGOUT BAR -->
       <div id="profileFooter" class="hidden pt-6 border-t border-white/10">
         <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
           <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
@@ -473,6 +469,69 @@
     </div>
   </div>
 
+  <!-- DPDP ACT & PRIVACY POLICY MODAL -->
+  <div id="dpdpPolicyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative max-h-[85vh] flex flex-col">
+      <button onclick="closeDpdpPolicyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+        <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="font-serif text-2xl text-white">DPDP Act Privacy Policy & Notice</h3>
+          <p class="text-xs text-slate-400">Digital Personal Data Protection Act, 2023 Compliance</p>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scrollbar text-xs text-slate-300 space-y-4 pr-2 leading-relaxed">
+        <section class="space-y-1">
+          <h4 class="text-sm font-semibold text-white">1. Notice & Purpose of Data Collection</h4>
+          <p>In accordance with <strong>Section 5 & 6 of the DPDP Act, 2023</strong>, Lenka Stores collects personal data (Full Name, Contact Number, Delivery Address, and Order Details) strictly for:</p>
+          <ul class="list-disc pl-5 text-slate-400 space-y-0.5">
+            <li>Processing luxury reservations and dispatching physical consignments.</li>
+            <li>Real-time SMS/WhatsApp order tracking updates.</li>
+            <li>Customer support and resolving inquiries.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-1">
+          <h4 class="text-sm font-semibold text-white">2. Your Rights as a Data Principal</h4>
+          <p>Under the DPDP Act 2023, you retain the following statutory rights:</p>
+          <ul class="list-disc pl-5 text-slate-400 space-y-0.5">
+            <li><strong>Right to Access:</strong> View and retrieve your personal profile and purchase history at any time.</li>
+            <li><strong>Right to Correction & Erasure:</strong> Edit incorrect address data or request complete deletion of your account.</li>
+            <li><strong>Right to Withdraw Consent:</strong> Withdraw authorization at any time by logging out or contacting our Data Protection Officer.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-1">
+          <h4 class="text-sm font-semibold text-white">3. Security & Cross-Border Safeguards</h4>
+          <p>Your digital records are stored securely using TLS encryption and Cloud Firestore ISO-compliant infrastructure. No user data is sold, rented, or transferred to unauthorized third parties.</p>
+        </section>
+
+        <section class="space-y-1">
+          <h4 class="text-sm font-semibold text-white">4. Grievance Redressal & Data Protection Officer (DPO)</h4>
+          <p>For inquiries, data deletion requests, or grievances under the DPDP Act, please contact:</p>
+          <div class="p-3 rounded-xl bg-noir-850 fine-border space-y-1 text-slate-400">
+            <p><strong class="text-white">Grievance Officer:</strong> V. Udayteja</p>
+            <p><strong class="text-white">Entity:</strong> Lenka Ventures Pvt Ltd / Vizag Night Hub</p>
+            <p><strong class="text-white">Support Email:</strong> privacy@lenkastores.run.place</p>
+            <p><strong class="text-white">Jurisdiction:</strong> Hyderabad & Visakhapatnam, India</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex justify-end">
+        <button onclick="closeDpdpPolicyModal()" class="px-6 py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+          I Understand & Acknowledge
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 space-y-6">
@@ -491,16 +550,20 @@
 
         <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
           <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
             <polygon points="10 15 15 12 10 9 10 15" class="fill-[#C5A880] stroke-none"/>
           </svg>
           <span class="text-xs font-medium tracking-wider">YouTube</span>
         </a>
       </div>
 
-      <div class="py-1">
-        <button onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-xs text-bronze-300 hover:text-white transition-all shadow-md cursor-pointer">
-          <i data-lucide="message-square" class="w-3.5 h-3.5 text-bronze-400"></i> Share Website Feedback & Support
+      <div class="flex flex-wrap items-center justify-center gap-4 py-1 text-xs">
+        <button onclick="openFeedbackModal()" class="inline-flex items-center gap-1.5 text-bronze-300 hover:text-white">
+          <i data-lucide="message-square" class="w-3.5 h-3.5 text-bronze-400"></i> Share Website Feedback
+        </button>
+        <span>•</span>
+        <button onclick="openDpdpPolicyModal()" class="inline-flex items-center gap-1.5 text-bronze-300 hover:text-white">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-bronze-400"></i> DPDP Act Privacy Notice
         </button>
       </div>
 
@@ -508,7 +571,7 @@
         <p class="text-xs text-slate-300 font-medium">
           Developed & Crafted by <span class="text-bronze-400">Vizag Night Hub</span> under <span class="text-white">Lenka Ventures Pvt Ltd</span>
         </p>
-        <p class="text-[10px] text-slate-600">© 2026 Lenka Ventures Pvt Ltd. All rights reserved.</p>
+        <p class="text-[10px] text-slate-600">© 2026 Lenka Ventures Pvt Ltd. Compliant with Digital Personal Data Protection Act (DPDP), 2023.</p>
       </div>
     </div>
   </footer>
@@ -645,6 +708,10 @@
       checkSavedProfile();
     });
 
+    // DPDP MODAL HANDLERS
+    function openDpdpPolicyModal() { document.getElementById('dpdpPolicyModal').classList.remove('hidden'); }
+    function closeDpdpPolicyModal() { document.getElementById('dpdpPolicyModal').classList.add('hidden'); }
+
     // FAVORITES / WISHLIST TOGGLE
     function toggleFavorite(prodId, event) {
       if (event) event.stopPropagation();
@@ -696,7 +763,6 @@
             <div class="relative overflow-hidden bg-noir-850 aspect-square">
               <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
               
-              <!-- FAVORITES HEART BUTTON -->
               <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
                 <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -830,12 +896,10 @@
         timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
       };
 
-      // 1. Instant local persistence
       let localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
       localFeedbacks.unshift(newFeedback);
       localStorage.setItem('lenka_feedbacks', JSON.stringify(localFeedbacks));
 
-      // 2. Background Firestore write
       try {
         if (db) {
           db.collection('feedbacks').add({
@@ -852,7 +916,7 @@
       openFeedbackSuccessModal();
     }
 
-    // PROFILE
+    // PROFILE & DPDP CONCENT SAVE
     let uploadedAvatarBase64 = '';
     function handleImageUpload(e) {
       const file = e.target.files[0];
@@ -879,10 +943,16 @@
       const state = document.getElementById('addrState').value.trim();
       const area = document.getElementById('addrArea').value.trim();
       const pin = document.getElementById('addrPin').value.trim();
+      const consentGiven = document.getElementById('dpdpConsentCheckbox')?.checked ?? true;
       const avatar = uploadedAvatarBase64 || (currentProfile ? currentProfile.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150');
 
       if (!name || !phone || !area || !pin) {
         alert('Please fill out Name, Phone, Area & PIN Code.');
+        return;
+      }
+
+      if (!consentGiven) {
+        alert('Please grant DPDP data processing consent to save shipping details.');
         return;
       }
 
@@ -891,10 +961,11 @@
         phone,
         avatar,
         address: { country, state, area, pin },
-        formattedAddress: `${area}, ${state}, ${country} - ${pin}`
+        formattedAddress: `${area}, ${state}, ${country} - ${pin}`,
+        dpdpConsent: true,
+        dpdpConsentTimestamp: new Date().toISOString()
       };
 
-      // 1. Save locally
       localStorage.setItem('lenka_profile', JSON.stringify(currentProfile));
 
       let masterCustomers = JSON.parse(localStorage.getItem('lenka_registered_customers') || '[]');
@@ -906,7 +977,6 @@
       }
       localStorage.setItem('lenka_registered_customers', JSON.stringify(masterCustomers));
 
-      // 2. Upload to Cloud Firestore
       if (db) {
         try {
           db.collection('customers').doc(phone).set({
@@ -920,7 +990,7 @@
 
       document.getElementById('cancelEditBtn').classList.add('hidden');
       checkSavedProfile();
-      alert('Profile & Address saved successfully!');
+      alert('Profile & Address saved with DPDP Act, 2023 Consent!');
     }
 
     function checkSavedProfile() {
@@ -1037,7 +1107,6 @@
       const confirmed = myOrders.filter(o => o.status !== 'Cancelled');
       const cancelled = myOrders.filter(o => o.status === 'Cancelled');
 
-      // 1. Confirmed Orders Render
       if (confirmed.length === 0) {
         confirmedList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No active orders placed under ${currentProfile.phone}.</p>`;
       } else {
@@ -1114,7 +1183,6 @@
         });
       }
 
-      // 2. Cancelled Orders Render
       if (cancelled.length === 0) {
         cancelledList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No cancelled consignments.</p>`;
       } else {
