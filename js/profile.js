@@ -1,4 +1,4 @@
-// GLOBAL PROFILE ENGINE
+// GLOBAL PROFILE CONTROLLER
 window.currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
 
 function checkSavedProfile() {
@@ -30,8 +30,7 @@ function checkSavedProfile() {
   if (window.lucide) lucide.createIcons();
 }
 
-// SAVE USER PROFILE & REGISTER TO CLOUD FIRESTORE
-async function saveUserProfile() {
+function saveUserProfile() {
   const nameInput = document.getElementById('userNameInput');
   const phoneInput = document.getElementById('userPhoneInput');
   const countryInput = document.getElementById('addrCountry');
@@ -44,9 +43,9 @@ async function saveUserProfile() {
   const name = nameInput ? nameInput.value.trim() : '';
   const phone = phoneInput ? phoneInput.value.trim() : '';
   const country = countryInput ? countryInput.value.trim() : 'India';
-  const state = stateInput ? stateInput.value.trim() : '';
+  const state = stateInput ? stateInput.value.trim() : 'Telangana';
   const area = areaInput ? areaInput.value.trim() : '';
-  const pin = pinInput ? pinInput.value.trim() : '';
+  const pin = pinInput ? pinInput.value.trim() : '500072';
   const avatar = avatarPreview ? avatarPreview.src : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
 
   if (!name) {
@@ -62,7 +61,7 @@ async function saveUserProfile() {
   }
 
   if (consentBox && !consentBox.checked) {
-    alert('Please check the DPDP Act consent checkbox to proceed with reservation delivery.');
+    alert('Please check the DPDP Act consent checkbox to proceed.');
     return;
   }
 
@@ -78,23 +77,21 @@ async function saveUserProfile() {
     updatedAt: new Date().toISOString()
   };
 
-  // 1. Commit to Local Storage
+  // 1. Immediately write to Local Storage & window state
   window.currentProfile = profileData;
   if (window.LenkaApp) window.LenkaApp.profile = profileData;
   localStorage.setItem('lenka_profile', JSON.stringify(profileData));
 
-  // 2. Register to Cloud Firestore (lenkastores-website)
+  // 2. Sync to Cloud Firestore in background
   const db = (window.LenkaApp && window.LenkaApp.db) ? window.LenkaApp.db : (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
   if (db) {
-    try {
-      const cleanPhone = phone.replace(/[^0-9]/g, '');
-      await db.collection('customers').doc(cleanPhone).set(profileData, { merge: true });
-    } catch (e) {
-      console.warn("Cloud customer save note:", e);
-    }
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    db.collection('customers').doc(cleanPhone).set(profileData, { merge: true }).catch(err => {
+      console.warn("Firestore customer background sync note:", err);
+    });
   }
 
-  // 3. Update Drawer Display UI
+  // 3. Immediately re-render profile card and alert
   checkSavedProfile();
   alert(`Profile for ${name} verified and saved successfully!`);
 }
@@ -115,9 +112,9 @@ function startProfileEdit() {
     if (nameInput) nameInput.value = window.currentProfile.name || '';
     if (phoneInput) phoneInput.value = window.currentProfile.phone || '';
     if (countryInput) countryInput.value = (window.currentProfile.address && window.currentProfile.address.country) || 'India';
-    if (stateInput) stateInput.value = (window.currentProfile.address && window.currentProfile.address.state) || '';
+    if (stateInput) stateInput.value = (window.currentProfile.address && window.currentProfile.address.state) || 'Telangana';
     if (areaInput) areaInput.value = (window.currentProfile.address && window.currentProfile.address.area) || '';
-    if (pinInput) pinInput.value = (window.currentProfile.address && window.currentProfile.address.pin) || '';
+    if (pinInput) pinInput.value = (window.currentProfile.address && window.currentProfile.address.pin) || '500072';
   }
 
   if (authSection) authSection.classList.remove('hidden');
