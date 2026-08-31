@@ -119,10 +119,9 @@
           <p class="text-[10px] text-bronze-400 hover:underline cursor-pointer" onclick="openDpdpPolicyModal()">Read DPDP Act Notice & Data Principal Rights →</p>
         </div>
 
-        <!-- DIRECT SAVE BUTTON WITH EXPLICIT ONCLICK -->
+        <!-- SAVE BUTTON -->
         <button id="saveProfileBtn" 
                 type="button" 
-                onclick="saveUserProfile()" 
                 class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] hover:brightness-110 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg cursor-pointer">
           SAVE PROFILE & ADDRESS
         </button>
@@ -144,12 +143,8 @@
             </button>
           </div>
           <div class="pt-2 border-t border-white/5 space-y-1.5 text-xs text-slate-300">
-            <p id="displayUserPhone" class="flex items-center gap-2">
-              <i data-lucide="phone" class="w-3.5 h-3.5 text-bronze-400"></i> <span></span>
-            </p>
-            <p id="displayUserAddress" class="flex items-start gap-2 pt-1 text-slate-400 text-[11px]">
-              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bronze-400 mt-0.5"></i> <span></span>
-            </p>
+            <p id="displayUserPhone" class="text-white font-medium"></p>
+            <p id="displayUserAddress" class="text-slate-400 text-[11px]"></p>
           </div>
         </div>
         <button onclick="closeProfileDrawer(); openOrdersPageModal();" class="w-full py-3 bg-noir-850 hover:bg-noir-800 fine-border text-bronze-300 hover:text-white rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer">
