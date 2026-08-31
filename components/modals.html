@@ -319,3 +319,42 @@
     </div>
   </div>
 </div>
+
+<!-- PHONEPE / UPI QR PAYMENT MODAL -->
+<div id="phonePePaymentModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-sm w-full bg-noir-900 fine-border p-6 rounded-2xl shadow-2xl text-center space-y-4 border-bronze-400/40 relative">
+    <button onclick="closePhonePeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase tracking-[0.25em] text-bronze-400 font-bold block">PHONEPE UPI GATEWAY</span>
+      <h3 class="text-xl font-serif text-white font-medium">Scan & Pay via Any UPI App</h3>
+      <p class="text-xs text-slate-400">PhonePe, Google Pay, Paytm, or BHIM</p>
+    </div>
+
+    <!-- DYNAMIC QR CODE DISPLAY -->
+    <div class="p-3 bg-white rounded-2xl mx-auto w-48 h-48 flex items-center justify-center shadow-lg fine-border">
+      <img id="phonepeQrImage" src="" alt="PhonePe QR Code" class="w-full h-full object-contain" />
+    </div>
+
+    <div class="space-y-1 text-xs">
+      <p class="text-slate-400">Amount Payable: <strong id="phonepeAmountDisplay" class="text-white font-serif text-base">₹0</strong></p>
+      <p class="text-[11px] text-bronze-400 font-mono">UPI ID: 8977627028-2@ybl</p>
+    </div>
+
+    <!-- MOBILE DIRECT DEEP LINK -->
+    <a id="phonepeDirectPayBtn" href="#" class="w-full py-3 bg-[#5f259f] hover:bg-[#4d1d82] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+      <i data-lucide="smartphone" class="w-4 h-4"></i>
+      <span>Pay Directly on Mobile App</span>
+    </a>
+
+    <!-- VERIFY & COMPLETE -->
+    <div class="pt-2 border-t border-white/10 flex gap-2">
+      <button onclick="confirmPhonePePayment()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer">
+        <i data-lucide="check-circle" class="w-4 h-4"></i>
+        <span>I Have Paid (Complete Order)</span>
+      </button>
+    </div>
+  </div>
+</div>
