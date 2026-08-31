@@ -65,29 +65,34 @@
 
       <!-- Navigation Tabs -->
       <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
-        <button onclick="switchTab('catalog')" id="tabBtn-catalog" class="px-3 py-1.5 rounded-lg bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-          <span>Catalog Engine</span>
+        <button onclick="switchTab('inventory')" id="tabBtn-inventory" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+          <span>All Products</span>
         </button>
 
-        <button onclick="switchTab('orders')" id="tabBtn-orders" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+        <button onclick="switchTab('add-product')" id="tabBtn-add-product" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+          <span>Add New Product</span>
+        </button>
+
+        <button onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
           <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
           <span>Consignments</span>
         </button>
 
-        <button onclick="switchTab('users')" id="tabBtn-users" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+        <button onclick="switchTab('users')" id="tabBtn-users" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
           <i data-lucide="users" class="w-3.5 h-3.5"></i>
           <span>Client Directory</span>
         </button>
 
-        <button onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+        <button onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
           <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-          <span>Inquiries & Reviews</span>
+          <span>Inquiries</span>
         </button>
 
-        <a href="index.html" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-sm shrink-0">
-          <i data-lucide="store" class="w-3.5 h-3.5"></i>
-          <span>Live Storefront</span>
+        <a href="index.html" target="_blank" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-sm shrink-0">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Live Store</span>
         </a>
       </div>
 
@@ -102,110 +107,120 @@
       <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
         <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">ACTIVE INVENTORY</span>
         <h3 id="statTotalProducts" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
-        <p class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Real-time Synced</p>
+        <p class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Cloud Synced</p>
       </div>
       <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">TOTAL ORDERS</span>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">TOTAL CONSIGNMENTS</span>
         <h3 id="statTotalOrders" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
-        <p class="text-[11px] text-slate-500">Cloud Consignments</p>
+        <p class="text-[11px] text-slate-500">Live Orders in DB</p>
       </div>
       <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">GROSS VALUATION</span>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">GROSS BOOKINGS</span>
         <h3 id="statTotalValuation" class="font-serif text-3xl text-slate-900 font-bold">₹0</h3>
-        <p class="text-[11px] text-slate-500">Total Bookings Recorded</p>
+        <p class="text-[11px] text-slate-500">Valuation Recorded</p>
       </div>
       <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">CLIENT INQUIRIES</span>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">INQUIRIES LOGGED</span>
         <h3 id="statTotalFeedbacks" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
-        <p class="text-[11px] text-amber-600 font-semibold">Feedbacks Received</p>
+        <p class="text-[11px] text-amber-600 font-semibold">Customer Reviews</p>
       </div>
     </div>
 
-    <!-- TAB 1: PRODUCT CATALOG & PUBLISHING -->
-    <div id="section-catalog" class="space-y-6">
-      <div class="space-y-1">
-        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Product Catalog & Atelier Engine</h2>
-        <p class="text-xs text-slate-500">Publish, modify, or delete inventory streamed live to Lenka Stores</p>
+    <!-- TAB 1: ALL PRODUCTS VIEW (MAIN INVENTORY) -->
+    <div id="section-inventory" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Live Inventory Catalog</h2>
+          <p class="text-xs text-slate-500">All products currently active and visible on Lenka Stores</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="inventoryCountBadge" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-200/80 text-slate-700">0 Products Total</span>
+          <button onclick="switchTab('add-product')" class="px-4 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+            <i data-lucide="plus" class="w-4 h-4 text-emerald-400"></i>
+            <span>Add New Product</span>
+          </button>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        <!-- ADD PRODUCT FORM -->
-        <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
-          <h3 class="text-base font-bold text-slate-900">Add New Product</h3>
-
-          <form id="productPublishForm" onsubmit="handlePublishProduct(event)" class="space-y-3.5">
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLLECTION / CATEGORY</label>
-              <select id="fieldCategory" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-black">
-                <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
-                <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
-                <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">PRODUCT TITLE</label>
-              <input type="text" id="fieldTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-            </div>
-
-            <div class="grid grid-cols-3 gap-3">
-              <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">ORIGINAL (₹)</label>
-                <input type="number" id="fieldOriginalPrice" placeholder="4999" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-              <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">OFFER (₹)</label>
-                <input type="number" id="fieldOfferPrice" placeholder="2499" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-              <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BADGE TAG</label>
-                <input type="text" id="fieldDiscountTag" placeholder="50% OFF" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-            </div>
-
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">IMAGE URL</label>
-              <input type="text" id="fieldImageUrl" placeholder="https://images.unsplash.com/photo-..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-            </div>
-
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLOR VARIANTS</label>
-              <input type="text" id="fieldVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-            </div>
-
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">DESCRIPTION & KEY SPECS</label>
-              <textarea id="fieldDescription" rows="3" placeholder="Specs, noise cancellation, battery capacity..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
-            </div>
-
-            <button type="submit" id="publishBtn" class="w-full py-3.5 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-1">
-              <i data-lucide="plus" class="w-4 h-4"></i>
-              <span>PUBLISH PRODUCT TO STORE</span>
-            </button>
-          </form>
-        </div>
-
-        <!-- LIVE INVENTORY LIST -->
-        <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <h3 class="text-base font-bold text-slate-900">Live Inventory List</h3>
-            <span id="inventoryCountBadge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">0 Products</span>
-          </div>
-          <div id="inventoryContainer" class="space-y-3 max-h-[640px] overflow-y-auto custom-scrollbar pr-1">
-            <p class="text-xs text-slate-400 text-center py-12">Loading inventory...</p>
-          </div>
-        </div>
-
+      <!-- PRODUCTS GRID -->
+      <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <p class="col-span-full text-xs text-slate-400 text-center py-16">Loading live inventory from Cloud Firestore...</p>
       </div>
     </div>
 
-    <!-- TAB 2: CONSIGNMENTS & TRACKING ENGINE -->
+    <!-- TAB 2: SEPARATE BOX / PAGE FOR ADDING PRODUCTS -->
+    <div id="section-add-product" class="hidden space-y-6">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Publish New Product</h2>
+          <p class="text-xs text-slate-500">Add an atelier collection item directly into Cloud Firestore</p>
+        </div>
+        <button onclick="switchTab('inventory')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+          <span>Back to Catalog</span>
+        </button>
+      </div>
+
+      <div class="max-w-2xl mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <form id="productPublishForm" onsubmit="handlePublishProduct(event)" class="space-y-4">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLLECTION / CATEGORY</label>
+            <select id="fieldCategory" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-black">
+              <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
+              <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
+              <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">PRODUCT TITLE</label>
+            <input type="text" id="fieldTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+          </div>
+
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">ORIGINAL (₹)</label>
+              <input type="number" id="fieldOriginalPrice" placeholder="4999" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+            <div>
+              <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">OFFER (₹)</label>
+              <input type="number" id="fieldOfferPrice" placeholder="2499" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+            <div>
+              <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BADGE TAG</label>
+              <input type="text" id="fieldDiscountTag" placeholder="50% OFF" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">IMAGE URL</label>
+            <input type="text" id="fieldImageUrl" placeholder="https://images.unsplash.com/photo-..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+          </div>
+
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLOR VARIANTS</label>
+            <input type="text" id="fieldVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+          </div>
+
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">DESCRIPTION & SPECS</label>
+            <textarea id="fieldDescription" rows="3" placeholder="Features, noise cancellation, battery capacity..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
+          </div>
+
+          <button type="submit" id="publishBtn" class="w-full py-4 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+            <span>PUBLISH PRODUCT TO LIVE STORE</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 3: CONSIGNMENT ORDERS WITH STATUS UPDATE & DELETE ORDER -->
     <div id="section-orders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
         <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Consignment Orders & Dispatch Tracking</h2>
-          <p class="text-xs text-slate-500">Update shipping stages and export consignment manifests</p>
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Consignment Orders & Dispatch Portal</h2>
+          <p class="text-xs text-slate-500">Update tracking stages or permanently delete individual customer orders</p>
         </div>
         <button onclick="exportOrdersCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
           <i data-lucide="download" class="w-4 h-4"></i>
@@ -218,7 +233,7 @@
       </div>
     </div>
 
-    <!-- TAB 3: REGISTERED CLIENT DIRECTORY -->
+    <!-- TAB 4: REGISTERED CLIENT DIRECTORY -->
     <div id="section-users" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
         <div>
@@ -236,7 +251,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: CLIENT FEEDBACK & INQUIRIES -->
+    <!-- TAB 5: CLIENT FEEDBACK & INQUIRIES -->
     <div id="section-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
         <div>
@@ -256,7 +271,7 @@
 
   </main>
 
-  <!-- FIREBASE SCRIPTS -->
+  <!-- FIREBASE ENGINE SCRIPTS -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
@@ -279,79 +294,96 @@
 
     // TAB CONTROLLER
     function switchTab(tabId) {
-      const tabs = ['catalog', 'orders', 'users', 'feedback'];
+      const tabs = ['inventory', 'add-product', 'orders', 'users', 'feedback'];
       tabs.forEach(t => {
         const sec = document.getElementById(`section-${t}`);
         const btn = document.getElementById(`tabBtn-${t}`);
         if (t === tabId) {
           if (sec) sec.classList.remove('hidden');
-          if (btn) btn.className = "px-3 py-1.5 rounded-lg bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0";
+          if (btn) btn.className = "px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0";
         } else {
           if (sec) sec.classList.add('hidden');
-          if (btn) btn.className = "px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0";
+          if (btn) btn.className = "px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0";
         }
       });
       if (window.lucide) lucide.createIcons();
     }
 
-    // 1. PRODUCTS ENGINE
+    // 1. ALL PRODUCTS CATALOG
     function initProducts() {
       const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       if (saved.length > 0) {
         liveProducts = saved;
-        renderProducts();
+        renderProductsGrid();
       }
 
       db.collection('products').onSnapshot((snapshot) => {
         liveProducts = [];
         snapshot.forEach(doc => liveProducts.push({ id: doc.id, ...doc.data() }));
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-        renderProducts();
+        renderProductsGrid();
       }, err => console.warn("Live products sync note:", err));
     }
 
-    function renderProducts() {
-      const container = document.getElementById('inventoryContainer');
+    function renderProductsGrid() {
+      const container = document.getElementById('inventoryGrid');
       const badge = document.getElementById('inventoryCountBadge');
       const statP = document.getElementById('statTotalProducts');
 
-      if (badge) badge.innerText = `${liveProducts.length} Products`;
+      if (badge) badge.innerText = `${liveProducts.length} Products Total`;
       if (statP) statP.innerText = liveProducts.length;
       if (!container) return;
       container.innerHTML = '';
 
       if (liveProducts.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-10">No products active. Add your first item on the left.</p>`;
+        container.innerHTML = `
+          <div class="col-span-full bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
+            <i data-lucide="package-open" class="w-12 h-12 text-slate-400 mx-auto"></i>
+            <h4 class="font-bold text-slate-800 text-sm">No products listed in catalog</h4>
+            <button onclick="switchTab('add-product')" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl">Add Your First Product</button>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
         return;
       }
 
       liveProducts.forEach(prod => {
-        const item = document.createElement('div');
-        item.className = "p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all flex items-center justify-between gap-4 shadow-sm";
-        item.innerHTML = `
-          <img src="${prod.image}" alt="${prod.title}" class="w-12 h-12 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
-          <div class="flex-1 min-w-0">
-            <h4 class="text-xs font-bold text-slate-900 truncate">${prod.title}</h4>
-            <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
-              <span class="font-bold text-slate-900">₹${prod.offerPrice}</span>
-              <span class="text-slate-400 text-[11px]">•</span>
-              <span class="text-[11px] text-slate-500 truncate">${prod.category}</span>
+        const card = document.createElement('div');
+        card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="relative aspect-video bg-slate-100 overflow-hidden">
+              <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
+              ${prod.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded-md">${prod.discountTag}</span>` : ''}
+              <span class="absolute bottom-2.5 left-2.5 bg-white/90 backdrop-blur-md text-slate-800 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">${prod.category}</span>
+            </div>
+            <div class="p-4 space-y-2">
+              <h4 class="font-bold text-slate-900 text-sm line-clamp-1">${prod.title}</h4>
+              <p class="text-xs text-slate-500 line-clamp-2">${prod.description || 'No description provided.'}</p>
             </div>
           </div>
-          <button onclick="deleteProductDirect('${prod.id}')" class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer" title="Delete Product">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
-          </button>
+          <div class="p-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div>
+              <span class="text-xs text-slate-400 line-through">₹${prod.originalPrice}</span>
+              <span class="text-sm font-bold text-slate-900 ml-1">₹${prod.offerPrice}</span>
+            </div>
+            <button onclick="deleteProductDirect('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer" title="Delete Product">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              <span>Delete</span>
+            </button>
+          </div>
         `;
-        container.appendChild(item);
+        container.appendChild(card);
       });
       if (window.lucide) lucide.createIcons();
     }
 
+    // 2. ADD PRODUCT FORM HANDLER
     async function handlePublishProduct(e) {
       e.preventDefault();
       const btn = document.getElementById('publishBtn');
       btn.disabled = true;
-      btn.innerText = "PUBLISHING...";
+      btn.innerText = "PUBLISHING TO CLOUD...";
 
       const category = document.getElementById('fieldCategory').value;
       const title = document.getElementById('fieldTitle').value.trim();
@@ -362,7 +394,6 @@
       const variantsStr = document.getElementById('fieldVariants').value.trim();
       const description = document.getElementById('fieldDescription').value.trim();
 
-      // Clean image URL from accidental trailing brackets, quotes, or spaces
       rawImage = rawImage.replace(/[)'"\s]+$/, '');
       if (!rawImage.startsWith('http://') && !rawImage.startsWith('https://')) {
         rawImage = 'https://' + rawImage;
@@ -385,37 +416,32 @@
       };
 
       try {
-        // Immediate local render
         liveProducts.unshift({ id: prodId, ...newProduct });
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-        renderProducts();
+        renderProductsGrid();
 
-        // Direct Cloud Firestore Write with timeout fallback
-        const firestoreWrite = db.collection('products').doc(prodId).set(newProduct);
-        const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
-        
-        await Promise.race([firestoreWrite, timeout]).catch(err => {
-          console.warn("Cloud write note:", err);
-        });
+        await db.collection('products').doc(prodId).set(newProduct);
 
         document.getElementById('productPublishForm').reset();
         alert(`Product "${title}" is now LIVE on Lenka Stores!`);
+        switchTab('inventory');
       } catch (err) {
         console.error("Publish error:", err);
-        alert(`Product "${title}" saved and synced!`);
+        alert(`Product saved locally and syncing to database.`);
+        switchTab('inventory');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i data-lucide="plus" class="w-4 h-4"></i><span>PUBLISH PRODUCT TO STORE</span>`;
+        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>PUBLISH PRODUCT TO LIVE STORE</span>`;
         if (window.lucide) lucide.createIcons();
       }
     }
 
     async function deleteProductDirect(prodId) {
-      if (!confirm("Are you sure you want to permanently delete this product?")) return;
+      if (!confirm("Are you sure you want to permanently delete this product from Lenka Stores?")) return;
       try {
         liveProducts = liveProducts.filter(p => p.id !== prodId);
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-        renderProducts();
+        renderProductsGrid();
 
         await db.collection('products').doc(prodId).delete();
       } catch (err) {
@@ -423,7 +449,7 @@
       }
     }
 
-    // 2. CONSIGNMENT ORDERS & STATUS ENGINE
+    // 3. CONSIGNMENT ORDERS & DELETE ORDER ACTION
     function initOrders() {
       const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       if (saved.length > 0) {
@@ -468,13 +494,18 @@
             </div>
             
             <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-slate-500">Update Status:</span>
+              <span class="text-xs font-bold text-slate-500">Status:</span>
               <select onchange="updateOrderStatus('${ord.orderId || ord.id}', this.value)" class="bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-black">
                 <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
                 <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>Dispatched (In Transit)</option>
                 <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                 <option value="Cancelled" ${ord.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
               </select>
+
+              <!-- DELETE ORDER BUTTON -->
+              <button onclick="deleteOrderDirect('${ord.orderId || ord.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors ml-1 cursor-pointer" title="Delete Consignment Record">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
             </div>
           </div>
 
@@ -517,7 +548,23 @@
       }
     }
 
-    // 3. CLIENTS DIRECTORY
+    // DELETE ORDER FUNCTION
+    async function deleteOrderDirect(orderId) {
+      if (!confirm(`Are you sure you want to permanently delete Consignment #${orderId}?`)) return;
+
+      try {
+        liveOrders = liveOrders.filter(o => (o.orderId || o.id) !== orderId);
+        localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
+        renderOrders();
+        renderClientsDirectory();
+
+        await db.collection('orders').doc(orderId).delete();
+      } catch (err) {
+        console.warn("Order delete note:", err);
+      }
+    }
+
+    // 4. CLIENTS DIRECTORY
     function renderClientsDirectory() {
       const container = document.getElementById('clientsContainer');
       if (!container) return;
@@ -567,7 +614,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // 4. FEEDBACK INBOX
+    // 5. FEEDBACK INBOX
     function initFeedbacks() {
       db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
         liveFeedbacks = [];
