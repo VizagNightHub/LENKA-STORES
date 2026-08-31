@@ -1,41 +1,70 @@
-<footer class="border-t border-white/5 bg-noir-900 py-12 text-center text-xs text-slate-500">
-  <div class="max-w-7xl mx-auto px-4 space-y-6">
-    <div class="font-serif text-2xl text-white tracking-wider">LENKA STORES</div>
+<footer class="bg-[#0A0B0D] border-t border-white/10 text-slate-400 py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
     
-    <div class="flex items-center justify-center gap-4 pt-1">
-      <a href="https://www.instagram.com/the_lenka_8116?utm_source=qr&igsi=MWZoNGtpZHMyM2dscA==" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
-        <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-          <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-        </svg>
-        <span class="text-xs font-medium tracking-wider">Instagram</span>
-      </a>
+    <!-- TOP SECTION: BRAND & FEEDBACK INBOX FORM -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      
+      <!-- BRAND BIO -->
+      <div class="lg:col-span-5 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
+            <span class="font-serif text-lg font-bold text-bronze-400">LS</span>
+          </div>
+          <div>
+            <h3 class="font-serif text-xl text-white font-medium">LENKA STORES</h3>
+            <span class="text-[9px] uppercase tracking-[0.25em] text-bronze-400 block font-semibold">HAUTE COUTURE & ELECTRONICS</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+          A bespoke retail experience by <strong>Lenka Ventures Pvt Ltd</strong>. Curating world-class personal audio, GaN rapid power banks, and tailored couture wear.
+        </p>
+        <div class="pt-2 text-[11px] text-slate-500 space-y-1">
+          <p>📍 KPHB Colony, Hyderabad / Vizag Hub</p>
+          <p>📞 Client Concierge: +91 89776 27028</p>
+        </div>
+      </div>
 
-      <a href="https://youtube.com/@lvs8116?si=-AtzcVm6wtruK6mv" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/60 text-slate-300 hover:text-white transition-all shadow-md group">
-        <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-[#C5A880] fill-none stroke-[2] stroke-linecap-round stroke-linejoin-round group-hover:scale-110 transition-transform">
-          <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
-          <polygon points="10 15 15 12 10 9 10 15" class="fill-[#C5A880] stroke-none"/>
-        </svg>
-        <span class="text-xs font-medium tracking-wider">YouTube</span>
-      </a>
+      <!-- FEEDBACK / CLIENT INQUIRY FORM -->
+      <div class="lg:col-span-7 bg-[#111216] fine-border rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
+        <div>
+          <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze-400 block">CLIENT INQUIRIES & REVIEWS</span>
+          <h4 class="font-serif text-lg text-white font-medium mt-0.5">Send Feedback or Atelier Inquiry</h4>
+        </div>
+
+        <form id="feedbackForm" onsubmit="submitFeedback(event)" class="space-y-3.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">YOUR NAME</label>
+              <input type="text" id="feedbackName" placeholder="e.g. Vardhan Sai" required class="w-full bg-[#0A0B0D] fine-border rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-bronze-400" />
+            </div>
+            <div>
+              <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">WHATSAPP / PHONE</label>
+              <input type="tel" id="feedbackPhone" placeholder="+91 89776 27028" required class="w-full bg-[#0A0B0D] fine-border rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-bronze-400" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[9px] uppercase font-bold tracking-wider text-slate-400 block mb-1">MESSAGE / PRODUCT INQUIRY</label>
+            <textarea id="feedbackMessage" rows="3" placeholder="Share your experience or ask about bespoke sizes & stock..." required class="w-full bg-[#0A0B0D] fine-border rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-bronze-400"></textarea>
+          </div>
+
+          <button id="feedbackSubmitBtn" type="submit" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] hover:brightness-110 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>SUBMIT INQUIRY</span>
+          </button>
+        </form>
+      </div>
+
     </div>
 
-    <div class="flex flex-wrap items-center justify-center gap-4 py-1 text-xs">
-      <button onclick="openFeedbackModal()" class="inline-flex items-center gap-1.5 text-bronze-300 hover:text-white">
-        <i data-lucide="message-square" class="w-3.5 h-3.5 text-bronze-400"></i> Share Website Feedback
-      </button>
-      <span>•</span>
-      <button onclick="openDpdpPolicyModal()" class="inline-flex items-center gap-1.5 text-bronze-300 hover:text-white">
-        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-bronze-400"></i> DPDP Act Privacy Notice
-      </button>
+    <!-- BOTTOM COPYRIGHT STRIP -->
+    <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+      <p>© 2026 LENKA STORES. All rights reserved by Lenka Ventures Pvt Ltd.</p>
+      <div class="flex items-center gap-4">
+        <a href="javascript:void(0)" onclick="openDpdpPolicyModal()" class="hover:text-slate-300 transition-colors">Privacy & DPDP Notice</a>
+        <a href="admin.html" target="_blank" class="hover:text-bronze-400 transition-colors">Lenka Studio Terminal</a>
+      </div>
     </div>
 
-    <div class="pt-4 border-t border-white/5 space-y-1">
-      <p class="text-xs text-slate-300 font-medium">
-        Developed & Crafted by <span class="text-bronze-400">Vizag Night Hub</span> under <span class="text-white">Lenka Ventures Pvt Ltd</span>
-      </p>
-      <p class="text-[10px] text-slate-600">© 2026 Lenka Ventures Pvt Ltd. Compliant with Digital Personal Data Protection Act (DPDP), 2023.</p>
-    </div>
   </div>
 </footer>
