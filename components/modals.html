@@ -1,0 +1,321 @@
+<!-- CELEBRATION MODAL -->
+<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6 border-bronze-400/50 relative overflow-hidden">
+    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-bronze-500/20 to-bronze-300/30 fine-border flex items-center justify-center text-bronze-400 shadow-2xl active-tracker-glow">
+      <i data-lucide="sparkles" class="w-10 h-10 text-bronze-400"></i>
+    </div>
+    <div class="space-y-2">
+      <span class="text-[10px] uppercase tracking-[0.35em] text-bronze-400 font-bold block">RESERVATION SUCCESSFUL</span>
+      <h3 class="text-2xl sm:text-3xl font-serif text-white font-normal leading-tight">
+        Congratulations! <br/>
+        <span class="italic gold-gradient-text font-serif font-medium">Your Order is Confirmed</span>
+      </h3>
+      <p class="text-xs text-slate-300 pt-2 leading-relaxed">
+        Your reservation has been securely logged.<br/>
+        Consignment ID: <strong id="successOrderIdDisplay" class="font-mono text-bronze-400 font-semibold">#LS000000</strong>
+      </p>
+    </div>
+    <div class="p-4 rounded-xl bg-noir-850 fine-border text-xs text-slate-300 space-y-1">
+      <p class="text-white font-medium flex items-center justify-center gap-1.5 text-bronze-300">
+        <i data-lucide="shield-check" class="w-4 h-4 text-bronze-400"></i> Protected under DPDP Act, 2023
+      </p>
+      <p class="text-[11px] text-slate-400">Track real-time delivery status or cancel in your Orders Portal.</p>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="closeOrderSuccessModal(true)" class="flex-1 py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <span>Track Order Status</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+      <button onclick="closeOrderSuccessModal(false)" class="px-5 py-3.5 bg-noir-850 hover:bg-noir-800 fine-border text-slate-300 text-xs rounded-xl cursor-pointer">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDERS PAGE MODAL -->
+<div id="ordersPageModal" class="fixed inset-0 z-50 bg-noir-950/95 backdrop-blur-xl hidden flex flex-col justify-between overflow-y-auto custom-scrollbar p-4 sm:p-8">
+  <div class="max-w-4xl w-full mx-auto space-y-8 flex-1">
+    <div class="flex items-center justify-between pb-6 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
+          <i data-lucide="package" class="w-5 h-5 text-bronze-400"></i>
+        </div>
+        <div>
+          <h2 class="font-serif text-2xl text-white">Order Status & Atelier History</h2>
+          <p class="text-xs text-slate-400">Manage active consignments, review cancellations, and access saved wishlist items</p>
+        </div>
+      </div>
+      <button onclick="closeOrdersPageModal()" class="p-2.5 rounded-xl bg-noir-850 fine-border text-slate-400 hover:text-white hover:border-bronze-400/50 transition-all cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="flex flex-wrap gap-2 border-b border-white/5 pb-4">
+      <button onclick="switchOrderTab('confirmed')" id="tabBtn-confirmed" class="px-5 py-2.5 rounded-xl bg-bronze-400 text-noir-950 font-semibold text-xs transition-all shadow-sm cursor-pointer">
+        Active / Confirmed Orders
+      </button>
+      <button onclick="switchOrderTab('cancelled')" id="tabBtn-cancelled" class="px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all cursor-pointer">
+        Cancelled Orders
+      </button>
+      <button onclick="switchOrderTab('favorites')" id="tabBtn-favorites" class="px-5 py-2.5 rounded-xl bg-noir-850 text-slate-300 fine-border hover:text-white text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+        <i data-lucide="heart" class="w-3.5 h-3.5 text-red-400 fill-red-400"></i>
+        <span>Saved Favorites</span>
+      </button>
+    </div>
+
+    <div id="orderTab-confirmed" class="space-y-4">
+      <div id="confirmedOrdersList" class="space-y-4"></div>
+    </div>
+    <div id="orderTab-cancelled" class="hidden space-y-4">
+      <div id="cancelledOrdersList" class="space-y-4"></div>
+    </div>
+    <div id="orderTab-favorites" class="hidden space-y-4">
+      <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </div>
+  <div class="max-w-4xl w-full mx-auto pt-6 border-t border-white/10 text-center">
+    <button onclick="closeOrdersPageModal()" class="px-8 py-2.5 rounded-xl bg-noir-850 fine-border text-xs text-slate-400 hover:text-white transition-all cursor-pointer">
+      Return to Atelier Catalog
+    </button>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
+    <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
+        <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <h3 class="font-serif text-xl text-white">Client Feedback & Inquiries</h3>
+        <p class="text-xs text-slate-400">Share your shopping experience or report an issue</p>
+      </div>
+    </div>
+    <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)" class="space-y-4">
+      <div>
+        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Name</label>
+        <input type="text" id="fbName" placeholder="e.g., Sai Vardhan" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact Number</label>
+        <input type="tel" id="fbPhone" placeholder="+91 98765 43210" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
+        <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
+      </div>
+      <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <span>Submit Feedback</span>
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- FEEDBACK SUCCESS MODAL -->
+<div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
+    <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
+      <i data-lucide="sparkles" class="w-7 h-7"></i>
+    </div>
+    <div>
+      <h3 class="font-serif text-2xl text-white font-medium">Thank You!</h3>
+      <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+        Thank you for your feedback!<br/>
+        <span class="text-bronze-400 font-serif text-sm">Have a wonderful and pleasant day.</span>
+      </p>
+    </div>
+    <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
+      Continue Shopping
+    </button>
+  </div>
+</div>
+
+<!-- PROFILE DRAWER -->
+<div id="profileDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
+  <div class="w-full max-w-lg bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+    <div>
+      <div class="flex items-center justify-between pb-5 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <i data-lucide="user-check" class="w-5 h-5 text-bronze-400"></i>
+          <h3 class="font-serif text-xl text-white">Client Profile Setup</h3>
+        </div>
+        <button onclick="closeProfileDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div id="authSection" class="mt-6 space-y-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-bronze-400 font-medium uppercase tracking-wider">Profile Details</span>
+          <button id="cancelEditBtn" onclick="cancelProfileEdit()" class="text-[10px] text-slate-500 hover:text-white hidden cursor-pointer">Cancel</button>
+        </div>
+        <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-noir-850 fine-border">
+          <div class="relative group">
+            <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-14 h-14 rounded-full object-cover fine-border border-bronze-400/40 shadow-md" />
+            <label class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+              <i data-lucide="camera" class="w-5 h-5 text-bronze-400"></i>
+              <input type="file" id="userAvatarFile" accept="image/*" class="hidden" onchange="handleImageUpload(event)" />
+            </label>
+          </div>
+          <div class="flex-1">
+            <span class="text-xs text-white font-medium block">Profile Photo</span>
+            <label for="userAvatarFile" class="inline-flex items-center gap-1.5 text-[11px] text-bronze-400 hover:text-bronze-300 font-medium cursor-pointer mt-0.5">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Change Photo
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Full Name</label>
+          <input id="userNameInput" type="text" placeholder="e.g. Sai Vardhan" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+        </div>
+        <div>
+          <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact / WhatsApp</label>
+          <input id="userPhoneInput" type="tel" placeholder="+91 89776 27028" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+        </div>
+        <div class="pt-2 border-t border-white/5 space-y-3">
+          <span class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold block">Shipping Address</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Country</label>
+              <input id="addrCountry" type="text" value="India" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">State</label>
+              <input id="addrState" type="text" placeholder="Telangana / AP" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+          </div>
+          <div>
+            <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">Area, Street & House No.</label>
+            <input id="addrArea" type="text" placeholder="LIG-530, KPHB Colony, Road No 1" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+          <div>
+            <label class="text-[9px] uppercase tracking-wider text-slate-500 block mb-1">PIN Code</label>
+            <input id="addrPin" type="text" placeholder="500072" maxlength="6" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-noir-850 fine-border space-y-2">
+          <label class="flex items-start gap-2.5 cursor-pointer text-xs text-slate-300">
+            <input type="checkbox" id="dpdpConsentCheckbox" checked class="mt-0.5 rounded accent-bronze-400" />
+            <span class="text-[11px] leading-relaxed">
+              I grant consent under the <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> for Lenka Ventures to process my data strictly for order fulfillment.
+            </span>
+          </label>
+          <p class="text-[10px] text-bronze-400 hover:underline cursor-pointer" onclick="openDpdpPolicyModal()">Read DPDP Act Notice & Data Principal Rights →</p>
+        </div>
+
+        <button onclick="saveUserProfile()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg cursor-pointer">
+          Save Profile & Address
+        </button>
+      </div>
+
+      <div id="profileSavedCard" class="hidden mt-6 space-y-6">
+        <div class="p-5 rounded-2xl bg-noir-850 fine-border relative overflow-hidden space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img id="cardProfileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" class="w-12 h-12 rounded-xl object-cover fine-border" />
+              <div>
+                <h4 id="displayUserName" class="text-base font-serif text-white font-medium"></h4>
+                <span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-2 py-0.5 rounded-md uppercase tracking-wider font-semibold">VERIFIED CLIENT</span>
+              </div>
+            </div>
+            <button onclick="startProfileEdit()" class="px-3 py-1.5 rounded-lg bg-noir-950 fine-border text-[11px] text-bronze-300 hover:text-white flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
+            </button>
+          </div>
+          <div class="pt-2 border-t border-white/5 space-y-1.5 text-xs text-slate-300">
+            <p id="displayUserPhone" class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-bronze-400"></i> <span></span>
+            </p>
+            <p id="displayUserAddress" class="flex items-start gap-2 pt-1 text-slate-400 text-[11px]">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-bronze-400 mt-0.5"></i> <span></span>
+            </p>
+          </div>
+        </div>
+        <button onclick="closeProfileDrawer(); openOrdersPageModal();" class="w-full py-3 bg-noir-850 hover:bg-noir-800 fine-border text-bronze-300 hover:text-white rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer">
+          <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i> Open Orders & Tracking Hub
+        </button>
+      </div>
+    </div>
+    <div id="profileFooter" class="hidden pt-6 border-t border-white/10">
+      <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
+  <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+    <div>
+      <div class="flex items-center justify-between pb-5 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-bronze-400"></i>
+          <h3 class="font-serif text-xl text-white">Your Atelier Bag</h3>
+        </div>
+        <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="cartItemsList" class="mt-6 space-y-4"></div>
+    </div>
+    <div id="cartSummaryBox" class="pt-6 border-t border-white/10 space-y-4">
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-slate-400">Total Valuation:</span>
+        <span id="cartTotalPrice" class="text-xl font-serif text-white font-medium">₹0</span>
+      </div>
+      <button type="button" onclick="proceedToCheckout()" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <span>Complete Reservation Order</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DPDP ACT POLICY MODAL -->
+<div id="dpdpPolicyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-2xl w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative max-h-[85vh] flex flex-col">
+    <button onclick="closeDpdpPolicyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <div class="flex items-center gap-3 pb-3 border-b border-white/10">
+      <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
+        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="font-serif text-2xl text-white">DPDP Act Privacy Policy & Notice</h3>
+        <p class="text-xs text-slate-400">Digital Personal Data Protection Act, 2023 Compliance</p>
+      </div>
+    </div>
+    <div class="flex-1 overflow-y-auto custom-scrollbar text-xs text-slate-300 space-y-4 pr-2 leading-relaxed">
+      <section class="space-y-1">
+        <h4 class="text-sm font-semibold text-white">1. Notice & Purpose of Data Collection</h4>
+        <p>In accordance with <strong>Section 5 & 6 of the DPDP Act, 2023</strong>, Lenka Stores collects personal data strictly for processing luxury reservations, courier dispatch, and customer support.</p>
+      </section>
+      <section class="space-y-1">
+        <h4 class="text-sm font-semibold text-white">2. Your Rights as a Data Principal</h4>
+        <p>Under the DPDP Act 2023, you retain the Right to Access, Right to Correction & Erasure, and Right to Withdraw Consent.</p>
+      </section>
+      <section class="space-y-1">
+        <h4 class="text-sm font-semibold text-white">3. Grievance Redressal & Data Protection Officer</h4>
+        <div class="p-3 rounded-xl bg-noir-850 fine-border space-y-1 text-slate-400">
+          <p><strong class="text-white">Grievance Officer:</strong> Lenka Vardhan Sai</p>
+          <p><strong class="text-white">Entity:</strong> Lenka Ventures Pvt Ltd / Vizag Night Hub</p>
+          <p><strong class="text-white">Support Email:</strong> privacy@lenkastores.run.place</p>
+        </div>
+      </section>
+    </div>
+    <div class="pt-3 border-t border-white/10 flex justify-end">
+      <button onclick="closeDpdpPolicyModal()" class="px-6 py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+        I Understand & Acknowledge
+      </button>
+    </div>
+  </div>
+</div>
