@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
-  <!-- FIREBASE SDKs -->
+  <!-- FIREBASE COMPAT SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -66,7 +66,6 @@
   
   <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white border-r border-gray-200 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
     <div class="space-y-6">
-      <!-- HEADER -->
       <div class="flex items-center justify-between pb-4 border-b border-gray-100">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-black text-white font-mono font-bold flex items-center justify-center text-sm shadow">
@@ -82,7 +81,6 @@
         </button>
       </div>
 
-      <!-- NAV BUTTONS -->
       <nav class="space-y-1.5 text-xs font-medium">
         <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-sm transition-all cursor-pointer">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
@@ -131,7 +129,6 @@
       </nav>
     </div>
 
-    <!-- FOOTER ACTIONS -->
     <div class="pt-4 border-t border-gray-100 space-y-2">
       <button onclick="exportOrdersToCSV()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-100 border border-gray-200 text-xs font-semibold text-gray-800 hover:bg-gray-200 transition-all cursor-pointer">
         <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Orders (CSV)
@@ -145,12 +142,10 @@
   <!-- TOP HEADER -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-      
       <div class="flex items-center gap-4">
         <button onclick="toggleSidebar()" class="p-2.5 rounded-xl bg-gray-50 border border-gray-200 hover:border-gray-400 text-gray-800 transition-all flex items-center justify-center cursor-pointer">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
-        
         <div class="cursor-pointer" onclick="selectMenu('dashboard')">
           <span class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 block">LENKA STUDIO</span>
           <span class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block -mt-0.5">Control Terminal</span>
@@ -171,7 +166,6 @@
           <i data-lucide="store" class="w-3.5 h-3.5"></i> Storefront
         </a>
       </div>
-
     </div>
   </header>
 
@@ -190,9 +184,7 @@
         </button>
       </div>
 
-      <!-- METRIC CARDS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        
         <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
           <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
             <span>TODAY'S ORDERS</span>
@@ -240,13 +232,9 @@
           <div id="statCustomersCount" class="font-mono text-3xl font-bold text-gray-900">0</div>
           <p class="text-[11px] text-gray-500 pt-1">View address records →</p>
         </div>
-
       </div>
 
-      <!-- ANALYTICS CHARTS & FEEDBACK STREAM -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- FULFILLMENT STATUS BAR -->
         <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-5">
           <div class="flex items-center justify-between pb-3 border-b border-gray-100">
             <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
@@ -298,7 +286,6 @@
           </div>
         </div>
 
-        <!-- RECENT CUSTOMER FEEDBACK -->
         <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
           <div class="flex items-center justify-between pb-3 border-b border-gray-100">
             <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
@@ -306,10 +293,8 @@
             </h3>
             <button onclick="selectMenu('feedback')" class="text-xs text-black font-semibold hover:underline cursor-pointer">View All</button>
           </div>
-
           <div id="homeFeedbackList" class="space-y-2.5 flex-1 overflow-y-auto max-h-[260px] custom-scrollbar"></div>
         </div>
-
       </div>
     </section>
 
@@ -324,7 +309,6 @@
           <p class="text-xs text-gray-500 mt-0.5">Manage live dispatch schedules and update courier broadcast dates</p>
         </div>
 
-        <!-- SEARCH BAR -->
         <div class="w-full sm:w-72">
           <div class="relative">
             <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
@@ -409,7 +393,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- PUBLISH FORM -->
         <div class="lg:col-span-5 bg-white border border-gray-200 p-6 sm:p-7 rounded-2xl space-y-5 shadow-sm">
           <h2 class="text-base font-bold text-gray-900">Add New Product</h2>
 
@@ -464,7 +447,6 @@
           </form>
         </div>
 
-        <!-- INVENTORY -->
         <div class="lg:col-span-7 bg-white border border-gray-200 p-6 sm:p-7 rounded-2xl space-y-4 shadow-sm">
           <div class="flex items-center justify-between">
             <h2 class="text-base font-bold text-gray-900">Live Inventory</h2>
@@ -577,14 +559,14 @@
     let allFeedbacks = [];
     let allCustomers = [];
 
-    // REAL-TIME CROSS-TAB SYNC
+    // REAL-TIME CROSS-TAB EVENT LISTENER
     window.addEventListener('storage', (event) => {
       if (['lenka_orders', 'lenka_feedbacks', 'lenka_catalog', 'lenka_profile', 'lenka_registered_customers'].includes(event.key)) {
         loadUnifiedData();
       }
     });
 
-    // UNIFIED DATA LOADER
+    // LOAD UNIFIED DATA FROM CLOUD & LOCAL STORAGE
     function loadUnifiedData() {
       const localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       const localCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
@@ -801,7 +783,6 @@
       document.getElementById('graphCancelledBar').style.width = `${cancPct}%`;
     }
 
-    // HOME SCREEN FEEDBACK STREAM
     function renderHomeFeedbacks() {
       const container = document.getElementById('homeFeedbackList');
       if (!container) return;
@@ -828,7 +809,6 @@
       lucide.createIcons();
     }
 
-    // CONFIRMED ORDERS TABLE
     function renderAdminConfirmedOrders(filteredList = null) {
       const tbody = document.getElementById('adminConfirmedOrdersBody');
       const emptyMsg = document.getElementById('noConfirmedOrdersMessage');
@@ -889,7 +869,6 @@
       lucide.createIcons();
     }
 
-    // CANCELLED ORDERS TABLE
     function renderAdminCancelledOrders(filteredList = null) {
       const tbody = document.getElementById('adminCancelledOrdersBody');
       const emptyMsg = document.getElementById('noCancelledOrdersMessage');
@@ -933,7 +912,6 @@
       lucide.createIcons();
     }
 
-    // SEARCH FILTER FOR ORDERS
     function filterOrdersTable(query, type) {
       const q = query.toLowerCase().trim();
       const baseList = allOrders.filter(o => type === 'confirmed' ? o.status !== 'Cancelled' : o.status === 'Cancelled');
@@ -997,7 +975,6 @@
       }
     }
 
-    // CUSTOMER DIRECTORY TABLE & SEARCH
     function renderAdminCustomers(filteredMap = null) {
       const tbody = document.getElementById('adminCustomersBody');
       const emptyMsg = document.getElementById('noCustomersMessage');
@@ -1109,7 +1086,6 @@
       renderAdminCustomers(filteredMap);
     }
 
-    // EXPORT ORDERS TO CSV FOR EXCEL / DISPATCH
     function exportOrdersToCSV() {
       if (allOrders.length === 0) {
         alert('No orders available to export.');
@@ -1138,7 +1114,6 @@
       document.body.removeChild(link);
     }
 
-    // CATALOG MANAGEMENT
     function renderAdminCatalog() {
       const container = document.getElementById('adminInventoryList');
       const badge = document.getElementById('inventoryCountBadge');
@@ -1160,7 +1135,7 @@
               <span>${prod.category}</span>
             </div>
           </div>
-          <button onclick="deleteCatalogItem(${index})" title="Delete Product" class="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-white transition-colors cursor-pointer">
+          <button onclick="deleteCatalogItem('${prod.docId || prod.id}', ${index})" title="Delete Product" class="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-white transition-colors cursor-pointer">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         `;
@@ -1169,8 +1144,15 @@
       lucide.createIcons();
     }
 
-    function deleteCatalogItem(index) {
+    async function deleteCatalogItem(docId, index) {
       if (confirm(`Remove "${allCatalog[index].title}" from store inventory?`)) {
+        if (db && docId) {
+          try {
+            await db.collection('products').doc(docId).delete();
+          } catch (e) {
+            console.warn(e);
+          }
+        }
         allCatalog.splice(index, 1);
         localStorage.setItem('lenka_catalog', JSON.stringify(allCatalog));
         renderAdminCatalog();
@@ -1178,7 +1160,7 @@
       }
     }
 
-    function handleProductPublish(e) {
+    async function handleProductPublish(e) {
       e.preventDefault();
       const category = document.getElementById('prodCategory').value;
       const title = document.getElementById('prodTitle').value.trim();
@@ -1192,7 +1174,6 @@
       const variants = variantsRaw ? variantsRaw.split(',').map(v => v.trim()) : [];
 
       const newProduct = {
-        id: 'prod_' + Date.now(),
         category,
         title,
         originalPrice: origPrice,
@@ -1200,14 +1181,21 @@
         discountTag: tag,
         image,
         variants,
-        description: desc
+        description: desc,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
+
+      if (db) {
+        try {
+          const docRef = await db.collection('products').add(newProduct);
+          newProduct.docId = docRef.id;
+        } catch (e) {
+          console.warn(e);
+        }
+      }
 
       allCatalog.unshift(newProduct);
       localStorage.setItem('lenka_catalog', JSON.stringify(allCatalog));
-      if (db) {
-        db.collection('products').add(newProduct).catch(e => console.warn(e));
-      }
 
       document.getElementById('productPublishForm').reset();
       renderAdminCatalog();
@@ -1215,7 +1203,6 @@
       alert(`"${title}" published to live store!`);
     }
 
-    // FEEDBACK
     function renderAdminFeedbacks() {
       const tbody = document.getElementById('adminFeedbackBody');
       const emptyMsg = document.getElementById('noFeedbackMessage');
