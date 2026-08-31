@@ -3,537 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LENKA STUDIO | Executive Commerce Terminal</title>
-  
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23111827'/%3E%3Ctext x='50' y='68' font-family='sans-serif' font-size='50' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
+  <title>LENKA STUDIO | Executive Control Terminal</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  
-  <!-- FIREBASE COMPAT SDKs -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
+            sans: ['Manrope', 'sans-serif'],
+            serif: ['Fraunces', 'serif'],
+          },
+          colors: {
+            bronze: { 300: '#E2D4C3', 400: '#C5A880', 500: '#A88B63' },
+            noir: { 950: '#0A0B0D', 900: '#111216', 850: '#16181E', 800: '#1D2027' }
           }
         }
       }
     }
   </script>
-  
   <style>
-    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #F3F4F6; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+    .fine-border { border: 1px solid rgba(255, 255, 255, 0.08); }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(197, 168, 128, 0.3); border-radius: 4px; }
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col selection:bg-black selection:text-white">
+<body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col">
 
-  <!-- AUTHENTICATION GATE -->
-  <div id="authGate" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white border border-gray-200 p-8 rounded-2xl shadow-2xl text-center space-y-6">
-      <div class="w-14 h-14 mx-auto rounded-2xl bg-black flex items-center justify-center text-white text-xl font-bold font-mono shadow-md">
-        LS
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Lenka Studio Portal</h2>
-        <p class="text-xs text-gray-500 mt-1">Authorized E-Commerce Terminal Only</p>
-      </div>
-      <div class="space-y-3">
-        <input type="password" id="adminPassKey" placeholder="Enter Operator Passkey" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm text-center text-gray-900 font-mono tracking-widest focus:outline-none focus:border-black focus:bg-white transition-all" />
-        <button type="button" onclick="unlockStudio()" class="w-full py-3 bg-black hover:bg-gray-800 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer">
-          Authorize Session
-        </button>
-      </div>
-      <p id="gateError" class="text-xs text-red-600 font-medium hidden">Invalid Operator Passkey</p>
-    </div>
-  </div>
-
-  <!-- SLIDE-OUT SIDEBAR NAVIGATION -->
-  <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden transition-opacity"></div>
-  
-  <aside id="sidebarDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 bg-white border-r border-gray-200 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
-    <div class="space-y-6">
-      <div class="flex items-center justify-between pb-4 border-b border-gray-100">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-black text-white font-mono font-bold flex items-center justify-center text-sm shadow">
-            LS
-          </div>
-          <div>
-            <span class="text-sm font-bold text-gray-900 tracking-wide block">LENKA STUDIO</span>
-            <span class="text-[9px] uppercase tracking-wider text-gray-500 font-semibold block">Commerce Terminal</span>
-          </div>
+  <!-- TOP APP BAR -->
+  <header class="border-b border-white/10 bg-noir-900/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-noir-850 fine-border p-2 flex items-center justify-center">
+          <i data-lucide="layout-dashboard" class="w-5 h-5 text-bronze-400"></i>
         </div>
-        <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-gray-400 hover:text-black hover:bg-gray-100 cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <nav class="space-y-1.5 text-xs font-medium">
-        <button onclick="selectMenu('dashboard')" id="sideBtn-dashboard" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-sm transition-all cursor-pointer">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>Analytics Overview</span>
-        </button>
-
-        <button onclick="selectMenu('confirmedOrders')" id="sideBtn-confirmedOrders" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
-          <div class="flex items-center gap-3">
-            <i data-lucide="truck" class="w-4 h-4 text-gray-700"></i>
-            <span>Confirmed Orders</span>
-          </div>
-          <span id="sideConfirmedBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
-        </button>
-
-        <button onclick="selectMenu('cancelledOrders')" id="sideBtn-cancelledOrders" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
-          <div class="flex items-center gap-3">
-            <i data-lucide="ban" class="w-4 h-4 text-red-600"></i>
-            <span>Cancelled Orders</span>
-          </div>
-          <span id="sideCancelledBadge" class="text-[10px] bg-red-50 text-red-700 px-2 py-0.5 rounded-full font-bold border border-red-200">0</span>
-        </button>
-
-        <button onclick="selectMenu('catalog')" id="sideBtn-catalog" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
-          <div class="flex items-center gap-3">
-            <i data-lucide="package" class="w-4 h-4 text-gray-700"></i>
-            <span>Product Catalog</span>
-          </div>
-          <span id="sideCatalogBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
-        </button>
-
-        <button onclick="selectMenu('customers')" id="sideBtn-customers" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
-          <div class="flex items-center gap-3">
-            <i data-lucide="users" class="w-4 h-4 text-gray-700"></i>
-            <span>Customer Directory</span>
-          </div>
-          <span id="sideCustomersBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
-        </button>
-
-        <button onclick="selectMenu('feedback')" id="sideBtn-feedback" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all cursor-pointer">
-          <div class="flex items-center gap-3">
-            <i data-lucide="message-square" class="w-4 h-4 text-gray-700"></i>
-            <span>Customer Feedback</span>
-          </div>
-          <span id="sideFeedbackBadge" class="text-[10px] bg-gray-100 text-gray-900 px-2 py-0.5 rounded-full font-bold border border-gray-200">0</span>
-        </button>
-      </nav>
-    </div>
-
-    <div class="pt-4 border-t border-gray-100 space-y-2">
-      <button onclick="exportOrdersToCSV()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-100 border border-gray-200 text-xs font-semibold text-gray-800 hover:bg-gray-200 transition-all cursor-pointer">
-        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Orders (CSV)
-      </button>
-      <a href="index.html" target="_blank" class="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-gray-500 hover:text-black">
-        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open Live Storefront
-      </a>
-    </div>
-  </aside>
-
-  <!-- TOP HEADER -->
-  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <button onclick="toggleSidebar()" class="p-2.5 rounded-xl bg-gray-50 border border-gray-200 hover:border-gray-400 text-gray-800 transition-all flex items-center justify-center cursor-pointer">
-          <i data-lucide="menu" class="w-5 h-5"></i>
-        </button>
-        <div class="cursor-pointer" onclick="selectMenu('dashboard')">
-          <span class="text-lg sm:text-xl font-bold tracking-tight text-gray-900 block">LENKA STUDIO</span>
-          <span class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold block -mt-0.5">Control Terminal</span>
+        <div>
+          <span class="font-serif text-xl tracking-wider text-white font-medium block">LENKA STUDIO</span>
+          <span class="text-[9px] uppercase tracking-[0.3em] text-bronze-400 font-semibold block -mt-0.5">EXECUTIVE CONTROL TERMINAL</span>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-700">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Live Sync Active
-        </span>
-
-        <span id="activeSectionLabel" class="hidden md:inline-block px-3 py-1 rounded-lg bg-gray-100 border border-gray-200 text-xs text-gray-700 font-medium">
-          Analytics Overview
-        </span>
-
-        <a href="index.html" target="_blank" class="px-3.5 py-1.5 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-sm transition-all">
-          <i data-lucide="store" class="w-3.5 h-3.5"></i> Storefront
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-noir-850 fine-border text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-[11px] text-slate-300">Live Sync Connected</span>
+        </div>
+        <a href="index.html" target="_blank" class="px-3.5 py-2 rounded-xl bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Storefront</span>
         </a>
       </div>
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+  <!-- MAIN DASHBOARD -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full space-y-10">
 
-    <!-- 1. ANALYTICS OVERVIEW -->
-    <section id="page-dashboard" class="space-y-8">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Executive Performance Hub</h1>
-          <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Real-time revenue metrics, order flow, and customer directory analytics</p>
+    <!-- METRICS OVERVIEW -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wider">Active Inventory</span>
+        <h3 id="statTotalProducts" class="font-serif text-3xl text-white font-medium">0</h3>
+        <p class="text-[11px] text-bronze-400">Synced to Lenka Stores</p>
+      </div>
+      <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wider">Total Consignments</span>
+        <h3 id="statTotalOrders" class="font-serif text-3xl text-white font-medium">0</h3>
+        <p class="text-[11px] text-emerald-400">Recorded in Cloud Database</p>
+      </div>
+      <div class="p-6 rounded-2xl bg-noir-900 fine-border space-y-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wider">Gross Booking Valuation</span>
+        <h3 id="statTotalValuation" class="font-serif text-3xl text-white font-medium">₹0</h3>
+        <p class="text-[11px] text-slate-400">Real-time Gross Value</p>
+      </div>
+    </div>
+
+    <!-- CATALOG ENGINE -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- ADD NEW PRODUCT FORM -->
+      <div class="lg:col-span-5 bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-5 h-fit">
+        <div class="flex items-center gap-2 pb-3 border-b border-white/10">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-bronze-400"></i>
+          <h3 class="font-serif text-xl text-white font-medium">Publish Product</h3>
         </div>
-        <button onclick="exportOrdersToCSV()" class="self-start sm:self-auto px-4 py-2 bg-white border border-gray-300 hover:border-black text-gray-800 text-xs font-semibold rounded-xl flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Export Dispatch Sheet
+
+        <form id="addProductForm" onsubmit="handleProductSubmit(event)" class="space-y-4">
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Collection / Category</label>
+            <select id="prodCategory" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400">
+              <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
+              <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
+              <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Product Title</label>
+            <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-400 block mb-1">Original (₹)</label>
+              <input type="number" id="prodOriginalPrice" placeholder="4999" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-400 block mb-1">Offer (₹)</label>
+              <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+            <div>
+              <label class="text-[9px] uppercase tracking-wider text-slate-400 block mb-1">Badge Tag</label>
+              <input type="text" id="prodDiscountTag" placeholder="50% OFF" class="w-full bg-noir-850 fine-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-bronze-400" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Image URL</label>
+            <input type="url" id="prodImage" placeholder="https://images.unsplash.com/photo-..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Variants (Comma Separated)</label>
+            <input type="text" id="prodVariants" placeholder="Midnight Obsidian, Gold, Frost White" class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+          </div>
+
+          <div>
+            <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Description & Key Specs</label>
+            <textarea id="prodDescription" rows="3" placeholder="Features, battery duration, drivers..." class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
+          </div>
+
+          <button type="submit" id="saveProductBtn" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Publish Product to Store</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- LIVE INVENTORY LIST -->
+      <div class="lg:col-span-7 bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <i data-lucide="layers" class="w-5 h-5 text-bronze-400"></i>
+            <h3 class="font-serif text-xl text-white font-medium">Live Inventory</h3>
+          </div>
+          <span id="productBadgeCount" class="text-xs bg-noir-850 fine-border px-3 py-1 rounded-full text-slate-300 font-mono">0 Products</span>
+        </div>
+
+        <div id="adminProductList" class="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
+          <p class="text-xs text-slate-500 text-center py-12">Loading inventory...</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CONSIGNMENT ORDERS MANAGEMENT -->
+    <div class="bg-noir-900 fine-border rounded-2xl p-6 sm:p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/10 gap-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="package-check" class="w-5 h-5 text-bronze-400"></i>
+          <h3 class="font-serif text-xl text-white font-medium">Customer Consignments & Tracking Engine</h3>
+        </div>
+        <button onclick="exportOrdersToCSV()" class="px-4 py-2 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-300 hover:text-white text-xs flex items-center gap-2 transition-all cursor-pointer">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>Export Orders (CSV)</span>
         </button>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
-            <span>TODAY'S ORDERS</span>
-            <i data-lucide="clock" class="w-4 h-4 text-gray-400"></i>
-          </div>
-          <div class="flex items-baseline gap-2">
-            <span id="statTodayOrders" class="font-mono text-3xl font-bold text-gray-900">0</span>
-            <span class="text-[10px] text-emerald-600 font-semibold uppercase">Active Today</span>
-          </div>
-          <p class="text-[11px] text-gray-500 pt-1">Review consignments →</p>
-        </div>
-
-        <div onclick="selectMenu('confirmedOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
-            <span>CONFIRMED ORDERS</span>
-            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
-          </div>
-          <div id="statConfirmedOrders" class="font-mono text-3xl font-bold text-gray-900">0</div>
-          <p class="text-[11px] text-gray-500 pt-1">Scheduled for courier</p>
-        </div>
-
-        <div onclick="selectMenu('cancelledOrders')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
-            <span>CANCELLED ORDERS</span>
-            <i data-lucide="x-circle" class="w-4 h-4 text-red-600"></i>
-          </div>
-          <div id="statCancelledOrders" class="font-mono text-3xl font-bold text-red-600">0</div>
-          <p class="text-[11px] text-gray-500 pt-1">Cancelled by client</p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-1">
-          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
-            <span>GROSS STORE VALUE</span>
-            <i data-lucide="indian-rupee" class="w-4 h-4 text-gray-400"></i>
-          </div>
-          <div id="statTotalValuation" class="font-mono text-3xl font-bold text-gray-900">₹0</div>
-          <p class="text-[11px] text-gray-500 pt-1">Total booked volume</p>
-        </div>
-
-        <div onclick="selectMenu('customers')" class="p-5 rounded-2xl bg-white border border-gray-200 shadow-sm hover:border-black cursor-pointer transition-all space-y-1">
-          <div class="flex items-center justify-between text-gray-500 text-xs font-medium">
-            <span>REGISTERED CUSTOMERS</span>
-            <i data-lucide="users" class="w-4 h-4 text-gray-400"></i>
-          </div>
-          <div id="statCustomersCount" class="font-mono text-3xl font-bold text-gray-900">0</div>
-          <p class="text-[11px] text-gray-500 pt-1">View address records →</p>
-        </div>
+      <div id="adminOrdersList" class="space-y-4">
+        <p class="text-xs text-slate-500 text-center py-12">Loading client consignments...</p>
       </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-5">
-          <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <i data-lucide="bar-chart-2" class="w-4 h-4 text-gray-700"></i> Order Fulfillment Breakdown
-            </h3>
-            <span class="text-[10px] text-gray-500 font-mono">REAL-TIME</span>
-          </div>
-
-          <div class="space-y-4 pt-1">
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs font-medium">
-                <span class="text-gray-700">1. Confirmed Reservations</span>
-                <span id="graphConfirmedCount" class="font-mono text-gray-900">0 (0%)</span>
-              </div>
-              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                <div id="graphConfirmedBar" class="h-full bg-black rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs font-medium">
-                <span class="text-gray-700">2. Dispatched / In Transit</span>
-                <span id="graphDispatchedCount" class="font-mono text-blue-600">0 (0%)</span>
-              </div>
-              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                <div id="graphDispatchedBar" class="h-full bg-blue-600 rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs font-medium">
-                <span class="text-gray-700">3. Delivered to Customer</span>
-                <span id="graphDeliveredCount" class="font-mono text-emerald-600">0 (0%)</span>
-              </div>
-              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                <div id="graphDeliveredBar" class="h-full bg-emerald-600 rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-xs font-medium">
-                <span class="text-gray-700">4. Cancelled Consignments</span>
-                <span id="graphCancelledCount" class="font-mono text-red-600">0 (0%)</span>
-              </div>
-              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                <div id="graphCancelledBar" class="h-full bg-red-600 rounded-full transition-all duration-700" style="width: 0%;"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
-          <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-            <h3 class="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <i data-lucide="message-square" class="w-4 h-4 text-gray-700"></i> Recent Feedback Submissions
-            </h3>
-            <button onclick="selectMenu('feedback')" class="text-xs text-black font-semibold hover:underline cursor-pointer">View All</button>
-          </div>
-          <div id="homeFeedbackList" class="space-y-2.5 flex-1 overflow-y-auto max-h-[260px] custom-scrollbar"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. CONFIRMED ORDERS -->
-    <section id="page-confirmedOrders" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
-          </button>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Confirmed & Active Orders</h1>
-          <p class="text-xs text-gray-500 mt-0.5">Manage live dispatch schedules and update courier broadcast dates</p>
-        </div>
-
-        <div class="w-full sm:w-72">
-          <div class="relative">
-            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
-            <input type="text" id="orderSearchInput" onkeyup="filterOrdersTable(this.value, 'confirmed')" placeholder="Search order, name, phone..." class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-gray-700">
-            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
-              <tr>
-                <th class="p-4">Order ID</th>
-                <th class="p-4">Customer Info</th>
-                <th class="p-4">Shipping Destination</th>
-                <th class="p-4">Product Summary</th>
-                <th class="p-4">Update Fulfillment Status</th>
-                <th class="p-4">Broadcast Dates (Confirmed / Shipped / Delivery)</th>
-                <th class="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="adminConfirmedOrdersBody" class="divide-y divide-gray-100"></tbody>
-          </table>
-        </div>
-        <div id="noConfirmedOrdersMessage" class="hidden text-center py-12 text-gray-400 text-xs">
-          No confirmed orders found.
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. CANCELLED ORDERS -->
-    <section id="page-cancelledOrders" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
-          </button>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Cancelled Orders Archive</h1>
-          <p class="text-xs text-gray-500 mt-0.5">Records of customer cancellations and voided reservations</p>
-        </div>
-
-        <div class="w-full sm:w-72">
-          <div class="relative">
-            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
-            <input type="text" onkeyup="filterOrdersTable(this.value, 'cancelled')" placeholder="Search cancelled orders..." class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-gray-700">
-            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
-              <tr>
-                <th class="p-4">Order ID</th>
-                <th class="p-4">Customer Info</th>
-                <th class="p-4">Shipping Destination</th>
-                <th class="p-4">Product Summary</th>
-                <th class="p-4">Cancelled Valuation</th>
-                <th class="p-4">Status</th>
-                <th class="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="adminCancelledOrdersBody" class="divide-y divide-gray-100"></tbody>
-          </table>
-        </div>
-        <div id="noCancelledOrdersMessage" class="hidden text-center py-12 text-gray-400 text-xs">
-          No cancelled orders found.
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. PRODUCT CATALOG -->
-    <section id="page-catalog" class="hidden space-y-8">
-      <div>
-        <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
-        </button>
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Product Catalog & Atelier Engine</h1>
-        <p class="text-xs text-gray-500 mt-0.5">Publish new products or manage live items across collections</p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-5 bg-white border border-gray-200 p-6 sm:p-7 rounded-2xl space-y-5 shadow-sm">
-          <h2 class="text-base font-bold text-gray-900">Add New Product</h2>
-
-          <form id="productPublishForm" class="space-y-3.5" onsubmit="handleProductPublish(event)">
-            <div>
-              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Collection / Category</label>
-              <select id="prodCategory" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black focus:bg-white">
-                <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
-                <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
-                <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Product Title</label>
-              <input type="text" id="prodTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black focus:bg-white" />
-            </div>
-
-            <div class="grid grid-cols-3 gap-2.5">
-              <div>
-                <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Original (₹)</label>
-                <input type="number" id="prodOrigPrice" placeholder="4999" required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-              </div>
-              <div>
-                <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Offer (₹)</label>
-                <input type="number" id="prodOfferPrice" placeholder="2499" required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-              </div>
-              <div>
-                <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Badge Tag</label>
-                <input type="text" id="prodTag" placeholder="50% OFF" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-              </div>
-            </div>
-
-            <div>
-              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Image URL</label>
-              <input type="url" id="prodImage" placeholder="https://images.unsplash.com/..." required class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black focus:bg-white" />
-            </div>
-
-            <div>
-              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Color Variants (Comma Separated)</label>
-              <input type="text" id="prodVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-            </div>
-
-            <div>
-              <label class="text-[10px] uppercase font-semibold text-gray-500 block mb-1">Description & Specs</label>
-              <textarea id="prodDesc" rows="3" placeholder="Features, battery duration, drivers..." class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 text-xs text-gray-900 focus:outline-none focus:border-black"></textarea>
-            </div>
-
-            <button type="submit" class="w-full py-3 bg-black hover:bg-gray-800 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all shadow cursor-pointer">
-              Publish Product to Store
-            </button>
-          </form>
-        </div>
-
-        <div class="lg:col-span-7 bg-white border border-gray-200 p-6 sm:p-7 rounded-2xl space-y-4 shadow-sm">
-          <div class="flex items-center justify-between">
-            <h2 class="text-base font-bold text-gray-900">Live Inventory</h2>
-            <span id="inventoryCountBadge" class="text-xs bg-gray-100 text-gray-800 font-semibold px-2.5 py-0.5 rounded-full border border-gray-200">0 Products</span>
-          </div>
-          <div id="adminInventoryList" class="space-y-2.5 max-h-[560px] overflow-y-auto custom-scrollbar"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. CUSTOMER DIRECTORY -->
-    <section id="page-customers" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
-            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
-          </button>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Customer Directory</h1>
-          <p class="text-xs text-gray-500 mt-0.5">Verified customer profiles, shipping records, and contact channels</p>
-        </div>
-
-        <div class="w-full sm:w-72">
-          <div class="relative">
-            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
-            <input type="text" id="customerSearchInput" onkeyup="filterCustomersTable(this.value)" placeholder="Search by name or phone..." class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-black" />
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-gray-700">
-            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
-              <tr>
-                <th class="p-4">Customer</th>
-                <th class="p-4">Mobile Contact</th>
-                <th class="p-4">Country & State</th>
-                <th class="p-4">Street Address & House No.</th>
-                <th class="p-4">PIN Code</th>
-                <th class="p-4">Total Orders</th>
-                <th class="p-4 text-right">Quick Contact</th>
-              </tr>
-            </thead>
-            <tbody id="adminCustomersBody" class="divide-y divide-gray-100"></tbody>
-          </table>
-        </div>
-        <div id="noCustomersMessage" class="hidden text-center py-12 text-gray-400 text-xs">
-          No registered customer accounts found.
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. CLIENT FEEDBACK -->
-    <section id="page-feedback" class="hidden space-y-6">
-      <div>
-        <button onclick="selectMenu('dashboard')" class="text-xs text-gray-500 hover:text-black flex items-center gap-1 mb-1 cursor-pointer">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Dashboard
-        </button>
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Customer Feedback & Inquiries</h1>
-        <p class="text-xs text-gray-500 mt-0.5">Reviews, support requests, and user submissions</p>
-      </div>
-
-      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs text-gray-700">
-            <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider text-[10px] font-semibold border-b border-gray-200">
-              <tr>
-                <th class="p-4">Feedback ID</th>
-                <th class="p-4">Customer Name</th>
-                <th class="p-4">Contact</th>
-                <th class="p-4">Message Details</th>
-                <th class="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="adminFeedbackBody" class="divide-y divide-gray-100"></tbody>
-          </table>
-        </div>
-        <div id="noFeedbackMessage" class="hidden text-center py-12 text-gray-400 text-xs">
-          No feedback messages received yet.
-        </div>
-      </div>
-    </section>
+    </div>
 
   </main>
 
-  <!-- HYBRID REAL-TIME DATA ENGINE -->
   <script>
+    // FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
       authDomain: "lenkastores-studio.firebaseapp.com",
@@ -544,722 +201,283 @@
       measurementId: "G-S5GNTV03XM"
     };
 
-    let db = null;
-    try {
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
-      db = firebase.firestore();
-    } catch (e) {
-      console.warn("Firebase Init note:", e);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
     }
+    const db = firebase.firestore();
 
-    let allOrders = [];
-    let allCatalog = [];
-    let allFeedbacks = [];
-    let allCustomers = [];
+    let studioProducts = [];
+    let studioOrders = [];
 
-    // REAL-TIME CROSS-TAB EVENT LISTENER
-    window.addEventListener('storage', (event) => {
-      if (['lenka_orders', 'lenka_feedbacks', 'lenka_catalog', 'lenka_profile', 'lenka_registered_customers'].includes(event.key)) {
-        loadUnifiedData();
-      }
-    });
-
-    // LOAD UNIFIED DATA FROM CLOUD & LOCAL STORAGE
-    function loadUnifiedData() {
-      const localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      const localCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      const localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      const localProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-      const registeredCustomers = JSON.parse(localStorage.getItem('lenka_registered_customers') || '[]');
-
-      allOrders = localOrders;
-      allCatalog = localCatalog;
-      allFeedbacks = localFeedbacks;
-
-      allCustomers = registeredCustomers;
-      if (localProfile && !allCustomers.find(c => c.phone === localProfile.phone)) {
-        allCustomers.push(localProfile);
+    // 1. LIVE PRODUCT SYNC
+    function startProductListener() {
+      // Local fallback
+      const localCat = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      if (localCat.length > 0) {
+        studioProducts = localCat;
+        renderAdminProducts();
       }
 
-      renderGraphicSheet();
-      renderHomeFeedbacks();
-      renderAdminConfirmedOrders();
-      renderAdminCancelledOrders();
-      renderAdminCustomers();
-      renderAdminCatalog();
-      renderAdminFeedbacks();
-      updateSidebarBadges();
-
-      if (db) {
-        // Real-time Orders Listener
-        db.collection('orders').onSnapshot((snapshot) => {
-          if (!snapshot.empty) {
-            const cloudOrders = [];
-            snapshot.forEach(doc => cloudOrders.push({ docId: doc.id, ...doc.data() }));
-            
-            const merged = [...cloudOrders];
-            localOrders.forEach(lo => {
-              if (!merged.find(m => m.orderId === lo.orderId)) {
-                merged.push(lo);
-              }
-            });
-            allOrders = merged;
-            renderGraphicSheet();
-            renderAdminConfirmedOrders();
-            renderAdminCancelledOrders();
-            renderAdminCustomers();
-            updateSidebarBadges();
-          }
-        }, (err) => console.warn(err));
-
-        // Real-time Catalog Listener
-        db.collection('products').onSnapshot((snapshot) => {
-          if (!snapshot.empty) {
-            allCatalog = [];
-            snapshot.forEach(doc => allCatalog.push({ docId: doc.id, ...doc.data() }));
-            renderGraphicSheet();
-            renderAdminCatalog();
-            updateSidebarBadges();
-          }
-        }, (err) => console.warn(err));
-
-        // Real-time Feedback Listener
-        db.collection('feedbacks').onSnapshot((snapshot) => {
-          if (!snapshot.empty) {
-            const cloudFeedbacks = [];
-            snapshot.forEach(doc => cloudFeedbacks.push({ docId: doc.id, ...doc.data() }));
-
-            const mergedFb = [...cloudFeedbacks];
-            localFeedbacks.forEach(lf => {
-              if (!mergedFb.find(m => m.feedbackId === lf.feedbackId)) {
-                mergedFb.push(lf);
-              }
-            });
-            allFeedbacks = mergedFb;
-            renderGraphicSheet();
-            renderHomeFeedbacks();
-            renderAdminFeedbacks();
-            updateSidebarBadges();
-          }
-        }, (err) => console.warn(err));
-
-        // Real-time Customers Listener
-        db.collection('customers').onSnapshot((snapshot) => {
-          if (!snapshot.empty) {
-            const cloudCust = [];
-            snapshot.forEach(doc => cloudCust.push({ docId: doc.id, ...doc.data() }));
-            
-            const mergedCust = [...cloudCust];
-            allCustomers.forEach(lc => {
-              if (!mergedCust.find(m => m.phone === lc.phone)) {
-                mergedCust.push(lc);
-              }
-            });
-            allCustomers = mergedCust;
-            renderAdminCustomers();
-            updateSidebarBadges();
-          }
-        }, (err) => console.warn(err));
-      }
-    }
-
-    function unlockStudio() {
-      const key = document.getElementById('adminPassKey').value.trim();
-      if (key === 'lenka2026' || key === 'admin') {
-        document.getElementById('authGate').classList.add('hidden');
-        loadUnifiedData();
-        selectMenu('dashboard');
-      } else {
-        document.getElementById('gateError').classList.remove('hidden');
-      }
-    }
-
-    function toggleSidebar() {
-      const drawer = document.getElementById('sidebarDrawer');
-      const backdrop = document.getElementById('sidebarBackdrop');
-      const isOpen = !drawer.classList.contains('-translate-x-full');
-
-      if (isOpen) {
-        drawer.classList.add('-translate-x-full');
-        backdrop.classList.add('hidden');
-      } else {
-        drawer.classList.remove('-translate-x-full');
-        backdrop.classList.remove('hidden');
-        updateSidebarBadges();
-      }
-      lucide.createIcons();
-    }
-
-    function selectMenu(pageId) {
-      const pages = ['dashboard', 'confirmedOrders', 'cancelledOrders', 'catalog', 'customers', 'feedback'];
-      const pageTitles = {
-        'dashboard': 'Analytics Overview',
-        'confirmedOrders': 'Confirmed & Active Orders',
-        'cancelledOrders': 'Cancelled Orders Archive',
-        'catalog': 'Product Catalog & Ateliers',
-        'customers': 'Customer Directory',
-        'feedback': 'Customer Feedback & Support'
-      };
-
-      pages.forEach(p => {
-        const pageEl = document.getElementById(`page-${p}`);
-        const sideBtn = document.getElementById(`sideBtn-${p}`);
-
-        if (p === pageId) {
-          pageEl.classList.remove('hidden');
-          if (sideBtn) {
-            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-black text-white font-semibold shadow-sm transition-all";
-          }
-        } else {
-          pageEl.classList.add('hidden');
-          if (sideBtn) {
-            sideBtn.className = "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-700 hover:text-black hover:bg-gray-100 border border-transparent transition-all";
-          }
-        }
+      db.collection('products').onSnapshot((snapshot) => {
+        studioProducts = [];
+        snapshot.forEach((doc) => {
+          studioProducts.push({ id: doc.id, ...doc.data() });
+        });
+        localStorage.setItem('lenka_catalog', JSON.stringify(studioProducts));
+        renderAdminProducts();
+      }, (err) => {
+        console.warn("Product sync note:", err);
       });
-
-      document.getElementById('activeSectionLabel').innerText = pageTitles[pageId] || 'Command Terminal';
-      document.getElementById('sidebarDrawer').classList.add('-translate-x-full');
-      document.getElementById('sidebarBackdrop').classList.add('hidden');
-
-      if (pageId === 'dashboard') { renderGraphicSheet(); renderHomeFeedbacks(); }
-      if (pageId === 'confirmedOrders') renderAdminConfirmedOrders();
-      if (pageId === 'cancelledOrders') renderAdminCancelledOrders();
-      if (pageId === 'catalog') renderAdminCatalog();
-      if (pageId === 'customers') renderAdminCustomers();
-      if (pageId === 'feedback') renderAdminFeedbacks();
-
-      updateSidebarBadges();
-      lucide.createIcons();
     }
 
-    function updateSidebarBadges() {
-      const confirmed = allOrders.filter(o => o.status !== 'Cancelled');
-      const cancelled = allOrders.filter(o => o.status === 'Cancelled');
+    function renderAdminProducts() {
+      const container = document.getElementById('adminProductList');
+      const badge = document.getElementById('productBadgeCount');
+      const statTotal = document.getElementById('statTotalProducts');
 
-      document.getElementById('sideConfirmedBadge').innerText = confirmed.length;
-      document.getElementById('sideCancelledBadge').innerText = cancelled.length;
-      document.getElementById('sideCatalogBadge').innerText = allCatalog.length;
-      document.getElementById('sideCustomersBadge').innerText = allCustomers.length || allOrders.length;
-      document.getElementById('sideFeedbackBadge').innerText = allFeedbacks.length;
-    }
+      if (badge) badge.innerText = `${studioProducts.length} Products`;
+      if (statTotal) statTotal.innerText = studioProducts.length;
 
-    function renderGraphicSheet() {
-      const todayFormatted = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      const confirmed = allOrders.filter(o => o.status !== 'Cancelled');
-      const cancelled = allOrders.filter(o => o.status === 'Cancelled');
-
-      const todayOrdersCount = confirmed.filter(o => (o.confirmedDate === todayFormatted || o.timestamp === todayFormatted || o.timestamp?.includes('2026'))).length;
-      document.getElementById('statTodayOrders').innerText = todayOrdersCount || confirmed.length;
-      document.getElementById('statConfirmedOrders').innerText = confirmed.length;
-      document.getElementById('statCancelledOrders').innerText = cancelled.length;
-
-      const totalValuation = confirmed.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
-      document.getElementById('statTotalValuation').innerText = `₹${totalValuation}`;
-
-      renderAdminCustomers();
-
-      const confirmedCount = allOrders.filter(o => o.status === 'Confirmed' || !o.status).length;
-      const dispatchedCount = allOrders.filter(o => o.status === 'Dispatched').length;
-      const deliveredCount = allOrders.filter(o => o.status === 'Delivered').length;
-      const cancelledCount = cancelled.length;
-      const totalO = allOrders.length || 1;
-
-      const confPct = Math.round((confirmedCount / totalO) * 100);
-      const dispPct = Math.round((dispatchedCount / totalO) * 100);
-      const delivPct = Math.round((deliveredCount / totalO) * 100);
-      const cancPct = Math.round((cancelledCount / totalO) * 100);
-
-      document.getElementById('graphConfirmedCount').innerText = `${confirmedCount} (${confPct}%)`;
-      document.getElementById('graphDispatchedCount').innerText = `${dispatchedCount} (${dispPct}%)`;
-      document.getElementById('graphDeliveredCount').innerText = `${deliveredCount} (${delivPct}%)`;
-      document.getElementById('graphCancelledCount').innerText = `${cancelledCount} (${cancPct}%)`;
-
-      document.getElementById('graphConfirmedBar').style.width = `${confPct}%`;
-      document.getElementById('graphDispatchedBar').style.width = `${dispPct}%`;
-      document.getElementById('graphDeliveredBar').style.width = `${delivPct}%`;
-      document.getElementById('graphCancelledBar').style.width = `${cancPct}%`;
-    }
-
-    function renderHomeFeedbacks() {
-      const container = document.getElementById('homeFeedbackList');
       if (!container) return;
       container.innerHTML = '';
 
-      if (allFeedbacks.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 py-6 text-center">No feedback messages received yet.</p>`;
+      if (studioProducts.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No products found. Add your first item on the left.</p>`;
         return;
       }
 
-      allFeedbacks.slice(0, 4).forEach(fb => {
+      studioProducts.forEach((prod) => {
         const item = document.createElement('div');
-        item.className = "p-3 rounded-xl bg-gray-50 border border-gray-100 space-y-1";
+        item.className = "p-4 rounded-xl bg-noir-850 fine-border flex items-center justify-between gap-4 hover:border-bronze-400/30 transition-all";
         item.innerHTML = `
-          <div class="flex items-center justify-between text-xs font-medium">
-            <span class="text-gray-900 font-semibold">${fb.name}</span>
-            <span class="font-mono text-gray-500 text-[10px]">${fb.phone}</span>
+          <img src="${prod.image}" alt="${prod.title}" class="w-14 h-14 rounded-lg object-cover bg-noir-900 fine-border shrink-0" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
+          <div class="flex-1 min-w-0">
+            <span class="text-[9px] uppercase tracking-wider text-bronze-400 font-semibold block">${prod.category}</span>
+            <h4 class="text-xs text-white font-medium truncate">${prod.title}</h4>
+            <div class="flex items-center gap-2 mt-1 text-xs">
+              <span class="text-white font-serif font-semibold">₹${prod.offerPrice}</span>
+              <span class="text-slate-500 line-through text-[11px]">₹${prod.originalPrice}</span>
+              ${prod.discountTag ? `<span class="text-[9px] bg-bronze-400/20 text-bronze-400 px-1.5 py-0.5 rounded">${prod.discountTag}</span>` : ''}
+            </div>
           </div>
-          <p class="text-xs text-gray-600 line-clamp-2">"${fb.message}"</p>
-          <span class="text-[9px] text-gray-400 block pt-0.5">${fb.timestamp || ''}</span>
+          <button onclick="deleteProduct('${prod.id}')" class="p-2.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all cursor-pointer" title="Delete Product">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
         `;
         container.appendChild(item);
       });
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
-    function renderAdminConfirmedOrders(filteredList = null) {
-      const tbody = document.getElementById('adminConfirmedOrdersBody');
-      const emptyMsg = document.getElementById('noConfirmedOrdersMessage');
-      if (!tbody) return;
-      tbody.innerHTML = '';
+    // 2. ADD PRODUCT
+    async function handleProductSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('saveProductBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-pulse">Publishing...</span>`;
 
-      const list = filteredList || allOrders.filter(o => o.status !== 'Cancelled');
+      const title = document.getElementById('prodTitle').value.trim();
+      const category = document.getElementById('prodCategory').value;
+      const originalPrice = Number(document.getElementById('prodOriginalPrice').value);
+      const offerPrice = Number(document.getElementById('prodOfferPrice').value);
+      const discountTag = document.getElementById('prodDiscountTag').value.trim() || '';
+      const image = document.getElementById('prodImage').value.trim();
+      const variantsStr = document.getElementById('prodVariants').value.trim();
+      const description = document.getElementById('prodDescription').value.trim();
 
-      if (list.length === 0) {
-        if (emptyMsg) emptyMsg.classList.remove('hidden');
-        return;
+      const variants = variantsStr ? variantsStr.split(',').map(s => s.trim()) : [];
+      const prodId = 'prod_' + Date.now();
+
+      const newProduct = {
+        title,
+        category,
+        originalPrice,
+        offerPrice,
+        discountTag,
+        image,
+        variants,
+        description,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        // Write to Firestore Cloud
+        await db.collection('products').doc(prodId).set(newProduct);
+        
+        // Update local state
+        studioProducts.unshift({ id: prodId, ...newProduct });
+        localStorage.setItem('lenka_catalog', JSON.stringify(studioProducts));
+        
+        document.getElementById('addProductForm').reset();
+        renderAdminProducts();
+        alert(`Product "${title}" published live to Lenka Stores!`);
+      } catch (err) {
+        console.error("Save product error:", err);
+        alert("Failed to publish product. Ensure network connectivity.");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>Publish Product to Store</span>`;
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    // 3. DELETE PRODUCT
+    async function deleteProduct(prodId) {
+      if (!confirm("Are you sure you want to permanently delete this product?")) return;
+
+      try {
+        await db.collection('products').doc(prodId).delete();
+        studioProducts = studioProducts.filter(p => p.id !== prodId);
+        localStorage.setItem('lenka_catalog', JSON.stringify(studioProducts));
+        renderAdminProducts();
+      } catch (err) {
+        console.error("Delete product error:", err);
+        alert("Error deleting product.");
+      }
+    }
+
+    // 4. LIVE ORDERS & STATUS ENGINE
+    function startOrdersListener() {
+      // Local fallback
+      const localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      if (localOrders.length > 0) {
+        studioOrders = localOrders;
+        renderAdminOrders();
       }
 
-      if (emptyMsg) emptyMsg.classList.add('hidden');
-      list.forEach((ord) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-50 transition-colors";
-        tr.innerHTML = `
-          <td class="p-4 font-mono font-semibold text-gray-900">
-            #${ord.orderId}<br/>
-            <span class="text-[10px] text-gray-400 font-normal">${ord.timestamp || ''}</span>
-          </td>
-          <td class="p-4">
-            <div class="flex items-center gap-2.5">
-              <img src="${ord.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-8 h-8 rounded-full object-cover border border-gray-200" />
-              <div>
-                <span class="text-gray-900 font-semibold block">${ord.customerName}</span>
-                <span class="text-gray-500 font-mono text-[11px]">${ord.customerPhone}</span>
-              </div>
-            </div>
-          </td>
-          <td class="p-4 text-gray-600 max-w-xs text-xs">${ord.customerAddress}</td>
-          <td class="p-4 text-gray-900 max-w-xs text-xs font-medium">
-            <span>${ord.itemsSummary}</span><br/>
-            <span class="text-gray-900 font-bold">₹${ord.totalAmount}</span>
-          </td>
-          <td class="p-4">
-            <select onchange="updateUnifiedOrderStatus('${ord.orderId}', this.value)" class="bg-white border border-gray-300 text-xs rounded-lg px-2.5 py-1.5 text-gray-900 font-medium focus:outline-none focus:border-black">
-              <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>1. Order Confirmed</option>
-              <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>2. Dispatched / In Transit</option>
-              <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>3. Delivered Successfully</option>
-              <option value="Cancelled">❌ Move to Cancelled</option>
-            </select>
-          </td>
-          <td class="p-4 space-y-1">
-            <input type="text" value="${ord.confirmedDate || ''}" placeholder="Confirmed Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'confirmedDate', this.value)" class="bg-gray-50 border border-gray-200 rounded px-2 py-0.5 text-[10px] text-gray-900 w-32 block focus:bg-white focus:border-black focus:outline-none" />
-            <input type="text" value="${ord.shippingDate || ''}" placeholder="Shipping Start" onchange="updateUnifiedOrderDate('${ord.orderId}', 'shippingDate', this.value)" class="bg-gray-50 border border-gray-200 rounded px-2 py-0.5 text-[10px] text-gray-900 w-32 block focus:bg-white focus:border-black focus:outline-none" />
-            <input type="text" value="${ord.deliveryDate || ''}" placeholder="Delivery Date" onchange="updateUnifiedOrderDate('${ord.orderId}', 'deliveryDate', this.value)" class="bg-gray-50 border border-gray-200 rounded px-2 py-0.5 text-[10px] text-gray-900 w-32 block focus:bg-white focus:border-black focus:outline-none" />
-          </td>
-          <td class="p-4 text-right">
-            <button onclick="deleteUnifiedOrder('${ord.orderId}')" title="Delete record" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-gray-100 transition-all cursor-pointer">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+      db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+        studioOrders = [];
+        snapshot.forEach((doc) => {
+          studioOrders.push({ id: doc.id, ...doc.data() });
+        });
+        localStorage.setItem('lenka_orders', JSON.stringify(studioOrders));
+        renderAdminOrders();
+      }, (err) => {
+        console.warn("Orders sync note:", err);
       });
-      lucide.createIcons();
     }
 
-    function renderAdminCancelledOrders(filteredList = null) {
-      const tbody = document.getElementById('adminCancelledOrdersBody');
-      const emptyMsg = document.getElementById('noCancelledOrdersMessage');
-      if (!tbody) return;
-      tbody.innerHTML = '';
+    function renderAdminOrders() {
+      const container = document.getElementById('adminOrdersList');
+      const statOrders = document.getElementById('statTotalOrders');
+      const statValuation = document.getElementById('statTotalValuation');
 
-      const list = filteredList || allOrders.filter(o => o.status === 'Cancelled');
-
-      if (list.length === 0) {
-        if (emptyMsg) emptyMsg.classList.remove('hidden');
-        return;
-      }
-
-      if (emptyMsg) emptyMsg.classList.add('hidden');
-      list.forEach((ord) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-50 transition-colors opacity-80";
-        tr.innerHTML = `
-          <td class="p-4 font-mono font-semibold text-gray-500">
-            #${ord.orderId}<br/>
-            <span class="text-[10px] text-gray-400 font-normal">${ord.timestamp || ''}</span>
-          </td>
-          <td class="p-4">
-            <span class="text-gray-900 font-semibold block">${ord.customerName}</span>
-            <span class="text-gray-500 font-mono text-[11px]">${ord.customerPhone}</span>
-          </td>
-          <td class="p-4 text-gray-600 max-w-xs text-xs">${ord.customerAddress}</td>
-          <td class="p-4 text-gray-700 max-w-xs text-xs">${ord.itemsSummary}</td>
-          <td class="p-4 text-red-600 font-mono font-bold text-xs">₹${ord.totalAmount}</td>
-          <td class="p-4">
-            <span class="px-2.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-red-700 font-semibold text-[10px]">Cancelled</span>
-          </td>
-          <td class="p-4 text-right">
-            <button onclick="deleteUnifiedOrder('${ord.orderId}')" title="Delete record" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-gray-100 transition-all cursor-pointer">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-      lucide.createIcons();
-    }
-
-    function filterOrdersTable(query, type) {
-      const q = query.toLowerCase().trim();
-      const baseList = allOrders.filter(o => type === 'confirmed' ? o.status !== 'Cancelled' : o.status === 'Cancelled');
+      if (statOrders) statOrders.innerText = studioOrders.length;
       
-      const filtered = baseList.filter(o => 
-        (o.orderId && o.orderId.toLowerCase().includes(q)) ||
-        (o.customerName && o.customerName.toLowerCase().includes(q)) ||
-        (o.customerPhone && o.customerPhone.includes(q)) ||
-        (o.itemsSummary && o.itemsSummary.toLowerCase().includes(q))
-      );
+      const totalVal = studioOrders.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0);
+      if (statValuation) statValuation.innerText = `₹${totalVal}`;
 
-      if (type === 'confirmed') renderAdminConfirmedOrders(filtered);
-      if (type === 'cancelled') renderAdminCancelledOrders(filtered);
-    }
+      if (!container) return;
+      container.innerHTML = '';
 
-    function updateUnifiedOrderStatus(orderId, newStatus) {
-      const idx = allOrders.findIndex(o => o.orderId === orderId);
-      if (idx !== -1) {
-        allOrders[idx].status = newStatus;
-        localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
-      }
-      if (db) {
-        db.collection('orders').where('orderId', '==', orderId).get().then(snap => {
-          snap.forEach(d => d.ref.update({ status: newStatus }));
-        }).catch(e => console.warn(e));
-      }
-      renderAdminConfirmedOrders();
-      renderAdminCancelledOrders();
-      renderGraphicSheet();
-      updateSidebarBadges();
-    }
-
-    function updateUnifiedOrderDate(orderId, field, val) {
-      const idx = allOrders.findIndex(o => o.orderId === orderId);
-      if (idx !== -1) {
-        allOrders[idx][field] = val;
-        localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
-      }
-      if (db) {
-        const updateObj = {};
-        updateObj[field] = val;
-        db.collection('orders').where('orderId', '==', orderId).get().then(snap => {
-          snap.forEach(d => d.ref.update(updateObj));
-        }).catch(e => console.warn(e));
-      }
-    }
-
-    function deleteUnifiedOrder(orderId) {
-      if (confirm(`Remove consignment record #${orderId}?`)) {
-        allOrders = allOrders.filter(o => o.orderId !== orderId);
-        localStorage.setItem('lenka_orders', JSON.stringify(allOrders));
-        if (db) {
-          db.collection('orders').where('orderId', '==', orderId).get().then(snap => {
-            snap.forEach(d => d.ref.delete());
-          }).catch(e => console.warn(e));
-        }
-        renderAdminConfirmedOrders();
-        renderAdminCancelledOrders();
-        renderGraphicSheet();
-        updateSidebarBadges();
-      }
-    }
-
-    function renderAdminCustomers(filteredMap = null) {
-      const tbody = document.getElementById('adminCustomersBody');
-      const emptyMsg = document.getElementById('noCustomersMessage');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      let customerMap = new Map();
-
-      if (filteredMap) {
-        customerMap = filteredMap;
-      } else {
-        allCustomers.forEach(c => {
-          if (c && c.phone) {
-            customerMap.set(c.phone, {
-              name: c.name || 'Customer',
-              phone: c.phone,
-              avatar: c.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
-              country: c.address?.country || 'India',
-              state: c.address?.state || 'Telangana',
-              area: c.address?.area || c.formattedAddress || 'Registered Address',
-              pin: c.address?.pin || '500072',
-              ordersCount: allOrders.filter(x => x.customerPhone === c.phone && x.status !== 'Cancelled').length
-            });
-          }
-        });
-
-        allOrders.forEach(o => {
-          if (o.customerPhone && !customerMap.has(o.customerPhone)) {
-            customerMap.set(o.customerPhone, {
-              name: o.customerName || 'Customer',
-              phone: o.customerPhone,
-              avatar: o.customerAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
-              country: 'India',
-              state: 'Recorded',
-              area: o.customerAddress || 'Direct Order Address',
-              pin: 'Verified',
-              ordersCount: allOrders.filter(x => x.customerPhone === o.customerPhone && x.status !== 'Cancelled').length
-            });
-          }
-        });
-      }
-
-      const totalCount = customerMap.size;
-      const statElem = document.getElementById('statCustomersCount');
-      const badgeElem = document.getElementById('sideCustomersBadge');
-      if (statElem && !filteredMap) statElem.innerText = totalCount;
-      if (badgeElem && !filteredMap) badgeElem.innerText = totalCount;
-
-      if (totalCount === 0) {
-        if (emptyMsg) emptyMsg.classList.remove('hidden');
+      if (studioOrders.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No customer consignments found.</p>`;
         return;
       }
 
-      if (emptyMsg) emptyMsg.classList.add('hidden');
-      customerMap.forEach(cust => {
-        const cleanPhone = cust.phone.replace(/[^0-9]/g, '');
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-50 transition-colors";
-        tr.innerHTML = `
-          <td class="p-4">
-            <div class="flex items-center gap-3">
-              <img src="${cust.avatar}" class="w-9 h-9 rounded-full object-cover border border-gray-200" />
-              <div>
-                <span class="text-gray-900 font-bold block">${cust.name}</span>
-                <span class="text-[10px] text-gray-500 font-medium">Verified Customer</span>
-              </div>
+      studioOrders.forEach((ord) => {
+        const item = document.createElement('div');
+        item.className = "p-5 rounded-xl bg-noir-850 fine-border space-y-4 shadow-lg";
+        item.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/5 gap-2">
+            <div>
+              <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId || ord.id}</span>
+              <p class="text-[10px] text-slate-400 mt-0.5">Placed by: <strong class="text-white">${ord.customerName || 'Client'}</strong> (${ord.customerPhone || 'N/A'})</p>
             </div>
-          </td>
-          <td class="p-4 font-mono font-semibold text-gray-900">${cust.phone}</td>
-          <td class="p-4 text-gray-600 text-xs">${cust.country} • ${cust.state}</td>
-          <td class="p-4 text-gray-600 max-w-xs text-xs">${cust.area}</td>
-          <td class="p-4 font-mono text-gray-900 text-xs">${cust.pin}</td>
-          <td class="p-4">
-            <span class="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 font-semibold text-gray-900 text-xs">${cust.ordersCount} Orders</span>
-          </td>
-          <td class="p-4 text-right space-x-1.5">
-            <a href="https://wa.me/${cleanPhone}" target="_blank" title="WhatsApp Customer" class="inline-flex p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg border border-emerald-200">
-              <i data-lucide="message-circle" class="w-4 h-4"></i>
-            </a>
-            <a href="tel:${cust.phone}" title="Call Customer" class="inline-flex p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg border border-gray-300">
-              <i data-lucide="phone" class="w-4 h-4"></i>
-            </a>
-          </td>
+            
+            <!-- STATUS SELECTOR -->
+            <div class="flex items-center gap-2">
+              <label class="text-[10px] uppercase tracking-wider text-slate-400">Status:</label>
+              <select onchange="updateOrderStatus('${ord.orderId || ord.id}', this.value)" class="bg-noir-950 fine-border rounded-lg px-3 py-1 text-xs font-semibold ${
+                ord.status === 'Delivered' ? 'text-green-400' :
+                ord.status === 'Dispatched' ? 'text-blue-400' :
+                ord.status === 'Cancelled' ? 'text-red-400' : 'text-bronze-400'
+              }">
+                <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>Dispatched (In Transit)</option>
+                <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="Cancelled" ${ord.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Items</span>
+              <p class="text-white font-medium mt-0.5">${ord.itemsSummary || 'Curated Atelier Items'}</p>
+              <p class="text-slate-400 text-[11px] mt-1">Payment: <span class="text-bronze-300 font-medium">${ord.paymentMethod || 'PhonePe UPI'}</span></p>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Delivery Address</span>
+              <p class="text-slate-300 text-[11px] mt-0.5">${ord.customerAddress || 'Address on file'}</p>
+              <p class="text-white font-serif text-sm mt-1">Valuation: <strong class="text-bronze-400 font-semibold">₹${ord.totalAmount || 0}</strong></p>
+            </div>
+          </div>
         `;
-        tbody.appendChild(tr);
+        container.appendChild(item);
       });
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
-    function filterCustomersTable(query) {
-      const q = query.toLowerCase().trim();
-      const filteredMap = new Map();
+    async function updateOrderStatus(orderId, newStatus) {
+      const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const updateData = { status: newStatus };
 
-      allCustomers.forEach(c => {
-        if (c && (c.name?.toLowerCase().includes(q) || c.phone?.includes(q))) {
-          filteredMap.set(c.phone, {
-            name: c.name || 'Customer',
-            phone: c.phone,
-            avatar: c.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100',
-            country: c.address?.country || 'India',
-            state: c.address?.state || 'Telangana',
-            area: c.address?.area || c.formattedAddress || 'Registered Address',
-            pin: c.address?.pin || '500072',
-            ordersCount: allOrders.filter(x => x.customerPhone === c.phone && x.status !== 'Cancelled').length
-          });
+      if (newStatus === 'Dispatched') updateData.shippingDate = `Dispatched on ${today}`;
+      if (newStatus === 'Delivered') updateData.deliveryDate = `Delivered on ${today}`;
+
+      try {
+        await db.collection('orders').doc(orderId).update(updateData);
+        
+        // Update local
+        const idx = studioOrders.findIndex(o => (o.orderId || o.id) === orderId);
+        if (idx !== -1) {
+          studioOrders[idx] = { ...studioOrders[idx], ...updateData };
+          localStorage.setItem('lenka_orders', JSON.stringify(studioOrders));
         }
-      });
-
-      renderAdminCustomers(filteredMap);
+        renderAdminOrders();
+      } catch (err) {
+        console.error("Status update error:", err);
+        alert("Failed to update status in Cloud Database.");
+      }
     }
 
     function exportOrdersToCSV() {
-      if (allOrders.length === 0) {
-        alert('No orders available to export.');
+      if (studioOrders.length === 0) {
+        alert("No orders to export.");
         return;
       }
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Order ID,Customer Name,Phone,Address,Items,Total (INR),Status,Payment Method,Booking Date\n";
 
-      const headers = ['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Products', 'Amount (INR)', 'Status'];
-      const rows = allOrders.map(o => [
-        `"${o.orderId || ''}"`,
-        `"${o.timestamp || ''}"`,
-        `"${(o.customerName || '').replace(/"/g, '""')}"`,
-        `"${o.customerPhone || ''}"`,
-        `"${(o.customerAddress || '').replace(/"/g, '""')}"`,
-        `"${(o.itemsSummary || '').replace(/"/g, '""')}"`,
-        `"${o.totalAmount || 0}"`,
-        `"${o.status || 'Confirmed'}"`
-      ]);
+      studioOrders.forEach(o => {
+        const row = [
+          `#${o.orderId || o.id}`,
+          `"${o.customerName || ''}"`,
+          `"${o.customerPhone || ''}"`,
+          `"${(o.customerAddress || '').replace(/"/g, '""')}"`,
+          `"${(o.itemsSummary || '').replace(/"/g, '""')}"`,
+          o.totalAmount || 0,
+          o.status || 'Confirmed',
+          `"${o.paymentMethod || 'PhonePe UPI'}"`,
+          `"${o.timestamp || ''}"`
+        ];
+        csvContent += row.join(",") + "\n";
+      });
 
-      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
       const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `Lenka_Stores_Orders_${new Date().toISOString().slice(0,10)}.csv`);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `LenkaStores_Orders_${Date.now()}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
 
-    function renderAdminCatalog() {
-      const container = document.getElementById('adminInventoryList');
-      const badge = document.getElementById('inventoryCountBadge');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (badge) badge.innerText = `${allCatalog.length} Products`;
-
-      allCatalog.forEach((prod, index) => {
-        const card = document.createElement('div');
-        card.className = "p-3 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-between gap-3";
-        card.innerHTML = `
-          <img src="${prod.image}" class="w-12 h-12 rounded-lg object-cover bg-white border border-gray-200" />
-          <div class="flex-1 min-w-0">
-            <h4 class="text-xs text-gray-900 font-bold truncate">${prod.title}</h4>
-            <div class="flex items-center gap-2 text-[10px] text-gray-500 font-medium">
-              <span class="text-gray-900 font-mono font-bold">₹${prod.offerPrice}</span>
-              <span>•</span>
-              <span>${prod.category}</span>
-            </div>
-          </div>
-          <button onclick="deleteCatalogItem('${prod.docId || prod.id}', ${index})" title="Delete Product" class="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-white transition-colors cursor-pointer">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
-          </button>
-        `;
-        container.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    async function deleteCatalogItem(docId, index) {
-      if (confirm(`Remove "${allCatalog[index].title}" from store inventory?`)) {
-        if (db && docId) {
-          try {
-            await db.collection('products').doc(docId).delete();
-          } catch (e) {
-            console.warn(e);
-          }
-        }
-        allCatalog.splice(index, 1);
-        localStorage.setItem('lenka_catalog', JSON.stringify(allCatalog));
-        renderAdminCatalog();
-        updateSidebarBadges();
-      }
-    }
-
-    async function handleProductPublish(e) {
-      e.preventDefault();
-      const category = document.getElementById('prodCategory').value;
-      const title = document.getElementById('prodTitle').value.trim();
-      const origPrice = Number(document.getElementById('prodOrigPrice').value);
-      const offerPrice = Number(document.getElementById('prodOfferPrice').value);
-      const tag = document.getElementById('prodTag').value.trim();
-      const image = document.getElementById('prodImage').value.trim();
-      const variantsRaw = document.getElementById('prodVariants').value.trim();
-      const desc = document.getElementById('prodDesc').value.trim();
-
-      const variants = variantsRaw ? variantsRaw.split(',').map(v => v.trim()) : [];
-
-      const newProduct = {
-        category,
-        title,
-        originalPrice: origPrice,
-        offerPrice: offerPrice,
-        discountTag: tag,
-        image,
-        variants,
-        description: desc,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      if (db) {
-        try {
-          const docRef = await db.collection('products').add(newProduct);
-          newProduct.docId = docRef.id;
-        } catch (e) {
-          console.warn(e);
-        }
-      }
-
-      allCatalog.unshift(newProduct);
-      localStorage.setItem('lenka_catalog', JSON.stringify(allCatalog));
-
-      document.getElementById('productPublishForm').reset();
-      renderAdminCatalog();
-      updateSidebarBadges();
-      alert(`"${title}" published to live store!`);
-    }
-
-    function renderAdminFeedbacks() {
-      const tbody = document.getElementById('adminFeedbackBody');
-      const emptyMsg = document.getElementById('noFeedbackMessage');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      if (allFeedbacks.length === 0) {
-        if (emptyMsg) emptyMsg.classList.remove('hidden');
-        return;
-      }
-
-      if (emptyMsg) emptyMsg.classList.add('hidden');
-      allFeedbacks.forEach((fb, index) => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-50 transition-colors";
-        tr.innerHTML = `
-          <td class="p-4 font-mono font-semibold text-gray-900">
-            #${fb.feedbackId || 'FB' + index}<br/>
-            <span class="text-[10px] text-gray-400 font-normal">${fb.timestamp || ''}</span>
-          </td>
-          <td class="p-4 text-gray-900 font-bold">${fb.name}</td>
-          <td class="p-4 font-mono text-gray-600 font-medium">${fb.phone}</td>
-          <td class="p-4 text-gray-700 max-w-sm text-xs leading-relaxed">${fb.message}</td>
-          <td class="p-4 text-right">
-            <button onclick="deleteFeedbackItem('${fb.feedbackId}')" class="text-gray-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-gray-100 transition-all cursor-pointer">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-      lucide.createIcons();
-    }
-
-    function deleteFeedbackItem(feedbackId) {
-      if (confirm('Delete this feedback message?')) {
-        let local = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-        local = local.filter(f => f.feedbackId !== feedbackId);
-        localStorage.setItem('lenka_feedbacks', JSON.stringify(local));
-
-        allFeedbacks = allFeedbacks.filter(f => f.feedbackId !== feedbackId);
-
-        if (db) {
-          db.collection('feedbacks').where('feedbackId', '==', feedbackId).get().then(snap => {
-            snap.forEach(doc => doc.ref.delete());
-          }).catch(e => console.warn(e));
-        }
-
-        renderAdminFeedbacks();
-        renderHomeFeedbacks();
-        renderGraphicSheet();
-        updateSidebarBadges();
-      }
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
+      startProductListener();
+      startOrdersListener();
     });
   </script>
 </body>
