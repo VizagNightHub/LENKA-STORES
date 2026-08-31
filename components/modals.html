@@ -88,7 +88,7 @@
   </div>
 </div>
 
-<!-- CART DRAWER WITH CONFIRM ORDER BUTTON -->
+<!-- CART DRAWER (WITH CLEAR ENTIRE BAG OPTION) -->
 <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
   <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
     <div>
@@ -97,9 +97,14 @@
           <i data-lucide="shopping-bag" class="w-5 h-5 text-bronze-400"></i>
           <h3 class="font-serif text-xl text-white">Your Atelier Bag</h3>
         </div>
-        <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="clearEntireBag()" class="text-[11px] text-red-400 hover:text-red-300 px-2 py-1 rounded hover:bg-red-500/10 transition-colors cursor-pointer" title="Empty Entire Bag">
+            Clear Bag
+          </button>
+          <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
       </div>
       <div id="cartItemsList" class="mt-6 space-y-4"></div>
     </div>
@@ -268,47 +273,6 @@
     <div id="profileFooter" class="hidden pt-6 border-t border-white/10">
       <button onclick="resetProfile()" class="w-full py-2.5 text-center text-xs text-red-400 hover:text-red-300 bg-red-500/10 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
         <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- DPDP ACT POLICY MODAL -->
-<div id="dpdpPolicyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-2xl w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative max-h-[85vh] flex flex-col">
-    <button onclick="closeDpdpPolicyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
-      <i data-lucide="x" class="w-5 h-5"></i>
-    </button>
-    <div class="flex items-center gap-3 pb-3 border-b border-white/10">
-      <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
-        <i data-lucide="shield-check" class="w-6 h-6"></i>
-      </div>
-      <div>
-        <h3 class="font-serif text-2xl text-white">DPDP Act Privacy Policy & Notice</h3>
-        <p class="text-xs text-slate-400">Digital Personal Data Protection Act, 2023 Compliance</p>
-      </div>
-    </div>
-    <div class="flex-1 overflow-y-auto custom-scrollbar text-xs text-slate-300 space-y-4 pr-2 leading-relaxed">
-      <section class="space-y-1">
-        <h4 class="text-sm font-semibold text-white">1. Notice & Purpose of Data Collection</h4>
-        <p>In accordance with <strong>Section 5 & 6 of the DPDP Act, 2023</strong>, Lenka Stores collects personal data strictly for processing luxury reservations, courier dispatch, and customer support.</p>
-      </section>
-      <section class="space-y-1">
-        <h4 class="text-sm font-semibold text-white">2. Your Rights as a Data Principal</h4>
-        <p>Under the DPDP Act 2023, you retain the Right to Access, Right to Correction & Erasure, and Right to Withdraw Consent.</p>
-      </section>
-      <section class="space-y-1">
-        <h4 class="text-sm font-semibold text-white">3. Grievance Redressal & Data Protection Officer</h4>
-        <div class="p-3 rounded-xl bg-noir-850 fine-border space-y-1 text-slate-400">
-          <p><strong class="text-white">Grievance Officer:</strong> Lenka Vardhan Sai</p>
-          <p><strong class="text-white">Entity:</strong> Lenka Ventures Pvt Ltd / Vizag Night Hub</p>
-          <p><strong class="text-white">Support Email:</strong> privacy@lenkastores.run.place</p>
-        </div>
-      </section>
-    </div>
-    <div class="pt-3 border-t border-white/10 flex justify-end">
-      <button onclick="closeDpdpPolicyModal()" class="px-6 py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
-        I Understand & Acknowledge
       </button>
     </div>
   </div>
