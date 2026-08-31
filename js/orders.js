@@ -131,26 +131,30 @@ async function finalizeOrder(total, summary, paymentMethod) {
   sendWhatsAppOrderConfirmation(newOrder);
 }
 
-// AUTOMATED WHATSAPP MESSAGE FORMATTER
+// AUTOMATED WHATSAPP ORDER BROADCAST (STORE OWNER & CUSTOMER DISPATCH)
 function sendWhatsAppOrderConfirmation(order) {
-  const msg = `*LENKA STORES — ORDER CONFIRMED*%0A` +
-    `--------------------------------%0A` +
-    `*Consignment ID:* %23${order.orderId}%0A` +
-    `*Client:* ${order.customerName}%0A` +
-    `*Items:* ${order.itemsSummary}%0A` +
-    `*Total Valuation:* ₹${order.totalAmount}%0A` +
-    `*Payment Mode:* ${order.paymentMethod}%0A` +
-    `*Destination:* ${order.customerAddress}%0A` +
-    `--------------------------------%0A` +
-    `Your express luxury consignment is scheduled for dispatch. Track status live on https://lenkastores.run.place`;
+  // Store Owner WhatsApp Number (Lenka Stores Desk)
+  const storeOwnerPhone = "918977627028";
 
-  // Pre-fill WhatsApp message window
-  const cleanPhone = order.customerPhone.replace(/[^0-9]/g, '');
-  const waUrl = `https://wa.me/${cleanPhone}?text=${msg}`;
+  const msg = `*🛍️ NEW ORDER RECEIVED — LENKA STORES*%0A` +
+    `================================%0A` +
+    `*Consignment ID:* %23${order.orderId}%0A` +
+    `*Client Name:* ${encodeURIComponent(order.customerName)}%0A` +
+    `*Client Phone:* ${encodeURIComponent(order.customerPhone)}%0A` +
+    `*Items Ordered:* ${encodeURIComponent(order.itemsSummary)}%0A` +
+    `*Valuation / Amount:* ₹${order.totalAmount}%0A` +
+    `*Payment Mode:* ${encodeURIComponent(order.paymentMethod)}%0A` +
+    `*Shipping Address:* ${encodeURIComponent(order.customerAddress)}%0A` +
+    `*Booking Date:* ${encodeURIComponent(order.timestamp)}%0A` +
+    `================================%0A` +
+    `Track and manage this consignment at: https://lenkastores.run.place/admin.html`;
+
+  // Pre-fill and redirect to your WhatsApp number
+  const waUrl = `https://wa.me/${storeOwnerPhone}?text=${msg}`;
   
   setTimeout(() => {
     window.open(waUrl, '_blank');
-  }, 1200);
+  }, 1000);
 }
 
 // RENDER ACTIVE / CANCELLED ORDERS
