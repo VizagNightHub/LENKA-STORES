@@ -1,0 +1,44 @@
+<!-- 3D ORDER SUCCESS OVERLAY COMPONENT -->
+<div id="orderSuccessOverlay" 
+     class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300" 
+     role="dialog" 
+     aria-modal="true" 
+     aria-live="polite" 
+     aria-labelledby="successHeadline">
+  
+  <!-- 3D Particle Canvas Container -->
+  <canvas id="orderSuccessCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+  <!-- Centered Glass Card -->
+  <div id="successCardBox" 
+       class="relative z-10 w-full max-w-[420px] rounded-3xl p-8 text-center fine-glass-box shadow-2xl space-y-6 transform scale-[0.85] opacity-0 transition-all duration-500">
+    
+    <!-- Status Pill -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-noir-950/70 border border-bronze-400/30 backdrop-blur-md">
+      <span class="w-2 h-2 rounded-full bg-bronze-400 animate-ping"></span>
+      <span class="text-[10px] uppercase tracking-[0.25em] text-bronze-300 font-semibold font-sans">RESERVATION CONFIRMED</span>
+    </div>
+
+    <!-- Word-by-Word Headline Container -->
+    <h2 id="successHeadline" class="font-serif text-2xl sm:text-3xl text-[#F2EFE9] font-normal leading-tight"></h2>
+
+    <!-- Order Metadata & Buttons (Fades in after headline) -->
+    <div id="successDetails" class="opacity-0 space-y-5 transition-opacity duration-500">
+      <div class="p-3.5 rounded-xl bg-noir-950/60 border border-white/5 space-y-1">
+        <p class="text-[11px] text-slate-400 font-sans tracking-wide">Consignment Tracking Reference</p>
+        <p id="successOrderIdText" class="font-mono text-sm text-bronze-400 font-semibold tracking-wider">#LS000000</p>
+      </div>
+
+      <div class="flex flex-col gap-2.5 pt-2">
+        <button id="successTrackBtn" 
+                class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-sans font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer">
+          Track Your Order
+        </button>
+        <button id="successCloseBtn" 
+                class="w-full py-3 rounded-xl bg-transparent hover:bg-white/5 border border-white/10 text-slate-300 font-sans text-xs uppercase tracking-wider transition-all cursor-pointer">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
