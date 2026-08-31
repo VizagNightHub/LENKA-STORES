@@ -5,7 +5,8 @@ window.LenkaApp = {
   cart: JSON.parse(localStorage.getItem('lenka_cart') || '[]'),
   profile: JSON.parse(localStorage.getItem('lenka_profile') || 'null'),
   favorites: JSON.parse(localStorage.getItem('lenka_favorites') || '[]'),
-  activeCategory: 'all'
+  activeCategory: 'all',
+  activeImageIndexes: {} // Tracks current active slide index per product ID
 };
 
 // UNIFIED FIREBASE CONFIGURATION
@@ -64,6 +65,10 @@ function seedDefaultCatalog() {
       offerPrice: 2499,
       discountTag: '50% OFF',
       image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800',
+      images: [
+        'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800',
+        'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=800'
+      ],
       variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
       description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
     },
@@ -75,6 +80,10 @@ function seedDefaultCatalog() {
       offerPrice: 1999,
       discountTag: '50% OFF',
       image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800',
+      images: [
+        'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800',
+        'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800'
+      ],
       variants: ['Matte Carbon', 'Slate Silver'],
       description: '65W Power Delivery fast charging with digital LED readout.'
     },
@@ -86,12 +95,99 @@ function seedDefaultCatalog() {
       offerPrice: 1499,
       discountTag: 'LIMITED EDITION',
       image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800',
+      images: [
+        'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800',
+        'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800'
+      ],
       variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
       description: '100% Egyptian Giza combed cotton. Structured cuffs.'
     }
   ];
   localStorage.setItem('lenka_catalog', JSON.stringify(window.LenkaApp.catalog));
   renderCatalog(window.LenkaApp.activeCategory);
+}
+
+// SLIDER CONTROLLERS
+function slideProductImage(prodId, direction, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const prod = window.LenkaApp.catalog.find(p => String(p.id) === String(prodId));
+  if (!prod) return;
+
+  const images = Array.isArray(prod.images) && prod.images.length > 0 ? prod.images : [prod.image];
+  if (images.length <= 1) return;
+
+  if (window.LenkaApp.activeImageIndexes[prodId] === undefined) {
+    window.LenkaApp.activeImageIndexes[prodId] = 0;
+  }
+
+  let currentIdx = window.LenkaApp.activeImageIndexes[prodId];
+  currentIdx += direction;
+
+  if (currentIdx < 0) {
+    currentIdx = images.length - 1;
+  } else if (currentIdx >= images.length) {
+    currentIdx = 0;
+  }
+
+  window.LenkaApp.activeImageIndexes[prodId] = currentIdx;
+
+  const imgEl = document.getElementById(`storeImg-${prodId}`);
+  const counterEl = document.getElementById(`slideCounter-${prodId}`);
+  
+  if (imgEl) {
+    imgEl.src = images[currentIdx];
+  }
+  if (counterEl) {
+    counterEl.innerText = `${currentIdx + 1} / ${images.length}`;
+  }
+
+  // Update active thumbnail borders
+  const thumbs = document.querySelectorAll(`.thumb-${prodId}`);
+  thumbs.forEach((t, i) => {
+    if (i === currentIdx) {
+      t.classList.add('border-bronze-400', 'opacity-100');
+      t.classList.remove('border-transparent', 'opacity-50');
+    } else {
+      t.classList.remove('border-bronze-400', 'opacity-100');
+      t.classList.add('border-transparent', 'opacity-50');
+    }
+  });
+}
+
+function setProductImage(prodId, index, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const prod = window.LenkaApp.catalog.find(p => String(p.id) === String(prodId));
+  if (!prod) return;
+
+  const images = Array.isArray(prod.images) && prod.images.length > 0 ? prod.images : [prod.image];
+  if (index < 0 || index >= images.length) return;
+
+  window.LenkaApp.activeImageIndexes[prodId] = index;
+
+  const imgEl = document.getElementById(`storeImg-${prodId}`);
+  const counterEl = document.getElementById(`slideCounter-${prodId}`);
+
+  if (imgEl) imgEl.src = images[index];
+  if (counterEl) counterEl.innerText = `${index + 1} / ${images.length}`;
+
+  const thumbs = document.querySelectorAll(`.thumb-${prodId}`);
+  thumbs.forEach((t, i) => {
+    if (i === index) {
+      t.classList.add('border-bronze-400', 'opacity-100');
+      t.classList.remove('border-transparent', 'opacity-50');
+    } else {
+      t.classList.remove('border-bronze-400', 'opacity-100');
+      t.classList.add('border-transparent', 'opacity-50');
+    }
+  });
 }
 
 function renderCatalog(filter = 'all') {
@@ -113,13 +209,39 @@ function renderCatalog(filter = 'all') {
       const favs = window.LenkaApp.favorites || JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
       const isFav = favs.includes(prod.id);
       
+      const images = Array.isArray(prod.images) && prod.images.length > 0 ? prod.images : [prod.image];
+      const activeIdx = window.LenkaApp.activeImageIndexes[prod.id] || 0;
+      const initialImage = images[activeIdx] || images[0];
+
       const card = document.createElement('div');
       card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group relative shadow-lg";
       card.innerHTML = `
-        <div class="relative overflow-hidden bg-noir-850 aspect-square">
-          <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
-          
-          <!-- FAVORITE HEART BUTTON (HIGH CONTRAST & VISIBLE) -->
+        <!-- IMAGE & INTERACTIVE SLIDER CONTAINER -->
+        <div class="relative overflow-hidden bg-noir-850 aspect-square select-none">
+          <img id="storeImg-${prod.id}" 
+               src="${initialImage}" 
+               alt="${prod.title}" 
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+               onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
+
+          <!-- SLIDE NAVIGATION BUTTONS (VISIBLE ONLY IF MULTIPLE IMAGES) -->
+          ${images.length > 1 ? `
+            <button onclick="slideProductImage('${prod.id}', -1, event)" 
+                    type="button"
+                    class="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-noir-950/80 hover:bg-noir-950 border border-white/20 text-white flex items-center justify-center transition-all opacity-80 group-hover:opacity-100 hover:scale-110 shadow-lg cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button onclick="slideProductImage('${prod.id}', 1, event)" 
+                    type="button"
+                    class="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-noir-950/80 hover:bg-noir-950 border border-white/20 text-white flex items-center justify-center transition-all opacity-80 group-hover:opacity-100 hover:scale-110 shadow-lg cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <span id="slideCounter-${prod.id}" class="absolute bottom-2.5 right-2.5 z-20 bg-noir-950/85 border border-white/10 text-white text-[10px] font-mono px-2 py-0.5 rounded-full font-bold shadow-md">
+              ${activeIdx + 1} / ${images.length}
+            </span>
+          ` : ''}
+
+          <!-- FAVORITE HEART BUTTON -->
           <button onclick="toggleFavorite('${prod.id}', event)" 
                   type="button"
                   class="absolute top-3.5 right-3.5 z-20 w-10 h-10 rounded-full bg-noir-950/90 border border-white/20 flex items-center justify-center transition-transform hover:scale-110 shadow-2xl cursor-pointer">
@@ -131,14 +253,24 @@ function renderCatalog(filter = 'all') {
                  stroke="${isFav ? '#EF4444' : '#FFFFFF'}" 
                  stroke-width="2" 
                  stroke-linecap="round" 
-                 stroke-linejoin="round" 
-                 class="transition-colors">
+                 stroke-linejoin="round">
               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
             </svg>
           </button>
 
           ${prod.discountTag ? `<span class="absolute top-3.5 left-3.5 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full tracking-wider shadow-md">${prod.discountTag}</span>` : ''}
         </div>
+
+        <!-- THUMBNAIL STRIP (IF MULTIPLE IMAGES) -->
+        ${images.length > 1 ? `
+          <div class="flex gap-1.5 p-2 bg-noir-950 border-b border-white/5 overflow-x-auto custom-scrollbar">
+            ${images.map((img, i) => `
+              <img src="${img}" 
+                   onclick="setProductImage('${prod.id}', ${i}, event)" 
+                   class="thumb-${prod.id} w-9 h-9 rounded-md object-cover border-2 ${i === activeIdx ? 'border-bronze-400 opacity-100' : 'border-transparent opacity-50'} hover:opacity-100 transition-all cursor-pointer" />
+            `).join('')}
+          </div>
+        ` : ''}
         
         <div class="p-6 flex-1 flex flex-col justify-between">
           <div>
@@ -194,3 +326,5 @@ window.initCatalogSync = initCatalogSync;
 window.renderCatalog = renderCatalog;
 window.filterCategory = filterCategory;
 window.toggleFavorite = toggleFavorite;
+window.slideProductImage = slideProductImage;
+window.setProductImage = setProductImage;
