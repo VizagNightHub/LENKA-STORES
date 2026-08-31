@@ -48,231 +48,307 @@
 
 <body class="font-sans antialiased min-h-screen flex flex-col selection:bg-slate-900 selection:text-white">
 
-  <!-- TOP APP BAR -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+  <!-- ==================== SECURITY LOCK WALL ==================== -->
+  <div id="securityLockWall" class="fixed inset-0 z-50 bg-[#0A0B0D] flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111216] border border-amber-500/30 p-8 rounded-3xl shadow-2xl space-y-6 text-center">
       
-      <!-- Brand & Status -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md">
-          <i data-lucide="shield-check" class="w-5 h-5 text-amber-300"></i>
+      <div class="w-16 h-16 rounded-2xl bg-[#0A0B0D] border border-amber-500/30 mx-auto flex items-center justify-center shadow-lg">
+        <i data-lucide="lock" class="w-8 h-8 text-amber-400"></i>
+      </div>
+
+      <div class="space-y-1">
+        <span class="text-[10px] uppercase font-bold tracking-[0.3em] text-amber-400 block">EXECUTIVE ACCESS ONLY</span>
+        <h2 class="font-serif text-2xl text-white font-medium">Lenka Studio Terminal</h2>
+        <p class="text-xs text-slate-400">Enter authorized passkey to unlock administrative console</p>
+      </div>
+
+      <form onsubmit="handleSecurityUnlock(event)" class="space-y-4">
+        <div class="space-y-1.5 text-left">
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Passkey / Password</label>
+          <input type="password" id="adminPassInput" placeholder="••••••••" required class="w-full bg-[#0A0B0D] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400" />
         </div>
-        <div>
-          <h1 class="font-extrabold text-base tracking-tight text-slate-900 leading-none">LENKA STUDIO</h1>
-          <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-400">EXECUTIVE CONTROL TERMINAL</span>
-        </div>
-      </div>
 
-      <!-- Navigation Tabs -->
-      <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
-        <button onclick="switchTab('inventory')" id="tabBtn-inventory" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
-          <span>All Products</span>
+        <p id="lockErrorMsg" class="text-xs text-red-400 font-medium hidden">Access Denied: Invalid administrator passkey.</p>
+
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 hover:brightness-110 text-black font-extrabold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg cursor-pointer">
+          UNLOCK STUDIO TERMINAL
         </button>
-
-        <button onclick="switchTab('add-product')" id="tabBtn-add-product" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
-          <span>Add New Product</span>
-        </button>
-
-        <button onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
-          <span>Consignments</span>
-        </button>
-
-        <button onclick="switchTab('users')" id="tabBtn-users" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="users" class="w-3.5 h-3.5"></i>
-          <span>Client Directory</span>
-        </button>
-
-        <button onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-          <span>Inquiries</span>
-        </button>
-
-        <a href="index.html" target="_blank" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-sm shrink-0">
-          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-          <span>Live Store</span>
-        </a>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
-
-    <!-- METRICS OVERVIEW STRIP -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">ACTIVE INVENTORY</span>
-        <h3 id="statTotalProducts" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
-        <p class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Cloud Synced</p>
-      </div>
-      <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">TOTAL CONSIGNMENTS</span>
-        <h3 id="statTotalOrders" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
-        <p class="text-[11px] text-slate-500">Live Orders in DB</p>
-      </div>
-      <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">GROSS BOOKINGS</span>
-        <h3 id="statTotalValuation" class="font-serif text-3xl text-slate-900 font-bold">₹0</h3>
-        <p class="text-[11px] text-slate-500">Valuation Recorded</p>
-      </div>
-      <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">INQUIRIES LOGGED</span>
-        <h3 id="statTotalFeedbacks" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
-        <p class="text-[11px] text-amber-600 font-semibold">Customer Reviews</p>
+      </form>
+      
+      <div class="pt-2 text-[11px] text-slate-600">
+        Lenka Ventures Executive Control • Secured Session
       </div>
     </div>
+  </div>
 
-    <!-- TAB 1: ALL PRODUCTS VIEW (MAIN INVENTORY) -->
-    <div id="section-inventory" class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Live Inventory Catalog</h2>
-          <p class="text-xs text-slate-500">All products currently active and visible on Lenka Stores</p>
-        </div>
+  <!-- ==================== MAIN DASHBOARD (LOCKED BY DEFAULT) ==================== -->
+  <div id="adminAppContent" class="hidden flex-col min-h-screen">
+    
+    <!-- TOP APP BAR -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+        
+        <!-- Brand & Status -->
         <div class="flex items-center gap-3">
-          <span id="inventoryCountBadge" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-200/80 text-slate-700">0 Products Total</span>
-          <button onclick="switchTab('add-product')" class="px-4 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-            <i data-lucide="plus" class="w-4 h-4 text-emerald-400"></i>
+          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md">
+            <i data-lucide="shield-check" class="w-5 h-5 text-amber-300"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-base tracking-tight text-slate-900 leading-none">LENKA STUDIO</h1>
+            <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-slate-400">EXECUTIVE CONTROL TERMINAL</span>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
+          <button onclick="switchTab('inventory')" id="tabBtn-inventory" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+            <span>All Products</span>
+          </button>
+
+          <button onclick="switchTab('add-product')" id="tabBtn-add-product" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
             <span>Add New Product</span>
           </button>
-        </div>
-      </div>
 
-      <!-- PRODUCTS GRID -->
-      <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <p class="col-span-full text-xs text-slate-400 text-center py-16">Loading live inventory from Cloud Firestore...</p>
-      </div>
-    </div>
-
-    <!-- TAB 2: SEPARATE BOX / PAGE FOR ADDING PRODUCTS -->
-    <div id="section-add-product" class="hidden space-y-6">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-200">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Publish New Product</h2>
-          <p class="text-xs text-slate-500">Add an atelier collection item directly into Cloud Firestore</p>
-        </div>
-        <button onclick="switchTab('inventory')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-          <span>Back to Catalog</span>
-        </button>
-      </div>
-
-      <div class="max-w-2xl mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
-        <form id="productPublishForm" onsubmit="handlePublishProduct(event)" class="space-y-4">
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLLECTION / CATEGORY</label>
-            <select id="fieldCategory" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-black">
-              <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
-              <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
-              <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">PRODUCT TITLE</label>
-            <input type="text" id="fieldTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-
-          <div class="grid grid-cols-3 gap-3">
-            <div>
-              <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">ORIGINAL (₹)</label>
-              <input type="number" id="fieldOriginalPrice" placeholder="4999" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-            </div>
-            <div>
-              <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">OFFER (₹)</label>
-              <input type="number" id="fieldOfferPrice" placeholder="2499" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-            </div>
-            <div>
-              <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BADGE TAG</label>
-              <input type="text" id="fieldDiscountTag" placeholder="50% OFF" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-            </div>
-          </div>
-
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">IMAGE URL</label>
-            <input type="text" id="fieldImageUrl" placeholder="https://images.unsplash.com/photo-..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLOR VARIANTS</label>
-            <input type="text" id="fieldVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">DESCRIPTION & SPECS</label>
-            <textarea id="fieldDescription" rows="3" placeholder="Features, noise cancellation, battery capacity..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
-          </div>
-
-          <button type="submit" id="publishBtn" class="w-full py-4 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2">
-            <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-            <span>PUBLISH PRODUCT TO LIVE STORE</span>
+          <button onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+            <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+            <span>Consignments</span>
           </button>
-        </form>
-      </div>
-    </div>
 
-    <!-- TAB 3: CONSIGNMENT ORDERS WITH STATUS UPDATE & DELETE ORDER -->
-    <div id="section-orders" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Consignment Orders & Dispatch Portal</h2>
-          <p class="text-xs text-slate-500">Update tracking stages or permanently delete individual customer orders</p>
+          <button onclick="switchTab('users')" id="tabBtn-users" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+            <i data-lucide="users" class="w-3.5 h-3.5"></i>
+            <span>Client Directory</span>
+          </button>
+
+          <button onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+            <span>Inquiries</span>
+          </button>
+
+          <button onclick="lockStudioTerminal()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0">
+            <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+            <span>Lock Terminal</span>
+          </button>
         </div>
-        <button onclick="exportOrdersCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Export Manifest (CSV)</span>
-        </button>
-      </div>
 
-      <div id="ordersContainer" class="space-y-4">
-        <p class="text-xs text-slate-400 text-center py-12">Loading client consignments...</p>
       </div>
-    </div>
+    </header>
 
-    <!-- TAB 4: REGISTERED CLIENT DIRECTORY -->
-    <div id="section-users" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Verified Client Directory</h2>
-          <p class="text-xs text-slate-500">Registered profiles and DPDP Act compliance audit records</p>
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+      <!-- METRICS OVERVIEW STRIP -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">ACTIVE INVENTORY</span>
+          <h3 id="statTotalProducts" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
+          <p class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Cloud Synced</p>
         </div>
-        <button onclick="exportClientsCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Export Clients (CSV)</span>
-        </button>
-      </div>
-
-      <div id="clientsContainer" class="space-y-3">
-        <p class="text-xs text-slate-400 text-center py-12">Loading customer accounts...</p>
-      </div>
-    </div>
-
-    <!-- TAB 5: CLIENT FEEDBACK & INQUIRIES -->
-    <div id="section-feedback" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Client Feedback & Support Inbox</h2>
-          <p class="text-xs text-slate-500">Review feedback submissions and respond directly via WhatsApp</p>
+        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">TOTAL CONSIGNMENTS</span>
+          <h3 id="statTotalOrders" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
+          <p class="text-[11px] text-slate-500">Live Orders in DB</p>
         </div>
-        <button onclick="exportFeedbackCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>Export Feedbacks (CSV)</span>
-        </button>
+        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">GROSS BOOKINGS</span>
+          <h3 id="statTotalValuation" class="font-serif text-3xl text-slate-900 font-bold">₹0</h3>
+          <p class="text-[11px] text-slate-500">Valuation Recorded</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">INQUIRIES LOGGED</span>
+          <h3 id="statTotalFeedbacks" class="font-serif text-3xl text-slate-900 font-bold">0</h3>
+          <p class="text-[11px] text-amber-600 font-semibold">Customer Reviews</p>
+        </div>
       </div>
 
-      <div id="feedbacksContainer" class="space-y-4">
-        <p class="text-xs text-slate-400 text-center py-12">Loading client feedbacks...</p>
+      <!-- TAB 1: ALL PRODUCTS VIEW (MAIN INVENTORY) -->
+      <div id="section-inventory" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Live Inventory Catalog</h2>
+            <p class="text-xs text-slate-500">All products currently active and visible on Lenka Stores</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="inventoryCountBadge" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-200/80 text-slate-700">0 Products Total</span>
+            <button onclick="switchTab('add-product')" class="px-4 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+              <i data-lucide="plus" class="w-4 h-4 text-emerald-400"></i>
+              <span>Add New Product</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- PRODUCTS GRID -->
+        <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <p class="col-span-full text-xs text-slate-400 text-center py-16">Loading live inventory from Cloud Firestore...</p>
+        </div>
       </div>
-    </div>
 
-  </main>
+      <!-- TAB 2: SEPARATE BOX / PAGE FOR ADDING PRODUCTS -->
+      <div id="section-add-product" class="hidden space-y-6">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Publish New Product</h2>
+            <p class="text-xs text-slate-500">Add an atelier collection item directly into Cloud Firestore</p>
+          </div>
+          <button onclick="switchTab('inventory')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>Back to Catalog</span>
+          </button>
+        </div>
 
-  <!-- FIREBASE ENGINE SCRIPTS -->
+        <div class="max-w-2xl mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+          <form id="productPublishForm" onsubmit="handlePublishProduct(event)" class="space-y-4">
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLLECTION / CATEGORY</label>
+              <select id="fieldCategory" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-black">
+                <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
+                <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
+                <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">PRODUCT TITLE</label>
+              <input type="text" id="fieldTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">ORIGINAL (₹)</label>
+                <input type="number" id="fieldOriginalPrice" placeholder="4999" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+              </div>
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">OFFER (₹)</label>
+                <input type="number" id="fieldOfferPrice" placeholder="2499" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+              </div>
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BADGE TAG</label>
+                <input type="text" id="fieldDiscountTag" placeholder="50% OFF" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">IMAGE URL</label>
+              <input type="text" id="fieldImageUrl" placeholder="https://images.unsplash.com/photo-..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLOR VARIANTS</label>
+              <input type="text" id="fieldVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">DESCRIPTION & SPECS</label>
+              <textarea id="fieldDescription" rows="3" placeholder="Features, noise cancellation, battery capacity..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
+            </div>
+
+            <button type="submit" id="publishBtn" class="w-full py-4 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              <span>PUBLISH PRODUCT TO LIVE STORE</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 3: CONSIGNMENT ORDERS WITH STATUS UPDATE & DELETE ORDER -->
+      <div id="section-orders" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Consignment Orders & Dispatch Portal</h2>
+            <p class="text-xs text-slate-500">Update tracking stages or permanently delete individual customer orders</p>
+          </div>
+          <button onclick="exportOrdersCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Export Manifest (CSV)</span>
+          </button>
+        </div>
+
+        <div id="ordersContainer" class="space-y-4">
+          <p class="text-xs text-slate-400 text-center py-12">Loading client consignments...</p>
+        </div>
+      </div>
+
+      <!-- TAB 4: REGISTERED CLIENT DIRECTORY -->
+      <div id="section-users" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Verified Client Directory</h2>
+            <p class="text-xs text-slate-500">Registered profiles and DPDP Act compliance audit records</p>
+          </div>
+          <button onclick="exportClientsCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Export Clients (CSV)</span>
+          </button>
+        </div>
+
+        <div id="clientsContainer" class="space-y-3">
+          <p class="text-xs text-slate-400 text-center py-12">Loading customer accounts...</p>
+        </div>
+      </div>
+
+      <!-- TAB 5: CLIENT FEEDBACK & INQUIRIES -->
+      <div id="section-feedback" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Client Feedback & Support Inbox</h2>
+            <p class="text-xs text-slate-500">Review feedback submissions and respond directly via WhatsApp</p>
+          </div>
+          <button onclick="exportFeedbackCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Export Feedbacks (CSV)</span>
+          </button>
+        </div>
+
+        <div id="feedbacksContainer" class="space-y-4">
+          <p class="text-xs text-slate-400 text-center py-12">Loading client feedbacks...</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- FIREBASE ENGINE & LOCK WALL SCRIPTS -->
   <script>
+    // 1. SECURITY LOCK CONTROLLER (Passkey: lenka2026)
+    function checkSecurityAuth() {
+      const isAuth = sessionStorage.getItem('lenka_studio_auth');
+      const lockWall = document.getElementById('securityLockWall');
+      const appContent = document.getElementById('adminAppContent');
+
+      if (isAuth === 'true') {
+        if (lockWall) lockWall.classList.add('hidden');
+        if (appContent) appContent.classList.remove('hidden');
+        initDashboardEngines();
+      } else {
+        if (lockWall) lockWall.classList.remove('hidden');
+        if (appContent) appContent.classList.add('hidden');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function handleSecurityUnlock(e) {
+      e.preventDefault();
+      const pass = document.getElementById('adminPassInput').value.trim();
+      const err = document.getElementById('lockErrorMsg');
+
+      if (pass === 'lenka2026') {
+        sessionStorage.setItem('lenka_studio_auth', 'true');
+        if (err) err.classList.add('hidden');
+        checkSecurityAuth();
+      } else {
+        if (err) err.classList.remove('hidden');
+        document.getElementById('adminPassInput').value = '';
+        document.getElementById('adminPassInput').focus();
+      }
+    }
+
+    function lockStudioTerminal() {
+      sessionStorage.removeItem('lenka_studio_auth');
+      checkSecurityAuth();
+    }
+
+    // 2. FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
       authDomain: "lenkastores-website.firebaseapp.com",
@@ -292,6 +368,12 @@
     let liveOrders = [];
     let liveFeedbacks = [];
 
+    function initDashboardEngines() {
+      initProducts();
+      initOrders();
+      initFeedbacks();
+    }
+
     // TAB CONTROLLER
     function switchTab(tabId) {
       const tabs = ['inventory', 'add-product', 'orders', 'users', 'feedback'];
@@ -309,7 +391,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // 1. ALL PRODUCTS CATALOG
+    // 3. PRODUCTS ENGINE
     function initProducts() {
       const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       if (saved.length > 0) {
@@ -378,7 +460,6 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // 2. ADD PRODUCT FORM HANDLER
     async function handlePublishProduct(e) {
       e.preventDefault();
       const btn = document.getElementById('publishBtn');
@@ -409,7 +490,7 @@
         originalPrice,
         offerPrice,
         discountTag,
-        image: rawImage,
+        image,
         variants,
         description,
         createdAt: timestamp
@@ -449,7 +530,7 @@
       }
     }
 
-    // 3. CONSIGNMENT ORDERS & DELETE ORDER ACTION
+    // 4. CONSIGNMENT ORDERS
     function initOrders() {
       const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       if (saved.length > 0) {
@@ -548,7 +629,6 @@
       }
     }
 
-    // DELETE ORDER FUNCTION
     async function deleteOrderDirect(orderId) {
       if (!confirm(`Are you sure you want to permanently delete Consignment #${orderId}?`)) return;
 
@@ -564,7 +644,7 @@
       }
     }
 
-    // 4. CLIENTS DIRECTORY
+    // 5. CLIENTS DIRECTORY
     function renderClientsDirectory() {
       const container = document.getElementById('clientsContainer');
       if (!container) return;
@@ -614,7 +694,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // 5. FEEDBACK INBOX
+    // 6. FEEDBACK INBOX
     function initFeedbacks() {
       db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
         liveFeedbacks = [];
@@ -701,12 +781,9 @@
       document.body.removeChild(link);
     }
 
-    // BOOTSTRAP TERMINAL
+    // BOOTSTRAP TERMINAL WITH AUTH CHECK
     window.addEventListener('DOMContentLoaded', () => {
-      if (window.lucide) lucide.createIcons();
-      initProducts();
-      initOrders();
-      initFeedbacks();
+      checkSecurityAuth();
     });
   </script>
 </body>
