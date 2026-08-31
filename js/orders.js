@@ -1,37 +1,36 @@
-let pendingOrderData = null;
+let pendingCheckoutData = null;
 
-// STEP 1: CLICK "CONFIRM ORDER" -> OPENS PHONEPE PAYMENT OPTION
+// 1. CONFIRM ORDER BUTTON HANDLER
 function handleConfirmOrderClick() {
-  const cart = window.currentCart || JSON.parse(localStorage.getItem('lenka_cart') || '[]');
+  const cart = window.LenkaApp ? window.LenkaApp.cart : JSON.parse(localStorage.getItem('lenka_cart') || '[]');
   
   if (!cart || cart.length === 0) {
     alert('Your bag is empty.');
     return;
   }
 
-  const profile = window.currentProfile || JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-  if (!profile || !profile.phone) {
-    if (typeof closeCartDrawer === 'function') closeCartDrawer();
+  const profile = window.LenkaApp ? window.LenkaApp.profile : JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+  
+  if (!profile || !profile.phone || !profile.name) {
+    closeCartDrawer();
     if (typeof openProfileDrawer === 'function') openProfileDrawer();
-    alert('Please save your Profile & Shipping Address before confirming.');
+    alert('Please enter and save your Name, Phone Number, and Shipping Address before confirming.');
     return;
   }
 
   const total = cart.reduce((sum, i) => sum + Number(i.offerPrice || 0), 0);
   const summary = cart.map(i => i.title).join(', ');
 
-  pendingOrderData = { total, summary, profile };
+  pendingCheckoutData = { total, summary, profile };
 
-  // Close bag drawer and open PhonePe QR payment modal
-  if (typeof closeCartDrawer === 'function') closeCartDrawer();
+  closeCartDrawer();
   openPhonePeModal(total, summary);
 }
 
-// Global fallback for any legacy proceedToCheckout callers
-window.proceedToCheckout = handleConfirmOrderClick;
 window.handleConfirmOrderClick = handleConfirmOrderClick;
+window.proceedToCheckout = handleConfirmOrderClick;
 
-// STEP 2: OPEN PHONEPE PAYMENT MODAL
+// 2. PHONEPE UPI QR MODAL
 function openPhonePeModal(total, summary) {
   const upiId = "8977627028-2@ybl";
   const payeeName = "LENKA STORES";
@@ -58,28 +57,26 @@ function closePhonePeModal() {
   if (modal) modal.classList.add('hidden');
 }
 
-// STEP 3: CLICK "I HAVE PAID" -> COMMITS ORDER & SHOWS 3D POPUP
+// 3. I HAVE PAID CLICK -> COMMITS TO CLOUD & FIRES 3D OVERLAY
 function confirmPhonePePayment() {
-  if (!pendingOrderData) return;
+  if (!pendingCheckoutData) return;
 
-  const { total, summary, profile } = pendingOrderData;
+  const { total, summary, profile } = pendingCheckoutData;
   closePhonePeModal();
-  finalizeOrder(total, summary, "PhonePe UPI (8977627028-2@ybl)", profile);
-  pendingOrderData = null;
+  finalizeCloudOrder(total, summary, "PhonePe UPI (8977627028-2@ybl)", profile);
+  pendingCheckoutData = null;
 }
 
-// STEP 4: WRITE TO FIRESTORE & TRIGGER 3D OVERLAY
-async function finalizeOrder(total, summary, paymentMethod, profile) {
-  const activeProfile = profile || window.currentProfile || JSON.parse(localStorage.getItem('lenka_profile') || '{}');
+async function finalizeCloudOrder(total, summary, paymentMethod, profile) {
   const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   const orderId = 'LS' + Math.floor(100000 + Math.random() * 900000);
 
   const newOrder = {
     orderId: orderId,
-    customerName: activeProfile.name || 'Client',
-    customerPhone: activeProfile.phone || '',
-    customerAddress: activeProfile.formattedAddress || JSON.stringify(activeProfile.address || ''),
-    customerAvatar: activeProfile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    customerName: profile.name || 'Client',
+    customerPhone: profile.phone || '',
+    customerAddress: profile.formattedAddress || JSON.stringify(profile.address || ''),
+    customerAvatar: profile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
     itemsSummary: summary,
     totalAmount: total,
     paymentMethod: paymentMethod,
@@ -91,41 +88,40 @@ async function finalizeOrder(total, summary, paymentMethod, profile) {
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
-  // 1. Save local backup
+  // Local storage save
   let localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
   localOrders.unshift(newOrder);
   localStorage.setItem('lenka_orders', JSON.stringify(localOrders));
 
-  // 2. Direct Cloud Firestore write
-  if (typeof db !== 'undefined' && db !== null) {
+  // Firebase Cloud write
+  const db = window.LenkaApp ? window.LenkaApp.db : null;
+  if (db) {
     try {
       await db.collection('orders').doc(orderId).set(newOrder);
     } catch (e) {
-      console.warn("Cloud Order Save Error:", e);
+      console.warn("Cloud Order Save Note:", e);
     }
   }
 
-  // 3. Clear Bag
-  window.currentCart = [];
+  // Clear Bag
+  if (window.LenkaApp) window.LenkaApp.cart = [];
   localStorage.setItem('lenka_cart', JSON.stringify([]));
-  if (typeof updateCartUI === 'function') updateCartUI();
+  updateCartUI();
 
-  // 4. TRIGGER 3D SUCCESS POPUP
+  // Trigger 3D Luxury Success Celebration
   if (typeof window.showOrderSuccess === 'function') {
     window.showOrderSuccess(orderId);
   } else {
-    // Fallback if 3D overlay module has not loaded yet
     const legacyModal = document.getElementById('orderSuccessModal');
     const legacyOrderId = document.getElementById('successOrderIdDisplay');
     if (legacyOrderId) legacyOrderId.innerText = `#${orderId}`;
     if (legacyModal) legacyModal.classList.remove('hidden');
   }
 
-  // 5. WhatsApp notification with a 2.5s delay so the 3D animation plays first
+  // Send WhatsApp Broadcast with slight delay so animation plays first
   sendWhatsAppOrderConfirmation(newOrder);
 }
 
-// WHATSAPP NOTIFICATION
 function sendWhatsAppOrderConfirmation(order) {
   const storeOwnerPhone = "918977627028";
   const msg = `*🛍️ NEW ORDER RECEIVED — LENKA STORES*%0A` +
@@ -139,15 +135,15 @@ function sendWhatsAppOrderConfirmation(order) {
     `*Shipping Address:* ${encodeURIComponent(order.customerAddress)}%0A` +
     `*Booking Date:* ${encodeURIComponent(order.timestamp)}%0A` +
     `================================%0A` +
-    `Manage order in Studio: https://lenkastores.run.place/admin.html`;
+    `Manage consignment in Studio: https://lenkastores.run.place/admin.html`;
 
   const waUrl = `https://wa.me/${storeOwnerPhone}?text=${msg}`;
   setTimeout(() => {
     window.open(waUrl, '_blank');
-  }, 2500);
+  }, 2200);
 }
 
-// MODAL CONTROLLERS & TABS
+// ORDERS TRACKING PORTAL
 function openOrdersPageModal() {
   const modal = document.getElementById('ordersPageModal');
   if (modal) modal.classList.remove('hidden');
@@ -157,16 +153,6 @@ function openOrdersPageModal() {
 function closeOrdersPageModal() {
   const modal = document.getElementById('ordersPageModal');
   if (modal) modal.classList.add('hidden');
-}
-
-function closeOrderSuccessOverlay(openOrders) {
-  if (typeof window.destroySuccessOverlay === 'function') {
-    window.destroySuccessOverlay();
-  } else {
-    const overlay = document.getElementById('orderSuccessOverlay');
-    if (overlay) overlay.classList.add('hidden');
-  }
-  if (openOrders) openOrdersPageModal();
 }
 
 function switchOrderTab(tab) {
@@ -184,7 +170,7 @@ function switchOrderTab(tab) {
   });
 
   if (tab === 'confirmed' || tab === 'cancelled') renderOrdersTabs();
-  if (tab === 'favorites' && typeof renderFavoritesTab === 'function') renderFavoritesTab();
+  if (tab === 'favorites') renderFavoritesTab();
   if (window.lucide) lucide.createIcons();
 }
 
@@ -195,7 +181,7 @@ function renderOrdersTabs() {
   confirmedList.innerHTML = '';
   cancelledList.innerHTML = '';
 
-  const profile = window.currentProfile || JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+  const profile = window.LenkaApp ? window.LenkaApp.profile : JSON.parse(localStorage.getItem('lenka_profile') || 'null');
   if (!profile) {
     confirmedList.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">Please set up your profile first to view placed orders.</p>`;
     cancelledList.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">No profile found.</p>`;
@@ -204,7 +190,6 @@ function renderOrdersTabs() {
 
   const allLocal = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
   const myOrders = allLocal.filter(o => o.customerPhone === profile.phone);
-
   const confirmed = myOrders.filter(o => o.status !== 'Cancelled');
   const cancelled = myOrders.filter(o => o.status === 'Cancelled');
 
@@ -221,7 +206,11 @@ function renderOrdersTabs() {
             <span class="text-xs font-mono text-bronze-400 font-semibold">CONSIGNMENT #${ord.orderId}</span>
             <p class="text-[10px] text-slate-500 mt-0.5">Booked on: ${ord.timestamp || ''}</p>
           </div>
-          <span class="text-[10px] px-3 py-1 rounded-full uppercase tracking-wider font-semibold self-start sm:self-auto ${ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30' : 'bg-bronze-400/10 text-bronze-400 border border-bronze-400/30'}">
+          <span class="text-[10px] px-3 py-1 rounded-full uppercase tracking-wider font-semibold self-start sm:self-auto ${
+            ord.status === 'Delivered' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 
+            ord.status === 'Dispatched' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30' : 
+            'bg-bronze-400/10 text-bronze-400 border border-bronze-400/30'
+          }">
             ${ord.status === 'Dispatched' ? 'In Transit' : ord.status}
           </span>
         </div>
@@ -282,6 +271,41 @@ function renderOrdersTabs() {
   if (window.lucide) lucide.createIcons();
 }
 
+function renderFavoritesTab() {
+  const container = document.getElementById('favoritesList');
+  if (!container) return;
+  container.innerHTML = '';
+  const catalog = window.LenkaApp ? window.LenkaApp.catalog : [];
+  const favs = window.LenkaApp ? window.LenkaApp.favorites : [];
+  const favProds = catalog.filter(p => favs.includes(p.id));
+
+  if (favProds.length === 0) {
+    container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 text-xs">No favorites added yet.</div>`;
+    return;
+  }
+  favProds.forEach(prod => {
+    const card = document.createElement('div');
+    card.className = "p-4 rounded-2xl bg-noir-900 fine-border space-y-3 relative flex flex-col justify-between";
+    card.innerHTML = `
+      <div>
+        <div class="relative aspect-square rounded-xl overflow-hidden bg-noir-850 mb-3">
+          <img src="${prod.image}" class="w-full h-full object-cover" />
+          <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-noir-950/80 fine-border cursor-pointer">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 fill-red-500 stroke-red-500"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </button>
+        </div>
+        <h4 class="text-xs text-white font-medium">${prod.title}</h4>
+        <span class="text-xs text-bronze-400 font-serif">₹${prod.offerPrice}</span>
+      </div>
+      <button onclick="addToBag('${prod.id}')" class="w-full py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl uppercase tracking-wider cursor-pointer">
+        Add to Bag
+      </button>
+    `;
+    container.appendChild(card);
+  });
+  if (window.lucide) lucide.createIcons();
+}
+
 async function cancelOrderDirect(orderId) {
   if (confirm(`Cancel Consignment #${orderId}?`)) {
     let local = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
@@ -290,7 +314,8 @@ async function cancelOrderDirect(orderId) {
       local[idx].status = 'Cancelled';
       localStorage.setItem('lenka_orders', JSON.stringify(local));
     }
-    if (typeof db !== 'undefined' && db !== null) {
+    const db = window.LenkaApp ? window.LenkaApp.db : null;
+    if (db) {
       try {
         await db.collection('orders').doc(orderId).update({ status: 'Cancelled' });
       } catch (e) {
@@ -300,3 +325,11 @@ async function cancelOrderDirect(orderId) {
     renderOrdersTabs();
   }
 }
+
+window.openPhonePeModal = openPhonePeModal;
+window.closePhonePeModal = closePhonePeModal;
+window.confirmPhonePePayment = confirmPhonePePayment;
+window.openOrdersPageModal = openOrdersPageModal;
+window.closeOrdersPageModal = closeOrdersPageModal;
+window.switchOrderTab = switchOrderTab;
+window.cancelOrderDirect = cancelOrderDirect;
