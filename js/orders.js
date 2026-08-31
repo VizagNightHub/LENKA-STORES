@@ -1,3 +1,4 @@
+// OPEN / CLOSE MODALS & TABS
 function openOrdersPageModal() {
   document.getElementById('ordersPageModal').classList.remove('hidden');
   switchOrderTab('confirmed');
@@ -26,6 +27,133 @@ function switchOrderTab(tab) {
   if (window.lucide) lucide.createIcons();
 }
 
+// MAIN CHECKOUT FUNCTION WITH RAZORPAY / UPI & WHATSAPP
+async function proceedToCheckout() {
+  if (currentCart.length === 0) {
+    alert('Your bag is empty.');
+    return;
+  }
+  if (!currentProfile || !currentProfile.phone) {
+    closeCartDrawer();
+    openProfileDrawer();
+    alert('Please save your Profile & Shipping Address before confirming.');
+    return;
+  }
+
+  const total = currentCart.reduce((sum, i) => sum + Number(i.offerPrice || 0), 0);
+  const summary = currentCart.map(i => i.title).join(', ');
+
+  // Choose Payment Option
+  const payMode = confirm(
+    `Order Total: ₹${total}\n\nClick "OK" to pay instantly via UPI / Razorpay (Cards/NetBanking)\nClick "Cancel" for Cash on Delivery / Concierge Reservation.`
+  );
+
+  if (payMode && typeof Razorpay !== 'undefined') {
+    // Razorpay Integration Options
+    const options = {
+      key: "rzp_test_YourKeyHere", // Replace with your live Razorpay Key ID
+      amount: total * 100, // Amount in paise
+      currency: "INR",
+      name: "LENKA STORES",
+      description: `Reservation for: ${summary.slice(0, 40)}...`,
+      image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200",
+      prefill: {
+        name: currentProfile.name || '',
+        contact: currentProfile.phone || ''
+      },
+      theme: {
+        color: "#C5A880"
+      },
+      handler: function (response) {
+        finalizeOrder(total, summary, "Prepaid (UPI/Razorpay - Ref: " + response.razorpay_payment_id + ")");
+      },
+      modal: {
+        ondismiss: function() {
+          const retryCod = confirm("Payment cancelled. Would you like to proceed with Cash on Delivery / Concierge Booking instead?");
+          if (retryCod) finalizeOrder(total, summary, "Cash on Delivery");
+        }
+      }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+  } else {
+    // Standard Cash on Delivery / Reservation
+    finalizeOrder(total, summary, "Cash on Delivery / Concierge Booking");
+  }
+}
+
+// FINAL CLOUD ORDER COMMIT & WHATSAPP TRIGGER
+async function finalizeOrder(total, summary, paymentMethod) {
+  const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  const orderId = 'LS' + Math.floor(100000 + Math.random() * 900000);
+
+  const newOrder = {
+    orderId: orderId,
+    customerName: currentProfile.name || 'Customer',
+    customerPhone: currentProfile.phone || '',
+    customerAddress: currentProfile.formattedAddress || JSON.stringify(currentProfile.address || ''),
+    customerAvatar: currentProfile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+    itemsSummary: summary,
+    totalAmount: total,
+    paymentMethod: paymentMethod,
+    status: 'Confirmed',
+    confirmedDate: today,
+    shippingDate: 'Express Scheduled',
+    deliveryDate: 'Est. 2-3 Business Days',
+    timestamp: today,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  // 1. Local backup
+  let localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+  localOrders.unshift(newOrder);
+  localStorage.setItem('lenka_orders', JSON.stringify(localOrders));
+
+  // 2. Direct Cloud Firestore Write (syncs to Hyderabad & Vizag immediately)
+  if (db) {
+    try {
+      await db.collection('orders').doc(orderId).set(newOrder);
+    } catch (e) {
+      console.warn("Cloud Order Save Error:", e);
+    }
+  }
+
+  // 3. Clear Bag
+  currentCart = [];
+  localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
+  updateCartUI();
+  closeCartDrawer();
+
+  // 4. Trigger UI Celebration
+  openOrderSuccessModal(orderId);
+
+  // 5. Open WhatsApp Confirmation Broadcast
+  sendWhatsAppOrderConfirmation(newOrder);
+}
+
+// AUTOMATED WHATSAPP MESSAGE FORMATTER
+function sendWhatsAppOrderConfirmation(order) {
+  const msg = `*LENKA STORES — ORDER CONFIRMED*%0A` +
+    `--------------------------------%0A` +
+    `*Consignment ID:* %23${order.orderId}%0A` +
+    `*Client:* ${order.customerName}%0A` +
+    `*Items:* ${order.itemsSummary}%0A` +
+    `*Total Valuation:* ₹${order.totalAmount}%0A` +
+    `*Payment Mode:* ${order.paymentMethod}%0A` +
+    `*Destination:* ${order.customerAddress}%0A` +
+    `--------------------------------%0A` +
+    `Your express luxury consignment is scheduled for dispatch. Track status live on https://lenkastores.run.place`;
+
+  // Pre-fill WhatsApp message window
+  const cleanPhone = order.customerPhone.replace(/[^0-9]/g, '');
+  const waUrl = `https://wa.me/${cleanPhone}?text=${msg}`;
+  
+  setTimeout(() => {
+    window.open(waUrl, '_blank');
+  }, 1200);
+}
+
+// RENDER ACTIVE / CANCELLED ORDERS
 function renderOrdersTabs() {
   const confirmedList = document.getElementById('confirmedOrdersList');
   const cancelledList = document.getElementById('cancelledOrdersList');
@@ -49,14 +177,7 @@ function renderOrdersTabs() {
     confirmedList.innerHTML = `<p class="text-xs text-slate-500 text-center py-12">No active orders placed under ${currentProfile.phone}.</p>`;
   } else {
     confirmed.forEach(ord => {
-      let pct = '15%';
-      let step1Active = true;
-      let step2Active = ord.status === 'Dispatched' || ord.status === 'Delivered';
-      let step3Active = ord.status === 'Delivered';
-
-      if (ord.status === 'Dispatched') pct = '55%';
-      if (ord.status === 'Delivered') pct = '100%';
-
+      let pct = ord.status === 'Delivered' ? '100%' : ord.status === 'Dispatched' ? '55%' : '15%';
       const card = document.createElement('div');
       card.className = "p-6 rounded-2xl bg-noir-900 fine-border space-y-4 shadow-xl";
       card.innerHTML = `
@@ -70,30 +191,22 @@ function renderOrdersTabs() {
           </span>
         </div>
         <div class="text-sm text-white font-medium">${ord.itemsSummary}</div>
+        <div class="text-[11px] text-slate-400">Payment: <span class="text-bronze-300 font-medium">${ord.paymentMethod || 'Concierge Booking'}</span></div>
         <div class="pt-3 pb-1">
           <div class="relative w-full h-1.5 bg-noir-950 rounded-full overflow-hidden mb-6">
             <div class="h-full bg-gradient-to-r from-bronze-500 via-bronze-400 to-white transition-all duration-700" style="width: ${pct};"></div>
           </div>
           <div class="grid grid-cols-3 text-center relative">
             <div class="space-y-1">
-              <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step1Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                <i data-lucide="check" class="w-4 h-4"></i>
-              </div>
               <span class="text-[10px] uppercase tracking-wider text-slate-200 block font-semibold">1. Confirmed</span>
               <span class="text-[9px] text-slate-500 block">${ord.confirmedDate || ord.timestamp || 'Today'}</span>
             </div>
             <div class="space-y-1">
-              <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step2Active ? 'bg-bronze-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                <i data-lucide="truck" class="w-4 h-4"></i>
-              </div>
-              <span class="text-[10px] uppercase tracking-wider ${step2Active ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
+              <span class="text-[10px] uppercase tracking-wider ${ord.status !== 'Confirmed' ? 'text-slate-200' : 'text-slate-600'} block font-semibold">2. Dispatched</span>
               <span class="text-[9px] text-slate-500 block">${ord.shippingDate || 'Pending'}</span>
             </div>
             <div class="space-y-1">
-              <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ${step3Active ? 'bg-green-400 text-noir-950 active-tracker-glow' : 'bg-noir-950 text-slate-600 fine-border'}">
-                <i data-lucide="package-check" class="w-4 h-4"></i>
-              </div>
-              <span class="text-[10px] uppercase tracking-wider ${step3Active ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
+              <span class="text-[10px] uppercase tracking-wider ${ord.status === 'Delivered' ? 'text-green-400' : 'text-slate-600'} block font-semibold">3. Delivered</span>
               <span class="text-[9px] text-slate-500 block">${ord.deliveryDate || 'Express 48H'}</span>
             </div>
           </div>
@@ -101,7 +214,7 @@ function renderOrdersTabs() {
         <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
           <span>Valuation: <strong class="text-white font-serif text-sm">₹${ord.totalAmount}</strong></span>
           ${ord.status !== 'Delivered' ? `
-            <button onclick="requestCancelOrderDirect('${ord.orderId}')" class="text-xs text-red-400 hover:text-red-300 font-medium px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all cursor-pointer">
+            <button onclick="cancelOrderDirect('${ord.orderId}')" class="text-xs text-red-400 hover:text-red-300 font-medium px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all cursor-pointer">
               Cancel Consignment
             </button>
           ` : ''}
@@ -138,13 +251,11 @@ function renderFavoritesTab() {
   const container = document.getElementById('favoritesList');
   if (!container) return;
   container.innerHTML = '';
-
   const favProds = cloudCatalog.filter(p => favorites.includes(p.id));
   if (favProds.length === 0) {
     container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 text-xs">No favorites added yet.</div>`;
     return;
   }
-
   favProds.forEach(prod => {
     const card = document.createElement('div');
     card.className = "p-4 rounded-2xl bg-noir-900 fine-border space-y-3 relative flex flex-col justify-between";
@@ -153,7 +264,7 @@ function renderFavoritesTab() {
         <div class="relative aspect-square rounded-xl overflow-hidden bg-noir-850 mb-3">
           <img src="${prod.image}" class="w-full h-full object-cover" />
           <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-noir-950/80 fine-border cursor-pointer">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 fill-red-500 stroke-red-500"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <svg viewBox="0 0 24 24" class="w-4 h-4 fill-red-500 stroke-red-500"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           </button>
         </div>
         <h4 class="text-xs text-white font-medium">${prod.title}</h4>
@@ -168,7 +279,7 @@ function renderFavoritesTab() {
   if (window.lucide) lucide.createIcons();
 }
 
-async function requestCancelOrderDirect(orderId) {
+async function cancelOrderDirect(orderId) {
   if (confirm(`Cancel Consignment #${orderId}?`)) {
     let local = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
     const idx = local.findIndex(o => o.orderId === orderId);
@@ -178,8 +289,7 @@ async function requestCancelOrderDirect(orderId) {
     }
     if (db) {
       try {
-        const snap = await db.collection('orders').where('orderId', '==', orderId).get();
-        snap.forEach(d => d.ref.update({ status: 'Cancelled' }));
+        await db.collection('orders').doc(orderId).update({ status: 'Cancelled' });
       } catch (e) {
         console.log(e);
       }
@@ -188,79 +298,18 @@ async function requestCancelOrderDirect(orderId) {
   }
 }
 
-function proceedToCheckout() {
-  if (currentCart.length === 0) {
-    alert('Your bag is empty.');
-    return;
-  }
-  if (!currentProfile || !currentProfile.phone) {
-    closeCartDrawer();
-    openProfileDrawer();
-    alert('Please save your Profile & Shipping Address before confirming.');
-    return;
-  }
-
-  const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-  const orderId = 'LS' + Math.floor(100000 + Math.random() * 900000);
-  const total = currentCart.reduce((sum, i) => sum + Number(i.offerPrice || 0), 0);
-  const summary = currentCart.map(i => i.title).join(', ');
-
-  const newOrder = {
-    orderId: orderId,
-    customerName: currentProfile.name || 'Customer',
-    customerPhone: currentProfile.phone || '',
-    customerAddress: currentProfile.formattedAddress || JSON.stringify(currentProfile.address || ''),
-    customerAvatar: currentProfile.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
-    itemsSummary: summary,
-    totalAmount: total,
-    status: 'Confirmed',
-    confirmedDate: today,
-    shippingDate: 'Express Scheduled',
-    deliveryDate: 'Est. 2-3 Business Days',
-    timestamp: today
-  };
-
-  let localOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-  localOrders.unshift(newOrder);
-  localStorage.setItem('lenka_orders', JSON.stringify(localOrders));
-
-  if (db) {
-    try {
-      db.collection('orders').add({
-        ...newOrder,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(e => console.warn('Background sync note:', e));
-    } catch (e) {}
-  }
-
-  currentCart = [];
-  localStorage.setItem('lenka_cart', JSON.stringify(currentCart));
-  updateCartUI();
-  closeCartDrawer();
-
-  openOrderSuccessModal(orderId);
-}
-
-function triggerCelebrationBlast() {
-  try {
-    if (typeof confetti === 'function') {
-      confetti({ particleCount: 120, angle: 60, spread: 70, origin: { x: 0, y: 0.65 }, colors: ['#C5A880', '#E2D4C3', '#FFD700', '#FFFFFF', '#A88B63'] });
-      confetti({ particleCount: 120, angle: 120, spread: 70, origin: { x: 1, y: 0.65 }, colors: ['#C5A880', '#E2D4C3', '#FFD700', '#FFFFFF', '#A88B63'] });
-      setTimeout(() => confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 }, colors: ['#FFFFFF', '#C5A880', '#FFD700'] }), 250);
-    }
-  } catch (err) {
-    console.warn(err);
-  }
-}
-
 function openOrderSuccessModal(orderId) {
   document.getElementById('successOrderIdDisplay').innerText = `#${orderId}`;
   document.getElementById('orderSuccessModal').classList.remove('hidden');
-  triggerCelebrationBlast();
+  try {
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+    }
+  } catch (e) {}
   if (window.lucide) lucide.createIcons();
 }
 
-function closeOrderSuccessModal(openOrdersPage) {
+function closeOrderSuccessModal(openOrders) {
   document.getElementById('orderSuccessModal').classList.add('hidden');
-  if (openOrdersPage) openOrdersPageModal();
+  if (openOrders) openOrdersPageModal();
 }
