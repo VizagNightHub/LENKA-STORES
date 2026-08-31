@@ -88,7 +88,7 @@
   </div>
 </div>
 
-<!-- CART DRAWER -->
+<!-- CART DRAWER WITH CONFIRM ORDER BUTTON -->
 <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
   <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
     <div>
@@ -109,11 +109,13 @@
         <span class="text-slate-400">Total Valuation:</span>
         <span id="cartTotalPrice" class="text-xl font-serif text-white font-medium">₹0</span>
       </div>
+      
+      <!-- CONFIRM ORDER BUTTON -->
       <button id="checkoutActionBtn" 
               type="button" 
-              onclick="proceedToCheckout()" 
-              class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] hover:brightness-110 text-noir-950 font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-        <span>Complete Reservation Order</span>
+              onclick="handleConfirmOrderClick()" 
+              class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] hover:brightness-110 text-noir-950 font-bold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <span>CONFIRM ORDER</span>
         <i data-lucide="arrow-right" class="w-4 h-4"></i>
       </button>
     </div>
@@ -268,61 +270,6 @@
         <i data-lucide="log-out" class="w-4 h-4"></i> Logout Account
       </button>
     </div>
-  </div>
-</div>
-
-<!-- FEEDBACK MODAL -->
-<div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
-    <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
-      <i data-lucide="x" class="w-5 h-5"></i>
-    </button>
-    <div class="flex items-center gap-3">
-      <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
-        <i data-lucide="message-square-plus" class="w-5 h-5"></i>
-      </div>
-      <div>
-        <h3 class="font-serif text-xl text-white">Client Feedback & Inquiries</h3>
-        <p class="text-xs text-slate-400">Share your shopping experience or report an issue</p>
-      </div>
-    </div>
-    <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)" class="space-y-4">
-      <div>
-        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Name</label>
-        <input type="text" id="fbName" placeholder="e.g., Sai Vardhan" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
-      </div>
-      <div>
-        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact Number</label>
-        <input type="tel" id="fbPhone" placeholder="+91 98765 43210" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
-      </div>
-      <div>
-        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
-        <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
-      </div>
-      <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-        <span>Submit Feedback</span>
-        <i data-lucide="send" class="w-3.5 h-3.5"></i>
-      </button>
-    </form>
-  </div>
-</div>
-
-<!-- FEEDBACK SUCCESS MODAL -->
-<div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
-    <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
-      <i data-lucide="sparkles" class="w-7 h-7"></i>
-    </div>
-    <div>
-      <h3 class="font-serif text-2xl text-white font-medium">Thank You!</h3>
-      <p class="text-xs text-slate-300 mt-2 leading-relaxed">
-        Thank you for your feedback!<br/>
-        <span class="text-bronze-400 font-serif text-sm">Have a wonderful and pleasant day.</span>
-      </p>
-    </div>
-    <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
-      Continue Shopping
-    </button>
   </div>
 </div>
 
