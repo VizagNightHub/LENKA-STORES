@@ -1,0 +1,47 @@
+<aside class="bg-noir-900 border-b border-white/5 py-2 px-4 text-center text-xs tracking-widest text-slate-400 font-light flex items-center justify-center gap-2">
+  <span class="w-1.5 h-1.5 rounded-full bg-bronze-400 animate-pulse"></span>
+  COMPLIMENTARY CONCIERGE EXPRESS COURIER & TRANSIT INSURANCE ON ALL ORDERS
+</aside>
+
+<header class="sticky top-0 z-40 glass-nav transition-all">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3.5 group">
+      <div class="w-11 h-11 rounded-xl bg-noir-850 fine-border p-1.5 flex items-center justify-center transition-all group-hover:border-bronze-400/60 shadow-lg">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
+          <rect x="2" y="2" width="96" height="96" rx="16" stroke="#C5A880" stroke-width="3" stroke-opacity="0.6"/>
+          <path d="M28 26V72H52" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+          <path d="M72 34C72 29 66 26 56 26C45 26 44 33 44 38C44 54 72 46 72 61C72 68 64 74 52 74C40 74 36 67 36 62" stroke="#C5A880" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <span class="font-serif text-2xl tracking-wider text-white font-medium block">LENKA STORES</span>
+        <span class="text-[9px] uppercase tracking-[0.3em] text-bronze-400 font-light block -mt-1">HAUTE COUTURE & ELECTRONICS</span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-slate-300">
+      <button onclick="filterCategory('all')" class="hover:text-bronze-400 transition-colors">All Ateliers</button>
+      <button onclick="filterCategory('Audio & Wireless Earbuds')" class="hover:text-bronze-400 transition-colors">Audio Earbuds</button>
+      <button onclick="filterCategory('Battery Banks & Power Gear')" class="hover:text-bronze-400 transition-colors">Power Banks</button>
+      <button onclick="filterCategory('Men\'s Apparel & Fashion')" class="hover:text-bronze-400 transition-colors">Men's Fashion</button>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <button onclick="openOrdersPageModal()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2 text-xs text-slate-200 transition-all">
+        <i data-lucide="package" class="w-4 h-4 text-bronze-400"></i>
+        <span class="hidden sm:inline font-medium">My Orders</span>
+      </button>
+
+      <button onclick="openProfileDrawer()" class="px-3 py-1.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 flex items-center gap-2.5 text-xs text-slate-200 transition-all">
+        <img id="navProfileAvatar" src="" class="w-6 h-6 rounded-full object-cover fine-border hidden" />
+        <i id="navProfileIcon" data-lucide="user" class="w-4 h-4 text-bronze-400"></i>
+        <span id="navProfileLabel" class="hidden sm:inline font-medium">Profile</span>
+      </button>
+
+      <button onclick="openCartDrawer()" class="relative p-2.5 rounded-xl bg-noir-850 fine-border hover:border-bronze-400/50 text-slate-200 transition-all">
+        <i data-lucide="shopping-bag" class="w-4 h-4 text-bronze-400"></i>
+        <span id="cartBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-bronze-400 text-noir-950 font-bold text-[10px] flex items-center justify-center">0</span>
+      </button>
+    </div>
+  </div>
+</header>
