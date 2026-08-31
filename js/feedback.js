@@ -1,52 +1,90 @@
-function openFeedbackModal() {
-  if (currentProfile) {
-    document.getElementById('fbName').value = currentProfile.name || '';
-    document.getElementById('fbPhone').value = currentProfile.phone || '';
-  }
-  document.getElementById('feedbackModal').classList.remove('hidden');
-}
+// FEEDBACK & INQUIRIES SUBMISSION ENGINE (DELEGATED & FAIL-SAFE)
 
-function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
-function openFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.remove('hidden'); }
-function closeFeedbackSuccessModal() { document.getElementById('feedbackSuccessModal').classList.add('hidden'); }
-function openDpdpPolicyModal() { document.getElementById('dpdpPolicyModal').classList.remove('hidden'); }
-function closeDpdpPolicyModal() { document.getElementById('dpdpPolicyModal').classList.add('hidden'); }
+async function submitFeedback(event) {
+  if (event) event.preventDefault();
 
-function handleFeedbackSubmit(e) {
-  if (e) e.preventDefault();
-  const name = document.getElementById('fbName').value.trim();
-  const phone = document.getElementById('fbPhone').value.trim();
-  const message = document.getElementById('fbMessage').value.trim();
+  const nameInput = document.getElementById('feedbackName');
+  const phoneInput = document.getElementById('feedbackPhone');
+  const messageInput = document.getElementById('feedbackMessage');
+  const submitBtn = document.getElementById('feedbackSubmitBtn');
 
-  if (!name || !phone || !message) {
-    alert('Please complete all feedback fields.');
+  const name = nameInput ? nameInput.value.trim() : '';
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const message = messageInput ? messageInput.value.trim() : '';
+
+  if (!name) {
+    alert('Please enter your name.');
+    if (nameInput) nameInput.focus();
     return;
   }
 
-  const newFeedback = {
-    feedbackId: 'FB' + Math.floor(10000 + Math.random() * 90000),
+  if (!phone || phone.replace(/[^0-9]/g, '').length < 10) {
+    alert('Please enter a valid 10-digit WhatsApp / Contact number.');
+    if (phoneInput) phoneInput.focus();
+    return;
+  }
+
+  if (!message) {
+    alert('Please enter your feedback or inquiry message.');
+    if (messageInput) messageInput.focus();
+    return;
+  }
+
+  if (submitBtn) {
+    submitBtn.innerText = 'TRANSMITTING INQUIRY...';
+    submitBtn.disabled = true;
+  }
+
+  const feedbackId = 'fb_' + Date.now();
+  const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const feedbackData = {
+    feedbackId: feedbackId,
     name: name,
     phone: phone,
     message: message,
-    timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    timestamp: today,
+    createdAt: new Date().toISOString()
   };
 
-  let localFeedbacks = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-  localFeedbacks.unshift(newFeedback);
-  localStorage.setItem('lenka_feedbacks', JSON.stringify(localFeedbacks));
+  // 1. Local backup
+  let localFbs = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
+  localFbs.unshift(feedbackData);
+  localStorage.setItem('lenka_feedbacks', JSON.stringify(localFbs));
 
-  try {
-    if (db) {
-      db.collection('feedbacks').add({
-        ...newFeedback,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(err => console.warn('Background sync note:', err));
-    }
-  } catch (err) {
-    console.warn('Firebase error bypassed:', err);
-  }
+  // 2. Direct Cloud Firestore write (lenkastores-website)
+  const db = (window.LenkaApp && window.LenkaApp.db) ? window.LenkaApp.db : (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
   
-  document.getElementById('feedbackForm').reset();
-  closeFeedbackModal();
-  openFeedbackSuccessModal();
+  if (db) {
+    try {
+      const firestoreWrite = db.collection('feedbacks').doc(feedbackId).set(feedbackData);
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3500));
+      await Promise.race([firestoreWrite, timeout]).catch(e => console.warn("Cloud feedback write note:", e));
+    } catch (err) {
+      console.warn("Feedback sync note:", err);
+    }
+  }
+
+  // 3. Reset form
+  if (nameInput) nameInput.value = '';
+  if (phoneInput) phoneInput.value = '';
+  if (messageInput) messageInput.value = '';
+
+  if (submitBtn) {
+    submitBtn.innerText = 'SUBMIT INQUIRY';
+    submitBtn.disabled = false;
+  }
+
+  alert(`Thank you, ${name}! Your inquiry has been transmitted to Lenka Studio.`);
 }
+
+// Global Document Delegation to bypass any component loading race condition
+document.addEventListener('click', function(e) {
+  const target = e.target;
+  if (target && (target.id === 'feedbackSubmitBtn' || target.closest('#feedbackSubmitBtn'))) {
+    e.preventDefault();
+    submitFeedback(e);
+  }
+});
+
+window.submitFeedback = submitFeedback;
