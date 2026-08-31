@@ -29,6 +29,7 @@ try {
 
 // REAL-TIME FIRESTORE & LOCAL CATALOG SYNC
 function initCatalogSync() {
+  // 1. Immediately load whatever is stored locally
   const localSaved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
   if (localSaved.length > 0) {
     window.LenkaApp.catalog = localSaved;
@@ -37,6 +38,7 @@ function initCatalogSync() {
     seedDefaultCatalog();
   }
 
+  // 2. Stream real-time changes from Firestore products collection
   if (window.LenkaApp.db) {
     window.LenkaApp.db.collection('products').onSnapshot((snapshot) => {
       if (!snapshot.empty) {
@@ -89,6 +91,7 @@ function seedDefaultCatalog() {
       description: '100% Egyptian Giza combed cotton. Structured cuffs.'
     }
   ];
+  localStorage.setItem('lenka_catalog', JSON.stringify(window.LenkaApp.catalog));
   renderCatalog(window.LenkaApp.activeCategory);
 }
 
@@ -103,7 +106,7 @@ function renderCatalog(filter = 'all') {
     ? window.LenkaApp.catalog 
     : window.LenkaApp.catalog.filter(p => p.category === filter);
 
-  if (items.length === 0) {
+  if (!items || items.length === 0) {
     if (empty) empty.classList.remove('hidden');
   } else {
     if (empty) empty.classList.add('hidden');
@@ -116,7 +119,7 @@ function renderCatalog(filter = 'all') {
           <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
           <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
             <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
           ${prod.discountTag ? `<span class="absolute top-3 left-3 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider">${prod.discountTag}</span>` : ''}
