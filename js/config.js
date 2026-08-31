@@ -110,19 +110,36 @@ function renderCatalog(filter = 'all') {
   } else {
     if (empty) empty.classList.add('hidden');
     items.forEach(prod => {
-      const isFav = (window.LenkaApp.favorites || []).includes(prod.id);
+      const favs = window.LenkaApp.favorites || JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
+      const isFav = favs.includes(prod.id);
+      
       const card = document.createElement('div');
       card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group relative shadow-lg";
       card.innerHTML = `
         <div class="relative overflow-hidden bg-noir-850 aspect-square">
           <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
-          <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          
+          <!-- FAVORITE HEART BUTTON (HIGH CONTRAST & VISIBLE) -->
+          <button onclick="toggleFavorite('${prod.id}', event)" 
+                  type="button"
+                  class="absolute top-3.5 right-3.5 z-20 w-10 h-10 rounded-full bg-noir-950/90 border border-white/20 flex items-center justify-center transition-transform hover:scale-110 shadow-2xl cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" 
+                 width="18" 
+                 height="18" 
+                 fill="${isFav ? '#EF4444' : 'none'}" 
+                 stroke="${isFav ? '#EF4444' : '#FFFFFF'}" 
+                 stroke-width="2" 
+                 stroke-linecap="round" 
+                 stroke-linejoin="round" 
+                 class="transition-colors">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
             </svg>
           </button>
-          ${prod.discountTag ? `<span class="absolute top-3 left-3 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider">${prod.discountTag}</span>` : ''}
+
+          ${prod.discountTag ? `<span class="absolute top-3.5 left-3.5 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full tracking-wider shadow-md">${prod.discountTag}</span>` : ''}
         </div>
+        
         <div class="p-6 flex-1 flex flex-col justify-between">
           <div>
             <span class="text-[10px] text-bronze-400 uppercase tracking-widest font-semibold">${prod.category}</span>
@@ -153,13 +170,22 @@ function filterCategory(cat) {
 }
 
 function toggleFavorite(prodId, event) {
-  if (event) event.stopPropagation();
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  
+  if (!window.LenkaApp.favorites) {
+    window.LenkaApp.favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
+  }
+
   const idx = window.LenkaApp.favorites.indexOf(prodId);
   if (idx === -1) {
     window.LenkaApp.favorites.push(prodId);
   } else {
     window.LenkaApp.favorites.splice(idx, 1);
   }
+  
   localStorage.setItem('lenka_favorites', JSON.stringify(window.LenkaApp.favorites));
   renderCatalog(window.LenkaApp.activeCategory);
 }
