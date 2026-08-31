@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LENKA STUDIO | Executive Control Terminal</title>
   
+  <!-- CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;600;700&display=swap" rel="stylesheet" />
 
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -45,9 +48,11 @@
 
 <body class="font-sans antialiased min-h-screen flex flex-col selection:bg-slate-900 selection:text-white">
 
+  <!-- TOP APP BAR -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
       
+      <!-- Brand & Status -->
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-md">
           <i data-lucide="shield-check" class="w-5 h-5 text-amber-300"></i>
@@ -58,6 +63,7 @@
         </div>
       </div>
 
+      <!-- Navigation Tabs -->
       <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
         <button onclick="switchTab('catalog')" id="tabBtn-catalog" class="px-3 py-1.5 rounded-lg bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
           <i data-lucide="layers" class="w-3.5 h-3.5"></i>
@@ -88,8 +94,10 @@
     </div>
   </header>
 
+  <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
 
+    <!-- METRICS OVERVIEW STRIP -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
       <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1">
         <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">ACTIVE INVENTORY</span>
@@ -113,6 +121,7 @@
       </div>
     </div>
 
+    <!-- TAB 1: PRODUCT CATALOG & PUBLISHING -->
     <div id="section-catalog" class="space-y-6">
       <div class="space-y-1">
         <h2 class="text-2xl font-bold tracking-tight text-slate-900">Product Catalog & Atelier Engine</h2>
@@ -121,6 +130,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
+        <!-- ADD PRODUCT FORM -->
         <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
           <h3 class="text-base font-bold text-slate-900">Add New Product</h3>
 
@@ -176,6 +186,7 @@
           </form>
         </div>
 
+        <!-- LIVE INVENTORY LIST -->
         <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-slate-100">
             <h3 class="text-base font-bold text-slate-900">Live Inventory List</h3>
@@ -189,6 +200,7 @@
       </div>
     </div>
 
+    <!-- TAB 2: CONSIGNMENTS & TRACKING ENGINE -->
     <div id="section-orders" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
         <div>
@@ -206,6 +218,7 @@
       </div>
     </div>
 
+    <!-- TAB 3: REGISTERED CLIENT DIRECTORY -->
     <div id="section-users" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
         <div>
@@ -223,6 +236,7 @@
       </div>
     </div>
 
+    <!-- TAB 4: CLIENT FEEDBACK & INQUIRIES -->
     <div id="section-feedback" class="hidden space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
         <div>
@@ -242,15 +256,16 @@
 
   </main>
 
+  <!-- FIREBASE SCRIPTS -->
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
-      authDomain: "lenkastores-studio.firebaseapp.com",
-      projectId: "lenkastores-studio",
-      storageBucket: "lenkastores-studio.firebasestorage.app",
-      messagingSenderId: "198057972058",
-      appId: "1:198057972058:web:c1e0742dcaa3b476472363",
-      measurementId: "G-S5GNTV03XM"
+      apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
+      authDomain: "lenkastores-website.firebaseapp.com",
+      projectId: "lenkastores-website",
+      storageBucket: "lenkastores-website.firebasestorage.app",
+      messagingSenderId: "17683527030",
+      appId: "1:17683527030:web:b443d717f2c89ee177f657",
+      measurementId: "G-3JT9WKQ318"
     };
 
     if (!firebase.apps.length) {
@@ -347,7 +362,7 @@
       const variantsStr = document.getElementById('fieldVariants').value.trim();
       const description = document.getElementById('fieldDescription').value.trim();
 
-      // Clean image URL from accidental trailing brackets, spaces or quotes
+      // Clean image URL from accidental trailing brackets, quotes, or spaces
       rawImage = rawImage.replace(/[)'"\s]+$/, '');
       if (!rawImage.startsWith('http://') && !rawImage.startsWith('https://')) {
         rawImage = 'https://' + rawImage;
@@ -370,12 +385,12 @@
       };
 
       try {
-        // Immediate local state commit
+        // Immediate local render
         liveProducts.unshift({ id: prodId, ...newProduct });
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
         renderProducts();
 
-        // Cloud write with timeout fallback
+        // Direct Cloud Firestore Write with timeout fallback
         const firestoreWrite = db.collection('products').doc(prodId).set(newProduct);
         const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
         
