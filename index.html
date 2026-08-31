@@ -61,54 +61,57 @@
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
 
-  <!-- ASYNC COMPONENT LOADER & APP BOOTSTRAP -->
+  <!-- ASYNC COMPONENT LOADER & BOOTSTRAP -->
   <script>
     async function loadComponent(elementId, filePath) {
       try {
         const response = await fetch(filePath);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.text();
-        document.getElementById(elementId).innerHTML = data;
+        const container = document.getElementById(elementId);
+        if (container) container.innerHTML = data;
       } catch (err) {
         console.warn(`Error loading component ${filePath}:`, err);
       }
     }
 
-    window.addEventListener('DOMContentLoaded', async () => {
-      await Promise.all([
-        loadComponent('navbar-container', 'components/navbar.html'),
-        loadComponent('hero-container', 'components/hero.html'),
-        loadComponent('catalog-container', 'components/catalog.html'),
-        loadComponent('footer-container', 'components/footer.html'),
-        loadComponent('modals-container', 'components/modals.html')
-      ]);
-
-      if (window.lucide) lucide.createIcons();
-      updateCartUI();
-      checkSavedProfile();
-
-      // Cloud catalog sync
-      if (db) {
-        db.collection('products').onSnapshot((snapshot) => {
-          cloudCatalog = [];
-          snapshot.forEach(doc => cloudCatalog.push({ id: doc.id, ...doc.data() }));
-          if (cloudCatalog.length === 0) {
-            seedInitialProducts();
-          } else {
-            renderCatalog(currentCategoryFilter);
-          }
-        }, () => fallbackLocalCatalog());
-      } else {
-        fallbackLocalCatalog();
-      }
-    });
-
-    function toggleFavorite(prodId, event) {
-      if (event) event.stopPropagation();
-      const index = favorites.indexOf(prodId);
-      if (index === -1) { favorites.push(prodId); } else { favorites.splice(index, 1); }
-      localStorage.setItem('lenka_favorites', JSON.stringify(favorites));
+    function fallbackLocalCatalog() {
+      cloudCatalog = [
+        {
+          id: 'prod_101',
+          category: 'Audio & Wireless Earbuds',
+          title: 'Lenka Horizon ANC Earbuds Pro',
+          originalPrice: 4999,
+          offerPrice: 2499,
+          discountTag: '50% OFF',
+          image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+          variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
+          description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
+        },
+        {
+          id: 'prod_102',
+          category: 'Battery Banks & Power Gear',
+          title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
+          originalPrice: 3999,
+          offerPrice: 1999,
+          discountTag: '50% OFF',
+          image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&auto=format&fit=crop&q=80',
+          variants: ['Matte Carbon', 'Slate Silver'],
+          description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
+        },
+        {
+          id: 'prod_103',
+          category: 'Men\'s Apparel & Fashion',
+          title: 'Lenka Signature Tailored Oxford Shirt',
+          originalPrice: 2999,
+          offerPrice: 1499,
+          discountTag: 'LIMITED EDITION',
+          image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80',
+          variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
+          description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
+        }
+      ];
       renderCatalog(currentCategoryFilter);
-      renderFavoritesTab();
     }
 
     function renderCatalog(filter = 'all') {
@@ -166,6 +169,45 @@
       if (heading) heading.innerText = cat === 'all' ? 'Live Catalog' : cat;
       renderCatalog(cat);
     }
+
+    function toggleFavorite(prodId, event) {
+      if (event) event.stopPropagation();
+      const index = favorites.indexOf(prodId);
+      if (index === -1) { favorites.push(prodId); } else { favorites.splice(index, 1); }
+      localStorage.setItem('lenka_favorites', JSON.stringify(favorites));
+      renderCatalog(currentCategoryFilter);
+      renderFavoritesTab();
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      // 1. Wait for HTML component injection
+      await Promise.all([
+        loadComponent('navbar-container', 'components/navbar.html'),
+        loadComponent('hero-container', 'components/hero.html'),
+        loadComponent('catalog-container', 'components/catalog.html'),
+        loadComponent('footer-container', 'components/footer.html'),
+        loadComponent('modals-container', 'components/modals.html')
+      ]);
+
+      // 2. Initialize icons and stored state
+      if (window.lucide) lucide.createIcons();
+      updateCartUI();
+      checkSavedProfile();
+
+      // 3. Render catalog into injected DOM
+      fallbackLocalCatalog();
+
+      // 4. Connect Firestore listener
+      if (typeof db !== 'undefined' && db !== null) {
+        db.collection('products').onSnapshot((snapshot) => {
+          if (!snapshot.empty) {
+            cloudCatalog = [];
+            snapshot.forEach(doc => cloudCatalog.push({ id: doc.id, ...doc.data() }));
+            renderCatalog(currentCategoryFilter);
+          }
+        }, () => fallbackLocalCatalog());
+      }
+    });
   </script>
 </body>
 </html>
