@@ -8,14 +8,15 @@ window.LenkaApp = {
   activeCategory: 'all'
 };
 
+// UNIFIED FIREBASE CONFIGURATION
 const firebaseConfig = {
-  apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
-  authDomain: "lenkastores-studio.firebaseapp.com",
-  projectId: "lenkastores-studio",
-  storageBucket: "lenkastores-studio.firebasestorage.app",
-  messagingSenderId: "198057972058",
-  appId: "1:198057972058:web:c1e0742dcaa3b476472363",
-  measurementId: "G-S5GNTV03XM"
+  apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
+  authDomain: "lenkastores-website.firebaseapp.com",
+  projectId: "lenkastores-website",
+  storageBucket: "lenkastores-website.firebasestorage.app",
+  messagingSenderId: "17683527030",
+  appId: "1:17683527030:web:b443d717f2c89ee177f657",
+  measurementId: "G-3JT9WKQ318"
 };
 
 try {
@@ -24,12 +25,11 @@ try {
   }
   window.LenkaApp.db = firebase.firestore();
 } catch (err) {
-  console.warn("Firebase Init note:", err);
+  console.warn("Firebase Init Note:", err);
 }
 
 // REAL-TIME FIRESTORE & LOCAL CATALOG SYNC
 function initCatalogSync() {
-  // 1. Immediately load whatever is stored locally
   const localSaved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
   if (localSaved.length > 0) {
     window.LenkaApp.catalog = localSaved;
@@ -38,7 +38,6 @@ function initCatalogSync() {
     seedDefaultCatalog();
   }
 
-  // 2. Stream real-time changes from Firestore products collection
   if (window.LenkaApp.db) {
     window.LenkaApp.db.collection('products').onSnapshot((snapshot) => {
       if (!snapshot.empty) {
