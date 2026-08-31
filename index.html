@@ -6,7 +6,6 @@
   <title>LENKA STORES | Timeless Luxury & Lifestyle</title>
   
   <meta name="description" content="Discover refined electronics, modern gadgets, and couture fashion at LENKA STORES by Lenka Ventures Pvt Ltd." />
-  <meta property="og:title" content="LENKA STORES" />
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
   
@@ -18,8 +17,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
   
-  <!-- MODULAR CSS -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   
   <script>
     tailwind.config = {
@@ -43,26 +45,19 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
-  <!-- DYNAMIC COMPONENT CONTAINERS -->
   <div id="navbar-container"></div>
   <div id="hero-container"></div>
   <div id="catalog-container"></div>
   <div id="footer-container"></div>
   <div id="modals-container"></div>
 
-  <!-- MODULAR JAVASCRIPT FILES -->
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/profile.js"></script>
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
 
-  <!-- ASYNC COMPONENT LOADER & BACKEND CONNECTOR -->
   <script>
-    let cloudCatalog = [];
-    let currentCategoryFilter = 'all';
-    let favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
-
     async function loadComponent(elementId, filePath) {
       try {
         const response = await fetch(filePath);
@@ -75,146 +70,8 @@
       }
     }
 
-    function fallbackLocalCatalog() {
-      cloudCatalog = [
-        {
-          id: 'prod_101',
-          category: 'electronics',
-          categoryName: 'Audio & Wireless Earbuds',
-          title: 'Lenka Horizon ANC Earbuds Pro',
-          originalPrice: 4999,
-          offerPrice: 2499,
-          discountTag: '50% OFF',
-          image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
-          variants: ['Midnight Obsidian', 'Champagne Gold', 'Frost White'],
-          description: 'Active Noise Cancellation up to 40dB, 11mm beryllium drivers, 36h playback.'
-        },
-        {
-          id: 'prod_102',
-          category: 'electronics',
-          categoryName: 'Battery Banks & Power Gear',
-          title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
-          originalPrice: 3999,
-          offerPrice: 1999,
-          discountTag: '50% OFF',
-          image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&auto=format&fit=crop&q=80',
-          variants: ['Matte Carbon', 'Slate Silver'],
-          description: '65W Power Delivery fast charging for laptops and smartphones with digital LED readout.'
-        },
-        {
-          id: 'prod_103',
-          category: 'fashion',
-          categoryName: "Men's Apparel & Fashion",
-          title: 'Lenka Signature Tailored Oxford Shirt',
-          originalPrice: 2999,
-          offerPrice: 1499,
-          discountTag: 'LIMITED EDITION',
-          image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&auto=format&fit=crop&q=80',
-          variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
-          description: '100% Egyptian Giza combed cotton. Structured collar with adjustable folded cuffs.'
-        }
-      ];
-      renderCatalog(currentCategoryFilter);
-    }
-
-    async function fetchBackendCatalog() {
-      try {
-        const response = await fetch(`${CONFIG.API_BASE_URL}/products`);
-        if (!response.ok) throw new Error('Failed to fetch catalog from backend');
-        const data = await response.json();
-
-        if (Array.isArray(data) && data.length > 0) {
-          cloudCatalog = data.map(item => ({
-            id: item.id,
-            category: item.category?.slug || 'general',
-            categoryName: item.category?.name || 'Curated',
-            title: item.name,
-            originalPrice: Number(item.price) * 1.4,
-            offerPrice: Number(item.price),
-            discountTag: 'EXCLUSIVE',
-            image: item.images && item.images.length > 0 ? item.images[0] : 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80',
-            variants: item.variants ? item.variants.map(v => v.color || v.size).filter(Boolean) : [],
-            description: item.description || ''
-          }));
-          renderCatalog(currentCategoryFilter);
-        } else {
-          fallbackLocalCatalog();
-        }
-      } catch (err) {
-        console.warn('[BACKEND OFFLINE] Falling back to local catalog:', err.message);
-        fallbackLocalCatalog();
-      }
-    }
-
-    function renderCatalog(filter = 'all') {
-      currentCategoryFilter = filter;
-      const grid = document.getElementById('productGrid');
-      const empty = document.getElementById('emptyCatalogState');
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      const items = filter === 'all' 
-        ? cloudCatalog 
-        : cloudCatalog.filter(p => p.category === filter || p.categoryName === filter);
-
-      if (items.length === 0) {
-        if (empty) empty.classList.remove('hidden');
-      } else {
-        if (empty) empty.classList.add('hidden');
-        items.forEach(prod => {
-          const isFav = favorites.includes(prod.id);
-          const card = document.createElement('div');
-          card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group relative";
-          card.innerHTML = `
-            <div class="relative overflow-hidden bg-noir-850 aspect-square">
-              <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-              <button onclick="toggleFavorite('${prod.id}', event)" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-noir-950/80 backdrop-blur-md fine-border flex items-center justify-center transition-all hover:scale-110 shadow-lg cursor-pointer">
-                <svg viewBox="0 0 24 24" class="w-4 h-4 ${isFav ? 'fill-red-500 stroke-red-500' : 'stroke-white fill-none'} transition-colors">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-              </button>
-              ${prod.discountTag ? `<span class="absolute top-3 left-3 bg-bronze-400 text-noir-950 text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider">${prod.discountTag}</span>` : ''}
-            </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
-              <div>
-                <span class="text-[10px] text-bronze-400 uppercase tracking-widest font-semibold">${prod.categoryName || prod.category}</span>
-                <h3 class="font-serif text-lg text-white font-medium mt-0.5">${prod.title}</h3>
-                <p class="text-xs text-slate-400 mt-1 line-clamp-2">${prod.description || ''}</p>
-              </div>
-              <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                <div>
-                  <span class="text-xs text-slate-500 line-through mr-1.5">₹${Math.round(prod.originalPrice)}</span>
-                  <span class="text-lg font-serif text-white font-semibold">₹${Math.round(prod.offerPrice)}</span>
-                </div>
-                <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
-                  <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add To Bag
-                </button>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function filterCategory(cat) {
-      const heading = document.getElementById('currentCategoryHeading');
-      if (heading) heading.innerText = cat === 'all' ? 'Live Catalog' : cat.toUpperCase();
-      renderCatalog(cat);
-    }
-
-    function toggleFavorite(prodId, event) {
-      if (event) event.stopPropagation();
-      const index = favorites.indexOf(prodId);
-      if (index === -1) { favorites.push(prodId); } else { favorites.splice(index, 1); }
-      localStorage.setItem('lenka_favorites', JSON.stringify(favorites));
-      renderCatalog(currentCategoryFilter);
-      if (typeof renderFavoritesTab === 'function') renderFavoritesTab();
-    }
-
     window.addEventListener('DOMContentLoaded', async () => {
-      // 1. Wait for HTML component injection
+      // 1. Wait for HTML components to inject into DOM first
       await Promise.all([
         loadComponent('navbar-container', 'components/navbar.html'),
         loadComponent('hero-container', 'components/hero.html'),
@@ -223,13 +80,13 @@
         loadComponent('modals-container', 'components/modals.html')
       ]);
 
-      // 2. Initialize icons and stored state
+      // 2. Initialize UI, saved profiles, and Cart
       if (window.lucide) lucide.createIcons();
-      if (typeof updateCartUI === 'function') updateCartUI();
-      if (typeof checkSavedProfile === 'function') checkSavedProfile();
+      updateCartUI();
+      checkSavedProfile();
 
-      // 3. Fetch live data from shared backend (with automatic local fallback)
-      await fetchBackendCatalog();
+      // 3. Connect real-time catalog sync to the injected catalog container
+      initCatalogSync();
     });
   </script>
 </body>
