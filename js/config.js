@@ -1,25 +1,35 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
-  authDomain: "lenkastores-studio.firebaseapp.com",
-  projectId: "lenkastores-studio",
-  storageBucket: "lenkastores-studio.firebasestorage.app",
-  messagingSenderId: "198057972058",
-  appId: "1:198057972058:web:c1e0742dcaa3b476472363",
-  measurementId: "G-S5GNTV03XM"
-};
-
-let db = null;
-try {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+// REAL-TIME FIRESTORE PRODUCT LISTENER
+function listenToCloudCatalog() {
+  if (!db) {
+    fallbackLocalCatalog();
+    return;
   }
-  db = firebase.firestore();
-} catch (err) {
-  console.warn("Firebase Init note:", err);
-}
 
-let cloudCatalog = [];
-let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
-let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-let favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
-let currentCategoryFilter = 'all';
+  // Real-time listener: triggers whenever admin.html publishes or updates a product
+  db.collection('products').onSnapshot((snapshot) => {
+    if (!snapshot.empty) {
+      cloudCatalog = [];
+      snapshot.forEach(doc => {
+        cloudCatalog.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+      // Save locally as backup and re-render grid
+      localStorage.setItem('lenka_catalog', JSON.stringify(cloudCatalog));
+      renderCatalog(currentCategoryFilter);
+    } else {
+      // If database has 0 products, seed defaults
+      fallbackLocalCatalog();
+    }
+  }, (error) => {
+    console.warn("Firestore live sync error, loading local catalog:", error);
+    const local = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    if (local.length > 0) {
+      cloudCatalog = local;
+      renderCatalog(currentCategoryFilter);
+    } else {
+      fallbackLocalCatalog();
+    }
+  });
+}
