@@ -1,34 +1,41 @@
-<!-- CELEBRATION MODAL -->
-<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-6 border-bronze-400/50 relative overflow-hidden">
-    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-bronze-500/20 to-bronze-300/30 fine-border flex items-center justify-center text-bronze-400 shadow-2xl active-tracker-glow">
-      <i data-lucide="sparkles" class="w-10 h-10 text-bronze-400"></i>
+<!-- 3D LUXURY ORDER SUCCESS OVERLAY -->
+<div id="orderSuccessOverlay" 
+     class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300" 
+     role="dialog" 
+     aria-modal="true" 
+     aria-live="polite" 
+     aria-labelledby="successHeadline">
+  
+  <canvas id="orderSuccessCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+  <div id="successCardBox" 
+       class="relative z-10 w-full max-w-[420px] rounded-3xl p-8 text-center fine-glass-box shadow-2xl space-y-6 transform scale-[0.85] opacity-0 transition-all duration-500">
+    
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-noir-950/70 border border-bronze-400/30 backdrop-blur-md">
+      <span class="w-2 h-2 rounded-full bg-bronze-400 animate-ping"></span>
+      <span class="text-[10px] uppercase tracking-[0.25em] text-bronze-300 font-semibold font-sans">RESERVATION CONFIRMED</span>
     </div>
-    <div class="space-y-2">
-      <span class="text-[10px] uppercase tracking-[0.35em] text-bronze-400 font-bold block">RESERVATION SUCCESSFUL</span>
-      <h3 class="text-2xl sm:text-3xl font-serif text-white font-normal leading-tight">
-        Congratulations! <br/>
-        <span class="italic gold-gradient-text font-serif font-medium">Your Order is Confirmed</span>
-      </h3>
-      <p class="text-xs text-slate-300 pt-2 leading-relaxed">
-        Your reservation has been securely logged.<br/>
-        Consignment ID: <strong id="successOrderIdDisplay" class="font-mono text-bronze-400 font-semibold">#LS000000</strong>
-      </p>
-    </div>
-    <div class="p-4 rounded-xl bg-noir-850 fine-border text-xs text-slate-300 space-y-1">
-      <p class="text-white font-medium flex items-center justify-center gap-1.5 text-bronze-300">
-        <i data-lucide="shield-check" class="w-4 h-4 text-bronze-400"></i> Protected under DPDP Act, 2023
-      </p>
-      <p class="text-[11px] text-slate-400">Track real-time delivery status or cancel in your Orders Portal.</p>
-    </div>
-    <div class="flex gap-3">
-      <button onclick="closeOrderSuccessModal(true)" class="flex-1 py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-        <span>Track Order Status</span>
-        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-      </button>
-      <button onclick="closeOrderSuccessModal(false)" class="px-5 py-3.5 bg-noir-850 hover:bg-noir-800 fine-border text-slate-300 text-xs rounded-xl cursor-pointer">
-        Close
-      </button>
+
+    <h2 id="successHeadline" class="font-serif text-2xl sm:text-3xl text-[#F2EFE9] font-normal leading-tight"></h2>
+
+    <div id="successDetails" class="opacity-0 space-y-5 transition-opacity duration-500">
+      <div class="p-3.5 rounded-xl bg-noir-950/60 border border-white/5 space-y-1">
+        <p class="text-[11px] text-slate-400 font-sans tracking-wide">Consignment Tracking Reference</p>
+        <p id="successOrderIdText" class="font-mono text-sm text-bronze-400 font-semibold tracking-wider">#LS000000</p>
+      </div>
+
+      <div class="flex flex-col gap-2.5 pt-2">
+        <button id="successTrackBtn" 
+                onclick="closeOrderSuccessOverlay(true)"
+                class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-sans font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer">
+          Track Your Order
+        </button>
+        <button id="successCloseBtn" 
+                onclick="closeOrderSuccessOverlay(false)"
+                class="w-full py-3 rounded-xl bg-transparent hover:bg-white/5 border border-white/10 text-slate-300 font-sans text-xs uppercase tracking-wider transition-all cursor-pointer">
+          Continue Shopping
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -81,58 +88,71 @@
   </div>
 </div>
 
-<!-- FEEDBACK MODAL -->
-<div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
-    <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
-      <i data-lucide="x" class="w-5 h-5"></i>
-    </button>
-    <div class="flex items-center gap-3">
-      <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
-        <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+<!-- CART DRAWER -->
+<div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
+  <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+    <div>
+      <div class="flex items-center justify-between pb-5 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-bronze-400"></i>
+          <h3 class="font-serif text-xl text-white">Your Atelier Bag</h3>
+        </div>
+        <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
-      <div>
-        <h3 class="font-serif text-xl text-white">Client Feedback & Inquiries</h3>
-        <p class="text-xs text-slate-400">Share your shopping experience or report an issue</p>
-      </div>
+      <div id="cartItemsList" class="mt-6 space-y-4"></div>
     </div>
-    <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)" class="space-y-4">
-      <div>
-        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Name</label>
-        <input type="text" id="fbName" placeholder="e.g., Sai Vardhan" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+
+    <div id="cartSummaryBox" class="pt-6 border-t border-white/10 space-y-4">
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-slate-400">Total Valuation:</span>
+        <span id="cartTotalPrice" class="text-xl font-serif text-white font-medium">₹0</span>
       </div>
-      <div>
-        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact Number</label>
-        <input type="tel" id="fbPhone" placeholder="+91 98765 43210" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
-      </div>
-      <div>
-        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
-        <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
-      </div>
-      <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-        <span>Submit Feedback</span>
-        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+      <button id="checkoutActionBtn" 
+              type="button" 
+              onclick="proceedToCheckout()" 
+              class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] hover:brightness-110 text-noir-950 font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <span>Complete Reservation Order</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
       </button>
-    </form>
+    </div>
   </div>
 </div>
 
-<!-- FEEDBACK SUCCESS MODAL -->
-<div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
-    <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
-      <i data-lucide="sparkles" class="w-7 h-7"></i>
-    </div>
-    <div>
-      <h3 class="font-serif text-2xl text-white font-medium">Thank You!</h3>
-      <p class="text-xs text-slate-300 mt-2 leading-relaxed">
-        Thank you for your feedback!<br/>
-        <span class="text-bronze-400 font-serif text-sm">Have a wonderful and pleasant day.</span>
-      </p>
-    </div>
-    <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
-      Continue Shopping
+<!-- PHONEPE / UPI QR PAYMENT MODAL -->
+<div id="phonePePaymentModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-sm w-full bg-noir-900 fine-border p-6 rounded-2xl shadow-2xl text-center space-y-4 border-bronze-400/40 relative">
+    <button onclick="closePhonePeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+      <i data-lucide="x" class="w-5 h-5"></i>
     </button>
+
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase tracking-[0.25em] text-bronze-400 font-bold block">PHONEPE UPI GATEWAY</span>
+      <h3 class="text-xl font-serif text-white font-medium">Scan & Pay via Any UPI App</h3>
+      <p class="text-xs text-slate-400">PhonePe, Google Pay, Paytm, or BHIM</p>
+    </div>
+
+    <div class="p-3 bg-white rounded-2xl mx-auto w-48 h-48 flex items-center justify-center shadow-lg fine-border">
+      <img id="phonepeQrImage" src="" alt="PhonePe QR Code" class="w-full h-full object-contain" />
+    </div>
+
+    <div class="space-y-1 text-xs">
+      <p class="text-slate-400">Amount Payable: <strong id="phonepeAmountDisplay" class="text-white font-serif text-base">₹0</strong></p>
+      <p class="text-[11px] text-bronze-400 font-mono">UPI ID: 8977627028-2@ybl</p>
+    </div>
+
+    <a id="phonepeDirectPayBtn" href="#" class="w-full py-3 bg-[#5f259f] hover:bg-[#4d1d82] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+      <i data-lucide="smartphone" class="w-4 h-4"></i>
+      <span>Pay Directly on Mobile App</span>
+    </a>
+
+    <div class="pt-2 border-t border-white/10 flex gap-2">
+      <button onclick="confirmPhonePePayment()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer">
+        <i data-lucide="check-circle" class="w-4 h-4"></i>
+        <span>I Have Paid (Complete Order)</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -251,31 +271,58 @@
   </div>
 </div>
 
-<!-- CART DRAWER -->
-<div id="cartDrawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
-  <div class="w-full max-w-md bg-noir-900 h-full border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar">
-    <div>
-      <div class="flex items-center justify-between pb-5 border-b border-white/10">
-        <div class="flex items-center gap-2">
-          <i data-lucide="shopping-bag" class="w-5 h-5 text-bronze-400"></i>
-          <h3 class="font-serif text-xl text-white">Your Atelier Bag</h3>
-        </div>
-        <button onclick="closeCartDrawer()" class="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
+<!-- FEEDBACK MODAL -->
+<div id="feedbackModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-noir-900 fine-border p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 relative">
+    <button onclick="closeFeedbackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <div class="flex items-center gap-3">
+      <div class="p-2.5 rounded-xl bg-bronze-400/10 text-bronze-400 fine-border">
+        <i data-lucide="message-square-plus" class="w-5 h-5"></i>
       </div>
-      <div id="cartItemsList" class="mt-6 space-y-4"></div>
+      <div>
+        <h3 class="font-serif text-xl text-white">Client Feedback & Inquiries</h3>
+        <p class="text-xs text-slate-400">Share your shopping experience or report an issue</p>
+      </div>
     </div>
-    <div id="cartSummaryBox" class="pt-6 border-t border-white/10 space-y-4">
-      <div class="flex justify-between items-center text-sm">
-        <span class="text-slate-400">Total Valuation:</span>
-        <span id="cartTotalPrice" class="text-xl font-serif text-white font-medium">₹0</span>
+    <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)" class="space-y-4">
+      <div>
+        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Name</label>
+        <input type="text" id="fbName" placeholder="e.g., Sai Vardhan" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
       </div>
-      <button type="button" onclick="proceedToCheckout()" class="w-full py-3.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-        <span>Complete Reservation Order</span>
-        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      <div>
+        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Mobile Contact Number</label>
+        <input type="tel" id="fbPhone" placeholder="+91 98765 43210" required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400" />
+      </div>
+      <div>
+        <label class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">Your Message / Feedback</label>
+        <textarea id="fbMessage" rows="4" placeholder="Write your experience, suggestion, or query here..." required class="w-full bg-noir-850 fine-border rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-bronze-400"></textarea>
+      </div>
+      <button type="submit" id="fbSubmitBtn" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        <span>Submit Feedback</span>
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
       </button>
+    </form>
+  </div>
+</div>
+
+<!-- FEEDBACK SUCCESS MODAL -->
+<div id="feedbackSuccessModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-sm w-full bg-noir-900 fine-border p-8 rounded-2xl shadow-2xl text-center space-y-5 border-bronze-400/40">
+    <div class="w-14 h-14 mx-auto rounded-full bg-bronze-400/10 fine-border flex items-center justify-center text-bronze-400 shadow-lg">
+      <i data-lucide="sparkles" class="w-7 h-7"></i>
     </div>
+    <div>
+      <h3 class="font-serif text-2xl text-white font-medium">Thank You!</h3>
+      <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+        Thank you for your feedback!<br/>
+        <span class="text-bronze-400 font-serif text-sm">Have a wonderful and pleasant day.</span>
+      </p>
+    </div>
+    <button onclick="closeFeedbackSuccessModal()" class="w-full py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer">
+      Continue Shopping
+    </button>
   </div>
 </div>
 
@@ -315,45 +362,6 @@
     <div class="pt-3 border-t border-white/10 flex justify-end">
       <button onclick="closeDpdpPolicyModal()" class="px-6 py-2.5 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
         I Understand & Acknowledge
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- PHONEPE / UPI QR PAYMENT MODAL -->
-<div id="phonePePaymentModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-sm w-full bg-noir-900 fine-border p-6 rounded-2xl shadow-2xl text-center space-y-4 border-bronze-400/40 relative">
-    <button onclick="closePhonePeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
-      <i data-lucide="x" class="w-5 h-5"></i>
-    </button>
-
-    <div class="space-y-1">
-      <span class="text-[10px] uppercase tracking-[0.25em] text-bronze-400 font-bold block">PHONEPE UPI GATEWAY</span>
-      <h3 class="text-xl font-serif text-white font-medium">Scan & Pay via Any UPI App</h3>
-      <p class="text-xs text-slate-400">PhonePe, Google Pay, Paytm, or BHIM</p>
-    </div>
-
-    <!-- DYNAMIC QR CODE DISPLAY -->
-    <div class="p-3 bg-white rounded-2xl mx-auto w-48 h-48 flex items-center justify-center shadow-lg fine-border">
-      <img id="phonepeQrImage" src="" alt="PhonePe QR Code" class="w-full h-full object-contain" />
-    </div>
-
-    <div class="space-y-1 text-xs">
-      <p class="text-slate-400">Amount Payable: <strong id="phonepeAmountDisplay" class="text-white font-serif text-base">₹0</strong></p>
-      <p class="text-[11px] text-bronze-400 font-mono">UPI ID: 8977627028-2@ybl</p>
-    </div>
-
-    <!-- MOBILE DIRECT DEEP LINK -->
-    <a id="phonepeDirectPayBtn" href="#" class="w-full py-3 bg-[#5f259f] hover:bg-[#4d1d82] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
-      <i data-lucide="smartphone" class="w-4 h-4"></i>
-      <span>Pay Directly on Mobile App</span>
-    </a>
-
-    <!-- VERIFY & COMPLETE -->
-    <div class="pt-2 border-t border-white/10 flex gap-2">
-      <button onclick="confirmPhonePePayment()" class="w-full py-3 bg-bronze-400 hover:bg-bronze-300 text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer">
-        <i data-lucide="check-circle" class="w-4 h-4"></i>
-        <span>I Have Paid (Complete Order)</span>
       </button>
     </div>
   </div>
