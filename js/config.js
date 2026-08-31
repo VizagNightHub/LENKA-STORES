@@ -1,35 +1,32 @@
-// REAL-TIME FIRESTORE PRODUCT LISTENER
-function listenToCloudCatalog() {
-  if (!db) {
-    fallbackLocalCatalog();
-    return;
+// js/config.js
+const CONFIG = {
+  API_BASE_URL: 'http://localhost:5000/api', // Change to your live backend URL in production
+  STORAGE_KEYS: {
+    AUTH_TOKEN: 'lenka_auth_token',
+    USER_DATA: 'lenka_user_data'
+  }
+};
+
+// Reusable API Request Helper
+async function apiRequest(endpoint, method = 'GET', data = null, requiresAuth = false) {
+  const headers = { 'Content-Type': 'application/json' };
+
+  if (requiresAuth) {
+    const token = localStorage.getItem(CONFIG.STORAGE_KEYS.AUTH_TOKEN);
+    if (token) headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // Real-time listener: triggers whenever admin.html publishes or updates a product
-  db.collection('products').onSnapshot((snapshot) => {
-    if (!snapshot.empty) {
-      cloudCatalog = [];
-      snapshot.forEach(doc => {
-        cloudCatalog.push({
-          id: doc.id,
-          ...doc.data()
-        });
-      });
-      // Save locally as backup and re-render grid
-      localStorage.setItem('lenka_catalog', JSON.stringify(cloudCatalog));
-      renderCatalog(currentCategoryFilter);
-    } else {
-      // If database has 0 products, seed defaults
-      fallbackLocalCatalog();
-    }
-  }, (error) => {
-    console.warn("Firestore live sync error, loading local catalog:", error);
-    const local = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-    if (local.length > 0) {
-      cloudCatalog = local;
-      renderCatalog(currentCategoryFilter);
-    } else {
-      fallbackLocalCatalog();
-    }
-  });
+  const options = {
+    method,
+    headers,
+    ...(data && { body: JSON.stringify(data) })
+  };
+
+  const response = await fetch(`${CONFIG.API_BASE_URL}${endpoint}`, options);
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error || 'Request failed');
+  }
+  return result;
 }
