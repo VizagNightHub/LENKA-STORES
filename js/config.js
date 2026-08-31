@@ -1,3 +1,13 @@
+// GLOBAL APPLICATION STATE ENGINE
+window.LenkaApp = {
+  db: null,
+  catalog: [],
+  cart: JSON.parse(localStorage.getItem('lenka_cart') || '[]'),
+  profile: JSON.parse(localStorage.getItem('lenka_profile') || 'null'),
+  favorites: JSON.parse(localStorage.getItem('lenka_favorites') || '[]'),
+  activeCategory: 'all'
+};
+
 const firebaseConfig = {
   apiKey: "AIzaSyC6A7SleUhcZjt0gMo83XvFCzO-k0_hSTI",
   authDomain: "lenkastores-studio.firebaseapp.com",
@@ -8,52 +18,43 @@ const firebaseConfig = {
   measurementId: "G-S5GNTV03XM"
 };
 
-let db = null;
 try {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-  db = firebase.firestore();
+  window.LenkaApp.db = firebase.firestore();
 } catch (err) {
   console.warn("Firebase Init note:", err);
 }
 
-let cloudCatalog = [];
-let currentCart = JSON.parse(localStorage.getItem('lenka_cart') || '[]');
-let currentProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-let favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
-let currentCategoryFilter = 'all';
-
-// REAL-TIME FIRESTORE & LOCAL STORAGE SYNC
+// REAL-TIME FIRESTORE & LOCAL CATALOG SYNC
 function initCatalogSync() {
-  // 1. Load local catalog immediately for 0-delay display
-  const localCat = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-  if (localCat.length > 0) {
-    cloudCatalog = localCat;
-    renderCatalog(currentCategoryFilter);
+  const localSaved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+  if (localSaved.length > 0) {
+    window.LenkaApp.catalog = localSaved;
+    renderCatalog(window.LenkaApp.activeCategory);
   } else {
-    fallbackDefaultProducts();
+    seedDefaultCatalog();
   }
 
-  // 2. Listen to live cloud updates from Lenka Studio
-  if (db) {
-    db.collection('products').onSnapshot((snapshot) => {
+  if (window.LenkaApp.db) {
+    window.LenkaApp.db.collection('products').onSnapshot((snapshot) => {
       if (!snapshot.empty) {
-        cloudCatalog = [];
+        window.LenkaApp.catalog = [];
         snapshot.forEach(doc => {
-          cloudCatalog.push({ id: doc.id, ...doc.data() });
+          window.LenkaApp.catalog.push({ id: doc.id, ...doc.data() });
         });
-        localStorage.setItem('lenka_catalog', JSON.stringify(cloudCatalog));
-        renderCatalog(currentCategoryFilter);
+        localStorage.setItem('lenka_catalog', JSON.stringify(window.LenkaApp.catalog));
+        renderCatalog(window.LenkaApp.activeCategory);
       }
     }, (err) => {
-      console.warn("Cloud catalog sync note:", err);
+      console.warn("Firestore sync note:", err);
     });
   }
 }
 
-function fallbackDefaultProducts() {
-  cloudCatalog = [
+function seedDefaultCatalog() {
+  window.LenkaApp.catalog = [
     {
       id: 'prod_101',
       category: 'Audio & Wireless Earbuds',
@@ -85,31 +86,31 @@ function fallbackDefaultProducts() {
       discountTag: 'LIMITED EDITION',
       image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800',
       variants: ['Crisp White', 'Pinstripe Navy', 'Charcoal Slate'],
-      description: '100% Egyptian Giza combed cotton.'
+      description: '100% Egyptian Giza combed cotton. Structured cuffs.'
     }
   ];
-  renderCatalog(currentCategoryFilter);
+  renderCatalog(window.LenkaApp.activeCategory);
 }
 
 function renderCatalog(filter = 'all') {
-  currentCategoryFilter = filter;
+  window.LenkaApp.activeCategory = filter;
   const grid = document.getElementById('productGrid');
   const empty = document.getElementById('emptyCatalogState');
   if (!grid) return;
   grid.innerHTML = '';
 
   const items = filter === 'all' 
-    ? cloudCatalog 
-    : cloudCatalog.filter(p => p.category === filter);
+    ? window.LenkaApp.catalog 
+    : window.LenkaApp.catalog.filter(p => p.category === filter);
 
   if (items.length === 0) {
     if (empty) empty.classList.remove('hidden');
   } else {
     if (empty) empty.classList.add('hidden');
     items.forEach(prod => {
-      const isFav = favorites.includes(prod.id);
+      const isFav = (window.LenkaApp.favorites || []).includes(prod.id);
       const card = document.createElement('div');
-      card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group relative";
+      card.className = "bg-noir-900 fine-border rounded-2xl overflow-hidden hover:border-bronze-400/40 transition-all flex flex-col justify-between group relative shadow-lg";
       card.innerHTML = `
         <div class="relative overflow-hidden bg-noir-850 aspect-square">
           <img src="${prod.image}" alt="${prod.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
@@ -131,7 +132,7 @@ function renderCatalog(filter = 'all') {
               <span class="text-xs text-slate-500 line-through mr-1.5">₹${prod.originalPrice}</span>
               <span class="text-lg font-serif text-white font-semibold">₹${prod.offerPrice}</span>
             </div>
-            <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
+            <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-bold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer active:scale-95">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add To Bag
             </button>
           </div>
@@ -151,9 +152,17 @@ function filterCategory(cat) {
 
 function toggleFavorite(prodId, event) {
   if (event) event.stopPropagation();
-  const index = favorites.indexOf(prodId);
-  if (index === -1) { favorites.push(prodId); } else { favorites.splice(index, 1); }
-  localStorage.setItem('lenka_favorites', JSON.stringify(favorites));
-  renderCatalog(currentCategoryFilter);
-  renderFavoritesTab();
+  const idx = window.LenkaApp.favorites.indexOf(prodId);
+  if (idx === -1) {
+    window.LenkaApp.favorites.push(prodId);
+  } else {
+    window.LenkaApp.favorites.splice(idx, 1);
+  }
+  localStorage.setItem('lenka_favorites', JSON.stringify(window.LenkaApp.favorites));
+  renderCatalog(window.LenkaApp.activeCategory);
 }
+
+window.initCatalogSync = initCatalogSync;
+window.renderCatalog = renderCatalog;
+window.filterCategory = filterCategory;
+window.toggleFavorite = toggleFavorite;
