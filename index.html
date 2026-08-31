@@ -20,10 +20,6 @@
   
   <!-- MODULAR CSS -->
   <link rel="stylesheet" href="css/styles.css" />
-
-  <!-- FIREBASE SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   
   <script>
     tailwind.config = {
@@ -61,8 +57,12 @@
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
 
-  <!-- ASYNC COMPONENT LOADER & BOOTSTRAP -->
+  <!-- ASYNC COMPONENT LOADER & BACKEND CONNECTOR -->
   <script>
+    let cloudCatalog = [];
+    let currentCategoryFilter = 'all';
+    let favorites = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
+
     async function loadComponent(elementId, filePath) {
       try {
         const response = await fetch(filePath);
@@ -79,7 +79,8 @@
       cloudCatalog = [
         {
           id: 'prod_101',
-          category: 'Audio & Wireless Earbuds',
+          category: 'electronics',
+          categoryName: 'Audio & Wireless Earbuds',
           title: 'Lenka Horizon ANC Earbuds Pro',
           originalPrice: 4999,
           offerPrice: 2499,
@@ -90,7 +91,8 @@
         },
         {
           id: 'prod_102',
-          category: 'Battery Banks & Power Gear',
+          category: 'electronics',
+          categoryName: 'Battery Banks & Power Gear',
           title: 'Lenka VoltCore 20,000mAh 65W GaN Power Bank',
           originalPrice: 3999,
           offerPrice: 1999,
@@ -101,7 +103,8 @@
         },
         {
           id: 'prod_103',
-          category: 'Men\'s Apparel & Fashion',
+          category: 'fashion',
+          categoryName: "Men's Apparel & Fashion",
           title: 'Lenka Signature Tailored Oxford Shirt',
           originalPrice: 2999,
           offerPrice: 1499,
@@ -114,6 +117,35 @@
       renderCatalog(currentCategoryFilter);
     }
 
+    async function fetchBackendCatalog() {
+      try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/products`);
+        if (!response.ok) throw new Error('Failed to fetch catalog from backend');
+        const data = await response.json();
+
+        if (Array.isArray(data) && data.length > 0) {
+          cloudCatalog = data.map(item => ({
+            id: item.id,
+            category: item.category?.slug || 'general',
+            categoryName: item.category?.name || 'Curated',
+            title: item.name,
+            originalPrice: Number(item.price) * 1.4,
+            offerPrice: Number(item.price),
+            discountTag: 'EXCLUSIVE',
+            image: item.images && item.images.length > 0 ? item.images[0] : 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80',
+            variants: item.variants ? item.variants.map(v => v.color || v.size).filter(Boolean) : [],
+            description: item.description || ''
+          }));
+          renderCatalog(currentCategoryFilter);
+        } else {
+          fallbackLocalCatalog();
+        }
+      } catch (err) {
+        console.warn('[BACKEND OFFLINE] Falling back to local catalog:', err.message);
+        fallbackLocalCatalog();
+      }
+    }
+
     function renderCatalog(filter = 'all') {
       currentCategoryFilter = filter;
       const grid = document.getElementById('productGrid');
@@ -121,7 +153,9 @@
       if (!grid) return;
       grid.innerHTML = '';
 
-      const items = filter === 'all' ? cloudCatalog : cloudCatalog.filter(p => p.category === filter);
+      const items = filter === 'all' 
+        ? cloudCatalog 
+        : cloudCatalog.filter(p => p.category === filter || p.categoryName === filter);
 
       if (items.length === 0) {
         if (empty) empty.classList.remove('hidden');
@@ -143,14 +177,14 @@
             </div>
             <div class="p-6 flex-1 flex flex-col justify-between">
               <div>
-                <span class="text-[10px] text-bronze-400 uppercase tracking-widest font-semibold">${prod.category}</span>
+                <span class="text-[10px] text-bronze-400 uppercase tracking-widest font-semibold">${prod.categoryName || prod.category}</span>
                 <h3 class="font-serif text-lg text-white font-medium mt-0.5">${prod.title}</h3>
                 <p class="text-xs text-slate-400 mt-1 line-clamp-2">${prod.description || ''}</p>
               </div>
               <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
                 <div>
-                  <span class="text-xs text-slate-500 line-through mr-1.5">₹${prod.originalPrice}</span>
-                  <span class="text-lg font-serif text-white font-semibold">₹${prod.offerPrice}</span>
+                  <span class="text-xs text-slate-500 line-through mr-1.5">₹${Math.round(prod.originalPrice)}</span>
+                  <span class="text-lg font-serif text-white font-semibold">₹${Math.round(prod.offerPrice)}</span>
                 </div>
                 <button onclick="addToBag('${prod.id}')" class="px-4 py-2 bg-platinum-100 hover:bg-white text-noir-950 font-semibold text-xs rounded-xl tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-md cursor-pointer">
                   <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add To Bag
@@ -166,7 +200,7 @@
 
     function filterCategory(cat) {
       const heading = document.getElementById('currentCategoryHeading');
-      if (heading) heading.innerText = cat === 'all' ? 'Live Catalog' : cat;
+      if (heading) heading.innerText = cat === 'all' ? 'Live Catalog' : cat.toUpperCase();
       renderCatalog(cat);
     }
 
@@ -176,7 +210,7 @@
       if (index === -1) { favorites.push(prodId); } else { favorites.splice(index, 1); }
       localStorage.setItem('lenka_favorites', JSON.stringify(favorites));
       renderCatalog(currentCategoryFilter);
-      renderFavoritesTab();
+      if (typeof renderFavoritesTab === 'function') renderFavoritesTab();
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -191,22 +225,11 @@
 
       // 2. Initialize icons and stored state
       if (window.lucide) lucide.createIcons();
-      updateCartUI();
-      checkSavedProfile();
+      if (typeof updateCartUI === 'function') updateCartUI();
+      if (typeof checkSavedProfile === 'function') checkSavedProfile();
 
-      // 3. Render catalog into injected DOM
-      fallbackLocalCatalog();
-
-      // 4. Connect Firestore listener
-      if (typeof db !== 'undefined' && db !== null) {
-        db.collection('products').onSnapshot((snapshot) => {
-          if (!snapshot.empty) {
-            cloudCatalog = [];
-            snapshot.forEach(doc => cloudCatalog.push({ id: doc.id, ...doc.data() }));
-            renderCatalog(currentCategoryFilter);
-          }
-        }, () => fallbackLocalCatalog());
-      }
+      // 3. Fetch live data from shared backend (with automatic local fallback)
+      await fetchBackendCatalog();
     });
   </script>
 </body>
