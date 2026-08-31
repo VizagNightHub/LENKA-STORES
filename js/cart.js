@@ -1,10 +1,13 @@
-// CART ENGINE (INTER-MODULE RELIABLE)
+// CART CONTROLLER
 function addToBag(prodId) {
-  const catalog = window.LenkaApp ? window.LenkaApp.catalog : JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+  const catalog = (window.LenkaApp && window.LenkaApp.catalog && window.LenkaApp.catalog.length > 0) 
+    ? window.LenkaApp.catalog 
+    : JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    
   const prod = catalog.find(p => String(p.id) === String(prodId));
   
   if (!prod) {
-    alert("Item details loading, please try again in a second.");
+    alert("Loading catalog, please try again in a moment.");
     return;
   }
 
@@ -20,7 +23,10 @@ function addToBag(prodId) {
 }
 
 function updateCartUI() {
-  const cart = window.LenkaApp ? window.LenkaApp.cart : JSON.parse(localStorage.getItem('lenka_cart') || '[]');
+  const cart = (window.LenkaApp && window.LenkaApp.cart) 
+    ? window.LenkaApp.cart 
+    : JSON.parse(localStorage.getItem('lenka_cart') || '[]');
+    
   const badge = document.getElementById('cartBadge');
   if (badge) badge.innerText = cart.length;
 
@@ -52,7 +58,7 @@ function updateCartUI() {
         <h4 class="text-xs text-white truncate font-medium">${item.title}</h4>
         <span class="text-xs text-bronze-400 font-serif">₹${item.offerPrice}</span>
       </div>
-      <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-red-400 p-1.5 cursor-pointer transition-colors">
+      <button onclick="removeFromCart(${index})" class="text-slate-500 hover:text-red-400 p-1.5 cursor-pointer transition-colors" title="Remove item">
         <i data-lucide="trash-2" class="w-4 h-4"></i>
       </button>
     `;
@@ -76,6 +82,18 @@ function removeFromCart(index) {
   updateCartUI();
 }
 
+// DELETE ALL / CLEAR ENTIRE BAG
+function clearEntireBag() {
+  const cart = (window.LenkaApp && window.LenkaApp.cart) ? window.LenkaApp.cart : [];
+  if (cart.length === 0) return;
+
+  if (confirm("Clear all items from your atelier bag?")) {
+    window.LenkaApp.cart = [];
+    localStorage.setItem('lenka_cart', JSON.stringify([]));
+    updateCartUI();
+  }
+}
+
 function openCartDrawer() {
   const drawer = document.getElementById('cartDrawer');
   if (drawer) drawer.classList.remove('hidden');
@@ -89,5 +107,6 @@ function closeCartDrawer() {
 window.addToBag = addToBag;
 window.updateCartUI = updateCartUI;
 window.removeFromCart = removeFromCart;
+window.clearEntireBag = clearEntireBag;
 window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
