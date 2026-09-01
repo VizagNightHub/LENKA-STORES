@@ -5,17 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LENKA STUDIO | Executive Control Terminal</title>
   
-  <!-- CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -52,84 +49,60 @@
       background-size: 100% 4px;
     }
     .cyber-glow {
-      box-shadow: 0 0 25px rgba(0, 255, 136, 0.25), inset 0 0 15px rgba(0, 255, 136, 0.1);
-    }
-    .touch-sensor-active {
-      background: #00FF88 !important;
-      box-shadow: 0 0 15px #00FF88, 0 0 30px #00FF88 !important;
+      box-shadow: 0 0 35px rgba(0, 255, 136, 0.25), inset 0 0 20px rgba(0, 255, 136, 0.08);
     }
   </style>
 </head>
 
 <body class="font-sans antialiased min-h-screen flex flex-col selection:bg-slate-900 selection:text-white">
 
-  <!-- ==================== 3D CYBER HACKER SECURITY WALL ==================== -->
   <div id="securityLockWall" class="fixed inset-0 z-50 bg-[#030706] text-[#00FF88] flex items-center justify-center p-4 overflow-hidden select-none font-mono">
     
     <canvas id="cyber3dCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-60"></canvas>
     <div class="absolute inset-0 scanline pointer-events-none z-10"></div>
 
-    <div class="relative z-20 max-w-lg w-full bg-[#05110B]/90 border-2 border-[#00FF88]/50 rounded-3xl p-6 sm:p-8 cyber-glow backdrop-blur-xl flex gap-6 items-stretch">
+    <div class="relative z-20 max-w-md w-full bg-[#05110B]/90 border-2 border-[#00FF88]/50 rounded-3xl p-7 sm:p-8 cyber-glow backdrop-blur-xl space-y-6">
       
-      <!-- LEFT TOUCH SENSOR STRIP -->
-      <div class="flex flex-col justify-between items-center py-2 pr-4 border-r border-[#00FF88]/30">
-        <span class="text-[8px] tracking-[0.3em] uppercase rotate-180 [writing-mode:vertical-lr] text-[#00FF88]/70">BIOMETRIC SENSORS</span>
-        <div class="flex flex-col gap-3 my-auto">
-          <button type="button" onclick="triggerSensor(1)" id="sensor-1" class="w-2.5 h-16 rounded-full bg-[#00FF88]/20 border border-[#00FF88]/40 hover:bg-[#00FF88]/60 transition-all cursor-pointer" title="Alpha Sensor Line"></button>
-          <button type="button" onclick="triggerSensor(2)" id="sensor-2" class="w-2.5 h-16 rounded-full bg-[#00FF88]/20 border border-[#00FF88]/40 hover:bg-[#00FF88]/60 transition-all cursor-pointer" title="Beta Sensor Line"></button>
-          <button type="button" onclick="triggerSensor(3)" id="sensor-3" class="w-2.5 h-16 rounded-full bg-[#00FF88]/20 border border-[#00FF88]/40 hover:bg-[#00FF88]/60 transition-all cursor-pointer" title="Gamma Sensor Line"></button>
+      <div class="flex items-center justify-between border-b border-[#00FF88]/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#00FF88] animate-ping"></span>
+          <span class="text-xs tracking-widest font-bold">CORE ACCESS GATEWAY</span>
         </div>
-        <i data-lucide="fingerprint" class="w-5 h-5 text-[#00FF88] animate-pulse"></i>
+        <span class="text-[9px] text-[#00FF88]/60 uppercase">SYS_VER 4.2.6</span>
       </div>
 
-      <!-- MAIN ACCESS DECK -->
-      <div class="flex-1 space-y-5">
-        <div class="flex items-center justify-between border-b border-[#00FF88]/30 pb-3">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#00FF88] animate-ping"></span>
-            <span class="text-xs tracking-widest font-bold">CORE ACCESS GATEWAY</span>
+      <div class="space-y-1">
+        <h2 class="text-xl font-bold tracking-wider text-white">LENKA CYBER CORE</h2>
+        <p class="text-[11px] text-[#00FF88]/70 leading-tight">Enter your master passkey to unlock administrative terminal.</p>
+      </div>
+
+      <form onsubmit="handleSecurityUnlock(event)" class="space-y-4">
+        <div class="space-y-1 text-left">
+          <label class="text-[10px] uppercase tracking-wider text-[#00FF88]/80 block">ADMIN ROOT PASSKEY</label>
+          <div class="relative">
+            <input type="password" id="adminPassInput" placeholder="Enter root passkey" required class="w-full bg-[#020905] border border-[#00FF88]/40 rounded-xl px-4 py-3 text-xs text-[#00FF88] placeholder-[#00FF88]/30 focus:outline-none focus:border-[#00FF88] focus:ring-1 focus:ring-[#00FF88]" />
+            <i data-lucide="terminal" class="w-4 h-4 text-[#00FF88]/40 absolute right-3.5 top-3.5"></i>
           </div>
-          <span class="text-[9px] text-[#00FF88]/60 uppercase">SYS_VER 4.2.6</span>
         </div>
 
-        <div class="space-y-1">
-          <h2 class="text-xl font-bold tracking-wider text-white">LENKA CYBER CORE</h2>
-          <p class="text-[11px] text-[#00FF88]/70 leading-tight">Touch all 3 sensor lines on the left or enter passkey to bypass encryption.</p>
-        </div>
+        <p id="lockErrorMsg" class="text-[11px] text-red-400 font-bold hidden flex items-center gap-1.5">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> ACCESS DENIED: Invalid administrative root key.
+        </p>
 
-        <form onsubmit="handleSecurityUnlock(event)" class="space-y-4">
-          <div class="space-y-1 text-left">
-            <div class="flex justify-between text-[10px] uppercase tracking-wider text-[#00FF88]/80">
-              <span>ADMIN ROOT PASSKEY</span>
-              <span id="sensorStatusText" class="text-amber-400">Sensors: 0/3</span>
-            </div>
-            <div class="relative">
-              <input type="password" id="adminPassInput" placeholder="root@passkey" required class="w-full bg-[#020905] border border-[#00FF88]/40 rounded-xl px-4 py-3 text-xs text-[#00FF88] placeholder-[#00FF88]/30 focus:outline-none focus:border-[#00FF88] focus:ring-1 focus:ring-[#00FF88]" />
-              <i data-lucide="terminal" class="w-4 h-4 text-[#00FF88]/40 absolute right-3.5 top-3.5"></i>
-            </div>
-          </div>
+        <button type="submit" class="w-full py-3.5 bg-[#00FF88] hover:bg-[#00cc6a] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_#00FF88] cursor-pointer flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>INITIALIZE NEURAL UNLOCK</span>
+        </button>
+      </form>
 
-          <p id="lockErrorMsg" class="text-[11px] text-red-400 font-bold hidden flex items-center gap-1.5">
-            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> ACCESS DENIED: Invalid administrative root key.
-          </p>
-
-          <button type="submit" class="w-full py-3.5 bg-[#00FF88] hover:bg-[#00cc6a] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_#00FF88] cursor-pointer flex items-center justify-center gap-2">
-            <i data-lucide="shield-check" class="w-4 h-4"></i>
-            <span>INITIALIZE NEURAL UNLOCK</span>
-          </button>
-        </form>
-
-        <div class="text-[9px] text-[#00FF88]/40 text-center tracking-widest">
-          ENC: 4096-BIT RSA • FIREBASE CLOUD NODE ACTIVE
-        </div>
+      <div class="text-[9px] text-[#00FF88]/40 text-center tracking-widest">
+        ENC: 4096-BIT RSA • FIREBASE CLOUD NODE ACTIVE
       </div>
     </div>
   </div>
 
-  <!-- ==================== EXECUTIVE DASHBOARD ==================== -->
   <div id="adminAppContent" class="hidden flex-col min-h-screen">
     
-    <!-- TOP APP BAR -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
         
@@ -178,10 +151,8 @@
       </div>
     </header>
 
-    <!-- MAIN DASHBOARD CONTENT -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
 
-      <!-- ==================== TAB 1: ALL PRODUCTS VIEW ==================== -->
       <div id="section-inventory" class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -202,7 +173,6 @@
         </div>
       </div>
 
-      <!-- ==================== TAB 2: DEDICATED ADD PRODUCT BOX ==================== -->
       <div id="section-add-product" class="hidden space-y-6">
         <div class="flex items-center justify-between pb-2 border-b border-slate-200">
           <div>
@@ -274,7 +244,6 @@
         </div>
       </div>
 
-      <!-- ==================== TAB 3: ORDER STATUS SLOTS ==================== -->
       <div id="section-orders" class="space-y-6">
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
@@ -288,7 +257,6 @@
           </button>
         </div>
 
-        <!-- STAGE BREAKDOWN BOXES -->
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
           <button onclick="filterOrderStage('all')" id="stageBtn-all" class="p-3.5 rounded-xl bg-black text-white text-left transition-all shadow-sm">
             <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Orders</span>
@@ -317,7 +285,6 @@
         </div>
       </div>
 
-      <!-- ==================== TAB 4: CLIENT DIRECTORY ==================== -->
       <div id="section-users" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -335,7 +302,6 @@
         </div>
       </div>
 
-      <!-- ==================== TAB 5: INQUIRIES & REVIEWS ==================== -->
       <div id="section-feedback" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -356,7 +322,6 @@
     </main>
   </div>
 
-  <!-- ==================== EDIT PRODUCT MODAL ==================== -->
   <div id="editProductModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="max-w-2xl w-full bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 my-8">
       
@@ -435,10 +400,8 @@
     </div>
   </div>
 
-  <!-- SCRIPTS & ENGINES -->
   <script>
-    // ==================== 1. 3D CYBER ENGINE & SENSOR CONTROLLER ====================
-    let activeSensors = { 1: false, 2: false, 3: false };
+    // ==================== 1. 3D CYBER ENGINE ====================
     let cyberScene, cyberCamera, cyberRenderer, cyberRingMesh, cyberAnimId;
 
     function init3dCyberDeck() {
@@ -487,23 +450,6 @@
       });
     }
 
-    function triggerSensor(sensorNum) {
-      activeSensors[sensorNum] = true;
-      const el = document.getElementById(`sensor-${sensorNum}`);
-      if (el) el.classList.add('touch-sensor-active');
-
-      const count = Object.values(activeSensors).filter(Boolean).length;
-      const statusText = document.getElementById('sensorStatusText');
-      if (statusText) statusText.innerText = `Sensors: ${count}/3`;
-
-      if (count === 3) {
-        setTimeout(() => {
-          sessionStorage.setItem('lenka_studio_auth', 'true');
-          checkSecurityAuth();
-        }, 300);
-      }
-    }
-
     function checkSecurityAuth() {
       const isAuth = sessionStorage.getItem('lenka_studio_auth');
       const lockWall = document.getElementById('securityLockWall');
@@ -540,11 +486,6 @@
 
     function lockStudioTerminal() {
       sessionStorage.removeItem('lenka_studio_auth');
-      activeSensors = { 1: false, 2: false, 3: false };
-      [1, 2, 3].forEach(s => {
-        const el = document.getElementById(`sensor-${s}`);
-        if (el) el.classList.remove('touch-sensor-active');
-      });
       checkSecurityAuth();
     }
 
@@ -591,7 +532,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // ==================== 3. PRODUCTS ENGINE (MULTI-IMAGE & EDITING) ====================
+    // ==================== 3. PRODUCTS ENGINE ====================
     function initProducts() {
       const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       if (saved.length > 0) {
@@ -660,13 +601,11 @@
             </div>
             
             <div class="flex items-center gap-1.5">
-              <!-- EDIT PRODUCT BUTTON -->
               <button onclick="openEditProductModal('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer" title="Edit Product">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                 <span>Edit</span>
               </button>
 
-              <!-- DELETE PRODUCT BUTTON -->
               <button onclick="deleteProductDirect('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer" title="Delete Product">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 <span>Delete</span>
@@ -679,7 +618,6 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // ADD NEW PRODUCT HANDLER
     async function handlePublishProduct(e) {
       e.preventDefault();
       const btn = document.getElementById('publishBtn');
@@ -841,7 +779,7 @@
       }
     }
 
-    // ==================== 5. CONSIGNMENT ORDERS (STAGES & DATES) ====================
+    // ==================== 5. CONSIGNMENT ORDERS ====================
     function initOrders() {
       const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       if (saved.length > 0) {
