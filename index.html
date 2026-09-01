@@ -9,19 +9,16 @@
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
   
-  <!-- CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- LUXURY & DISPLAY FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,300;400;500;600;700&family=Inter:wght@200;300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -48,7 +45,6 @@
   </script>
 
   <style>
-    /* 3D OBJECT-IN-LETTER ANIMATIONS */
     .perspective-headline {
       perspective: 1000px;
       transform-style: preserve-3d;
@@ -81,7 +77,6 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
-  <!-- 1. STICKY LUXURY NAVBAR (z-40) -->
   <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <span class="font-anton text-2xl text-white tracking-wider">LENKA STORES</span>
@@ -102,29 +97,22 @@
     </div>
   </header>
 
-  <!-- 2. FULL-VIEWPORT CAROUSEL HERO WITH ADJUSTED SPACING -->
   <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 94vh;">
     <div class="relative w-full h-[94vh] overflow-hidden flex flex-col justify-between">
       
-      <!-- Grain Noise -->
       <div class="absolute inset-0 pointer-events-none" style="z-index: 5; opacity: 0.35; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
 
-      <!-- Top-Left Tag (Adjusted Position So It Doesn't Touch Letters) -->
       <div class="absolute top-4 left-4 sm:top-6 sm:left-8 text-[11px] sm:text-xs font-semibold uppercase text-white/90" style="z-index: 15; letter-spacing: 0.18em;">
         LENKA STORES
       </div>
 
-      <!-- ==================== 3D OBJECT-IN-LETTER HEADLINE (CENTERED) ==================== -->
       <div id="headlineTiltContainer" class="perspective-headline absolute inset-x-0 flex justify-center items-center pointer-events-auto" style="z-index: 8; top: 10%;">
         <div id="headlineInnerGrid" class="flex items-center justify-center gap-1.5 sm:gap-3 px-4 w-full max-w-5xl cursor-crosshair">
           
-          <!-- LETTER 1: 'L' -->
           <div id="letterBox-0" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs>
-                <clipPath id="clip-L">
-                  <text x="50" y="68" class="letter-svg-text" font-size="140">L</text>
-                </clipPath>
+                <clipPath id="clip-L"><text x="50" y="68" class="letter-svg-text" font-size="140">L</text></clipPath>
               </defs>
               <g clip-path="url(#clip-L)">
                 <image href="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" />
@@ -133,13 +121,10 @@
             </svg>
           </div>
 
-          <!-- LETTER 2: 'E' -->
           <div id="letterBox-1" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs>
-                <clipPath id="clip-E">
-                  <text x="50" y="68" class="letter-svg-text" font-size="140">E</text>
-                </clipPath>
+                <clipPath id="clip-E"><text x="50" y="68" class="letter-svg-text" font-size="140">E</text></clipPath>
               </defs>
               <g clip-path="url(#clip-E)">
                 <image href="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -1.4s;" />
@@ -148,13 +133,10 @@
             </svg>
           </div>
 
-          <!-- LETTER 3: 'N' -->
           <div id="letterBox-2" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs>
-                <clipPath id="clip-N">
-                  <text x="50" y="68" class="letter-svg-text" font-size="140">N</text>
-                </clipPath>
+                <clipPath id="clip-N"><text x="50" y="68" class="letter-svg-text" font-size="140">N</text></clipPath>
               </defs>
               <g clip-path="url(#clip-N)">
                 <image href="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -2.8s;" />
@@ -163,13 +145,10 @@
             </svg>
           </div>
 
-          <!-- LETTER 4: 'K' -->
           <div id="letterBox-3" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs>
-                <clipPath id="clip-K">
-                  <text x="50" y="68" class="letter-svg-text" font-size="140">K</text>
-                </clipPath>
+                <clipPath id="clip-K"><text x="50" y="68" class="letter-svg-text" font-size="140">K</text></clipPath>
               </defs>
               <g clip-path="url(#clip-K)">
                 <image href="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -4.2s;" />
@@ -178,13 +157,10 @@
             </svg>
           </div>
 
-          <!-- LETTER 5: 'A' -->
           <div id="letterBox-4" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs>
-                <clipPath id="clip-A">
-                  <text x="50" y="68" class="letter-svg-text" font-size="140">A</text>
-                </clipPath>
+                <clipPath id="clip-A"><text x="50" y="68" class="letter-svg-text" font-size="140">A</text></clipPath>
               </defs>
               <g clip-path="url(#clip-A)">
                 <image href="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -5.6s;" />
@@ -196,30 +172,32 @@
         </div>
       </div>
 
-      <!-- 'GET STARTED' BUTTON (CLEARLY SPACED BELOW 'LENKA') -->
       <div class="absolute inset-x-0 flex justify-center" style="top: 26%; z-index: 20;">
         <button id="heroGetStartedBtn" type="button" onclick="scrollToLiveCatalog()" class="font-anton uppercase rounded-full px-7 py-3 sm:px-11 sm:py-3.5 bg-white cursor-pointer active:scale-95 shadow-[0_10px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105" style="color: #F4845F; letter-spacing: 0.08em; font-size: clamp(12px, 1.8vw, 17px);">
           GET STARTED
         </button>
       </div>
 
-      <!-- 4-Product Carousel Stage -->
       <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 10;">
-        <div id="carouselItem-0" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
-          <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=1000&q=85" alt="Audio Gear" draggable="false" class="w-full h-full object-cover" />
+        
+        <div id="carouselItem-0" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
+          <div id="mediaBox-0" class="w-full h-full"></div>
         </div>
-        <div id="carouselItem-1" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
-          <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1000&q=85" alt="Tailored Apparel" draggable="false" class="w-full h-full object-cover" />
+
+        <div id="carouselItem-1" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
+          <div id="mediaBox-1" class="w-full h-full"></div>
         </div>
-        <div id="carouselItem-2" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
-          <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=1000&q=85" alt="Power Gear" draggable="false" class="w-full h-full object-cover" />
+
+        <div id="carouselItem-2" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
+          <div id="mediaBox-2" class="w-full h-full"></div>
         </div>
-        <div id="carouselItem-3" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
-          <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=1000&q=85" alt="Charging Hub" draggable="false" class="w-full h-full object-cover" />
+
+        <div id="carouselItem-3" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
+          <div id="mediaBox-3" class="w-full h-full"></div>
         </div>
+
       </div>
 
-      <!-- Bottom-Left Navigation Controls -->
       <div class="absolute bottom-5 left-4 sm:bottom-8 sm:left-12 text-white" style="z-index: 25; max-width: 280px;">
         <p class="font-bold uppercase mb-1 text-sm sm:text-base" style="opacity: 0.95; letter-spacing: 0.05em;">
           LENKA STORES
@@ -237,7 +215,6 @@
         </div>
       </div>
 
-      <!-- Bottom-Right EXPLORE Button -->
       <div class="absolute bottom-5 right-4 sm:bottom-8 sm:right-12 text-white" style="z-index: 25;">
         <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white transition-opacity duration-200 hover:opacity-100 cursor-pointer" style="font-size: clamp(20px, 3.5vw, 44px); font-weight: 400; opacity: 0.95; letter-spacing: -0.02em; line-height: 1;">
           <span>EXPLORE</span>
@@ -248,7 +225,6 @@
     </div>
   </section>
 
-  <!-- 3. LIVE ATELIER STOREFRONT CATALOG -->
   <main id="mainStoreCatalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full space-y-8">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
@@ -270,10 +246,8 @@
     </div>
   </main>
 
-  <!-- 4. MODULAR MODALS CONTAINER (z-50) -->
   <div id="modals-container" class="relative z-50"></div>
 
-  <!-- 5. FOOTER & FEEDBACK FORM -->
   <footer class="bg-[#0A0B0D] border-t border-white/10 text-slate-400 py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
@@ -311,7 +285,6 @@
     </div>
   </footer>
 
-  <!-- GLOBAL SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/profile.js"></script>
@@ -319,17 +292,56 @@
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
 
-  <!-- 3D INTERACTIVE HEADLINE & CAROUSEL SCRIPT -->
   <script>
-    const HERO_IMAGES = [
-      { id: 0, bg: '#F4845F' },
-      { id: 1, bg: '#6BBF7A' },
-      { id: 2, bg: '#E882B4' },
-      { id: 3, bg: '#6EB5FF' }
+    let heroMediaSlots = [
+      { id: 0, url: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=1000', bg: '#F4845F' },
+      { id: 1, url: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1000', bg: '#6BBF7A' },
+      { id: 2, url: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=1000', bg: '#E882B4' },
+      { id: 3, url: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=1000', bg: '#6EB5FF' }
     ];
 
     let activeHeroIndex = 0;
     let isHeroAnimating = false;
+
+    function initHeroMediaEngine() {
+      const saved = JSON.parse(localStorage.getItem('lenka_hero_ads') || 'null');
+      if (saved && Array.isArray(saved) && saved.length >= 4) {
+        heroMediaSlots = saved;
+      }
+      renderMediaElements();
+      renderHeroStage();
+
+      if (window.firebase && firebase.apps.length) {
+        firebase.firestore().collection('settings').doc('hero_ads').onSnapshot(doc => {
+          if (doc.exists && Array.isArray(doc.data().media)) {
+            heroMediaSlots = doc.data().media;
+            localStorage.setItem('lenka_hero_ads', JSON.stringify(heroMediaSlots));
+            renderMediaElements();
+            renderHeroStage();
+          }
+        }, err => console.warn(err));
+      }
+    }
+
+    function renderMediaElements() {
+      heroMediaSlots.forEach((slot, idx) => {
+        const box = document.getElementById(`mediaBox-${idx}`);
+        if (!box) return;
+        const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('cloudfront.net');
+
+        if (isVideo) {
+          box.innerHTML = `
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+              <source src="${slot.url}" type="video/mp4" />
+            </video>
+          `;
+        } else {
+          box.innerHTML = `
+            <img src="${slot.url}" alt="Lenka Campaign" draggable="false" class="w-full h-full object-cover" />
+          `;
+        }
+      });
+    }
 
     function applyRoleStyles(itemEl, role, isMobile) {
       if (!itemEl) return;
@@ -381,10 +393,10 @@
       const isMobile = window.innerWidth < 640;
       const heroRoot = document.getElementById('lenkaHeroRoot');
       const getStartedBtn = document.getElementById('heroGetStartedBtn');
-      const activeTheme = HERO_IMAGES[activeHeroIndex];
+      const currentTheme = heroMediaSlots[activeHeroIndex] || heroMediaSlots[0];
 
-      if (heroRoot) heroRoot.style.backgroundColor = activeTheme.bg;
-      if (getStartedBtn) getStartedBtn.style.color = activeTheme.bg;
+      if (heroRoot) heroRoot.style.backgroundColor = currentTheme.bg;
+      if (getStartedBtn) getStartedBtn.style.color = currentTheme.bg;
 
       const roleMap = {};
       roleMap[activeHeroIndex] = 'center';
@@ -417,7 +429,6 @@
 
     function init3DHeadlineEngine() {
       const letters = [0, 1, 2, 3, 4].map(i => document.getElementById(`letterBox-${i}`)).filter(Boolean);
-
       letters.forEach((el, idx) => {
         el.style.opacity = '0';
         el.style.transform = 'rotateY(90deg) translateZ(-40px)';
@@ -435,12 +446,10 @@
       window.addEventListener('mousemove', (e) => {
         if (window.innerWidth < 768 || ticking) return;
         ticking = true;
-
         requestAnimationFrame(() => {
           const { innerWidth, innerHeight } = window;
           const xRatio = (e.clientX / innerWidth) - 0.5;
           const yRatio = (e.clientY / innerHeight) - 0.5;
-
           const tiltX = -yRatio * 14;
           const tiltY = xRatio * 16;
 
@@ -470,7 +479,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
-      renderHeroStage();
+      initHeroMediaEngine();
       init3DHeadlineEngine();
       await loadModals();
       if (window.lucide) lucide.createIcons();
