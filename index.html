@@ -58,7 +58,7 @@
   <div id="footer-container"></div>
   <div id="modals-container"></div>
 
-  <!-- APPLICATION SCRIPTS (GLOBAL EXECUTION) -->
+  <!-- APPLICATION SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/profile.js"></script>
@@ -77,7 +77,6 @@
         if (container) {
           container.innerHTML = data;
           
-          // Re-execute any inline script tags contained in the component
           const scripts = container.querySelectorAll('script');
           scripts.forEach(oldScript => {
             const newScript = document.createElement('script');
