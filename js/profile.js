@@ -394,3 +394,10 @@ window.verifyClientOtp = verifyClientOtp;
 window.resetAuthStep = resetAuthStep;
 
 window.addEventListener('DOMContentLoaded', checkClientSessionOnLoad);
+function clientLogOutSession() {
+  if (!confirm("Are you sure you want to log out of your Lenka Stores account?")) return;
+  localStorage.removeItem('lenka_logged_in_phone');
+  closeProfileDrawer();
+  alert("You have successfully logged out.");
+}
+window.clientLogOutSession = clientLogOutSession;
