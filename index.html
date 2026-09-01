@@ -51,14 +51,164 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
-  <!-- MODULAR UI CONTAINERS -->
-  <div id="navbar-container"></div>
-  <div id="hero-container"></div>
-  <div id="catalog-container"></div>
-  <div id="footer-container"></div>
+  <!-- 1. STICKY LUXURY NAVBAR -->
+  <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="font-anton text-2xl text-white tracking-wider">LENKA STORES</span>
+      <span class="hidden sm:inline-block text-[10px] uppercase font-bold tracking-[0.2em] text-[#C5A880] border-l border-white/20 pl-3">
+        HAUTE COUTURE & ELECTRONICS
+      </span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button onclick="openProfileDrawer()" class="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer" title="Profile Setup">
+        <i data-lucide="user-check" class="w-4 h-4 text-[#C5A880]"></i>
+      </button>
+      <button onclick="openCartDrawer()" class="px-3 py-2 rounded-xl bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg hover:brightness-110 transition-all cursor-pointer">
+        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+        <span>Bag</span>
+        <span id="navCartCount" class="ml-1 bg-noir-950 text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. FULL-VIEWPORT 4-ITEM CAROUSEL HERO INTERFACE -->
+  <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 90vh;">
+    <div class="relative w-full h-[90vh] overflow-hidden">
+      
+      <!-- Grain Noise -->
+      <div class="absolute inset-0 pointer-events-none" style="z-index: 50; opacity: 0.4; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
+
+      <!-- Top-Left Tag -->
+      <div class="absolute top-6 left-4 sm:left-8 text-xs font-semibold uppercase text-white" style="z-index: 60; opacity: 0.9; letter-spacing: 0.18em;">
+        LENKA STORES
+      </div>
+
+      <!-- Giant Ghost Text -->
+      <div class="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none" style="z-index: 2; top: 18%;">
+        <span class="font-anton uppercase text-white" style="font-size: clamp(90px, 28vw, 380px); font-weight: 900; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; opacity: 1;">
+          LENKA
+        </span>
+      </div>
+
+      <!-- 4-Figurine Carousel Layer -->
+      <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 3;">
+        <div id="carouselItem-0" class="absolute" style="aspect-ratio: 0.6 / 1; transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+          <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=1200&q=85" alt="Audio Gear" draggable="false" class="w-full h-full object-contain object-bottom drop-shadow-2xl" />
+        </div>
+        <div id="carouselItem-1" class="absolute" style="aspect-ratio: 0.6 / 1; transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+          <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1200&q=85" alt="Tailored Apparel" draggable="false" class="w-full h-full object-contain object-bottom drop-shadow-2xl" />
+        </div>
+        <div id="carouselItem-2" class="absolute" style="aspect-ratio: 0.6 / 1; transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+          <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=1200&q=85" alt="Power Gear" draggable="false" class="w-full h-full object-contain object-bottom drop-shadow-2xl" />
+        </div>
+        <div id="carouselItem-3" class="absolute" style="aspect-ratio: 0.6 / 1; transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+          <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=1200&q=85" alt="Charging Hub" draggable="false" class="w-full h-full object-contain object-bottom drop-shadow-2xl" />
+        </div>
+      </div>
+
+      <!-- Center Floating GET STARTED Button -->
+      <div class="absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 70;">
+        <button id="heroGetStartedBtn" type="button" onclick="scrollToLiveCatalog()" class="font-anton uppercase rounded-full px-10 py-4 sm:px-14 sm:py-5 bg-white cursor-pointer active:scale-95 shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105" style="color: #F4845F; letter-spacing: 0.05em; font-size: clamp(16px, 2.5vw, 24px);">
+          GET STARTED
+        </button>
+      </div>
+
+      <!-- Bottom-Left Controls -->
+      <div class="absolute bottom-6 left-4 sm:bottom-20 sm:left-24 text-white" style="z-index: 60; max-width: 320px;">
+        <p class="font-bold uppercase mb-2 sm:mb-3 text-base sm:text-[22px]" style="opacity: 0.95; letter-spacing: 0.02em;">
+          LENKA STORES
+        </p>
+        <p class="hidden sm:block text-xs sm:text-sm mb-4 sm:mb-5" style="opacity: 0.85; line-height: 1.6;">
+          Discover fashion and electronics curated for modern living. Premium quality, delivered with care. Explore the collection.
+        </p>
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="navigateHeroCarousel('prev')" aria-label="Previous Item" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white bg-transparent flex items-center justify-center text-white transition-all duration-150 hover:scale-105 hover:bg-white/10 active:scale-95 cursor-pointer">
+            <i data-lucide="arrow-left" class="w-6 h-6"></i>
+          </button>
+          <button type="button" onclick="navigateHeroCarousel('next')" aria-label="Next Item" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white bg-transparent flex items-center justify-center text-white transition-all duration-150 hover:scale-105 hover:bg-white/10 active:scale-95 cursor-pointer">
+            <i data-lucide="arrow-right" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom-Right EXPLORE Button -->
+      <div class="absolute bottom-6 right-4 sm:bottom-20 sm:right-10 text-white" style="z-index: 60;">
+        <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white transition-opacity duration-200 hover:opacity-100 cursor-pointer" style="font-size: clamp(20px, 4vw, 56px); font-weight: 400; opacity: 0.95; letter-spacing: -0.02em; line-height: 1;">
+          <span>EXPLORE</span>
+          <i data-lucide="arrow-right" class="w-6 h-6 sm:w-10 sm:h-10"></i>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. LIVE ATELIER STOREFRONT CATALOG -->
+  <main id="mainStoreCatalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full space-y-8">
+    
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
+      <div>
+        <span class="text-xs uppercase font-bold tracking-[0.2em] text-[#C5A880] block">Curated Luxury</span>
+        <h2 id="currentCategoryHeading" class="font-serif text-3xl sm:text-4xl text-white">Live Catalog</h2>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="filterCategory('all')" class="px-4 py-2 rounded-xl bg-white text-black font-semibold text-xs transition-all shadow-md cursor-pointer">All Items</button>
+        <button onclick="filterCategory('Audio & Wireless Earbuds')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 hover:text-white border border-white/10 text-xs transition-all cursor-pointer">Audio</button>
+        <button onclick="filterCategory('Battery Banks & Power Gear')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 hover:text-white border border-white/10 text-xs transition-all cursor-pointer">Power Gear</button>
+        <button onclick="filterCategory('Men\'s Apparel & Fashion')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 hover:text-white border border-white/10 text-xs transition-all cursor-pointer">Fashion</button>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="emptyCatalogState" class="hidden text-center py-16 space-y-2">
+      <i data-lucide="package-open" class="w-12 h-12 text-slate-500 mx-auto"></i>
+      <p class="text-slate-400 text-sm">No items found in this collection.</p>
+    </div>
+  </main>
+
+  <!-- MODULAR MODALS CONTAINER -->
   <div id="modals-container"></div>
 
-  <!-- APPLICATION SCRIPTS -->
+  <!-- 4. FOOTER & FEEDBACK FORM -->
+  <footer class="bg-[#0A0B0D] border-t border-white/10 text-slate-400 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div class="lg:col-span-5 space-y-4">
+          <span class="font-anton text-2xl text-white tracking-wider">LENKA STORES</span>
+          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Curating high-performance personal audio, GaN rapid power banks, and tailored couture wear by <strong>Lenka Ventures Pvt Ltd</strong>.
+          </p>
+          <div class="pt-2 text-[11px] text-slate-500 space-y-1">
+            <p>📍 KPHB Colony, Hyderabad / Vizag Hub</p>
+            <p>📞 Client Concierge: +91 89776 27028</p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-[#111216] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
+          <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C5A880] block">CLIENT INQUIRIES</span>
+          <h4 class="font-serif text-lg text-white font-medium">Send Feedback or Product Inquiry</h4>
+          <form onsubmit="submitFeedback(event)" class="space-y-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input type="text" id="feedbackName" placeholder="Your Name" required class="w-full bg-[#0A0B0D] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+              <input type="tel" id="feedbackPhone" placeholder="WhatsApp / Phone" required class="w-full bg-[#0A0B0D] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+            </div>
+            <textarea id="feedbackMessage" rows="3" placeholder="Your message..." required class="w-full bg-[#0A0B0D] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#C5A880]"></textarea>
+            <button id="feedbackSubmitBtn" type="submit" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg cursor-pointer">
+              SUBMIT INQUIRY
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <p>© 2026 LENKA STORES. All rights reserved by Lenka Ventures Pvt Ltd.</p>
+        <span onclick="openDpdpPolicyModal()" class="cursor-pointer hover:text-slate-300">Privacy & DPDP Notice</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- GLOBAL SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/profile.js"></script>
@@ -66,46 +216,117 @@
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
 
-  <!-- ASYNC COMPONENT LOADER & BOOTSTRAP -->
+  <!-- CAROUSEL HERO LOGIC & APP BOOTSTRAP -->
   <script>
-    async function loadComponent(elementId, filePath) {
-      try {
-        const response = await fetch(filePath + '?v=' + Date.now());
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.text();
-        const container = document.getElementById(elementId);
-        if (container) {
-          container.innerHTML = data;
-          
-          const scripts = container.querySelectorAll('script');
-          scripts.forEach(oldScript => {
-            const newScript = document.createElement('script');
-            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-            oldScript.parentNode.replaceChild(newScript, oldScript);
-          });
-        }
-      } catch (err) {
-        console.warn(`Error loading component ${filePath}:`, err);
+    const HERO_IMAGES = [
+      { id: 0, bg: '#F4845F' },
+      { id: 1, bg: '#6BBF7A' },
+      { id: 2, bg: '#E882B4' },
+      { id: 3, bg: '#6EB5FF' }
+    ];
+
+    let activeHeroIndex = 0;
+    let isHeroAnimating = false;
+
+    function applyRoleStyles(itemEl, role, isMobile) {
+      if (!itemEl) return;
+      switch(role) {
+        case 'center':
+          itemEl.style.transform = `translateX(-50%) scale(${isMobile ? 1.25 : 1.68})`;
+          itemEl.style.filter = 'blur(0px)';
+          itemEl.style.opacity = '1';
+          itemEl.style.zIndex = '20';
+          itemEl.style.left = '50%';
+          itemEl.style.height = isMobile ? '60%' : '92%';
+          itemEl.style.bottom = isMobile ? '22%' : '0%';
+          break;
+        case 'left':
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.filter = 'blur(2px)';
+          itemEl.style.opacity = '0.85';
+          itemEl.style.zIndex = '10';
+          itemEl.style.left = isMobile ? '20%' : '30%';
+          itemEl.style.height = isMobile ? '16%' : '28%';
+          itemEl.style.bottom = isMobile ? '32%' : '12%';
+          break;
+        case 'right':
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.filter = 'blur(2px)';
+          itemEl.style.opacity = '0.85';
+          itemEl.style.zIndex = '10';
+          itemEl.style.left = isMobile ? '80%' : '70%';
+          itemEl.style.height = isMobile ? '16%' : '28%';
+          itemEl.style.bottom = isMobile ? '32%' : '12%';
+          break;
+        case 'back':
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.filter = 'blur(4px)';
+          itemEl.style.opacity = '1';
+          itemEl.style.zIndex = '5';
+          itemEl.style.left = '50%';
+          itemEl.style.height = isMobile ? '13%' : '22%';
+          itemEl.style.bottom = isMobile ? '32%' : '12%';
+          break;
       }
     }
 
-    async function bootstrapApp() {
-      await Promise.all([
-        loadComponent('navbar-container', 'components/navbar.html'),
-        loadComponent('hero-container', 'components/hero.html'),
-        loadComponent('catalog-container', 'components/catalog.html'),
-        loadComponent('footer-container', 'components/footer.html'),
-        loadComponent('modals-container', 'components/modals.html')
-      ]);
+    function renderHeroStage() {
+      const isMobile = window.innerWidth < 640;
+      const heroRoot = document.getElementById('lenkaHeroRoot');
+      const getStartedBtn = document.getElementById('heroGetStartedBtn');
+      const activeTheme = HERO_IMAGES[activeHeroIndex];
 
+      if (heroRoot) heroRoot.style.backgroundColor = activeTheme.bg;
+      if (getStartedBtn) getStartedBtn.style.color = activeTheme.bg;
+
+      const roleMap = {};
+      roleMap[activeHeroIndex] = 'center';
+      roleMap[(activeHeroIndex + 3) % 4] = 'left';
+      roleMap[(activeHeroIndex + 1) % 4] = 'right';
+      roleMap[(activeHeroIndex + 2) % 4] = 'back';
+
+      for (let i = 0; i < 4; i++) {
+        const itemEl = document.getElementById(`carouselItem-${i}`);
+        applyRoleStyles(itemEl, roleMap[i], isMobile);
+      }
+    }
+
+    window.navigateHeroCarousel = function(direction) {
+      if (isHeroAnimating) return;
+      isHeroAnimating = true;
+      if (direction === 'next') {
+        activeHeroIndex = (activeHeroIndex + 1) % 4;
+      } else {
+        activeHeroIndex = (activeHeroIndex + 3) % 4;
+      }
+      renderHeroStage();
+      setTimeout(() => { isHeroAnimating = false; }, 650);
+    };
+
+    window.scrollToLiveCatalog = function() {
+      const el = document.getElementById('mainStoreCatalog');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    async function loadModals() {
+      try {
+        const res = await fetch('components/modals.html?v=' + Date.now());
+        if (res.ok) {
+          document.getElementById('modals-container').innerHTML = await res.text();
+        }
+      } catch(e) {}
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      renderHeroStage();
+      await loadModals();
       if (window.lucide) lucide.createIcons();
       if (typeof window.updateCartUI === 'function') window.updateCartUI();
       if (typeof window.checkSavedProfile === 'function') window.checkSavedProfile();
       if (typeof window.initCatalogSync === 'function') window.initCatalogSync();
-    }
+    });
 
-    window.addEventListener('DOMContentLoaded', bootstrapApp);
+    window.addEventListener('resize', renderHeroStage);
   </script>
 </body>
 </html>
