@@ -13,7 +13,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 
   <!-- LUXURY & DISPLAY FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,6 +46,41 @@
       }
     }
   </script>
+
+  <style>
+    /* 3D OBJECT-IN-LETTER ANIMATIONS */
+    .perspective-headline {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    .letter-3d-box {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+
+    @keyframes imageBreath {
+      0%, 100% {
+        transform: scale(1.02);
+      }
+      50% {
+        transform: scale(1.16);
+      }
+    }
+
+    .breathing-img {
+      animation: imageBreath 7s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .letter-svg-text {
+      font-family: 'Anton', sans-serif;
+      font-weight: 900;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+  </style>
 </head>
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
@@ -72,7 +106,7 @@
     </div>
   </header>
 
-  <!-- 2. FULL-VIEWPORT 4-ITEM CAROUSEL HERO INTERFACE -->
+  <!-- 2. FULL-VIEWPORT CAROUSEL HERO WITH 3D OBJECT-IN-LETTER HEADLINE -->
   <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 94vh;">
     <div class="relative w-full h-[94vh] overflow-hidden flex flex-col justify-between">
       
@@ -84,39 +118,109 @@
         LENKA STORES
       </div>
 
-      <!-- GIANT GHOST TEXT "LENKA" (LIFTED TO TOP SO IT IS FULLY VISIBLE) -->
-      <div class="absolute inset-x-0 flex justify-center pointer-events-none select-none" style="z-index: 2; top: 3%;">
-        <span class="font-anton uppercase text-white tracking-normal text-center" style="font-size: clamp(65px, 20vw, 250px); font-weight: 900; line-height: 0.9; letter-spacing: -0.01em; white-space: nowrap; opacity: 1;">
-          LENKA
-        </span>
+      <!-- ==================== INTERACTIVE 3D OBJECT-IN-LETTER HEADLINE ==================== -->
+      <div id="headlineTiltContainer" class="perspective-headline absolute inset-x-0 flex justify-center items-center pointer-events-auto" style="z-index: 8; top: 1.5%;">
+        
+        <div id="headlineInnerGrid" class="flex items-center justify-center gap-1 sm:gap-2.5 px-4 w-full max-w-6xl cursor-crosshair">
+          
+          <!-- LETTER 1: 'L' (Rotating ANC Wireless Earbuds) -->
+          <div id="letterBox-0" class="letter-3d-box relative w-16 sm:w-28 md:w-36 lg:w-44 aspect-[0.7/1] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+            <svg class="w-full h-full" viewBox="0 0 100 135">
+              <defs>
+                <clipPath id="clip-L">
+                  <text x="50" y="68" class="letter-svg-text" font-size="140">L</text>
+                </clipPath>
+              </defs>
+              <!-- Masked Product Image -->
+              <g clip-path="url(#clip-L)">
+                <image href="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" />
+              </g>
+              <!-- Letter Outline & Depth -->
+              <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
+            </svg>
+          </div>
+
+          <!-- LETTER 2: 'E' (Folded Tailored Luxury Shirt) -->
+          <div id="letterBox-1" class="letter-3d-box relative w-16 sm:w-28 md:w-36 lg:w-44 aspect-[0.7/1] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+            <svg class="w-full h-full" viewBox="0 0 100 135">
+              <defs>
+                <clipPath id="clip-E">
+                  <text x="50" y="68" class="letter-svg-text" font-size="140">E</text>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#clip-E)">
+                <image href="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -1.4s;" />
+              </g>
+              <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
+            </svg>
+          </div>
+
+          <!-- LETTER 3: 'N' (Curated Leather Sneaker/Footwear) -->
+          <div id="letterBox-2" class="letter-3d-box relative w-16 sm:w-28 md:w-36 lg:w-44 aspect-[0.7/1] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+            <svg class="w-full h-full" viewBox="0 0 100 135">
+              <defs>
+                <clipPath id="clip-N">
+                  <text x="50" y="68" class="letter-svg-text" font-size="140">N</text>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#clip-N)">
+                <image href="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -2.8s;" />
+              </g>
+              <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
+            </svg>
+          </div>
+
+          <!-- LETTER 4: 'K' (Smartwatch / GaN Rapid Charger Gear) -->
+          <div id="letterBox-3" class="letter-3d-box relative w-16 sm:w-28 md:w-36 lg:w-44 aspect-[0.7/1] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+            <svg class="w-full h-full" viewBox="0 0 100 135">
+              <defs>
+                <clipPath id="clip-K">
+                  <text x="50" y="68" class="letter-svg-text" font-size="140">K</text>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#clip-K)">
+                <image href="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -4.2s;" />
+              </g>
+              <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
+            </svg>
+          </div>
+
+          <!-- LETTER 5: 'A' (Designer Sunglasses / Leather Bag) -->
+          <div id="letterBox-4" class="letter-3d-box relative w-16 sm:w-28 md:w-36 lg:w-44 aspect-[0.7/1] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+            <svg class="w-full h-full" viewBox="0 0 100 135">
+              <defs>
+                <clipPath id="clip-A">
+                  <text x="50" y="68" class="letter-svg-text" font-size="140">A</text>
+                </clipPath>
+              </defs>
+              <g clip-path="url(#clip-A)">
+                <image href="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800" x="-20" y="-10" width="140" height="155" preserveAspectRatio="xMidYMid slice" class="breathing-img" style="animation-delay: -5.6s;" />
+              </g>
+              <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
+            </svg>
+          </div>
+
+        </div>
       </div>
 
-      <!-- 'GET STARTED' BUTTON (CLEARLY POSITIONED BELOW 'LENKA' & ABOVE IMAGES) -->
-      <div class="absolute inset-x-0 flex justify-center" style="top: 28%; z-index: 20;">
+      <!-- 'GET STARTED' BUTTON (Positioned Under 3D Headline, Above Carousel) -->
+      <div class="absolute inset-x-0 flex justify-center" style="top: 25%; z-index: 20;">
         <button id="heroGetStartedBtn" type="button" onclick="scrollToLiveCatalog()" class="font-anton uppercase rounded-full px-8 py-3 sm:px-11 sm:py-3.5 bg-white cursor-pointer active:scale-95 shadow-[0_10px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105" style="color: #F4845F; letter-spacing: 0.08em; font-size: clamp(13px, 1.8vw, 18px);">
           GET STARTED
         </button>
       </div>
 
-      <!-- 4-Product Carousel Stage (Positioned Cleanly at Lower Half) -->
+      <!-- 4-Product Carousel Stage -->
       <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 10;">
-        
-        <!-- Item 0 (Audio) -->
         <div id="carouselItem-0" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
           <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=1000&q=85" alt="Audio Gear" draggable="false" class="w-full h-full object-cover" />
         </div>
-
-        <!-- Item 1 (Apparel) -->
         <div id="carouselItem-1" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
           <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1000&q=85" alt="Tailored Apparel" draggable="false" class="w-full h-full object-cover" />
         </div>
-
-        <!-- Item 2 (Power Gear) -->
         <div id="carouselItem-2" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
           <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=1000&q=85" alt="Power Gear" draggable="false" class="w-full h-full object-cover" />
         </div>
-
-        <!-- Item 3 (Hub) -->
         <div id="carouselItem-3" class="absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black/20" style="transition: all 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left, bottom, height;">
           <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=1000&q=85" alt="Charging Hub" draggable="false" class="w-full h-full object-cover" />
         </div>
@@ -153,7 +257,6 @@
 
   <!-- 3. LIVE ATELIER STOREFRONT CATALOG -->
   <main id="mainStoreCatalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full space-y-8">
-    
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
         <span class="text-xs uppercase font-bold tracking-[0.2em] text-[#C5A880] block">Curated Luxury</span>
@@ -167,7 +270,6 @@
       </div>
     </div>
 
-    <!-- Product Grid -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     <div id="emptyCatalogState" class="hidden text-center py-16 space-y-2">
       <i data-lucide="package-open" class="w-12 h-12 text-slate-500 mx-auto"></i>
@@ -224,8 +326,9 @@
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
 
-  <!-- CAROUSEL HERO LOGIC & APP BOOTSTRAP -->
+  <!-- 3D INTERACTIVE HEADLINE & CAROUSEL SCRIPT -->
   <script>
+    // 1. CAROUSEL DATA & LOGIC
     const HERO_IMAGES = [
       { id: 0, bg: '#F4845F' },
       { id: 1, bg: '#6BBF7A' },
@@ -238,7 +341,6 @@
 
     function applyRoleStyles(itemEl, role, isMobile) {
       if (!itemEl) return;
-      
       switch(role) {
         case 'center':
           itemEl.style.transform = `translateX(-50%) scale(1)`;
@@ -321,6 +423,56 @@
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // 2. 3D PARALLAX TILT & STAGGERED FLIP ENTRANCE
+    function init3DHeadlineEngine() {
+      const container = document.getElementById('headlineTiltContainer');
+      const letters = [0, 1, 2, 3, 4].map(i => document.getElementById(`letterBox-${i}`)).filter(Boolean);
+
+      // Staggered 3D Flip Entrance on load
+      letters.forEach((el, idx) => {
+        el.style.opacity = '0';
+        el.style.transform = 'rotateY(90deg) translateZ(-40px)';
+        setTimeout(() => {
+          el.style.transition = 'transform 0.8s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.8s ease';
+          el.style.opacity = '1';
+          el.style.transform = 'rotateY(0deg) translateZ(0px)';
+          setTimeout(() => {
+            el.style.transition = 'transform 0.12s cubic-bezier(0.2, 0, 0.2, 1)';
+          }, 800);
+        }, idx * 110 + 150);
+      });
+
+      // Mouse Parallax Tilt (Desktop only)
+      let ticking = false;
+      window.addEventListener('mousemove', (e) => {
+        if (window.innerWidth < 768 || ticking) return;
+        ticking = true;
+
+        requestAnimationFrame(() => {
+          const { innerWidth, innerHeight } = window;
+          const xRatio = (e.clientX / innerWidth) - 0.5; // -0.5 to 0.5
+          const yRatio = (e.clientY / innerHeight) - 0.5;
+
+          const tiltX = -yRatio * 14; // ±7 deg
+          const tiltY = xRatio * 16;  // ±8 deg
+
+          letters.forEach((el, idx) => {
+            const depthFactor = (idx - 2) * 2.5; // Outer letters tilt with more parallax depth
+            const shiftX = xRatio * (idx - 2) * 6;
+            el.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY + depthFactor}deg) translate3d(${shiftX}px, 0px, ${Math.abs(xRatio) * 15}px)`;
+          });
+          ticking = false;
+        });
+      });
+
+      // Reset when mouse leaves window
+      document.addEventListener('mouseleave', () => {
+        letters.forEach(el => {
+          el.style.transform = 'rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)';
+        });
+      });
+    }
+
     async function loadModals() {
       try {
         const res = await fetch('components/modals.html?v=' + Date.now());
@@ -332,6 +484,7 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       renderHeroStage();
+      init3DHeadlineEngine();
       await loadModals();
       if (window.lucide) lucide.createIcons();
       if (typeof window.updateCartUI === 'function') window.updateCartUI();
