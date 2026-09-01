@@ -834,5 +834,51 @@
 
     window.addEventListener('resize', renderHeroStage);
   </script>
+<!-- ==================== CUSTOMER MOBILE & OTP LOGIN MODAL ==================== -->
+<div id="customerAuthModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white relative">
+    <button type="button" onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="space-y-1 text-left">
+      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">ATELIER MEMBERSHIP</span>
+      <h3 class="font-anton text-2xl tracking-wider uppercase">CLIENT AUTHENTICATION</h3>
+      <p class="text-xs text-slate-400">Enter your mobile number to access your saved profile, history, and active consignments.</p>
+    </div>
+
+    <!-- STEP 1: ENTER PHONE -->
+    <div id="authStepPhone" class="space-y-4 text-xs">
+      <div>
+        <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">MOBILE NUMBER</label>
+        <div class="flex gap-2">
+          <span class="bg-[#16181E] border border-white/15 rounded-xl px-3 py-3 text-slate-300 flex items-center">+91</span>
+          <input type="tel" id="authPhoneInput" placeholder="98765 43210" maxlength="10" required class="flex-1 bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+      </div>
+      <button type="button" onclick="requestClientOtp()" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg cursor-pointer">
+        SEND OTP VERIFICATION
+      </button>
+    </div>
+
+    <!-- STEP 2: ENTER OTP -->
+    <div id="authStepOtp" class="space-y-4 text-xs hidden">
+      <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
+        🔐 Verification code sent via SMS to <span id="displayTargetPhone" class="font-bold"></span>. (Demo OTP: <strong class="underline">2026</strong>)
+      </div>
+      <div>
+        <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">ENTER 4-DIGIT OTP</label>
+        <input type="text" id="authOtpInput" placeholder="2026" maxlength="4" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-center tracking-widest text-lg font-mono text-white focus:outline-none focus:border-[#C5A880]" />
+      </div>
+      <button type="button" onclick="verifyClientOtp()" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg cursor-pointer">
+        VERIFY & LOGIN ACCOUNT
+      </button>
+      <button type="button" onclick="resetAuthStep()" class="w-full text-center text-slate-400 hover:text-white text-[11px]">
+        ← Change Mobile Number
+      </button>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
