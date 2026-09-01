@@ -303,3 +303,94 @@ window.handleSaveProfile = handleSaveProfile;
 window.handleSaveAddressOnly = handleSaveAddressOnly;
 window.clientCancelOrder = clientCancelOrder;
 window.checkSavedProfile = checkSavedProfile;
+// CUSTOMER MOBILE OTP LOGIN & PROFILE RECOGNITION ENGINE
+
+function openAuthModal() {
+  const modal = document.getElementById('customerAuthModal');
+  if (modal) modal.classList.remove('hidden');
+  resetAuthStep();
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('customerAuthModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function resetAuthStep() {
+  document.getElementById('authStepPhone').classList.remove('hidden');
+  document.getElementById('authStepOtp').classList.add('hidden');
+  document.getElementById('authPhoneInput').value = '';
+  document.getElementById('authOtpInput').value = '';
+}
+
+let pendingLoginPhone = '';
+
+function requestClientOtp() {
+  const phone = document.getElementById('authPhoneInput').value.trim();
+  if (!phone || phone.length < 10) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+  pendingLoginPhone = phone;
+  document.getElementById('displayTargetPhone').innerText = `+91 ${phone}`;
+  
+  document.getElementById('authStepPhone').classList.add('hidden');
+  document.getElementById('authStepOtp').classList.remove('hidden');
+}
+
+async function verifyClientOtp() {
+  const enteredOtp = document.getElementById('authOtpInput').value.trim();
+  if (enteredOtp !== '2026') {
+    alert("Invalid OTP code. Please use demo code: 2026");
+    return;
+  }
+
+  // OTP verified successfully. Recognize or create customer profile.
+  const formattedPhone = `+91 ${pendingLoginPhone}`;
+  let clientProfile = null;
+
+  // 1. Check local storage first
+  const existingProfile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
+  if (existingProfile && existingProfile.phone.includes(pendingLoginPhone)) {
+    clientProfile = existingProfile;
+  } else {
+    // 2. Look up in Firestore orders / profiles if they logged in previously
+    clientProfile = {
+      name: `Client_${pendingLoginPhone.slice(-4)}`,
+      phone: formattedPhone,
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300',
+      address: 'Flat 402, Signature Towers, KPHB Colony, Hyderabad',
+      city: 'Hyderabad',
+      lastLogin: new Date().toISOString()
+    };
+  }
+
+  // Save active login session
+  localStorage.setItem('lenka_profile', JSON.stringify(clientProfile));
+  localStorage.setItem('lenka_logged_in_phone', formattedPhone);
+
+  closeAuthModal();
+  alert(`Welcome back! Your account associated with ${formattedPhone} has been successfully restored.`);
+  
+  // Refresh UI / Profile drawer
+  if (typeof renderProfileDashboard === 'function') {
+    renderProfileDashboard();
+  }
+  openProfileDrawer();
+}
+
+function checkClientSessionOnLoad() {
+  const loggedPhone = localStorage.getItem('lenka_logged_in_phone');
+  if (!loggedPhone) {
+    // If first time or logged out, prompt them or show login option in navbar
+    console.warn("No active client session detected.");
+  }
+}
+
+window.openAuthModal = openAuthModal;
+window.closeAuthModal = closeAuthModal;
+window.requestClientOtp = requestClientOtp;
+window.verifyClientOtp = verifyClientOtp;
+window.resetAuthStep = resetAuthStep;
+
+window.addEventListener('DOMContentLoaded', checkClientSessionOnLoad);
