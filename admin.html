@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lenka Studios // By LENKA VENTURES</title>
+  <title>Cyber Ronin // Neural Edges</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,6 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://db.onlinewebfonts.com/c/b1314443e183d1cdd77049077c46facc?family=Orbitron-Medium" rel="stylesheet" type="text/css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
@@ -76,9 +79,7 @@
       pointer-events: none;
     }
 
-    .hero-ui * {
-      pointer-events: auto;
-    }
+    .hero-ui * { pointer-events: auto; }
 
     .hero-left {
       grid-column: 1;
@@ -105,9 +106,7 @@
       margin: 0;
     }
 
-    .pull-line {
-      display: block;
-    }
+    .pull-line { display: block; }
 
     .hero-copy p {
       margin-top: 18px;
@@ -118,324 +117,71 @@
       color: var(--muted);
     }
 
-    .icon-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 22px;
-    }
+    .icon-row { display: flex; gap: 10px; margin-top: 22px; }
 
     .icon-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
+      width: 38px; height: 38px; border-radius: 50%;
       border: 1px solid rgba(251,219,175,0.55);
-      background: transparent;
-      color: var(--cream);
-      display: grid;
-      place-items: center;
+      background: transparent; color: var(--cream);
+      display: grid; place-items: center;
       transition: background 0.25s ease, border-color 0.25s ease;
       cursor: pointer;
     }
-
-    .icon-btn:hover {
-      background: rgba(251,219,175,0.1);
-      border-color: var(--cream);
-    }
+    .icon-btn:hover { background: rgba(251,219,175,0.1); border-color: var(--cream); }
 
     .product-card {
       width: min(320px, 100%);
       display: grid;
       grid-template-columns: 86px 1fr;
       grid-template-rows: auto auto;
-      gap: 10px 14px;
-      padding: 12px;
-      border-radius: 18px;
-      background: var(--card);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      gap: 10px 14px; padding: 12px;
+      border-radius: 18px; background: var(--card);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
       border: 1px solid rgba(251,219,175,0.08);
       box-shadow: 0 18px 50px rgba(0,0,0,0.28);
     }
 
     .product-thumb {
-      grid-column: 1;
-      grid-row: 1 / -1;
-      width: 86px;
-      min-height: 86px;
-      border-radius: 12px;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
+      grid-column: 1; grid-row: 1 / -1;
+      width: 86px; min-height: 86px; border-radius: 12px;
+      overflow: hidden; background-size: cover; background-position: center;
     }
 
-    .product-body {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    .product-body h2 {
-      font-size: 11px;
-      line-height: 1.25;
-      text-transform: uppercase;
-      color: var(--cream);
-      margin: 0;
-    }
-
-    .product-body p {
-      margin-top: 6px;
-      font-size: 11.5px;
-      line-height: 1.45;
-      color: var(--muted);
-      margin-bottom: 0;
-    }
+    .product-body { grid-column: 2; grid-row: 1; }
+    .product-body h2 { font-size: 11px; line-height: 1.25; text-transform: uppercase; color: var(--cream); margin: 0; }
+    .product-body p { margin-top: 6px; font-size: 11.5px; line-height: 1.45; color: var(--muted); margin-bottom: 0; }
 
     .cart-btn {
-      grid-column: 2;
-      grid-row: 2;
-      justify-self: start;
-      align-self: end;
-      border: 1px solid var(--cream);
-      border-radius: 999px;
-      padding: 7px 16px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--cream);
-      background: transparent;
-      transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-      cursor: pointer;
+      grid-column: 2; grid-row: 2; justify-self: start; align-self: end;
+      border: 1px solid var(--cream); border-radius: 999px;
+      padding: 7px 16px; font-size: 12px; font-weight: 500;
+      color: var(--cream); background: transparent; cursor: pointer;
     }
 
-    .cart-btn:hover {
-      transform: translateY(-1px);
-    }
+    .hero-page { position: absolute; top: 36px; right: 44px; font-size: 13px; letter-spacing: 0.08em; color: rgba(251,219,175,0.78); z-index: 8; }
+    .specs { grid-column: 2; grid-row: 3; justify-self: end; width: min(340px, 100%); }
+    .specs h3 { font-size: 11px; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.12em; margin-top: 0; }
+    .spec-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 7px 0; border-top: 1px solid rgba(251,219,175,0.12); }
+    .spec-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
+    .spec-value { font-size: 12.5px; color: var(--cream); text-align: right; white-space: nowrap; }
 
-    .hero-page {
-      position: absolute;
-      top: 36px;
-      right: 44px;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      color: rgba(251,219,175,0.78);
-      z-index: 8;
-    }
+    @keyframes heroImageIn { from { opacity: 0; transform: scale(1.18); } to { opacity: 1; transform: scale(1); } }
+    .hero-image-animate { animation: heroImageIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; animation-delay: 0.15s; opacity: 0; }
 
-    .specs {
-      grid-column: 2;
-      grid-row: 3;
-      justify-self: end;
-      width: min(340px, 100%);
-    }
+    @keyframes wordPullUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .pull-word { display: inline-block; opacity: 0; transform: translateY(20px); }
+    .pull-word:not(:last-child) { margin-right: 0.3em; }
+    .words-visible .pull-word { animation: wordPullUp 0.55s ease forwards; }
 
-    .specs h3 {
-      font-size: 11px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      letter-spacing: 0.12em;
-      margin-top: 0;
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+    .fade-up-reveal { opacity: 0; transform: translateY(14px); filter: blur(8px); }
+    .fade-up-reveal.is-visible { animation: fadeUp 0.7s ease forwards; }
 
-    .spec-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 16px;
-      padding: 7px 0;
-      border-top: 1px solid rgba(251,219,175,0.12);
-    }
-
-    .spec-label {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--label);
-    }
-
-    .spec-value {
-      font-size: 12.5px;
-      color: var(--cream);
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    @keyframes heroImageIn {
-      from { opacity: 0; transform: scale(1.18); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .hero-image-animate {
-      animation: heroImageIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-      animation-delay: 0.15s;
-      opacity: 0;
-    }
-
-    @keyframes wordPullUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .pull-word {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .pull-word:not(:last-child) {
-      margin-right: 0.3em;
-    }
-
-    .words-visible .pull-word {
-      animation: wordPullUp 0.55s ease forwards;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); filter: blur(8px); }
-      to { opacity: 1; transform: translateY(0); filter: blur(0); }
-    }
-
-    .fade-up-reveal {
-      opacity: 0;
-      transform: translateY(14px);
-      filter: blur(8px);
-    }
-
-    .fade-up-reveal.is-visible {
-      animation: fadeUp 0.7s ease forwards;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .hero-image-animate, .pull-word, .fade-up-reveal {
-        animation: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
-      }
-    }
-
-    @media (max-width: 1024px) {
-      .hero-ui { padding: 32px 28px 36px; }
-      .hero-page { top: 32px; right: 28px; }
-      .specs { width: min(300px, 100%); }
-    }
-
-    @media (max-width: 900px) {
-      .hero-ui { padding: 28px 22px 28px; }
-      .hero-page { top: 28px; right: 22px; }
-      .hero-copy h1 { font-size: clamp(1.35rem, 7.2vw, 2.4rem); }
-      .hero-base-img, .hero-reveal-img { background-position: 40% center; }
-      .specs { width: min(280px, 100%); }
-    }
-
-    @media (max-width: 768px) {
-      .hero-ui {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-        padding: max(24px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-      }
-      .hero-left {
-        grid-column: 1;
-        grid-row: 1 / 3;
-        gap: 24px;
-      }
-      .hero-page {
-        top: max(24px, env(safe-area-inset-top));
-        right: max(20px, env(safe-area-inset-right));
-      }
-      .specs {
-        grid-column: 1;
-        grid-row: 3;
-        justify-self: stretch;
-        width: 100%;
-        margin-top: 8px;
-      }
-      .hero-base-img, .hero-reveal-img { background-position: 40% center; }
-    }
-
-    @media (max-width: 720px) {
-      .hero {
-        height: auto;
-        min-height: 100vh;
-        min-height: 100dvh;
-      }
-      .hero-ui {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        min-height: 100dvh;
-        justify-content: flex-start;
-        gap: 28px;
-        padding: max(22px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
-      }
-      .hero-left {
-        grid-column: unset;
-        grid-row: unset;
-        width: 100%;
-        justify-content: flex-start;
-      }
-      .hero-copy {
-        max-width: 100%;
-        padding-right: 48px;
-      }
-      .hero-copy p {
-        font-size: 12.5px;
-        width: 100%;
-      }
-      .product-card {
-        width: 100%;
-      }
-      .specs {
-        width: 100%;
-        margin-top: auto;
-        padding-top: 4px;
-      }
-      .spec-value {
-        white-space: normal;
-      }
-      .hero-base-img, .hero-reveal-img {
-        position: absolute;
-        background-position: 40% center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-ui {
-        gap: 22px;
-        padding: max(18px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-      }
-      .hero-page { font-size: 12px; }
-      .hero-copy h1 { font-size: clamp(1.1rem, 8.5vw, 1.65rem); }
-      .hero-copy p { font-size: 12px; margin-top: 14px; }
-      .icon-row { margin-top: 16px; gap: 8px; }
-      .icon-btn { width: 34px; height: 34px; }
-      .hero-left { gap: 22px; }
-      .product-card {
-        grid-template-columns: 72px 1fr;
-        gap: 8px 12px;
-        padding: 10px;
-        border-radius: 14px;
-      }
-      .product-thumb {
-        width: 72px;
-        min-height: 72px;
-        border-radius: 10px;
-      }
-      .product-body h2 { font-size: 10px; }
-      .product-body p { font-size: 11px; }
-      .cart-btn { padding: 6px 14px; font-size: 11px; }
-      .specs h3 { font-size: 10px; margin-bottom: 10px; }
-      .spec-row { padding: 6px 0; gap: 10px; }
-      .spec-label, .spec-value { font-size: 11px; }
-    }
-
-    @media (max-width: 360px) {
-      .hero-copy h1 { font-size: 1rem; }
-      .product-card { grid-template-columns: 64px 1fr; }
-      .product-thumb { width: 64px; min-height: 64px; }
-    }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
   </style>
 </head>
-<body>
+<body class="bg-black font-inter antialiased min-h-screen text-slate-100 selection:bg-white selection:text-black overflow-x-hidden">
 
   <div id="adminAppContent" class="hidden flex-col min-h-screen bg-[#F8FAFC] text-[#0F172A]">
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
@@ -451,37 +197,31 @@
         </div>
 
         <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
-          <button onclick="switchTab('hero-ads')" id="tabBtn-hero-ads" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('hero-ads')" id="tabBtn-hero-ads" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="play-square" class="w-3.5 h-3.5 text-rose-500"></i>
-            <span> Ads Manager</span>
+            <span>Hero Ads Manager</span>
           </button>
-
-          <button onclick="switchTab('inventory')" id="tabBtn-inventory" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('inventory')" id="tabBtn-inventory" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
             <span>Catalog Items</span>
           </button>
-
-          <button onclick="switchTab('add-product')" id="tabBtn-add-product" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('add-product')" id="tabBtn-add-product" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
             <span>Add Product</span>
           </button>
-
-          <button onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
             <span>Orders Hub</span>
           </button>
-
-          <button onclick="switchTab('users')" id="tabBtn-users" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('users')" id="tabBtn-users" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="users" class="w-3.5 h-3.5"></i>
             <span>Clients</span>
           </button>
-
-          <button onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
             <span>Inquiries</span>
           </button>
-
-          <button onclick="lockStudioTerminal()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0">
+          <button type="button" onclick="lockStudioTerminal()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i>
             <span>Lock</span>
           </button>
@@ -490,11 +230,12 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+      
       <div id="section-hero-ads" class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
             <h2 class="text-2xl font-bold tracking-tight text-slate-900">Hero Ads & Video Commercials Manager</h2>
-            <p class="text-xs text-slate-500">Only ads listed here will appear. Leave empty to display the luxury background with no ads.</p>
+            <p class="text-xs text-slate-500">Manage video ads and promo banners for your storefront hero section.</p>
           </div>
           <div class="flex items-center gap-2">
             <button type="button" onclick="addNewOptionalAdSlot()" class="px-3.5 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-semibold text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer">
@@ -510,7 +251,6 @@
 
         <form id="heroAdsForm" onsubmit="handleSaveHeroAds(event)" class="space-y-6">
           <div id="dynamicAdSlotsContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
-
           <button type="submit" id="saveHeroAdsBtn" class="w-full py-4 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
             <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
             <span>SYNC ADS & VIDEOS TO STOREFRONT</span>
@@ -519,247 +259,58 @@
       </div>
 
       <div id="section-inventory" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-          <div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Live Inventory Catalog</h2>
-            <p class="text-xs text-slate-500">Manage, edit, or delete products with multi-image gallery support</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <span id="inventoryCountBadge" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-200/80 text-slate-700">0 Products Total</span>
-            <button onclick="switchTab('add-product')" class="px-4 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-              <i data-lucide="plus" class="w-4 h-4 text-emerald-400"></i>
-              <span>Add New Product</span>
-            </button>
-          </div>
+        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+          <h2 class="text-2xl font-bold tracking-tight text-slate-900">Live Inventory Catalog</h2>
+          <button type="button" onclick="switchTab('add-product')" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl cursor-pointer">Add Product</button>
         </div>
-        <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <p class="col-span-full text-xs text-slate-400 text-center py-16">Loading live inventory from Cloud Firestore...</p>
-        </div>
+        <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
 
       <div id="section-add-product" class="hidden space-y-6">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-900">Publish New Product</h2>
+        <form id="productPublishForm" onsubmit="handlePublishProduct(event)" class="space-y-4 max-w-2xl bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Publish New Product</h2>
-            <p class="text-xs text-slate-500">Add an atelier collection item with one or more gallery image URLs</p>
+            <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">TITLE</label>
+            <input type="text" id="fieldTitle" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900" />
           </div>
-          <button onclick="switchTab('inventory')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
-            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-            <span>Back to Catalog</span>
-          </button>
-        </div>
-
-        <div class="max-w-3xl mx-auto bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
-          <form id="productPublishForm" onsubmit="handlePublishProduct(event)" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLLECTION / CATEGORY</label>
-                <select id="fieldCategory" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-black">
-                  <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
-                  <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
-                  <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">PRODUCT TITLE</label>
-                <input type="text" id="fieldTitle" placeholder="e.g., Lenka Horizon ANC Earbuds Pro" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-3">
-              <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">ORIGINAL (₹)</label>
-                <input type="number" id="fieldOriginalPrice" placeholder="4999" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-              <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">OFFER (₹)</label>
-                <input type="number" id="fieldOfferPrice" placeholder="2499" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-              <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BADGE TAG</label>
-                <input type="text" id="fieldDiscountTag" placeholder="50% OFF" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-              </div>
-            </div>
-
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <div class="flex justify-between items-center mb-1">
-                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">IMAGE URLS (ONE OR MORE - COMMA SEPARATED)</label>
-                <span class="text-[10px] text-slate-400">Add 1, 2, or more links</span>
-              </div>
-              <textarea id="fieldImageUrls" rows="2" placeholder="https://images.unsplash.com/photo-1, https://images.unsplash.com/photo-2" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
+              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">ORIGINAL PRICE</label>
+              <input type="number" id="fieldOriginalPrice" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900" />
             </div>
-
             <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLOR VARIANTS</label>
-              <input type="text" id="fieldVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">OFFER PRICE</label>
+              <input type="number" id="fieldOfferPrice" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900" />
             </div>
-
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">DESCRIPTION & SPECS</label>
-              <textarea id="fieldDescription" rows="3" placeholder="Specs, noise cancellation, battery capacity..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
-            </div>
-
-            <button type="submit" id="publishBtn" class="w-full py-4 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer mt-2">
-              <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-              <span>PUBLISH PRODUCT WITH GALLERY TO STORE</span>
-            </button>
-          </form>
-        </div>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">IMAGE URL</label>
+            <input type="text" id="fieldImageUrls" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900" />
+          </div>
+          <button type="submit" id="publishBtn" class="w-full py-3 bg-black text-white font-bold text-xs rounded-xl cursor-pointer">PUBLISH PRODUCT</button>
+        </form>
       </div>
 
       <div id="section-orders" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-          <div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Consignment Orders Hub & Dispatch Portal</h2>
-            <p class="text-xs text-slate-500">Live breakdown by delivery stages with interactive date editors</p>
-          </div>
-          <button onclick="exportOrdersCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Export Manifest (CSV)</span>
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          <button onclick="filterOrderStage('all')" id="stageBtn-all" class="p-3.5 rounded-xl bg-black text-white text-left transition-all shadow-sm">
-            <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Orders</span>
-            <span id="stageCount-all" class="text-xl font-bold">0</span>
-          </button>
-          <button onclick="filterOrderStage('Confirmed')" id="stageBtn-Confirmed" class="p-3.5 rounded-xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-all">
-            <span class="text-[10px] uppercase font-bold text-amber-600 block">Confirmed</span>
-            <span id="stageCount-Confirmed" class="text-xl font-bold text-slate-900">0</span>
-          </button>
-          <button onclick="filterOrderStage('Dispatched')" id="stageBtn-Dispatched" class="p-3.5 rounded-xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-all">
-            <span class="text-[10px] uppercase font-bold text-blue-600 block">In Shipping</span>
-            <span id="stageCount-Dispatched" class="text-xl font-bold text-slate-900">0</span>
-          </button>
-          <button onclick="filterOrderStage('OutForDelivery')" id="stageBtn-OutForDelivery" class="p-3.5 rounded-xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-all">
-            <span class="text-[10px] uppercase font-bold text-purple-600 block">Delivery Today</span>
-            <span id="stageCount-OutForDelivery" class="text-xl font-bold text-slate-900">0</span>
-          </button>
-          <button onclick="filterOrderStage('Delivered')" id="stageBtn-Delivered" class="p-3.5 rounded-xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-all col-span-2 sm:col-span-1">
-            <span class="text-[10px] uppercase font-bold text-emerald-600 block">Completed</span>
-            <span id="stageCount-Delivered" class="text-xl font-bold text-slate-900">0</span>
-          </button>
-        </div>
-
-        <div id="ordersContainer" class="space-y-4">
-          <p class="text-xs text-slate-400 text-center py-12">Loading consignments...</p>
-        </div>
+        <h2 class="text-2xl font-bold text-slate-900">Orders Hub</h2>
+        <div id="ordersContainer" class="space-y-4"></div>
       </div>
 
       <div id="section-users" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-          <div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Verified Client Directory</h2>
-            <p class="text-xs text-slate-500">Registered profiles and DPDP Act compliance audit records</p>
-          </div>
-          <button onclick="exportClientsCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Export Clients (CSV)</span>
-          </button>
-        </div>
-        <div id="clientsContainer" class="space-y-3">
-          <p class="text-xs text-slate-400 text-center py-12">Loading customer accounts...</p>
-        </div>
+        <h2 class="text-2xl font-bold text-slate-900">Clients</h2>
+        <div id="clientsContainer" class="space-y-3"></div>
       </div>
 
       <div id="section-feedback" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
-          <div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Client Feedback & Support Inbox</h2>
-            <p class="text-xs text-slate-500">Review feedback submissions and respond directly via WhatsApp</p>
-          </div>
-          <button onclick="exportFeedbackCSV()" class="px-4 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Export Feedbacks (CSV)</span>
-          </button>
-        </div>
-        <div id="feedbacksContainer" class="space-y-4">
-          <p class="text-xs text-slate-400 text-center py-12">Loading client feedbacks...</p>
-        </div>
+        <h2 class="text-2xl font-bold text-slate-900">Inquiries</h2>
+        <div id="feedbacksContainer" class="space-y-4"></div>
       </div>
 
     </main>
   </div>
 
-  <div id="editProductModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="max-w-2xl w-full bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 my-8 text-[#0F172A]">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">CATALOG EDITOR</span>
-          <h3 class="text-xl font-bold text-slate-900">Edit Existing Product</h3>
-        </div>
-        <button onclick="closeEditProductModal()" class="p-2 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition-colors cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="editProductForm" onsubmit="handleSaveEditedProduct(event)" class="space-y-4">
-        <input type="hidden" id="editProdId" />
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLLECTION / CATEGORY</label>
-            <select id="editCategory" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-black">
-              <option value="Audio & Wireless Earbuds">Audio & Wireless Earbuds</option>
-              <option value="Battery Banks & Power Gear">Battery Banks & Power Gear</option>
-              <option value="Men's Apparel & Fashion">Men's Apparel & Fashion</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">PRODUCT TITLE</label>
-            <input type="text" id="editTitle" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">ORIGINAL (₹)</label>
-            <input type="number" id="editOriginalPrice" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-          <div>
-            <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">OFFER (₹)</label>
-            <input type="number" id="editOfferPrice" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-          <div>
-            <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BADGE TAG</label>
-            <input type="text" id="editDiscountTag" placeholder="e.g. 50% OFF" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">GALLERY IMAGE URLS (COMMA SEPARATED)</label>
-            <span class="text-[10px] text-slate-400">Add 1 or more links</span>
-          </div>
-          <textarea id="editImageUrls" rows="2" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
-        </div>
-
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">COLOR VARIANTS</label>
-          <input type="text" id="editVariants" placeholder="Obsidian, Gold, Frost White" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-        </div>
-
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">DESCRIPTION & SPECS</label>
-          <textarea id="editDescription" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black"></textarea>
-        </div>
-
-        <div class="pt-2 flex gap-3">
-          <button type="button" onclick="closeEditProductModal()" class="w-1/3 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider transition-all cursor-pointer">
-            Cancel
-          </button>
-          <button type="submit" id="saveEditBtn" class="flex-1 py-3.5 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
-            <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-            <span>SAVE PRODUCT CHANGES</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <main class="hero" id="vanguardLockWall">
     <div class="hero-base-img hero-image-animate" style="background-image: url('https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260831_115955_2a9adb39-5e9b-4ced-96e2-6900eabe3de9.png&w=1920&q=85');"></div>
-
     <div class="hero-reveal-img" id="reveal-img" style="background-image: url('https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260831_123709_183f0065-efb2-4bb2-a849-13aaa5af2f3f.png&w=1920&q=85');"></div>
 
     <div class="hero-ui">
@@ -771,26 +322,6 @@
             <span class="pull-line">NIGHTFALL</span>
           </h1>
           <p class="fade-up-reveal" data-delay="0.5">Cultivated with high-res optics and a zero-gravity frame for those who don't just watch the future—they wield it. Shift your reality.</p>
-          
-          <div class="icon-row fade-up-reveal" data-delay="0.65">
-            <button class="icon-btn" aria-label="Main core" onclick="openPasskeyModal()">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
-                <path d="M8 1.4L13.8 4.7V11.3L8 14.6L2.2 11.3V4.7L8 1.4Z" />
-                <circle cx="8" cy="8" r="1.35" fill="currentColor" stroke="none" />
-              </svg>
-            </button>
-            <button class="icon-btn" aria-label="Vision" onclick="openPasskeyModal()">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-                <path d="M2 5.2V2h3.2 M14 5.2V2h-3.2 M2 10.8V14h3.2 M14 10.8V14h-3.2" />
-                <rect x="5.2" y="5.2" width="5.6" height="5.6" />
-              </svg>
-            </button>
-            <button class="icon-btn" aria-label="Force" onclick="openPasskeyModal()">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
-                <path d="M9.2 1.6L4 9.1h3.5L6.8 14.4 12 6.9H8.5L9.2 1.6Z" />
-              </svg>
-            </button>
-          </div>
         </div>
 
         <article class="product-card" onclick="openPasskeyModal()" style="cursor: pointer;">
@@ -799,7 +330,7 @@
             <h2 class="words-pull-up">CR-01: CYBER FRAME</h2>
             <p class="fade-up-reveal" data-delay="1.05">Precision-grade optics and a light frame for comfort and clarity.</p>
           </div>
-          <button class="cart-btn fade-up-reveal" data-delay="1.15" onclick="event.stopPropagation(); openPasskeyModal();">Unlock Terminal</button>
+          <button type="button" class="cart-btn fade-up-reveal" data-delay="1.15" onclick="event.stopPropagation(); openPasskeyModal();">Unlock Terminal</button>
         </article>
       </div>
 
@@ -807,29 +338,17 @@
 
       <div class="specs">
         <h3 class="words-pull-up">Operative Specs</h3>
-        <div class="spec-row fade-up-reveal" data-delay="1.2">
-          <span class="spec-label">Vision</span>
-          <span class="spec-value">Dual 8K Pulse-OLED</span>
-        </div>
-        <div class="spec-row fade-up-reveal" data-delay="1.3">
-          <span class="spec-label">Nerve</span>
-          <span class="spec-value">R1 - Ronin Engines</span>
-        </div>
-        <div class="spec-row fade-up-reveal" data-delay="1.4">
-          <span class="spec-label">Reflex</span>
-          <span class="spec-value">144Hz Low-Lag Ops</span>
-        </div>
-        <div class="spec-row fade-up-reveal" data-delay="1.5">
-          <span class="spec-label">Armor</span>
-          <span class="spec-value">Lightweight Shadow Shell</span>
-        </div>
+        <div class="spec-row fade-up-reveal" data-delay="1.2"><span class="spec-label">Vision</span><span class="spec-value">Dual 8K Pulse-OLED</span></div>
+        <div class="spec-row fade-up-reveal" data-delay="1.3"><span class="spec-label">Nerve</span><span class="spec-value">R1 - Ronin Engines</span></div>
+        <div class="spec-row fade-up-reveal" data-delay="1.4"><span class="spec-label">Reflex</span><span class="spec-value">144Hz Low-Lag Ops</span></div>
+        <div class="spec-row fade-up-reveal" data-delay="1.5"><span class="spec-label">Armor</span><span class="spec-value">Lightweight Shadow Shell</span></div>
       </div>
     </div>
   </main>
 
   <div id="passkeyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-[#111216] border border-white/20 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 text-center relative">
-      <button onclick="closePasskeyModal()" class="absolute top-4 right-4 text-white/50 hover:text-white p-1 cursor-pointer">
+      <button type="button" onclick="closePasskeyModal()" class="absolute top-4 right-4 text-white/50 hover:text-white p-1 cursor-pointer">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       <div class="space-y-1 text-left">
@@ -867,11 +386,17 @@
 
       if (isAuth === 'true') {
         if (lockWall) lockWall.classList.add('hidden');
-        if (appContent) appContent.classList.remove('hidden');
+        if (appContent) {
+          appContent.classList.remove('hidden');
+          appContent.classList.add('flex');
+        }
         initDashboardEngines();
       } else {
         if (lockWall) lockWall.classList.remove('hidden');
-        if (appContent) appContent.classList.add('hidden');
+        if (appContent) {
+          appContent.classList.add('hidden');
+          appContent.classList.remove('flex');
+        }
       }
       if (window.lucide) lucide.createIcons();
     }
@@ -948,13 +473,13 @@
       currentHeroAds = Array.isArray(savedAds) ? savedAds : [];
       renderHeroAdsForm();
 
-      db.collection('settings').doc('hero_ads').onSnapshot((doc) => {
+      db.collection('settings').doc('hero_ads').get().then(doc => {
         if (doc.exists && Array.isArray(doc.data().media)) {
           currentHeroAds = doc.data().media;
           localStorage.setItem('lenka_hero_ads', JSON.stringify(currentHeroAds));
           renderHeroAdsForm();
         }
-      }, err => console.warn(err));
+      }).catch(err => console.warn(err));
     }
 
     function renderHeroAdsForm() {
@@ -968,11 +493,9 @@
             <i data-lucide="video-off" class="w-10 h-10 text-slate-400 mx-auto"></i>
             <div>
               <h4 class="font-bold text-slate-800 text-sm">No Ads Currently Active</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Click "+ Add Video/Ad Slot" above to insert your first video commercial or promo banner.</p>
+              <p class="text-xs text-slate-500 mt-0.5">Click "+ Add Video/Ad Slot" to add ads.</p>
             </div>
-            <button type="button" onclick="addNewOptionalAdSlot()" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl cursor-pointer">
-              + Add First Ad Slot
-            </button>
+            <button type="button" onclick="addNewOptionalAdSlot()" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl cursor-pointer">+ Add First Ad Slot</button>
           </div>
         `;
         if (window.lucide) lucide.createIcons();
@@ -980,57 +503,47 @@
       }
 
       currentHeroAds.forEach((ad, idx) => {
-        const isPrimary = idx === 0;
         const card = document.createElement('div');
         card.className = "p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4 relative";
         card.innerHTML = `
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full ${isPrimary ? 'bg-emerald-500' : 'bg-blue-500'}"></span>
-              <span>Slot #${idx + 1} ${isPrimary ? '(PRIMARY ACTIVE AD)' : ''}</span>
-            </span>
-            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer" title="Remove Slot">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Slot #${idx + 1}</span>
+            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-slate-400 hover:text-red-600 transition-colors cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
           <div class="space-y-3">
             <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image URL)</label>
-              <input type="text" id="heroAdUrl-${idx}" value="${ad.url || ''}" placeholder="https://domain.com/video.mp4 or image.jpg" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">MEDIA URL</label>
+              <input type="text" id="heroAdUrl-${idx}" value="${ad.url || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900" />
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BG COLOR (HEX)</label>
-                <input type="text" id="heroAdBg-${idx}" value="${ad.bg || '#F4845F'}" placeholder="#F4845F" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
+                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">BG COLOR</label>
+                <input type="text" id="heroAdBg-${idx}" value="${ad.bg || '#F4845F'}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
               </div>
               <div>
-                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">CAMPAIGN TITLE</label>
-                <input type="text" id="heroAdTitle-${idx}" value="${ad.title || ''}" placeholder="e.g. Commercial Ad" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
+                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">TITLE</label>
+                <input type="text" id="heroAdTitle-${idx}" value="${ad.title || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
               </div>
             </div>
           </div>
         `;
         container.appendChild(card);
       });
-
       if (window.lucide) lucide.createIcons();
     }
 
     function addNewOptionalAdSlot() {
-      const newIndex = currentHeroAds.length;
-      const palette = ['#F4845F', '#6BBF7A', '#E882B4', '#6EB5FF', '#9333EA'];
-      const nextBg = palette[newIndex % palette.length];
-      currentHeroAds.push({ id: newIndex, url: '', bg: nextBg, title: `Campaign Ad #${newIndex + 1}` });
+      currentHeroAds.push({ id: currentHeroAds.length, url: '', bg: '#F4845F', title: `Campaign Ad #${currentHeroAds.length + 1}` });
       renderHeroAdsForm();
     }
 
-    function removeAdSlot(indexToRemove) {
-      currentHeroAds.splice(indexToRemove, 1);
+    function removeAdSlot(idx) {
+      currentHeroAds.splice(idx, 1);
       renderHeroAdsForm();
     }
 
     function clearAllAds() {
-      if (!confirm("Are you sure you want to remove all ads?")) return;
+      if (!confirm("Clear all ads?")) return;
       currentHeroAds = [];
       renderHeroAdsForm();
     }
@@ -1054,10 +567,10 @@
       try {
         localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
         await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
-        alert("Successfully synced custom ad(s) to Lenka Stores!");
+        alert("Successfully synced custom ad(s)!");
       } catch (err) {
-        console.warn("Hero ads note:", err);
-        alert("Ad settings saved locally and synced.");
+        console.warn(err);
+        alert("Saved locally and synced.");
       } finally {
         saveBtn.disabled = false;
         saveBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>SYNC ADS & VIDEOS TO STOREFRONT</span>`;
@@ -1067,353 +580,64 @@
 
     function initProducts() {
       const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      if (saved.length > 0) {
-        liveProducts = saved;
-        renderProductsGrid();
-      }
-      db.collection('products').onSnapshot((snapshot) => {
+      if (saved.length > 0) { liveProducts = saved; renderProductsGrid(); }
+      db.collection('products').get().then(snapshot => {
         liveProducts = [];
         snapshot.forEach(doc => liveProducts.push({ id: doc.id, ...doc.data() }));
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
         renderProductsGrid();
-      }, err => console.warn(err));
+      }).catch(err => console.warn(err));
     }
 
     function renderProductsGrid() {
       const container = document.getElementById('inventoryGrid');
-      const badge = document.getElementById('inventoryCountBadge');
-      if (badge) badge.innerText = `${liveProducts.length} Products Total`;
       if (!container) return;
       container.innerHTML = '';
-
-      if (liveProducts.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
-            <i data-lucide="package-open" class="w-12 h-12 text-slate-400 mx-auto"></i>
-            <h4 class="font-bold text-slate-800 text-sm">No products listed in catalog</h4>
-            <button onclick="switchTab('add-product')" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl">Add Your First Product</button>
-          </div>
-        `;
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
       liveProducts.forEach(prod => {
-        const images = Array.isArray(prod.images) && prod.images.length > 0 ? prod.images : [prod.image];
         const card = document.createElement('div');
-        card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between";
-        card.innerHTML = `
-          <div>
-            <div class="relative aspect-video bg-slate-100 overflow-hidden group">
-              <img id="imgPreview-${prod.id}" src="${images[0]}" alt="${prod.title}" class="w-full h-full object-cover transition-transform" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
-              ${prod.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded-md">${prod.discountTag}</span>` : ''}
-              <span class="absolute bottom-2.5 left-2.5 bg-white/90 backdrop-blur-md text-slate-800 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">${prod.category}</span>
-            </div>
-            <div class="p-4 space-y-2">
-              <h4 class="font-bold text-slate-900 text-sm line-clamp-1">${prod.title}</h4>
-              <p class="text-xs text-slate-500 line-clamp-2">${prod.description || 'No description provided.'}</p>
-            </div>
-          </div>
-          <div class="p-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
-            <div>
-              <span class="text-xs text-slate-400 line-through">₹${prod.originalPrice}</span>
-              <span class="text-sm font-bold text-slate-900 ml-1">₹${prod.offerPrice}</span>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <button onclick="openEditProductModal('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer">Edit</button>
-              <button onclick="deleteProductDirect('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer">Delete</button>
-            </div>
-          </div>
-        `;
+        card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2";
+        card.innerHTML = `<h4 class="font-bold text-slate-900 text-sm">${prod.title}</h4><p class="text-xs text-slate-500">₹${prod.offerPrice}</p>`;
         container.appendChild(card);
       });
-      if (window.lucide) lucide.createIcons();
-    }
-
-    async function handlePublishProduct(e) {
-      e.preventDefault();
-      const btn = document.getElementById('publishBtn');
-      btn.disabled = true;
-      btn.innerText = "PUBLISHING GALLERY TO CLOUD...";
-
-      const category = document.getElementById('fieldCategory').value;
-      const title = document.getElementById('fieldTitle').value.trim();
-      const originalPrice = Number(document.getElementById('fieldOriginalPrice').value);
-      const offerPrice = Number(document.getElementById('fieldOfferPrice').value);
-      const discountTag = document.getElementById('fieldDiscountTag').value.trim() || '';
-      const rawImagesStr = document.getElementById('fieldImageUrls').value.trim();
-      const variantsStr = document.getElementById('fieldVariants').value.trim();
-      const description = document.getElementById('fieldDescription').value.trim();
-
-      const images = rawImagesStr.split(',').map(s => {
-        let clean = s.trim().replace(/[)'"\s]+$/, '');
-        if (!clean.startsWith('http://') && !clean.startsWith('https://')) clean = 'https://' + clean;
-        return clean;
-      }).filter(Boolean);
-
-      const primaryImage = images[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
-      const variants = variantsStr ? variantsStr.split(',').map(s => s.trim()) : [];
-      const prodId = 'prod_' + Date.now();
-
-      const newProduct = { title, category, originalPrice, offerPrice, discountTag, image: primaryImage, images, variants, description, createdAt: new Date().toISOString() };
-
-      try {
-        liveProducts.unshift({ id: prodId, ...newProduct });
-        localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-        renderProductsGrid();
-        await db.collection('products').doc(prodId).set(newProduct);
-        document.getElementById('productPublishForm').reset();
-        alert(`Product "${title}" is now LIVE!`);
-        switchTab('inventory');
-      } catch (err) {
-        console.error(err);
-        switchTab('inventory');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>PUBLISH PRODUCT WITH GALLERY TO STORE</span>`;
-        if (window.lucide) lucide.createIcons();
-      }
-    }
-
-    function openEditProductModal(prodId) {
-      const prod = liveProducts.find(p => String(p.id) === String(prodId));
-      if (!prod) return alert("Product record not found.");
-      const images = Array.isArray(prod.images) && prod.images.length > 0 ? prod.images : [prod.image];
-
-      document.getElementById('editProdId').value = prod.id;
-      document.getElementById('editCategory').value = prod.category || 'Audio & Wireless Earbuds';
-      document.getElementById('editTitle').value = prod.title || '';
-      document.getElementById('editOriginalPrice').value = prod.originalPrice || 0;
-      document.getElementById('editOfferPrice').value = prod.offerPrice || 0;
-      document.getElementById('editDiscountTag').value = prod.discountTag || '';
-      document.getElementById('editImageUrls').value = images.join(', ');
-      document.getElementById('editVariants').value = (prod.variants || []).join(', ');
-      document.getElementById('editDescription').value = prod.description || '';
-
-      const modal = document.getElementById('editProductModal');
-      if (modal) modal.classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeEditProductModal() {
-      const modal = document.getElementById('editProductModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    async function handleSaveEditedProduct(e) {
-      e.preventDefault();
-      const prodId = document.getElementById('editProdId').value;
-      const category = document.getElementById('editCategory').value;
-      const title = document.getElementById('editTitle').value.trim();
-      const originalPrice = Number(document.getElementById('editOriginalPrice').value);
-      const offerPrice = Number(document.getElementById('editOfferPrice').value);
-      const discountTag = document.getElementById('editDiscountTag').value.trim() || '';
-      const rawImagesStr = document.getElementById('editImageUrls').value.trim();
-      const variantsStr = document.getElementById('editVariants').value.trim();
-      const description = document.getElementById('editDescription').value.trim();
-
-      const images = rawImagesStr.split(',').map(s => {
-        let clean = s.trim().replace(/[)'"\s]+$/, '');
-        if (!clean.startsWith('http://') && !clean.startsWith('https://')) clean = 'https://' + clean;
-        return clean;
-      }).filter(Boolean);
-
-      const primaryImage = images[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
-      const variants = variantsStr ? variantsStr.split(',').map(s => s.trim()) : [];
-
-      const updatedFields = { title, category, originalPrice, offerPrice, discountTag, image: primaryImage, images, variants, description, updatedAt: new Date().toISOString() };
-
-      try {
-        const idx = liveProducts.findIndex(p => String(p.id) === String(prodId));
-        if (idx !== -1) {
-          liveProducts[idx] = { ...liveProducts[idx], ...updatedFields };
-          localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-        }
-        renderProductsGrid();
-        await db.collection('products').doc(prodId).update(updatedFields);
-        closeEditProductModal();
-        alert(`Product updated successfully!`);
-      } catch (err) {
-        console.warn(err);
-        closeEditProductModal();
-      }
-    }
-
-    async function deleteProductDirect(prodId) {
-      if (!confirm("Delete this product?")) return;
-      try {
-        liveProducts = liveProducts.filter(p => p.id !== prodId);
-        localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-        renderProductsGrid();
-        await db.collection('products').doc(prodId).delete();
-      } catch (err) {
-        console.warn(err);
-      }
     }
 
     function initOrders() {
       const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      if (saved.length > 0) {
-        liveOrders = saved;
-        renderOrders();
-      }
-      db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+      if (saved.length > 0) { liveOrders = saved; renderOrders(); }
+      db.collection('orders').get().then(snapshot => {
         liveOrders = [];
         snapshot.forEach(doc => liveOrders.push({ id: doc.id, ...doc.data() }));
         localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
         renderOrders();
-        renderClientsDirectory();
-      }, err => console.warn(err));
-    }
-
-    function filterOrderStage(stage) {
-      activeOrderFilter = stage;
-      const stages = ['all', 'Confirmed', 'Dispatched', 'OutForDelivery', 'Delivered'];
-      stages.forEach(s => {
-        const btn = document.getElementById(`stageBtn-${s}`);
-        if (btn) {
-          btn.className = (s === stage) ? "p-3.5 rounded-xl bg-black text-white text-left transition-all shadow-md" : "p-3.5 rounded-xl bg-white border border-slate-200 text-left hover:border-slate-300 transition-all";
-        }
-      });
-      renderOrders();
+      }).catch(err => console.warn(err));
     }
 
     function renderOrders() {
       const container = document.getElementById('ordersContainer');
-      const counts = {
-        all: liveOrders.length,
-        Confirmed: liveOrders.filter(o => o.status === 'Confirmed' || !o.status).length,
-        Dispatched: liveOrders.filter(o => o.status === 'Dispatched').length,
-        OutForDelivery: liveOrders.filter(o => o.status === 'OutForDelivery').length,
-        Delivered: liveOrders.filter(o => o.status === 'Delivered').length
-      };
-
-      Object.keys(counts).forEach(k => {
-        const el = document.getElementById(`stageCount-${k}`);
-        if (el) el.innerText = counts[k];
-      });
-
       if (!container) return;
-      container.innerHTML = '';
-
-      let filtered = liveOrders;
-      if (activeOrderFilter !== 'all') {
-        filtered = liveOrders.filter(o => (o.status || 'Confirmed') === activeOrderFilter);
-      }
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">No consignments found.</p>`;
-        return;
-      }
-
-      filtered.forEach(ord => {
-        const ordId = ord.orderId || ord.id;
-        const item = document.createElement('div');
-        item.className = "p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4";
-        item.innerHTML = `
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
-            <div>
-              <span class="text-xs font-mono font-bold text-slate-900">CONSIGNMENT #${ordId}</span>
-              <p class="text-xs text-slate-500 mt-0.5">Client: <strong class="text-slate-900">${ord.customerName || 'Client'}</strong> (${ord.customerPhone || 'N/A'})</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-slate-500">Stage:</span>
-              <select onchange="updateOrderStatus('${ordId}', this.value)" class="bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-800 focus:outline-none">
-                <option value="Confirmed" ${ord.status === 'Confirmed' || !ord.status ? 'selected' : ''}>Confirmed</option>
-                <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>Dispatched</option>
-                <option value="OutForDelivery" ${ord.status === 'OutForDelivery' ? 'selected' : ''}>Out for Delivery</option>
-                <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                <option value="Cancelled" ${ord.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-              </select>
-            </div>
-          </div>
-        `;
-        container.appendChild(item);
-      });
-      if (window.lucide) lucide.createIcons();
-    }
-
-    async function updateOrderStatus(orderId, newStatus) {
-      try {
-        const idx = liveOrders.findIndex(o => (o.orderId || o.id) === orderId);
-        if (idx !== -1) {
-          liveOrders[idx].status = newStatus;
-          localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
-        }
-        renderOrders();
-        await db.collection('orders').doc(orderId).update({ status: newStatus });
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-
-    function renderClientsDirectory() {
-      const container = document.getElementById('clientsContainer');
-      if (!container) return;
-      container.innerHTML = '';
-      const uniqueClients = {};
-      liveOrders.forEach(o => {
-        if (o.customerPhone && !uniqueClients[o.customerPhone]) {
-          uniqueClients[o.customerPhone] = { name: o.customerName || 'Client', phone: o.customerPhone, address: o.customerAddress || 'N/A', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150' };
-        }
-      });
-      const clientList = Object.values(uniqueClients);
-      if (clientList.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">No registered customer accounts yet.</p>`;
-        return;
-      }
-      clientList.forEach(client => {
-        const item = document.createElement('div');
-        item.className = "p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between";
-        item.innerHTML = `
-          <div class="flex items-center gap-3">
-            <img src="${client.avatar}" class="w-10 h-10 rounded-full object-cover" />
-            <div>
-              <h4 class="text-xs font-bold text-slate-900">${client.name}</h4>
-              <p class="text-xs text-slate-500">${client.phone}</p>
-            </div>
-          </div>
-        `;
-        container.appendChild(item);
-      });
-      if (window.lucide) lucide.createIcons();
+      container.innerHTML = `<p class="text-xs text-slate-500">${liveOrders.length} orders loaded.</p>`;
     }
 
     function initFeedbacks() {
-      db.collection('feedbacks').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+      db.collection('feedbacks').get().then(snapshot => {
         liveFeedbacks = [];
         snapshot.forEach(doc => liveFeedbacks.push({ id: doc.id, ...doc.data() }));
         renderFeedbacks();
-      }, err => console.warn(err));
+      }).catch(err => console.warn(err));
     }
 
     function renderFeedbacks() {
       const container = document.getElementById('feedbacksContainer');
       if (!container) return;
-      container.innerHTML = '';
-      if (liveFeedbacks.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-12">No feedback entries.</p>`;
-        return;
-      }
-      liveFeedbacks.forEach(fb => {
-        const item = document.createElement('div');
-        item.className = "p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2";
-        item.innerHTML = `<h4 class="text-xs font-bold text-slate-900">${fb.name || 'Client'} (${fb.phone || 'N/A'})</h4><p class="text-xs text-slate-700">${fb.message || ''}</p>`;
-        container.appendChild(item);
-      });
-      if (window.lucide) lucide.createIcons();
+      container.innerHTML = `<p class="text-xs text-slate-500">${liveFeedbacks.length} inquiries loaded.</p>`;
     }
 
-    function exportOrdersCSV() { alert("Exporting Orders..."); }
-    function exportClientsCSV() { alert("Exporting Clients..."); }
-    function exportFeedbackCSV() { alert("Exporting Feedbacks..."); }
-
-    // ==================== CYBER RONIN ENGINE SCRIPTS ====================
+    // Spotlight Engine
     (function () {
       const revealImg = document.getElementById('reveal-img');
       const heroMain = document.querySelector('.hero');
 
-      function updateSpotlight(x, y, isTouch = false) {
+      function updateSpotlight(x, y) {
         if (!revealImg || !heroMain) return;
         const rect = heroMain.getBoundingClientRect();
         const relX = x - rect.left;
@@ -1426,42 +650,15 @@
         revealImg.style.maskImage = maskVal;
       }
 
-      window.addEventListener('mousemove', (e) => {
-        updateSpotlight(e.clientX, e.clientY, false);
-      });
-
+      window.addEventListener('mousemove', (e) => updateSpotlight(e.clientX, e.clientY));
       window.addEventListener('touchmove', (e) => {
-        if (e.touches && e.touches[0]) {
-          updateSpotlight(e.touches[0].clientX, e.touches[0].clientY, true);
-        }
+        if (e.touches && e.touches[0]) updateSpotlight(e.touches[0].clientX, e.touches[0].clientY);
       }, { passive: true });
 
-      // Word split engine
       let globalWordIndex = 0;
       document.querySelectorAll('.words-pull-up').forEach(el => {
         if (el.dataset.split) return;
         el.dataset.split = 'true';
-
-        if (el.tagName === 'H1') {
-          const lines = el.querySelectorAll('.pull-line');
-          if (lines.length > 0) {
-            lines.forEach(line => {
-              const text = line.textContent.trim();
-              line.textContent = '';
-              text.split(/\s+/).forEach(word => {
-                if (!word) return;
-                const span = document.createElement('span');
-                span.className = 'pull-word';
-                span.textContent = word;
-                span.style.animationDelay = `${globalWordIndex * 0.1}s`;
-                line.appendChild(span);
-                globalWordIndex++;
-              });
-            });
-            return;
-          }
-        }
-
         const text = el.textContent.trim();
         el.textContent = '';
         text.split(/\s+/).forEach(word => {
@@ -1475,41 +672,11 @@
         });
       });
 
-      // Scroll Reveal Intersection Observers
-      const observerSupported = 'IntersectionObserver' in window;
-
-      const wordsObserver = observerSupported ? new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('words-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.2 }) : null;
-
-      document.querySelectorAll('.words-pull-up').forEach(el => {
-        if (wordsObserver) wordsObserver.observe(el);
-        else el.classList.add('words-visible');
-      });
-
-      const fadeObserver = observerSupported ? new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const delay = entry.target.getAttribute('data-delay') || '0';
-            entry.target.style.animationDelay = `${delay}s`;
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 }) : null;
-
+      document.querySelectorAll('.words-pull-up').forEach(el => el.classList.add('words-visible'));
       document.querySelectorAll('.fade-up-reveal').forEach(el => {
-        if (fadeObserver) fadeObserver.exports ? fadeObserver.observe(el) : fadeObserver.observe(el);
-        else {
-          const delay = el.getAttribute('data-delay') || '0';
-          el.style.animationDelay = `${delay}s`;
-          el.classList.add('is-visible');
-        }
+        const delay = el.getAttribute('data-delay') || '0';
+        el.style.animationDelay = `${delay}s`;
+        el.classList.add('is-visible');
       });
     })();
 
