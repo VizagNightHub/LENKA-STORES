@@ -221,165 +221,165 @@
     </div>
   </main>
 
-  <!-- ==================== 4. EMBEDDED MODALS, DRAWERS & SUCCESS POPUPS ==================== -->
-
-  <!-- CLIENT PROFILE PORTAL -->
-  <div id="clientProfilePortal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-    <div class="relative w-full max-w-4xl bg-[#0E0F14] border border-white/15 rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden my-auto">
-      
-      <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between bg-[#111218]">
-        <div class="flex items-center gap-3">
-          <img class="prof-user-avatar w-11 h-11 rounded-full object-cover border border-[#C5A880]/50" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" />
-          <div>
-            <h3 class="prof-user-name font-bold text-white text-base">Atelier Client</h3>
-            <p class="prof-user-phone text-xs text-slate-400">+91 98765 43210</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeProfileDrawer()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="px-6 py-3 border-b border-white/10 bg-[#0A0B0D] flex items-center gap-2 overflow-x-auto custom-scrollbar">
-        <button type="button" onclick="switchProfileTab('overview')" id="ptabBtn-overview" class="px-3.5 py-2 rounded-xl bg-white text-black font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="user" class="w-3.5 h-3.5"></i>
-          <span>Overview</span>
-        </button>
-        <button type="button" onclick="switchProfileTab('orders')" id="ptabBtn-orders" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="package" class="w-3.5 h-3.5 text-amber-400"></i>
-          <span>Active Orders</span>
-        </button>
-        <button type="button" onclick="switchProfileTab('history')" id="ptabBtn-history" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>Delivered History</span>
-        </button>
-        <button type="button" onclick="switchProfileTab('favorites')" id="ptabBtn-favorites" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i>
-          <span>Favorites</span>
-        </button>
-        <button type="button" onclick="switchProfileTab('address')" id="ptabBtn-address" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-          <span>Saved Address</span>
-        </button>
-        <button type="button" onclick="switchProfileTab('edit-profile')" id="ptabBtn-edit-profile" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-          <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-          <span>Edit Profile</span>
-        </button>
-      </div>
-
-      <div class="p-6 overflow-y-auto flex-1 custom-scrollbar space-y-6">
-        <!-- Overview -->
-        <div id="psec-overview" class="space-y-6">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-              <span class="text-[10px] uppercase font-bold text-slate-400">Active Consignments</span>
-              <div id="activeOrdersCount" class="text-2xl font-bold text-white">0 Active</div>
-            </div>
-            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-              <span class="text-[10px] uppercase font-bold text-slate-400">Delivered Orders</span>
-              <div id="historyOrdersCount" class="text-2xl font-bold text-emerald-400">0 Completed</div>
-            </div>
-            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-              <span class="text-[10px] uppercase font-bold text-slate-400">Bookmarked Items</span>
-              <div id="favSlotCount" class="text-2xl font-bold text-[#E8C997]">0 Items</div>
-            </div>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-[#111218] border border-white/10 space-y-3">
-            <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Primary Delivery Destination</h4>
-              <button type="button" onclick="switchProfileTab('address')" class="text-xs text-[#E8C997] hover:underline font-semibold cursor-pointer">Edit Address</button>
-            </div>
-            <p class="prof-user-address text-sm text-white leading-relaxed">Flat 402, Signature Towers, KPHB Colony, Hyderabad</p>
-          </div>
-        </div>
-
-        <!-- Active Orders -->
-        <div id="psec-orders" class="hidden space-y-4">
-          <div class="flex items-center justify-between pb-2 border-b border-white/10">
-            <h4 class="text-sm font-bold text-white">Active Consignments & Tracking</h4>
-            <span class="text-xs text-slate-400">Live Delivery Stages</span>
-          </div>
-          <div id="activeOrdersList" class="space-y-4"></div>
-        </div>
-
-        <!-- History -->
-        <div id="psec-history" class="hidden space-y-4">
-          <div class="flex items-center justify-between pb-2 border-b border-white/10">
-            <h4 class="text-sm font-bold text-white">Delivered Order History</h4>
-            <span class="text-xs text-slate-400">Archive Vault</span>
-          </div>
-          <div id="historyOrdersList" class="space-y-4"></div>
-        </div>
-
-        <!-- Favorites -->
-        <div id="psec-favorites" class="hidden space-y-4">
-          <div class="flex items-center justify-between pb-2 border-b border-white/10">
-            <h4 class="text-sm font-bold text-white">Your Saved Favorites</h4>
-            <span class="text-xs text-slate-400">Bookmarked Atelier Gear</span>
-          </div>
-          <div id="favoritesSlotGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
-        </div>
-
-        <!-- Saved Address -->
-        <div id="psec-address" class="hidden space-y-4">
-          <div class="pb-2 border-b border-white/10">
-            <h4 class="text-sm font-bold text-white">Saved Delivery Destination</h4>
-            <p class="text-xs text-slate-400">Update your default shipping address for express checkouts.</p>
-          </div>
-          <form onsubmit="handleSaveAddressOnly(event)" class="space-y-4 max-w-xl">
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">STREET ADDRESS & APARTMENT</label>
-              <textarea id="addressFieldOnly" rows="3" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]"></textarea>
-            </div>
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">CITY / REGION</label>
-              <input type="text" id="cityFieldOnly" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
-            </div>
-            <button type="submit" class="px-6 py-3 bg-white text-black font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-[#C5A880] transition-colors cursor-pointer">
-              Save Address
-            </button>
-          </form>
-        </div>
-
-        <!-- Edit Profile -->
-        <div id="psec-edit-profile" class="hidden space-y-4">
-          <div class="pb-2 border-b border-white/10">
-            <h4 class="text-sm font-bold text-white">Edit Client Information</h4>
-            <p class="text-xs text-slate-400">Update your name, avatar picture URL, and contact details.</p>
-          </div>
-          <form onsubmit="handleSaveProfile(event)" class="space-y-4 max-w-xl">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">FULL NAME</label>
-                <input type="text" id="editProfName" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
-              </div>
-              <div>
-                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">PHONE NUMBER</label>
-                <input type="tel" id="editProfPhone" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
-              </div>
-            </div>
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">AVATAR IMAGE URL</label>
-              <input type="text" id="editProfAvatar" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
-            </div>
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">DELIVERY ADDRESS</label>
-              <textarea id="editProfAddress" rows="2" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]"></textarea>
-            </div>
-            <div>
-              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">CITY</label>
-              <input type="text" id="editProfCity" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
-            </div>
-            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg cursor-pointer">
-              Update Full Profile
-            </button>
-          </form>
-        </div>
-
+<!-- ==================== DEDICATED ATELIER CLIENT PROFILE PORTAL (FULL SCREEN) ==================== -->
+<div id="clientProfilePortal" class="fixed inset-0 z-50 bg-[#0A0B0D] hidden flex flex-col overflow-y-auto font-sans">
+  
+  <!-- TOP FULL-SCREEN HEADER BAR -->
+  <div class="px-6 sm:px-12 py-5 border-b border-white/10 flex items-center justify-between bg-[#111218] sticky top-0 z-20">
+    <div class="flex items-center gap-4">
+      <img class="prof-user-avatar w-12 h-12 rounded-full object-cover border border-[#C5A880]/50" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" />
+      <div>
+        <h3 class="prof-user-name font-bold text-white text-lg">Atelier Client</h3>
+        <p class="prof-user-phone text-xs text-slate-400">+91 98765 43210</p>
       </div>
     </div>
+    
+    <div class="flex items-center gap-3">
+      <button type="button" onclick="clientLogOutSession()" class="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+        <span>Log Out</span>
+      </button>
+      <button type="button" onclick="closeProfileDrawer()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
   </div>
+
+  <!-- NAVIGATION TABS -->
+  <div class="px-6 sm:px-12 py-3 border-b border-white/10 bg-[#0E0F14] flex items-center gap-2 overflow-x-auto custom-scrollbar sticky top-[73px] z-10">
+    <button type="button" onclick="switchProfileTab('overview')" id="ptabBtn-overview" class="px-4 py-2.5 rounded-xl bg-white text-black font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="user" class="w-4 h-4"></i>
+      <span>Overview</span>
+    </button>
+    <button type="button" onclick="switchProfileTab('orders')" id="ptabBtn-orders" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="package" class="w-4 h-4 text-amber-400"></i>
+      <span>Active Orders</span>
+    </button>
+    <button type="button" onclick="switchProfileTab('history')" id="ptabBtn-history" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+      <span>Delivered History</span>
+    </button>
+    <button type="button" onclick="switchProfileTab('favorites')" id="ptabBtn-favorites" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i>
+      <span>Favorites</span>
+    </button>
+    <button type="button" onclick="switchProfileTab('address')" id="ptabBtn-address" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="map-pin" class="w-4 h-4"></i>
+      <span>Saved Address</span>
+    </button>
+    <button type="button" onclick="switchProfileTab('edit-profile')" id="ptabBtn-edit-profile" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="edit-3" class="w-4 h-4"></i>
+      <span>Edit Profile</span>
+    </button>
+  </div>
+
+  <!-- FULL SCREEN CONTENT CONTAINER -->
+  <div class="p-6 sm:p-12 max-w-7xl mx-auto w-full flex-1 space-y-8">
+    
+    <!-- TAB 1: OVERVIEW (Boxes removed, clean profile summary) -->
+    <div id="psec-overview" class="space-y-6 max-w-3xl">
+      <div class="p-6 rounded-2xl bg-[#111218] border border-white/10 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-[#C5A880]">Primary Delivery Destination</h4>
+          <button type="button" onclick="switchProfileTab('address')" class="text-xs text-white underline hover:text-[#C5A880] font-semibold cursor-pointer">Edit Address</button>
+        </div>
+        <p class="prof-user-address text-sm text-slate-200 leading-relaxed">Flat 402, Signature Towers, KPHB Colony, Hyderabad</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-[#111218] border border-white/10 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-[#C5A880]">Account Security & Session</h4>
+          <button type="button" onclick="clientLogOutSession()" class="text-xs text-red-400 underline hover:text-red-300 font-semibold cursor-pointer">Log Out Now</button>
+        </div>
+        <p class="text-xs text-slate-400">Your session is secure under DPDP Act encryption. You can log out anytime to switch accounts.</p>
+      </div>
+    </div>
+
+    <!-- TAB 2: ACTIVE ORDERS -->
+    <div id="psec-orders" class="hidden space-y-6">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <h4 class="text-base font-bold text-white uppercase tracking-wider">Active Consignments & Tracking</h4>
+        <span class="text-xs text-slate-400">Live Delivery Stages</span>
+      </div>
+      <div id="activeOrdersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+
+    <!-- TAB 3: DELIVERED HISTORY -->
+    <div id="psec-history" class="hidden space-y-6">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <h4 class="text-base font-bold text-white uppercase tracking-wider">Delivered Order History</h4>
+        <span class="text-xs text-slate-400">Archive Vault</span>
+      </div>
+      <div id="historyOrdersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+
+    <!-- TAB 4: FAVORITES -->
+    <div id="psec-favorites" class="hidden space-y-6">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <h4 class="text-base font-bold text-white uppercase tracking-wider">Your Saved Favorites</h4>
+        <span class="text-xs text-slate-400">Bookmarked Atelier Gear</span>
+      </div>
+      <div id="favoritesSlotGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </div>
+
+    <!-- TAB 5: SAVED ADDRESS -->
+    <div id="psec-address" class="hidden space-y-6 max-w-2xl">
+      <div class="pb-3 border-b border-white/10">
+        <h4 class="text-base font-bold text-white uppercase tracking-wider">Saved Delivery Destination</h4>
+        <p class="text-xs text-slate-400">Update your default shipping address for express checkouts.</p>
+      </div>
+      <form onsubmit="handleSaveAddressOnly(event)" class="space-y-4">
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">STREET ADDRESS & APARTMENT</label>
+          <textarea id="addressFieldOnly" rows="3" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]"></textarea>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">CITY / REGION</label>
+          <input type="text" id="cityFieldOnly" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+        <button type="submit" class="px-8 py-3.5 bg-white text-black font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-[#C5A880] transition-colors cursor-pointer shadow-lg">
+          Save Address
+        </button>
+      </form>
+    </div>
+
+    <!-- TAB 6: EDIT PROFILE -->
+    <div id="psec-edit-profile" class="hidden space-y-6 max-w-2xl">
+      <div class="pb-3 border-b border-white/10">
+        <h4 class="text-base font-bold text-white uppercase tracking-wider">Edit Client Information</h4>
+        <p class="text-xs text-slate-400">Update your name, avatar picture URL, and contact details.</p>
+      </div>
+      <form onsubmit="handleSaveProfile(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">FULL NAME</label>
+            <input type="text" id="editProfName" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">PHONE NUMBER</label>
+            <input type="tel" id="editProfPhone" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">AVATAR IMAGE URL</label>
+          <input type="text" id="editProfAvatar" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">DELIVERY ADDRESS</label>
+          <textarea id="editProfAddress" rows="2" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]"></textarea>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">CITY</label>
+          <input type="text" id="editProfCity" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+        <button type="submit" class="w-full py-4 bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg cursor-pointer">
+          Update Full Profile
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
 
   <!-- CART DRAWER -->
   <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#0E0F14] border-l border-white/15 shadow-2xl translate-x-full transition-transform duration-300 flex flex-col justify-between">
