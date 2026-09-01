@@ -5,14 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VANGUARD | Lenka Studio Executive Terminal</title>
   
+  <!-- CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
+  <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;600;700&family=Anton&display=swap" rel="stylesheet" />
   <link href="https://db.onlinewebfonts.com/c/8b75d9dcff6a48c35a46656192adf019?family=FSP+DEMO+-+PODIUM+Sharp+4.11" rel="stylesheet" type="text/css" />
 
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -59,12 +62,14 @@
 
 <body class="bg-black font-inter antialiased min-h-screen text-slate-100 selection:bg-white selection:text-black overflow-x-hidden">
 
+  <!-- ==================== VANGUARD VIDEO LOCK WALL ==================== -->
   <div id="vanguardLockWall" class="fixed inset-0 z-50 w-full h-screen overflow-hidden bg-black flex flex-col justify-between select-none">
     <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0">
       <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260606_154941_df1a96e1-a06f-450c-bd02-d863414cc1a0.mp4" type="video/mp4" />
     </video>
     <div class="absolute inset-0 bg-black/45 pointer-events-none z-0"></div>
 
+    <!-- NAVBAR -->
     <nav class="relative z-20 w-full px-6 sm:px-10 lg:px-16 py-5 lg:py-7 flex items-center justify-between animate-fade-in">
       <a href="javascript:void(0)" onclick="openPasskeyModal()" class="font-podium text-2xl sm:text-3xl tracking-wider text-white uppercase font-bold hover:opacity-90 transition-opacity">
         VANGUARD
@@ -88,6 +93,7 @@
       </button>
     </nav>
 
+    <!-- MOBILE MENU OVERLAY -->
     <div id="vanguardMobileMenu" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm opacity-0 invisible transition-all duration-500 flex flex-col justify-between p-6 sm:p-10 md:hidden">
       <div class="flex items-center justify-between">
         <span class="font-podium text-2xl sm:text-3xl tracking-wider text-white uppercase font-bold">VANGUARD</span>
@@ -109,6 +115,7 @@
       </div>
     </div>
 
+    <!-- HERO CONTENT -->
     <main class="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 my-auto py-8">
       <div class="animate-fade-up flex items-center gap-2.5 mb-6 lg:mb-8">
         <i data-lucide="crown" class="w-4 h-4 text-white/70"></i>
@@ -159,6 +166,7 @@
     </div>
   </div>
 
+  <!-- PASSKEY MODAL -->
   <div id="passkeyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-[#111216] border border-white/20 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-5 text-center relative">
       <button onclick="closePasskeyModal()" class="absolute top-4 right-4 text-white/50 hover:text-white p-1 cursor-pointer">
@@ -179,8 +187,10 @@
     </div>
   </div>
 
+  <!-- ==================== EXECUTIVE DASHBOARD ==================== -->
   <div id="adminAppContent" class="hidden flex-col min-h-screen bg-[#F8FAFC] text-[#0F172A]">
     
+    <!-- TOP APP BAR -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -194,6 +204,7 @@
         </div>
 
         <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
+          <!-- HERO ADS TAB -->
           <button onclick="switchTab('hero-ads')" id="tabBtn-hero-ads" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="play-square" class="w-3.5 h-3.5 text-rose-500"></i>
             <span>Hero Ads Manager</span>
@@ -232,136 +243,40 @@
       </div>
     </header>
 
+    <!-- MAIN DASHBOARD CONTENT -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
 
+      <!-- ==================== HERO ADS MANAGER (DYNAMIC 1 PRIMARY + OPTIONAL SLOTS) ==================== -->
       <div id="section-hero-ads" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
-            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Landing Hero Video Ads & Promo Manager</h2>
-            <p class="text-xs text-slate-500">Insert custom looping video ads (MP4/WebM) or campaign image banners into the 4 landing carousel cards.</p>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Hero Ads & Video Player Configuration</h2>
+            <p class="text-xs text-slate-500">Run a single primary ad/video or add optional multiple ads when needed.</p>
           </div>
-          <button onclick="resetDefaultHeroAds()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
-            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-            <span>Restore Defaults</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="addNewOptionalAdSlot()" class="px-3.5 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-semibold text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer">
+              <i data-lucide="plus" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>+ Add Optional Ad Slot</span>
+            </button>
+            <button type="button" onclick="resetToSinglePrimaryAd()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              <span>Reset to Single Ad</span>
+            </button>
+          </div>
         </div>
 
         <form id="heroAdsForm" onsubmit="handleSaveHeroAds(event)" class="space-y-6">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <div class="p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-[#F4845F]"></span>
-                  <span>Ad Slot #1 (Primary)</span>
-                </span>
-                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">SLOT 0</span>
-              </div>
-              <div class="space-y-3">
-                <div>
-                  <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image Link)</label>
-                  <input type="text" id="heroAdUrl-0" placeholder="https://domain.com/video.mp4 or image.jpg" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BG HEX COLOR</label>
-                    <input type="text" id="heroAdBg-0" placeholder="#F4845F" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">CAMPAIGN TITLE</label>
-                    <input type="text" id="heroAdTitle-0" placeholder="Audio ANC Campaign" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-[#6BBF7A]"></span>
-                  <span>Ad Slot #2 (Fashion / Apparel)</span>
-                </span>
-                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">SLOT 1</span>
-              </div>
-              <div class="space-y-3">
-                <div>
-                  <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image Link)</label>
-                  <input type="text" id="heroAdUrl-1" placeholder="https://domain.com/video.mp4 or image.jpg" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BG HEX COLOR</label>
-                    <input type="text" id="heroAdBg-1" placeholder="#6BBF7A" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">CAMPAIGN TITLE</label>
-                    <input type="text" id="heroAdTitle-1" placeholder="Couture Oxford Drop" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-[#E882B4]"></span>
-                  <span>Ad Slot #3 (Power Station)</span>
-                </span>
-                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">SLOT 2</span>
-              </div>
-              <div class="space-y-3">
-                <div>
-                  <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image Link)</label>
-                  <input type="text" id="heroAdUrl-2" placeholder="https://domain.com/video.mp4 or image.jpg" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BG HEX COLOR</label>
-                    <input type="text" id="heroAdBg-2" placeholder="#E882B4" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">CAMPAIGN TITLE</label>
-                    <input type="text" id="heroAdTitle-2" placeholder="GaN Rapid Charging" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-[#6EB5FF]"></span>
-                  <span>Ad Slot #4 (Magnetic Hub)</span>
-                </span>
-                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">SLOT 3</span>
-              </div>
-              <div class="space-y-3">
-                <div>
-                  <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image Link)</label>
-                  <input type="text" id="heroAdUrl-3" placeholder="https://domain.com/video.mp4 or image.jpg" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BG HEX COLOR</label>
-                    <input type="text" id="heroAdBg-3" placeholder="#6EB5FF" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">CAMPAIGN TITLE</label>
-                    <input type="text" id="heroAdTitle-3" placeholder="MagFold Station" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <!-- DYNAMIC AD SLOTS CONTAINER -->
+          <div id="dynamicAdSlotsContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
 
           <button type="submit" id="saveHeroAdsBtn" class="w-full py-4 bg-black hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
             <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-            <span>SYNC VIDEO ADS & PROMOS TO LIVE WEBSITE</span>
+            <span>SYNC ADS & VIDEOS TO STOREFRONT</span>
           </button>
         </form>
       </div>
 
+      <!-- ==================== TAB 1: ALL PRODUCTS VIEW ==================== -->
       <div id="section-inventory" class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -381,6 +296,7 @@
         </div>
       </div>
 
+      <!-- ==================== TAB 2: DEDICATED ADD PRODUCT BOX ==================== -->
       <div id="section-add-product" class="hidden space-y-6">
         <div class="flex items-center justify-between pb-2 border-b border-slate-200">
           <div>
@@ -451,6 +367,7 @@
         </div>
       </div>
 
+      <!-- ==================== TAB 3: ORDERS HUB ==================== -->
       <div id="section-orders" class="space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -491,6 +408,7 @@
         </div>
       </div>
 
+      <!-- ==================== TAB 4: CLIENT DIRECTORY ==================== -->
       <div id="section-users" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -507,6 +425,7 @@
         </div>
       </div>
 
+      <!-- ==================== TAB 5: INQUIRIES & REVIEWS ==================== -->
       <div id="section-feedback" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
@@ -526,6 +445,7 @@
     </main>
   </div>
 
+  <!-- EDIT PRODUCT MODAL -->
   <div id="editProductModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
     <div class="max-w-2xl w-full bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 my-8 text-[#0F172A]">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -601,8 +521,8 @@
     </div>
   </div>
 
+  <!-- SCRIPTS & ENGINES -->
   <script>
-    // 1. VANGUARD CONTROLLER
     function toggleMobileMenu(open) {
       const menu = document.getElementById('vanguardMobileMenu');
       if (!menu) return;
@@ -702,11 +622,9 @@
     let liveFeedbacks = [];
     let activeOrderFilter = 'all';
 
-    const defaultHeroMedia = [
-      { id: 0, url: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=1000', bg: '#F4845F', title: 'Audio ANC Earbuds Campaign' },
-      { id: 1, url: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1000', bg: '#6BBF7A', title: 'Tailored Apparel Promo' },
-      { id: 2, url: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=1000', bg: '#E882B4', title: 'GaN Station Launch' },
-      { id: 3, url: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=1000', bg: '#6EB5FF', title: 'MagFold Charging Commercial' }
+    // CURRENT LOADED HERO ADS (DEFAULT IS 1 PRIMARY AD)
+    let currentHeroAds = [
+      { id: 0, url: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=1000', bg: '#F4845F', title: 'Main Featured Commercial' }
     ];
 
     function initDashboardEngines() {
@@ -732,64 +650,129 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // 3. HERO ADS MANAGER LOGIC
+    // 3. DYNAMIC HERO ADS MANAGER (1 PRIMARY + OPTIONAL SLOTS)
     function initHeroAdsManager() {
-      const savedAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || JSON.stringify(defaultHeroMedia));
-      populateHeroAdsForm(savedAds);
+      const savedAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || 'null');
+      if (savedAds && Array.isArray(savedAds) && savedAds.length > 0) {
+        currentHeroAds = savedAds;
+      }
+      renderHeroAdsForm();
 
       db.collection('settings').doc('hero_ads').onSnapshot((doc) => {
         if (doc.exists && Array.isArray(doc.data().media)) {
-          const media = doc.data().media;
-          localStorage.setItem('lenka_hero_ads', JSON.stringify(media));
-          populateHeroAdsForm(media);
+          currentHeroAds = doc.data().media;
+          localStorage.setItem('lenka_hero_ads', JSON.stringify(currentHeroAds));
+          renderHeroAdsForm();
         }
       }, err => console.warn(err));
     }
 
-    function populateHeroAdsForm(ads) {
-      ads.forEach((item, idx) => {
-        const urlInput = document.getElementById(`heroAdUrl-${idx}`);
-        const bgInput = document.getElementById(`heroAdBg-${idx}`);
-        const titleInput = document.getElementById(`heroAdTitle-${idx}`);
-        if (urlInput) urlInput.value = item.url || '';
-        if (bgInput) bgInput.value = item.bg || '#000000';
-        if (titleInput) titleInput.value = item.title || '';
+    function renderHeroAdsForm() {
+      const container = document.getElementById('dynamicAdSlotsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      currentHeroAds.forEach((ad, idx) => {
+        const isPrimary = idx === 0;
+        const card = document.createElement('div');
+        card.className = "p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4 relative";
+        card.innerHTML = `
+          <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full ${isPrimary ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
+              <span>${isPrimary ? 'Slot #1 (PRIMARY ACTIVE AD)' : `Slot #${idx + 1} (Optional Ad)`}</span>
+            </span>
+            
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono font-bold">${isPrimary ? 'PRIMARY' : 'OPTIONAL'}</span>
+              ${!isPrimary ? `
+                <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer" title="Remove Ad Slot">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              ` : ''}
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image URL)</label>
+              <input type="text" id="heroAdUrl-${idx}" value="${ad.url || ''}" placeholder="https://domain.com/video.mp4 or image.jpg" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-black" />
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">BG COLOR (HEX)</label>
+                <input type="text" id="heroAdBg-${idx}" value="${ad.bg || '#F4845F'}" placeholder="#F4845F" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-1">CAMPAIGN TITLE</label>
+                <input type="text" id="heroAdTitle-${idx}" value="${ad.title || ''}" placeholder="e.g. Earbuds Commercial" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:bg-white focus:outline-none" />
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
       });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function addNewOptionalAdSlot() {
+      const newIndex = currentHeroAds.length;
+      const palette = ['#6BBF7A', '#E882B4', '#6EB5FF', '#F4845F', '#9333EA'];
+      const nextBg = palette[newIndex % palette.length];
+
+      currentHeroAds.push({
+        id: newIndex,
+        url: '',
+        bg: nextBg,
+        title: `Campaign Ad #${newIndex + 1}`
+      });
+      renderHeroAdsForm();
+    }
+
+    function removeAdSlot(indexToRemove) {
+      if (indexToRemove === 0) return alert("Slot #1 is Primary and cannot be deleted.");
+      currentHeroAds.splice(indexToRemove, 1);
+      renderHeroAdsForm();
+    }
+
+    function resetToSinglePrimaryAd() {
+      if (!confirm("Remove all optional slots and keep only 1 Primary Ad slot?")) return;
+      currentHeroAds = [
+        { id: 0, url: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=1000', bg: '#F4845F', title: 'Main Featured Commercial' }
+      ];
+      renderHeroAdsForm();
     }
 
     async function handleSaveHeroAds(e) {
       e.preventDefault();
       const saveBtn = document.getElementById('saveHeroAdsBtn');
       saveBtn.disabled = true;
-      saveBtn.innerText = "SYNCING AD SLOTS TO CLOUD...";
+      saveBtn.innerText = "SYNCING LIVE ADS...";
 
       const updatedAds = [];
-      for (let i = 0; i < 4; i++) {
-        updatedAds.push({
-          id: i,
-          url: document.getElementById(`heroAdUrl-${i}`).value.trim(),
-          bg: document.getElementById(`heroAdBg-${i}`).value.trim(),
-          title: document.getElementById(`heroAdTitle-${i}`).value.trim()
-        });
+      for (let i = 0; i < currentHeroAds.length; i++) {
+        const url = document.getElementById(`heroAdUrl-${i}`)?.value.trim() || '';
+        const bg = document.getElementById(`heroAdBg-${i}`)?.value.trim() || '#F4845F';
+        const title = document.getElementById(`heroAdTitle-${i}`)?.value.trim() || 'Hero Ad';
+        updatedAds.push({ id: i, url, bg, title });
       }
+
+      currentHeroAds = updatedAds;
 
       try {
         localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
         await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
-        alert("Hero Ads & Video commercials updated live across Lenka Stores!");
+        alert(`Successfully synced ${updatedAds.length} Ad slot(s) to Lenka Stores!`);
       } catch (err) {
         console.warn("Hero ads note:", err);
-        alert("Hero Ads saved locally and synced.");
+        alert("Ad settings saved locally and synced.");
       } finally {
         saveBtn.disabled = false;
-        saveBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>SYNC VIDEO ADS & PROMOS TO LIVE WEBSITE</span>`;
+        saveBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>SYNC ADS & VIDEOS TO STOREFRONT</span>`;
         if (window.lucide) lucide.createIcons();
       }
-    }
-
-    function resetDefaultHeroAds() {
-      if (!confirm("Reset all 4 ad slots back to original store product promos?")) return;
-      populateHeroAdsForm(defaultHeroMedia);
     }
 
     // 4. PRODUCTS ENGINE
@@ -835,14 +818,14 @@
           <div>
             <div class="relative aspect-video bg-slate-100 overflow-hidden group">
               <img id="imgPreview-${prod.id}" src="${images[0]}" alt="${prod.title}" class="w-full h-full object-cover transition-transform" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'"/>
-              ${prod.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded-md">${prod.discountTag}</span>` : ''}
+              ${prod.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black text-white text-[10px] font-bold px-2.5 py-0.5 rounded-md">${prod.discountTag}</span>` : ''}
               <span class="absolute bottom-2.5 left-2.5 bg-white/90 backdrop-blur-md text-slate-800 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">${prod.category}</span>
               ${images.length > 1 ? `<span class="absolute top-2.5 right-2.5 bg-black/75 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">${images.length} Photos</span>` : ''}
             </div>
 
             ${images.length > 1 ? `
               <div class="flex gap-1.5 p-2 bg-slate-50 border-b border-slate-100 overflow-x-auto custom-scrollbar">
-                ${images.map((img, i) => `
+                ${images.map((img) => `
                   <img src="${img}" onclick="document.getElementById('imgPreview-${prod.id}').src='${img}'" class="w-8 h-8 rounded object-cover border border-slate-200 cursor-pointer hover:border-black" />
                 `).join('')}
               </div>
