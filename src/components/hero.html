@@ -1,0 +1,196 @@
+<!-- DEDICATED CAROUSEL HERO LANDING INTERFACE -->
+<section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Inter', sans-serif;">
+  <div class="relative w-full h-screen overflow-hidden">
+    
+    <!-- 1. SVG Grain Noise Overlay -->
+    <div class="absolute inset-0 pointer-events-none" style="z-index: 50; opacity: 0.4; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
+
+    <!-- 2. Top-Left Brand Label -->
+    <div class="absolute top-6 left-4 sm:left-8 text-xs font-semibold uppercase text-white" style="z-index: 60; opacity: 0.9; letter-spacing: 0.18em;">
+      LENKA STORES
+    </div>
+
+    <!-- 3. Giant Ghost Text "LENKA" -->
+    <div class="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none" style="z-index: 2; top: 18%;">
+      <span class="font-anton uppercase text-white" style="font-size: clamp(90px, 28vw, 380px); font-weight: 900; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; opacity: 1;">
+        LENKA
+      </span>
+    </div>
+
+    <!-- 4. Layered 4-Item Figurines Carousel -->
+    <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 3;">
+      <!-- Item 0 -->
+      <div id="carouselItem-0" class="absolute" style="aspect-ratio: 0.6 / 1; transition: transform 650ms cubic-bezier(0.4,0,0.2,1), filter 650ms cubic-bezier(0.4,0,0.2,1), opacity 650ms cubic-bezier(0.4,0,0.2,1), left 650ms cubic-bezier(0.4,0,0.2,1), bottom 650ms cubic-bezier(0.4,0,0.2,1), height 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+        <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=1200&q=85" alt="Audio Gear" draggable="false" class="w-full h-full object-contain object-bottom pointer-events-none drop-shadow-2xl" />
+      </div>
+
+      <!-- Item 1 -->
+      <div id="carouselItem-1" class="absolute" style="aspect-ratio: 0.6 / 1; transition: transform 650ms cubic-bezier(0.4,0,0.2,1), filter 650ms cubic-bezier(0.4,0,0.2,1), opacity 650ms cubic-bezier(0.4,0,0.2,1), left 650ms cubic-bezier(0.4,0,0.2,1), bottom 650ms cubic-bezier(0.4,0,0.2,1), height 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1200&q=85" alt="Tailored Apparel" draggable="false" class="w-full h-full object-contain object-bottom pointer-events-none drop-shadow-2xl" />
+      </div>
+
+      <!-- Item 2 -->
+      <div id="carouselItem-2" class="absolute" style="aspect-ratio: 0.6 / 1; transition: transform 650ms cubic-bezier(0.4,0,0.2,1), filter 650ms cubic-bezier(0.4,0,0.2,1), opacity 650ms cubic-bezier(0.4,0,0.2,1), left 650ms cubic-bezier(0.4,0,0.2,1), bottom 650ms cubic-bezier(0.4,0,0.2,1), height 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+        <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=1200&q=85" alt="Power Gear" draggable="false" class="w-full h-full object-contain object-bottom pointer-events-none drop-shadow-2xl" />
+      </div>
+
+      <!-- Item 3 -->
+      <div id="carouselItem-3" class="absolute" style="aspect-ratio: 0.6 / 1; transition: transform 650ms cubic-bezier(0.4,0,0.2,1), filter 650ms cubic-bezier(0.4,0,0.2,1), opacity 650ms cubic-bezier(0.4,0,0.2,1), left 650ms cubic-bezier(0.4,0,0.2,1), bottom 650ms cubic-bezier(0.4,0,0.2,1), height 650ms cubic-bezier(0.4,0,0.2,1); will-change: transform, filter, opacity, left;">
+        <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=1200&q=85" alt="Charging Hub" draggable="false" class="w-full h-full object-contain object-bottom pointer-events-none drop-shadow-2xl" />
+      </div>
+    </div>
+
+    <!-- 5. Centered Floating "GET STARTED" Action Button -->
+    <div class="absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 70;">
+      <button id="heroGetStartedBtn" type="button" onclick="scrollToCatalog()" class="font-anton uppercase rounded-full px-10 py-4 sm:px-14 sm:py-5 bg-white cursor-pointer active:scale-95 shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105" style="color: #F4845F; letter-spacing: 0.05em; font-size: clamp(16px, 2.5vw, 24px); transition: color 650ms cubic-bezier(0.4, 0, 0.2, 1), transform 200ms ease, box-shadow 200ms ease;">
+        GET STARTED
+      </button>
+    </div>
+
+    <!-- 6. Bottom-Left Typography + Navigation Controls -->
+    <div class="absolute bottom-6 left-4 sm:bottom-20 sm:left-24 text-white" style="z-index: 60; max-width: 320px;">
+      <p class="font-bold uppercase mb-2 sm:mb-3 text-base sm:text-[22px]" style="opacity: 0.95; letter-spacing: 0.02em;">
+        LENKA STORES
+      </p>
+      <p class="hidden sm:block text-xs sm:text-sm mb-4 sm:mb-5" style="opacity: 0.85; line-height: 1.6;">
+        Discover fashion and electronics curated for modern living. Premium quality, delivered with care. Explore the collection.
+      </p>
+      <div class="flex items-center gap-3">
+        <button id="heroPrevBtn" type="button" onclick="navigateHeroCarousel('prev')" aria-label="Previous Item" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white bg-transparent flex items-center justify-center text-white transition-all duration-150 hover:scale-105 hover:bg-white/10 active:scale-95 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        </button>
+        <button id="heroNextBtn" type="button" onclick="navigateHeroCarousel('next')" aria-label="Next Item" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white bg-transparent flex items-center justify-center text-white transition-all duration-150 hover:scale-105 hover:bg-white/10 active:scale-95 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 7. Bottom-Right "EXPLORE" Action Link -->
+    <div class="absolute bottom-6 right-4 sm:bottom-20 sm:right-10 text-white" style="z-index: 60;">
+      <button type="button" onclick="scrollToCatalog()" class="flex items-center gap-2 font-anton uppercase text-white transition-opacity duration-200 hover:opacity-100 cursor-pointer" style="font-size: clamp(20px, 4vw, 56px); font-weight: 400; opacity: 0.95; letter-spacing: -0.02em; line-height: 1;">
+        <span>EXPLORE</span>
+        <svg class="w-5 h-5 sm:w-8 sm:h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPONENT LOGIC & ANIMATION ENGINE -->
+<script>
+  (function() {
+    const HERO_IMAGES = [
+      { id: 0, bg: '#F4845F', panel: '#F79B7F' },
+      { id: 1, bg: '#6BBF7A', panel: '#85CC92' },
+      { id: 2, bg: '#E882B4', panel: '#ED9DC4' },
+      { id: 3, bg: '#6EB5FF', panel: '#8DC4FF' }
+    ];
+
+    let activeIndex = 0;
+    let isAnimating = false;
+
+    function isMobileDevice() {
+      return window.innerWidth < 640;
+    }
+
+    function applyRoleStyles(itemEl, role, isMobile) {
+      if (!itemEl) return;
+      
+      switch(role) {
+        case 'center':
+          itemEl.style.transform = `translateX(-50%) scale(${isMobile ? 1.25 : 1.68})`;
+          itemEl.style.filter = 'blur(0px)';
+          itemEl.style.opacity = '1';
+          itemEl.style.zIndex = '20';
+          itemEl.style.left = '50%';
+          itemEl.style.height = isMobile ? '60%' : '92%';
+          itemEl.style.bottom = isMobile ? '22%' : '0%';
+          break;
+        case 'left':
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.filter = 'blur(2px)';
+          itemEl.style.opacity = '0.85';
+          itemEl.style.zIndex = '10';
+          itemEl.style.left = isMobile ? '20%' : '30%';
+          itemEl.style.height = isMobile ? '16%' : '28%';
+          itemEl.style.bottom = isMobile ? '32%' : '12%';
+          break;
+        case 'right':
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.filter = 'blur(2px)';
+          itemEl.style.opacity = '0.85';
+          itemEl.style.zIndex = '10';
+          itemEl.style.left = isMobile ? '80%' : '70%';
+          itemEl.style.height = isMobile ? '16%' : '28%';
+          itemEl.style.bottom = isMobile ? '32%' : '12%';
+          break;
+        case 'back':
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.filter = 'blur(4px)';
+          itemEl.style.opacity = '1';
+          itemEl.style.zIndex = '5';
+          itemEl.style.left = '50%';
+          itemEl.style.height = isMobile ? '13%' : '22%';
+          itemEl.style.bottom = isMobile ? '32%' : '12%';
+          break;
+      }
+    }
+
+    function renderHeroStage() {
+      const isMobile = isMobileDevice();
+      const heroRoot = document.getElementById('lenkaHeroRoot');
+      const getStartedBtn = document.getElementById('heroGetStartedBtn');
+      const activeTheme = HERO_IMAGES[activeIndex];
+
+      if (heroRoot) {
+        heroRoot.style.backgroundColor = activeTheme.bg;
+      }
+      if (getStartedBtn) {
+        getStartedBtn.style.color = activeTheme.bg;
+      }
+
+      const roleMap = {};
+      roleMap[activeIndex] = 'center';
+      roleMap[(activeIndex + 3) % 4] = 'left';
+      roleMap[(activeIndex + 1) % 4] = 'right';
+      roleMap[(activeIndex + 2) % 4] = 'back';
+
+      for (let i = 0; i < 4; i++) {
+        const itemEl = document.getElementById(`carouselItem-${i}`);
+        applyRoleStyles(itemEl, roleMap[i], isMobile);
+      }
+    }
+
+    window.navigateHeroCarousel = function(direction) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      if (direction === 'next') {
+        activeIndex = (activeIndex + 1) % 4;
+      } else {
+        activeIndex = (activeIndex + 3) % 4;
+      }
+
+      renderHeroStage();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 650);
+    };
+
+    window.scrollToCatalog = function() {
+      const catalogEl = document.getElementById('catalog-container');
+      if (catalogEl) {
+        catalogEl.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+      }
+    };
+
+    window.addEventListener('resize', () => {
+      renderHeroStage();
+    });
+
+    renderHeroStage();
+  })();
+</script>
