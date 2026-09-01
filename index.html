@@ -83,7 +83,7 @@
 
 <body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
 
-  <!-- 1. STICKY LUXURY NAVBAR (z-40) -->
+  <!-- 1. STICKY LUXURY NAVBAR -->
   <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <span class="font-anton text-2xl text-white tracking-wider">LENKA STORES</span>
@@ -221,7 +221,7 @@
     </div>
   </main>
 
-  <!-- ==================== 4. EMBEDDED MODALS & DRAWERS (ZERO LATENCY) ==================== -->
+  <!-- ==================== 4. EMBEDDED MODALS, DRAWERS & SUCCESS POPUPS ==================== -->
 
   <!-- CLIENT PROFILE PORTAL -->
   <div id="clientProfilePortal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
@@ -406,7 +406,7 @@
     </div>
   </div>
 
-  <!-- CHECKOUT MODAL -->
+  <!-- EXPRESS CHECKOUT MODAL -->
   <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
@@ -440,6 +440,47 @@
           CONFIRM & DISPATCH ORDER
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- ORDER SUCCESS / PAYMENT CONFIRMATION POPUP MODAL -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/40 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative">
+      
+      <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
+        <i data-lucide="check" class="w-8 h-8"></i>
+      </div>
+
+      <div class="space-y-1">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT SECURED</span>
+        <h3 class="font-anton text-2xl tracking-wider">ORDER PLACED SUCCESSFULLY!</h3>
+        <p id="successOrderIdDisplay" class="text-xs font-mono text-slate-400">Order ID: #LS-992026</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
+        <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed & Reserved</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Payment Option:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Client Concierge:</span><span class="text-white">+91 89776 27028</span></div>
+      </div>
+
+      <div class="space-y-2.5 pt-2">
+        <!-- Direct Payment Link Action -->
+        <a id="paymentGatewayLink" href="https://phonepe.com" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all cursor-pointer">
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+          <span>COMPLETE PAYMENT NOW</span>
+        </a>
+
+        <!-- Direct WhatsApp Link Action -->
+        <a id="whatsappInvoiceLink" href="https://wa.me/918977627028" target="_blank" class="w-full py-3.5 bg-[#25D366] text-black font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all cursor-pointer">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>SEND INVOICE TO WHATSAPP</span>
+        </a>
+
+        <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+          Return to Storefront
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -488,6 +529,103 @@
   <script src="js/order-success.js"></script>
   <script src="js/orders.js"></script>
   <script src="js/feedback.js"></script>
+
+  <!-- CART ORDER CHECKOUT ENGINE WITH CONFETTI & SUCCESS MODAL -->
+  <script>
+    function handlePlaceOrder(e) {
+      e.preventDefault();
+      const cart = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
+      if (cart.length === 0) {
+        alert("Your bag is empty.");
+        return;
+      }
+
+      const name = document.getElementById('orderClientName').value.trim();
+      const phone = document.getElementById('orderClientPhone').value.trim();
+      const address = document.getElementById('orderClientAddress').value.trim();
+      const paymentMethod = document.getElementById('orderPaymentMethod').value;
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
+      const itemsSummary = cart.map(i => `${i.name} (x${i.quantity})`).join(', ');
+
+      const newOrder = {
+        orderId,
+        customerName: name,
+        customerPhone: phone,
+        customerAddress: address,
+        paymentMethod,
+        itemsSummary,
+        totalAmount: subtotal,
+        status: 'Confirmed',
+        createdAt: new Date().toISOString(),
+        shippingDate: 'Processing in warehouse',
+        deliveryDate: 'Expected in 3-5 days'
+      };
+
+      // Save to local orders
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      orders.unshift(newOrder);
+      localStorage.setItem('lenka_orders', JSON.stringify(orders));
+
+      // Sync to Firebase if available
+      if (window.firebase && firebase.apps.length) {
+        firebase.firestore().collection('orders').doc(orderId).set(newOrder).catch(err => console.warn(err));
+      }
+
+      // Clear cart
+      localStorage.removeItem('lenka_cart_v2');
+      if (typeof window.updateCartUI === 'function') window.updateCartUI();
+
+      // Close checkout modal
+      const checkoutModal = document.getElementById('checkoutModal');
+      if (checkoutModal) checkoutModal.classList.add('hidden');
+
+      // Trigger Confetti Blast!
+      if (window.confetti) {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }
+
+      // Populate Success Modal
+      document.getElementById('successOrderIdDisplay').innerText = `Order ID: #${orderId}`;
+      document.getElementById('successPaymentDisplay').innerText = paymentMethod;
+
+      // Setup Direct Payment Link
+      const payLink = document.getElementById('paymentGatewayLink');
+      if (paymentMethod.includes('PhonePe')) {
+        payLink.href = `https://phonepe.com/pay?amount=${subtotal}&order=${orderId}`;
+        payLink.innerHTML = `<i data-lucide="external-link" class="w-4 h-4"></i><span>PAY ₹${subtotal} VIA PHONEPE UPI</span>`;
+      } else if (paymentMethod.includes('Card')) {
+        payLink.href = `https://checkout.razorpay.com?amount=${subtotal}&order=${orderId}`;
+        payLink.innerHTML = `<i data-lucide="credit-card" class="w-4 h-4"></i><span>PAY ₹${subtotal} VIA SECURE CARD</span>`;
+      } else {
+        payLink.href = `https://wa.me/918977627028?text=${encodeURIComponent(`Hi, I chose Cash on Delivery for Order #${orderId} (₹${subtotal}). Please dispatch.`)}`;
+        payLink.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i><span>CASH ON DELIVERY CONFIRMED</span>`;
+      }
+
+      // Setup Direct WhatsApp Invoice Link
+      const waText = `Hi Lenka Stores! I just placed Order #${orderId} amounting to ₹${subtotal} via ${paymentMethod}. Delivery Address: ${address}. Please confirm dispatch!`;
+      document.getElementById('whatsappInvoiceLink').href = `https://wa.me/918977627028?text=${encodeURIComponent(waText)}`;
+
+      // Open Success Modal
+      const successModal = document.getElementById('orderSuccessModal');
+      if (successModal) successModal.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeOrderSuccessModal() {
+      const modal = document.getElementById('orderSuccessModal');
+      if (modal) modal.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.handlePlaceOrder = handlePlaceOrder;
+    window.closeOrderSuccessModal = closeOrderSuccessModal;
+  </script>
 
   <!-- CAROUSEL SCRIPT -->
   <script>
