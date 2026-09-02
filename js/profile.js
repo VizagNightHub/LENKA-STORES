@@ -2,8 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const displayUsername = document.getElementById('display-username');
-    if (!displayUsername) return; 
-
     const profileDisplaySection = document.getElementById('profile-display-section');
     const profileEditSection = document.getElementById('profile-edit-section');
     const editProfileBtn = document.getElementById('edit-profile-btn');
@@ -22,18 +20,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const authToggleBtn = document.getElementById('auth-toggle-btn');
     const authBtnText = document.getElementById('auth-btn-text');
 
-    const savedData = JSON.parse(localStorage.getItem('lenka_user_profile')) || {
-        username: "V. Udayteja",
-        address: "Add your delivery address",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300",
-        isLoggedIn: true
-    };
+    // Retrieve profile data or initialize with default user details
+    let savedData;
+    try {
+        savedData = JSON.parse(localStorage.getItem('lenka_user_profile')) || {
+            username: "V. Udayteja",
+            address: "Add your delivery address",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300",
+            isLoggedIn: true
+        };
+    } catch (e) {
+        savedData = {
+            username: "V. Udayteja",
+            address: "Add your delivery address",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300",
+            isLoggedIn: true
+        };
+    }
 
     function renderProfile() {
-        if (displayUsername) displayUsername.textContent = savedData.username;
-        if (displayAddress) displayAddress.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${savedData.address}`;
-        if (profileAvatarPreview) profileAvatarPreview.src = savedData.avatar;
-        if (inputUsername) inputUsername.value = savedData.username;
+        if (displayUsername) displayUsername.textContent = savedData.username || "V. Udayteja";
+        if (displayAddress) {
+            displayAddress.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${savedData.address || "Add your delivery address"}`;
+        }
+        if (profileAvatarPreview && savedData.avatar) profileAvatarPreview.src = savedData.avatar;
+        if (inputUsername) inputUsername.value = savedData.username || "";
         if (inputAddress) inputAddress.value = savedData.address === "Add your delivery address" ? "" : savedData.address;
         if (authBtnText) authBtnText.textContent = savedData.isLoggedIn ? "Logout" : "Login";
     }
@@ -42,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (editProfileBtn && profileEditSection) {
         editProfileBtn.addEventListener('click', () => {
-            if (profileEditSection) profileEditSection.style.display = 'flex';
+            profileEditSection.style.display = 'flex';
         });
     }
 
     if (cancelEditBtn && profileEditSection) {
         cancelEditBtn.addEventListener('click', () => {
-            if (profileEditSection) profileEditSection.style.display = 'none';
+            profileEditSection.style.display = 'none';
         });
     }
 
@@ -65,6 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         liveFilePreview.src = temporaryImageBase64;
                         liveFilePreview.style.display = 'block';
                     }
+                    if (profileAvatarPreview) {
+                        profileAvatarPreview.src = temporaryImageBase64;
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -74,12 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (editProfileForm) {
         editProfileForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            savedData.username = inputUsername.value.trim();
-            savedData.address = inputAddress.value.trim() || "Add your delivery address";
+            savedData.username = inputUsername ? inputUsername.value.trim() : "V. Udayteja";
+            savedData.address = inputAddress && inputAddress.value.trim() ? inputAddress.value.trim() : "Add your delivery address";
             savedData.avatar = temporaryImageBase64;
+            
             localStorage.setItem('lenka_user_profile', JSON.stringify(savedData));
             renderProfile();
+            
             if (profileEditSection) profileEditSection.style.display = 'none';
+            alert("Profile updated successfully!");
         });
     }
 
@@ -101,14 +118,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // GLOBAL HELPERS
 function checkAndOpenProfile() {
-  window.location.href = "profile.html";
+    window.location.href = "profile.html";
 }
 
 function clientLogOutSession() {
-  if (!confirm("Are you sure you want to log out?")) return;
-  localStorage.removeItem('lenka_logged_in_phone');
-  localStorage.removeItem('lenka_user_profile');
-  window.location.href = "index.html";
+    if (!confirm("Are you sure you want to log out?")) return;
+    localStorage.removeItem('lenka_logged_in_phone');
+    localStorage.removeItem('lenka_user_profile');
+    window.location.href = "index.html";
 }
 
 window.checkAndOpenProfile = checkAndOpenProfile;
