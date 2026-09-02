@@ -440,5 +440,90 @@ Please confirm dispatch and receipt of payment!`;
       if (typeof window.updateCartUI === 'function') window.updateCartUI();
     });
   </script>
+  <footer class="bg-[#08090C] border-t border-white/10 text-slate-300 py-16 mt-auto">
+    <div class="max-w-4xl mx-auto px-6 text-center space-y-5">
+      
+      <div class="inline-block">
+        <span class="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C5A880] block mb-1">COMPANY PROFILE</span>
+        <h3 class="font-anton text-3xl sm:text-4xl text-white tracking-wider uppercase">ABOUT</h3>
+      </div>
+
+      <div class="space-y-1.5 text-xs sm:text-sm text-slate-400 font-medium leading-relaxed">
+        <p class="text-white font-semibold">Lenka stores all rights to LENKA VENTURES</p>
+        <p>Lenka stores is made by VizagNightHub Under LENKA VENTURES</p>
+        <p class="text-[#E8C997] flex items-center justify-center gap-1.5">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#C5A880]"></i>
+          <span>Vizag, Andhra Pradesh - 530016</span>
+        </p>
+      </div>
+
+      <div class="pt-3">
+        <button type="button" onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-white/10 via-white/5 to-white/10 hover:from-[#C5A880]/20 hover:to-[#E8C997]/20 border border-[#C5A880]/40 text-[#E8C997] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(197,168,128,0.15)] hover:shadow-[0_0_25px_rgba(232,201,151,0.3)] hover:scale-105 active:scale-95 cursor-pointer">
+          <i data-lucide="message-square-heart" class="w-4 h-4 text-[#C5A880]"></i>
+          <span>Share Feedback</span>
+        </button>
+      </div>
+
+      <div class="pt-8 border-t border-white/5 text-[11px] text-slate-500">
+        © 2026 LENKA STORES. Built for the modern generation.
+      </div>
+    </div>
+  </footer>
+
+  <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#101218] border border-white/15 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-5 text-white relative">
+      <button type="button" onclick="closeFeedbackModal()" class="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="space-y-1">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">WE VALUE YOUR VOICE</span>
+        <h4 class="font-anton text-2xl tracking-wide">DROP YOUR FEEDBACK</h4>
+        <p class="text-xs text-slate-400">Tell us what you love or how we can elevate your experience.</p>
+      </div>
+
+      <form id="feedbackForm" onsubmit="submitFeedback(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Your Name</label>
+          <input type="text" id="feedbackName" placeholder="e.g. Uday" required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all" />
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">WhatsApp / Phone</label>
+          <input type="tel" id="feedbackPhone" placeholder="+91 89776 27028" required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all" />
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Message / Thoughts</label>
+          <textarea id="feedbackMessage" rows="3" placeholder="Tell us anything..." required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all"></textarea>
+        </div>
+
+        <button type="submit" id="feedbackSubmitBtn" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+          SEND FEEDBACK
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative animate-bounce-short">
+      
+      <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl animate-pulse">
+        <div class="w-full h-full bg-[#0d0f14] rounded-[22px] flex items-center justify-center text-4xl">
+          😊
+        </div>
+      </div>
+
+      <div class="space-y-1.5 pt-2">
+        <h4 class="font-anton text-2xl text-white tracking-wider">THANK YOU FOR YOUR TIME!</h4>
+        <p class="text-xs text-[#E8C997] font-medium">Your feedback makes Lenka Stores iconic. 😊</p>
+      </div>
+
+      <div class="pt-2">
+        <button type="button" onclick="closeFeedbackThanksModal()" class="w-full py-3.5 bg-white text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:bg-[#E8C997] transition-all cursor-pointer active:scale-95">
+          Back to Shopping
+        </button>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
