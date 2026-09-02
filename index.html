@@ -3,111 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LENKA STORES | Timeless Luxury & Lifestyle</title>
+  <title>LENKA STORES | Haute Couture & Electronics</title>
   
-  <meta name="description" content="Discover refined electronics, modern gadgets, and couture fashion at LENKA STORES by Lenka Ventures Pvt Ltd." />
+  <meta name="description" content="Refined personal audio, GaN rapid power banks, and modern lifestyle luxury by Lenka Ventures Pvt Ltd." />
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
   
-  <!-- CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- LUXURY & DISPLAY FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,300;400;500;600;700&family=Inter:wght@200;300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  
-  <!-- FIREBASE SDKs -->
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;600;700&display=swap" rel="stylesheet" />
+
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'Manrope', 'sans-serif'],
-            serif: ['Fraunces', 'Cormorant Garamond', 'serif'],
-            anton: ['Anton', 'sans-serif'],
-          },
-          colors: {
-            bronze: { 300: '#E2D4C3', 400: '#C5A880', 500: '#A88B63' },
-            gold: { 300: '#F2EFE9', 400: '#E8C997', 500: '#C5A880' },
-            platinum: { 100: '#F5F5F7', 200: '#E5E5EA', 400: '#AEAEB2' },
-            noir: { 950: '#0A0B0D', 900: '#111216', 850: '#16181E', 800: '#1D2027' }
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
-    .perspective-headline {
-      perspective: 1000px;
-      transform-style: preserve-3d;
-    }
-    .letter-3d-box {
-      transform-style: preserve-3d;
-      will-change: transform;
-      transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
-    }
-    @keyframes imageBreath {
-      0%, 100% { transform: scale(1.02); }
-      50% { transform: scale(1.15); }
-    }
-    .breathing-img {
-      animation: imageBreath 7s ease-in-out infinite;
-      will-change: transform;
-    }
-    .letter-svg-text {
-      font-family: 'Anton', sans-serif;
-      font-weight: 900;
-      text-anchor: middle;
-      dominant-baseline: central;
-    }
+    body { font-family: 'Poppins', sans-serif; }
+    .perspective-headline { perspective: 1000px; transform-style: preserve-3d; }
+    .letter-3d-box { transform-style: preserve-3d; will-change: transform; transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1); }
+    @keyframes imageBreath { 0%, 100% { transform: scale(1.02); } 50% { transform: scale(1.15); } }
+    .breathing-img { animation: imageBreath 7s ease-in-out infinite; will-change: transform; }
+    .letter-svg-text { font-family: 'Anton', sans-serif; font-weight: 900; text-anchor: middle; dominant-baseline: central; }
     .custom-scrollbar::-webkit-scrollbar { width: 5px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 9999px; }
   </style>
 </head>
 
-<body class="bg-noir-950 text-slate-300 font-sans antialiased selection:bg-bronze-400 selection:text-noir-950 min-h-screen flex flex-col">
+<body class="bg-[#07080A] text-slate-200 font-sans antialiased selection:bg-[#C5A880] selection:text-black min-h-screen flex flex-col">
 
-  <!-- 1. STICKY LUXURY NAVBAR -->
-  <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+  <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3 flex items-center justify-between">
+    
     <div class="flex items-center gap-3">
-      <span class="font-anton text-2xl text-white tracking-wider">LENKA STORES</span>
-      <span class="hidden sm:inline-block text-[10px] uppercase font-bold tracking-[0.2em] text-[#C5A880] border-l border-white/20 pl-3">
-        HAUTE COUTURE & ELECTRONICS
-      </span>
+      <a href="profile.html" class="p-1 rounded-full bg-gradient-to-tr from-[#f4845f] to-[#e8c997] p-0.5 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer" title="Go to Profile">
+        <img id="navProfileAvatar" src="default-avatar.png" alt="Profile" class="w-8 h-8 rounded-full object-cover bg-black" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'" />
+      </a>
+      
+      <div class="flex flex-col">
+        <span class="font-anton text-xl sm:text-2xl text-white tracking-wider leading-none">LENKA STORES</span>
+        <span class="hidden sm:inline-block text-[9px] uppercase font-bold tracking-[0.2em] text-[#C5A880] mt-0.5">HAUTE COUTURE & ELECTRONICS</span>
+      </div>
     </div>
 
     <div class="flex items-center gap-3">
-<button type="button" onclick="window.location.href='profile.html'" class="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer" title="Client Profile">
-  <img src="default-avatar.png" alt="Profile" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'" />
-</button>
-      <button type="button" onclick="openCartDrawer()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg hover:brightness-110 transition-all cursor-pointer">
+      <button type="button" onclick="openCartDrawer()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer">
         <i data-lucide="shopping-bag" class="w-4 h-4"></i>
         <span>Bag</span>
-        <span id="navCartCount" class="ml-1 bg-noir-950 text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
+        <span id="navCartCount" class="ml-1 bg-black text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
       </button>
     </div>
   </header>
 
-  <!-- 2. FULL-VIEWPORT HERO -->
   <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 94vh;">
     <div class="relative w-full h-[94vh] overflow-hidden flex flex-col justify-between">
-      
       <div class="absolute inset-0 pointer-events-none" style="z-index: 5; opacity: 0.35; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
 
       <div class="absolute top-4 left-4 sm:top-6 sm:left-8 text-[11px] sm:text-xs font-semibold uppercase text-white/90" style="z-index: 15; letter-spacing: 0.18em;">
         LENKA STORES
       </div>
 
-      <!-- 3D "LENKA" OBJECT-IN-LETTER HEADLINE -->
       <div id="headlineTiltContainer" class="perspective-headline absolute inset-x-0 flex justify-center items-center pointer-events-auto" style="z-index: 8; top: 10%;">
         <div id="headlineInnerGrid" class="flex items-center justify-center gap-1.5 sm:gap-3 px-4 w-full max-w-5xl cursor-crosshair">
           <div id="letterBox-0" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
@@ -148,35 +104,31 @@
         </div>
       </div>
 
-      <!-- GET STARTED BUTTON -->
       <div class="absolute inset-x-0 flex justify-center" style="top: 26%; z-index: 20;">
-        <button id="heroGetStartedBtn" type="button" onclick="scrollToLiveCatalog()" class="font-anton uppercase rounded-full px-7 py-3 sm:px-11 sm:py-3.5 bg-white cursor-pointer active:scale-95 shadow-[0_10px_30px_rgba(0,0,0,0.25)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-105" style="color: #F4845F; letter-spacing: 0.08em; font-size: clamp(12px, 1.8vw, 17px);">
+        <button id="heroGetStartedBtn" type="button" onclick="scrollToLiveCatalog()" class="font-anton uppercase rounded-full px-7 py-3 sm:px-11 sm:py-3.5 bg-white cursor-pointer active:scale-95 shadow-2xl hover:scale-105 transition-all" style="color: #F4845F; letter-spacing: 0.08em; font-size: clamp(12px, 1.8vw, 17px);">
           GET STARTED
         </button>
       </div>
 
-      <!-- AD MEDIA STAGE -->
       <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 10;"></div>
 
       <div id="heroNavControls" class="absolute bottom-5 left-4 sm:bottom-8 sm:left-12 text-white" style="z-index: 25; max-width: 280px;">
-        <p class="font-bold uppercase mb-1 text-sm sm:text-base" style="opacity: 0.95; letter-spacing: 0.05em;">LENKA STORES</p>
-        <p class="hidden sm:block text-[11px] text-white/80 mb-2.5 leading-relaxed">Discover fashion and electronics curated for modern living. Delivered with care.</p>
+        <p class="font-bold uppercase mb-1 text-sm sm:text-base">LENKA STORES</p>
+        <p class="hidden sm:block text-[11px] text-white/80 mb-2.5 leading-relaxed">Discover fashion and electronics curated for modern living.</p>
         <div id="navArrowButtons" class="flex items-center gap-2.5 hidden">
-          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
         </div>
       </div>
 
       <div class="absolute bottom-5 right-4 sm:bottom-8 sm:right-12 text-white" style="z-index: 25;">
-        <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white cursor-pointer" style="font-size: clamp(20px, 3.5vw, 44px); font-weight: 400; opacity: 0.95; letter-spacing: -0.02em; line-height: 1;">
+        <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white cursor-pointer hover:opacity-100" style="font-size: clamp(20px, 3.5vw, 44px); opacity: 0.95;">
           <span>EXPLORE</span><i data-lucide="arrow-right" class="w-5 h-5 sm:w-8 sm:h-8"></i>
         </button>
       </div>
-
     </div>
   </section>
 
-  <!-- 3. LIVE ATELIER STOREFRONT CATALOG -->
   <main id="mainStoreCatalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full space-y-8">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
@@ -192,94 +144,23 @@
     </div>
 
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <div id="emptyCatalogState" class="hidden text-center py-16 space-y-2">
-      <i data-lucide="package-open" class="w-12 h-12 text-slate-500 mx-auto"></i>
-      <p class="text-slate-400 text-sm">No items found in this collection.</p>
-    </div>
   </main>
 
-  <!-- ==================== 4. EMBEDDED MODALS & DRAWERS ==================== -->
-
-  <!-- CLIENT PROFILE PORTAL -->
-  <div id="clientProfilePortal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col overflow-y-auto">
-    <div class="px-6 sm:px-12 py-5 border-b border-white/10 flex items-center justify-between bg-[#111218] sticky top-0 z-20">
-      <div class="flex items-center gap-4">
-        <img class="prof-user-avatar w-12 h-12 rounded-full object-cover border border-[#C5A880]/50" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" />
-        <div>
-          <h3 class="prof-user-name font-bold text-white text-lg">Atelier Client</h3>
-          <p class="prof-user-phone text-xs text-slate-400">+91 98765 43210</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <button type="button" onclick="clientLogOutSession()" class="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
-          <i data-lucide="log-out" class="w-4 h-4"></i><span>Log Out</span>
-        </button>
-        <button type="button" onclick="closeProfileDrawer()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white cursor-pointer">
-          <i data-lucide="x" class="w-6 h-6"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- PROFILE TABS -->
-    <div class="px-6 sm:px-12 py-3 border-b border-white/10 bg-[#0E0F14] flex items-center gap-2 overflow-x-auto custom-scrollbar sticky top-[73px] z-10">
-      <button type="button" onclick="switchProfileTab('orders')" id="ptabBtn-orders" class="px-4 py-2.5 rounded-xl bg-white text-black font-bold text-xs shadow-md flex items-center gap-2 cursor-pointer shrink-0"><i data-lucide="package" class="w-4 h-4 text-amber-400"></i><span>Active Orders</span></button>
-      <button type="button" onclick="switchProfileTab('history')" id="ptabBtn-history" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs flex items-center gap-2 cursor-pointer shrink-0"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i><span>Delivered History</span></button>
-      <button type="button" onclick="switchProfileTab('favorites')" id="ptabBtn-favorites" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs flex items-center gap-2 cursor-pointer shrink-0"><i data-lucide="heart" class="w-4 h-4 text-rose-500"></i><span>Favorites</span></button>
-      <button type="button" onclick="switchProfileTab('address')" id="ptabBtn-address" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs flex items-center gap-2 cursor-pointer shrink-0"><i data-lucide="map-pin" class="w-4 h-4"></i><span>Saved Address</span></button>
-      <button type="button" onclick="switchProfileTab('edit-profile')" id="ptabBtn-edit-profile" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs flex items-center gap-2 cursor-pointer shrink-0"><i data-lucide="edit-3" class="w-4 h-4"></i><span>Edit Profile</span></button>
-    </div>
-
-    <div class="p-6 sm:p-12 max-w-7xl mx-auto w-full flex-1 space-y-8">
-      <div id="psec-orders" class="space-y-6">
-        <div class="flex items-center justify-between pb-3 border-b border-white/10"><h4 class="text-base font-bold text-white uppercase tracking-wider">Active Consignments & Tracking</h4></div>
-        <div id="activeOrdersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-      </div>
-      <div id="psec-history" class="hidden space-y-6">
-        <div class="flex items-center justify-between pb-3 border-b border-white/10"><h4 class="text-base font-bold text-white uppercase tracking-wider">Delivered Order History</h4></div>
-        <div id="historyOrdersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-      </div>
-      <div id="psec-favorites" class="hidden space-y-6">
-        <div class="flex items-center justify-between pb-3 border-b border-white/10"><h4 class="text-base font-bold text-white uppercase tracking-wider">Your Saved Favorites</h4></div>
-        <div id="favoritesSlotGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-      </div>
-      <div id="psec-address" class="hidden space-y-6 max-w-2xl">
-        <div class="pb-3 border-b border-white/10"><h4 class="text-base font-bold text-white uppercase tracking-wider">Saved Delivery Destination</h4></div>
-        <form onsubmit="handleSaveAddressOnly(event)" class="space-y-4">
-          <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">STREET ADDRESS & APARTMENT</label><textarea id="addressFieldOnly" rows="3" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white"></textarea></div>
-          <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CITY</label><input type="text" id="cityFieldOnly" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white" /></div>
-          <button type="submit" class="px-8 py-3.5 bg-white text-black font-bold text-xs uppercase rounded-xl cursor-pointer">Save Address</button>
-        </form>
-      </div>
-      <div id="psec-edit-profile" class="hidden space-y-6 max-w-2xl">
-        <div class="pb-3 border-b border-white/10"><h4 class="text-base font-bold text-white uppercase tracking-wider">Edit Client Information</h4></div>
-        <form onsubmit="handleSaveProfile(event)" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">FULL NAME</label><input type="text" id="editProfName" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white" /></div>
-            <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">PHONE</label><input type="tel" id="editProfPhone" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white" /></div>
-          </div>
-          <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">AVATAR URL</label><input type="text" id="editProfAvatar" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white" /></div>
-          <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">ADDRESS</label><textarea id="editProfAddress" rows="2" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white"></textarea></div>
-          <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CITY</label><input type="text" id="editProfCity" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white" /></div>
-          <button type="submit" class="w-full py-4 bg-gradient-to-r from-bronze-500 to-[#E8C997] text-noir-950 font-bold text-xs uppercase rounded-xl cursor-pointer">Update Profile</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- CART DRAWER -->
   <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#0E0F14] border-l border-white/15 shadow-2xl translate-x-full transition-transform duration-300 flex flex-col justify-between">
     <div class="p-6 border-b border-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5 text-[#C5A880]"></i><h3 class="font-bold text-white text-base">Your Atelier Bag</h3></div>
+      <div class="flex items-center gap-2">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-[#C5A880]"></i>
+        <h3 class="font-bold text-white text-base">Your Atelier Bag</h3>
+      </div>
       <button type="button" onclick="closeCartDrawer()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
     </div>
     <div id="cartItemsList" class="p-6 overflow-y-auto flex-1 space-y-4 custom-scrollbar"></div>
     <div class="p-6 border-t border-white/10 bg-[#111218] space-y-4">
       <div class="flex items-center justify-between text-sm"><span class="text-slate-400">Total Subtotal:</span><span id="cartSubtotalPrice" class="font-bold text-white text-lg">₹0</span></div>
-      <button type="button" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-bronze-500 to-[#E8C997] text-noir-950 font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg cursor-pointer">Proceed to Checkout</button>
+      <button type="button" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 cursor-pointer">Proceed to Checkout</button>
     </div>
   </div>
 
-  <!-- EXPRESS CHECKOUT MODAL -->
   <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
@@ -287,170 +168,78 @@
         <button type="button" onclick="closeCheckoutModal()" class="p-1 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form onsubmit="handlePlaceOrder(event)" class="space-y-4 text-xs">
-        <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CLIENT NAME</label><input type="text" id="orderClientName" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white" /></div>
-        <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">PHONE NUMBER</label><input type="tel" id="orderClientPhone" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white" /></div>
-        <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">SHIPPING DESTINATION</label><textarea id="orderClientAddress" rows="2" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white"></textarea></div>
-        <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">PAYMENT METHOD</label><select id="orderPaymentMethod" class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white"><option value="PhonePe UPI">PhonePe / GooglePay UPI</option><option value="Cash on Delivery">Cash on Delivery</option><option value="Card Payment">Debit / Credit Card</option></select></div>
-        <button type="submit" class="w-full py-4 bg-gradient-to-r from-bronze-500 to-[#E8C997] text-noir-950 font-bold text-xs uppercase rounded-xl cursor-pointer">CONFIRM & DISPATCH ORDER</button>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CLIENT NAME</label>
+          <input type="text" id="orderClientName" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">WHATSAPP / PHONE NUMBER</label>
+          <input type="tel" id="orderClientPhone" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">SHIPPING DESTINATION</label>
+          <textarea id="orderClientAddress" rows="2" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]"></textarea>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">PAYMENT METHOD</label>
+          <select id="orderPaymentMethod" class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none">
+            <option value="PhonePe UPI">PhonePe / GooglePay UPI (8977627028-2@ybl)</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase rounded-xl shadow-lg cursor-pointer">CONFIRM & DISPATCH ORDER</button>
       </form>
     </div>
   </div>
 
-  <!-- CUSTOMER MOBILE & OTP LOGIN MODAL -->
-  <div id="customerAuthModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white relative">
-      <button type="button" onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
-      <div class="space-y-1 text-left"><span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">ATELIER MEMBERSHIP</span><h3 class="font-anton text-2xl tracking-wider uppercase">CLIENT AUTHENTICATION</h3><p class="text-xs text-slate-400">Enter your mobile number to access your account.</p></div>
-      <div id="authStepPhone" class="space-y-4 text-xs">
-        <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">MOBILE NUMBER</label><div class="flex gap-2"><span class="bg-[#16181E] border border-white/15 rounded-xl px-3 py-3 text-slate-300 flex items-center">+91</span><input type="tel" id="authPhoneInput" placeholder="98765 43210" maxlength="10" required class="flex-1 bg-[#16181E] border border-white/15 rounded-xl p-3 text-white" /></div></div>
-        <button type="button" onclick="requestClientOtp()" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 to-[#E8C997] text-noir-950 font-bold text-xs uppercase rounded-xl cursor-pointer">SEND OTP VERIFICATION</button>
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative">
+      <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
+        <i data-lucide="check" class="w-8 h-8"></i>
       </div>
-      <div id="authStepOtp" class="space-y-4 text-xs hidden">
-        <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">🔐 Code sent to <span id="displayTargetPhone" class="font-bold"></span>. (Demo OTP: <strong class="underline">2026</strong>)</div>
-        <div><label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">ENTER 4-DIGIT OTP</label><input type="text" id="authOtpInput" placeholder="2026" maxlength="4" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-center tracking-widest text-lg font-mono text-white" /></div>
-        <button type="button" onclick="verifyClientOtp()" class="w-full py-3.5 bg-gradient-to-r from-bronze-500 to-[#E8C997] text-noir-950 font-bold text-xs uppercase rounded-xl cursor-pointer">VERIFY & LOGIN ACCOUNT</button>
-        <button type="button" onclick="resetAuthStep()" class="w-full text-center text-slate-400 hover:text-white text-[11px] cursor-pointer">← Change Mobile Number</button>
+
+      <div class="space-y-1">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
+        <h3 class="font-anton text-2xl tracking-wider text-white">ORDER PLACED SUCCESSFULLY!</h3>
+        <p id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
+        <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Payment:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Payee UPI:</span><span class="font-mono text-[#E8C997]">8977627028-2@ybl</span></div>
+      </div>
+
+      <div class="space-y-2.5 pt-2">
+        <a id="directUpiPaymentLink" href="javascript:void(0)" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+          <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
+          <span id="upiBtnText">PAY VIA PHONEPE / GPAY UPI</span>
+        </a>
+
+        <a id="directWhatsAppLink" href="javascript:void(0)" target="_blank" class="w-full py-4 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>SEND CONFIRMATION TO WHATSAPP</span>
+        </a>
+
+        <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+          Return to Storefront
+        </button>
       </div>
     </div>
   </div>
 
-  <footer class="bg-[#0A0B0D] border-t border-white/10 text-slate-400 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        <div class="lg:col-span-5 space-y-4">
-          <span class="font-anton text-2xl text-white tracking-wider">LENKA STORES</span>
-          <p class="text-xs text-slate-400 leading-relaxed max-w-sm">Curating high-performance personal audio, GaN rapid power banks, and tailored couture wear by <strong>Lenka Ventures Pvt Ltd</strong>.</p>
-        </div>
-      </div>
+  <footer class="bg-[#0A0B0D] border-t border-white/10 text-slate-400 py-12 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2 text-xs">
+      <span class="font-anton text-xl text-white tracking-wider">LENKA STORES</span>
+      <p>© 2026 LENKA STORES by Lenka Ventures Pvt Ltd. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- GLOBAL SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
-  <script src="js/profile.js"></script>
-  <script src="js/order-success.js"></script>
-  <script src="js/orders.js"></script>
-  <script src="js/feedback.js"></script>
 
-  <!-- SELF-CONTAINED GLOBAL FIX ENGINE SCRIPT -->
   <script>
-    // PROFILE SESSION & BUTTON HELPERS
-    function checkAndOpenProfile() {
-      const loggedPhone = localStorage.getItem('lenka_logged_in_phone');
-      if (!loggedPhone) {
-        if (typeof openAuthModal === 'function') openAuthModal();
-        else {
-          const m = document.getElementById('customerAuthModal');
-          if (m) m.classList.remove('hidden');
-        }
-      } else {
-        if (typeof openProfileDrawer === 'function') openProfileDrawer();
-        else {
-          const d = document.getElementById('clientProfilePortal');
-          if (d) d.classList.remove('hidden');
-        }
-      }
-    }
-
-    function openProfileDrawer() {
-      const modal = document.getElementById('clientProfilePortal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
-        if (typeof switchProfileTab === 'function') switchProfileTab('orders');
-      }
-    }
-
-    function closeProfileDrawer() {
-      const modal = document.getElementById('clientProfilePortal');
-      if (modal) {
-        modal.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
-      }
-    }
-
-    function switchProfileTab(tabId) {
-      const tabs = ['orders', 'history', 'favorites', 'address', 'edit-profile'];
-      tabs.forEach(t => {
-        const sec = document.getElementById(`psec-${t}`);
-        const btn = document.getElementById(`ptabBtn-${t}`);
-        if (t === tabId) {
-          if (sec) sec.classList.remove('hidden');
-          if (btn) btn.className = "px-4 py-2.5 rounded-xl bg-white text-black font-bold text-xs shadow-md flex items-center gap-2 cursor-pointer shrink-0";
-        } else {
-          if (sec) sec.classList.add('hidden');
-          if (btn) btn.className = "px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs flex items-center gap-2 cursor-pointer shrink-0";
-        }
-      });
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function clientLogOutSession() {
-      if (!confirm("Are you sure you want to log out?")) return;
-      localStorage.removeItem('lenka_logged_in_phone');
-      localStorage.removeItem('lenka_profile');
-      closeProfileDrawer();
-      alert("Successfully logged out.");
-    }
-
-    function openAuthModal() {
-      const modal = document.getElementById('customerAuthModal');
-      if (modal) modal.classList.remove('hidden');
-      resetAuthStep();
-    }
-
-    function closeAuthModal() {
-      const modal = document.getElementById('customerAuthModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function resetAuthStep() {
-      const phoneStep = document.getElementById('authStepPhone');
-      const otpStep = document.getElementById('authStepOtp');
-      if (phoneStep) phoneStep.classList.remove('hidden');
-      if (otpStep) otpStep.classList.add('hidden');
-    }
-
-    let pendingLoginPhone = '';
-    function requestClientOtp() {
-      const phone = document.getElementById('authPhoneInput').value.trim();
-      if (!phone || phone.length < 10) {
-        alert("Please enter a valid 10-digit mobile number.");
-        return;
-      }
-      pendingLoginPhone = phone;
-      const targetDisplay = document.getElementById('displayTargetPhone');
-      if (targetDisplay) targetDisplay.innerText = `+91 ${phone}`;
-      document.getElementById('authStepPhone').classList.add('hidden');
-      document.getElementById('authStepOtp').classList.remove('hidden');
-    }
-
-    function verifyClientOtp() {
-      const enteredOtp = document.getElementById('authOtpInput').value.trim();
-      if (enteredOtp !== '2026') {
-        alert("Invalid OTP code. Please use demo code: 2026");
-        return;
-      }
-
-      const formattedPhone = `+91 ${pendingLoginPhone}`;
-      const clientProfile = {
-        name: `Client_${pendingLoginPhone.slice(-4)}`,
-        phone: formattedPhone,
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300',
-        address: 'Flat 402, Signature Towers, KPHB Colony, Hyderabad',
-        city: 'Hyderabad'
-      };
-
-      localStorage.setItem('lenka_profile', JSON.stringify(clientProfile));
-      localStorage.setItem('lenka_logged_in_phone', formattedPhone);
-
-      closeAuthModal();
-      alert(`Welcome! Logged in with ${formattedPhone}`);
-      openProfileDrawer();
-    }
-
-    // CHECKOUT ORDER PLACEMENT ENGINE
+    // CART ORDER CHECKOUT ENGINE WITH CONFETTI & SUCCESS MODAL
     function handlePlaceOrder(e) {
       e.preventDefault();
       const cart = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
@@ -482,81 +271,174 @@
         deliveryDate: 'Expected in 3-5 days'
       };
 
+      // Save order locally
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       orders.unshift(newOrder);
       localStorage.setItem('lenka_orders', JSON.stringify(orders));
 
+      // Sync order to Firestore if available
       if (window.firebase && firebase.apps.length) {
         firebase.firestore().collection('orders').doc(orderId).set(newOrder).catch(err => console.warn(err));
       }
 
+      // Clear cart
       localStorage.removeItem('lenka_cart_v2');
       if (typeof window.updateCartUI === 'function') window.updateCartUI();
 
+      // Close Checkout Modal
       const checkoutModal = document.getElementById('checkoutModal');
       if (checkoutModal) checkoutModal.classList.add('hidden');
 
+      // Trigger Confetti Celebration Blast!
       if (window.confetti) {
-        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        confetti({
+          particleCount: 140,
+          spread: 85,
+          origin: { y: 0.6 }
+        });
       }
 
-      alert(`Order #${orderId} placed successfully! Total: ₹${subtotal}`);
+      // Set Display Info
+      document.getElementById('successOrderIdDisplay').innerText = `Order ID: #${orderId}`;
+      document.getElementById('successPaymentDisplay').innerText = paymentMethod;
+
+      // 1. Direct PhonePe / GPay UPI Link configured with exact UPI ID
+      const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
+      const upiBtn = document.getElementById('directUpiPaymentLink');
+      const upiText = document.getElementById('upiBtnText');
+      
+      if (paymentMethod.includes('PhonePe') || paymentMethod.includes('UPI')) {
+        upiBtn.href = upiUrl;
+        upiText.innerText = `PAY ₹${subtotal} VIA PHONEPE / GPAY`;
+        upiBtn.classList.remove('hidden');
+      } else {
+        upiBtn.classList.add('hidden');
+      }
+
+      // 2. Direct WhatsApp Invoice Message formatted with order details
+      const waMessage = 
+`*NEW ORDER CONFIRMED - LENKA STORES*
+---------------------------------------
+*Order ID:* #${orderId}
+*Customer Name:* ${name}
+*Phone:* ${phone}
+*Delivery Address:* ${address}
+*Items:* ${itemsSummary}
+*Total Amount:* ₹${subtotal}
+*Payment Method:* ${paymentMethod}
+---------------------------------------
+Please confirm dispatch and receipt of payment!`;
+
+      const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
+      document.getElementById('directWhatsAppLink').href = whatsappUrl;
+
+      // Open Success Modal Popup
+      const successModal = document.getElementById('orderSuccessModal');
+      if (successModal) successModal.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
     }
 
-    window.checkAndOpenProfile = checkAndOpenProfile;
-    window.openProfileDrawer = openProfileDrawer;
-    window.closeProfileDrawer = closeProfileDrawer;
-    window.switchProfileTab = switchProfileTab;
-    window.clientLogOutSession = clientLogOutSession;
-    window.openAuthModal = openAuthModal;
-    window.closeAuthModal = closeAuthModal;
-    window.requestClientOtp = requestClientOtp;
-    window.verifyClientOtp = verifyClientOtp;
-    window.handlePlaceOrder = handlePlaceOrder;
+    function closeOrderSuccessModal() {
+      const modal = document.getElementById('orderSuccessModal');
+      if (modal) modal.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
+    window.handlePlaceOrder = handlePlaceOrder;
+    window.closeOrderSuccessModal = closeOrderSuccessModal;
+
+    // Synchronize Top-Left Profile Avatar on Load
     window.addEventListener('DOMContentLoaded', () => {
+      const savedUser = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
+      if (savedUser && savedUser.avatar) {
+        const navImg = document.getElementById('navProfileAvatar');
+        if (navImg) navImg.src = savedUser.avatar;
+      }
       if (window.lucide) lucide.createIcons();
     });
   </script>
-  <!-- ORDER SUCCESS / PAYMENT CONFIRMATION POPUP MODAL -->
-<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/40 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative">
-    
-    <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
-      <i data-lucide="check" class="w-8 h-8"></i>
-    </div>
 
-    <div class="space-y-1">
-      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT SECURED</span>
-      <h3 class="font-anton text-2xl tracking-wider">ORDER PLACED SUCCESSFULLY!</h3>
-      <p id="successOrderIdDisplay" class="text-xs font-mono text-slate-400">Order ID: #LS-992026</p>
-    </div>
+  <script>
+    let heroMediaSlots = [];
+    let activeHeroIndex = 0;
+    let isHeroAnimating = false;
 
-    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
-      <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed & Reserved</span></div>
-      <div class="flex justify-between"><span class="text-slate-400">Payment Option:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
-      <div class="flex justify-between"><span class="text-slate-400">Client Concierge:</span><span class="text-white">+91 89776 27028</span></div>
-    </div>
+    function initHeroMediaEngine() {
+      const saved = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
+      heroMediaSlots = Array.isArray(saved) ? saved : [];
+      buildAndRenderMediaStage();
 
-    <div class="space-y-2.5 pt-2">
-      <!-- Direct Payment Link -->
-      <a id="paymentGatewayLink" href="https://phonepe.com" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all cursor-pointer">
-        <i data-lucide="external-link" class="w-4 h-4"></i>
-        <span>COMPLETE PAYMENT NOW</span>
-      </a>
+      if (window.firebase && firebase.apps.length) {
+        firebase.firestore().collection('settings').doc('hero_ads').onSnapshot(doc => {
+          if (doc.exists && Array.isArray(doc.data().media)) {
+            heroMediaSlots = doc.data().media;
+            localStorage.setItem('lenka_hero_ads', JSON.stringify(heroMediaSlots));
+            buildAndRenderMediaStage();
+          }
+        }, err => console.warn(err));
+      }
+    }
 
-      <!-- Direct WhatsApp Invoice Link -->
-      <a id="whatsappInvoiceLink" href="https://wa.me/918977627028" target="_blank" class="w-full py-3.5 bg-[#25D366] text-black font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all cursor-pointer">
-        <i data-lucide="message-circle" class="w-4 h-4"></i>
-        <span>SEND INVOICE TO WHATSAPP</span>
-      </a>
+    function buildAndRenderMediaStage() {
+      const stage = document.getElementById('heroCarouselStage');
+      if (!stage) return;
+      stage.innerHTML = '';
+      if (heroMediaSlots.length === 0) { renderHeroStage(); return; }
 
-      <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
-        Return to Storefront
-      </button>
-    </div>
+      heroMediaSlots.forEach((slot, idx) => {
+        const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('cloudfront.net');
+        const card = document.createElement('div');
+        card.id = `carouselItem-${idx}`;
+        card.className = "absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black";
+        card.style.transition = "all 650ms cubic-bezier(0.4,0,0.2,1)";
+        card.style.willChange = "transform, filter, opacity, left, bottom, height";
 
-  </div>
-</div>
+        if (isVideo) {
+          card.innerHTML = `<video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="${slot.url}" type="video/mp4" /></video>`;
+        } else {
+          card.innerHTML = `<img src="${slot.url}" alt="${slot.title || 'Lenka'}" class="w-full h-full object-cover" />`;
+        }
+        stage.appendChild(card);
+      });
+      renderHeroStage();
+    }
+
+    function renderHeroStage() {
+      const isMobile = window.innerWidth < 640;
+      const total = heroMediaSlots.length;
+      const heroRoot = document.getElementById('lenkaHeroRoot');
+      const getStartedBtn = document.getElementById('heroGetStartedBtn');
+      const currentTheme = heroMediaSlots[activeHeroIndex] || { bg: '#F4845F' };
+
+      if (heroRoot) heroRoot.style.backgroundColor = currentTheme.bg || '#F4845F';
+      if (getStartedBtn) getStartedBtn.style.color = currentTheme.bg || '#F4845F';
+      if (total === 0) return;
+
+      heroMediaSlots.forEach((_, idx) => {
+        const itemEl = document.getElementById(`carouselItem-${idx}`);
+        if (!itemEl) return;
+        if (total === 1) {
+          itemEl.style.transform = `translateX(-50%) scale(1)`;
+          itemEl.style.filter = 'blur(0px)';
+          itemEl.style.opacity = '1';
+          itemEl.style.zIndex = '30';
+          itemEl.style.left = '50%';
+          itemEl.style.height = isMobile ? '46%' : '52%';
+          itemEl.style.width = isMobile ? '72%' : '360px';
+          itemEl.style.bottom = isMobile ? '12%' : '6%';
+        }
+      });
+    }
+
+    window.scrollToLiveCatalog = function() {
+      const el = document.getElementById('mainStoreCatalog');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initHeroMediaEngine();
+      if (typeof window.updateCartUI === 'function') window.updateCartUI();
+    });
+  </script>
 </body>
 </html>
