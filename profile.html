@@ -1,120 +1,350 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LENKA STORES // Profile Hub</title>
+  <title>LENKA // Client Space</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            noir: '#07080A',
-            surface: '#111318',
-            neonGold: '#E8C997',
-            mutedText: '#94A3B8'
-          }
-        }
-      }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #17120e 0%, #08090c 75%, #050608 100%);
+      color: #f1f5f9;
+      min-height: 100vh;
     }
-  </script>
+    .genz-card {
+      background: rgba(18, 20, 26, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .genz-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      border-color: rgba(232, 201, 151, 0.35);
+      box-shadow: 0 20px 40px -5px rgba(232, 201, 151, 0.08);
+    }
+    .genz-card:active {
+      transform: scale(0.98);
+    }
+    .avatar-glow {
+      background: linear-gradient(135deg, #f4845f, #c5a880, #e8c997, #8b5cf6);
+      padding: 3.5px;
+      box-shadow: 0 0 25px rgba(232, 201, 151, 0.3);
+    }
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 9999px; }
+  </style>
 </head>
-<body class="bg-[#07080A] text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-[#E8C997] selection:text-black">
+<body class="p-4 sm:p-8 flex flex-col items-center justify-start antialiased selection:bg-[#C5A880] selection:text-black">
 
-  <!-- GEN-Z TOP BAR -->
-  <header class="px-6 sm:px-12 py-5 border-b border-white/10 flex items-center justify-between bg-[#111318]/80 backdrop-blur-md sticky top-0 z-30">
-    <div class="flex items-center gap-4" id="profile-display-section">
-      <div class="relative">
-        <img id="profile-avatar-preview" class="w-13 h-13 rounded-2xl object-cover border-2 border-[#E8C997]/40 shadow-[0_0_20px_rgba(232,201,151,0.15)]" src="default-avatar.png" alt="Profile" />
-        <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#111318]" title="Active Session"></span>
+  <div class="w-full max-w-xl flex items-center justify-between mb-6">
+    <a href="index.html" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-semibold tracking-wide transition-all active:scale-95">
+      <i data-lucide="arrow-left" class="w-4 h-4 text-[#C5A880]"></i>
+      <span>Back to Store</span>
+    </a>
+    <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880] bg-[#C5A880]/10 border border-[#C5A880]/20 px-3 py-1 rounded-full">VIP Member</span>
+  </div>
+
+  <div class="w-full max-w-xl space-y-4 pb-24">
+
+    <div class="genz-card rounded-[28px] p-6 relative overflow-hidden">
+      <div id="profileHeaderNormal" class="flex items-center gap-5">
+        <div class="relative shrink-0">
+          <div class="avatar-glow rounded-full">
+            <img id="profileAvatarImg" src="default-avatar.png" alt="Profile" class="w-20 h-20 rounded-full object-cover bg-black" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300'" />
+          </div>
+          <button type="button" onclick="toggleEditView(true)" class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[#E8C997] text-black flex items-center justify-center shadow-lg hover:scale-110 active:scale-90 transition-all cursor-pointer">
+            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <h2 id="profileNameDisplay" class="font-extrabold text-xl sm:text-2xl text-white tracking-tight truncate">V. Udayteja</h2>
+          </div>
+          <p id="profilePhoneDisplay" class="text-xs text-slate-400 font-mono mt-0.5">+91 89776 27028</p>
+          <p id="profileAddressDisplay" class="text-xs text-[#E8C997] flex items-center gap-1.5 mt-1.5 truncate">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i>
+            <span class="truncate">Add your delivery address</span>
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 id="display-username" class="font-bold text-white text-base tracking-tight">V. Udayteja</h3>
-        <p id="display-address" class="text-xs text-[#94A3B8] flex items-center gap-1.5 mt-0.5"><i class="fa-solid fa-location-dot text-[#E8C997]"></i> Add your delivery address</p>
+
+      <div id="profileHeaderEdit" class="hidden flex-col space-y-4 pt-2">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider">Edit Personal Credentials</h3>
+          <button type="button" onclick="toggleEditView(false)" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+
+        <form onsubmit="handleSaveProfile(event)" class="space-y-4 text-xs">
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Profile Picture (Upload from Device)</label>
+            <div class="flex items-center gap-4">
+              <img id="liveAvatarPreview" src="default-avatar.png" class="w-14 h-14 rounded-2xl object-cover border border-white/20 bg-black" />
+              <div class="flex-1">
+                <input type="file" id="deviceAvatarInput" accept="image/*" class="hidden" onchange="handleDeviceImageUpload(event)" />
+                <label for="deviceAvatarInput" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium cursor-pointer transition-all border border-white/10">
+                  <i data-lucide="camera" class="w-4 h-4 text-[#C5A880]"></i>
+                  <span id="uploadLabelText">Choose Photo</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Full Name</label>
+            <input type="text" id="editUsernameInput" required class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#C5A880]" />
+          </div>
+
+          <div>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Delivery Destination Address</label>
+            <textarea id="editAddressInput" rows="2" required class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#C5A880]"></textarea>
+          </div>
+
+          <div class="flex gap-2 pt-2">
+            <button type="button" onclick="toggleEditView(false)" class="w-1/3 py-3 rounded-xl bg-white/10 text-slate-300 font-bold hover:bg-white/15 transition-all">Cancel</button>
+            <button type="submit" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#C5A880] to-[#E8C997] text-black font-extrabold uppercase tracking-wider shadow-lg hover:brightness-110 transition-all">Save Profile</button>
+          </div>
+        </form>
       </div>
     </div>
-    
-    <div class="flex items-center gap-3">
-      <button type="button" id="auth-toggle-btn" class="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg">
-        <i data-lucide="log-out" class="w-4 h-4"></i>
-        <span id="auth-btn-text">Logout</span>
-      </button>
-      <a href="index.html" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </a>
-    </div>
-  </header>
 
-  <!-- QUICK ACTION PILLS -->
-  <div class="px-6 sm:px-12 py-4 border-b border-white/5 bg-[#0A0B0E] flex items-center gap-3 overflow-x-auto custom-scrollbar">
-    <button type="button" id="edit-profile-btn" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs tracking-wide flex items-center gap-2 transition-all cursor-pointer shadow-sm shrink-0">
-      <i data-lucide="edit-3" class="w-3.5 h-3.5 text-[#E8C997]"></i>
-      <span>Edit Profile & Address</span>
+    <div onclick="openDrawerModal('orders')" class="genz-card rounded-[24px] p-5 cursor-pointer flex items-center justify-between group">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+          <i data-lucide="package" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-white text-base tracking-tight">My Orders & Live Status</h4>
+          <p id="activeOrdersSummary" class="text-xs text-slate-400 mt-0.5">0 orders in progress</p>
+        </div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </div>
+    </div>
+
+    <div onclick="openDrawerModal('favorites')" class="genz-card rounded-[24px] p-5 cursor-pointer flex items-center justify-between group">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+          <i data-lucide="heart" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-white text-base tracking-tight">Favorite Products</h4>
+          <p id="favoritesSummary" class="text-xs text-slate-400 mt-0.5">0 saved wishlist pieces</p>
+        </div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </div>
+    </div>
+
+    <div onclick="openDrawerModal('history')" class="genz-card rounded-[24px] p-5 cursor-pointer flex items-center justify-between group">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+          <i data-lucide="archive" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-white text-base tracking-tight">Order History Archive</h4>
+          <p id="historySummary" class="text-xs text-slate-400 mt-0.5">Past delivered consignments</p>
+        </div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:translate-x-1 transition-all">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fixed bottom-6 right-6 z-40">
+    <button type="button" id="authBottomBtn" onclick="handleAuthAction()" class="px-5 py-3 rounded-full bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-extrabold text-xs uppercase tracking-wider flex items-center gap-2 shadow-2xl backdrop-blur-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
+      <i data-lucide="power" class="w-4 h-4"></i>
+      <span id="authBottomBtnText">Logout</span>
     </button>
   </div>
 
-  <!-- MAIN CONTAINER -->
-  <main class="p-6 sm:p-12 max-w-3xl mx-auto w-full flex-1">
-    
-    <!-- GEN-Z EDIT FORM (HIDDEN BY DEFAULT, TOGGLED SMOOTHLY) -->
-    <div id="profile-edit-section" class="hidden flex-col space-y-6 bg-[#111318] p-6 sm:p-8 rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-      <div class="flex items-center justify-between border-b border-white/10 pb-4">
-        <div>
-          <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#E8C997]">ACCOUNT SETTINGS</span>
-          <h4 class="text-lg font-bold text-white tracking-tight">Edit Profile</h4>
-        </div>
-        <button type="button" id="cancel-edit-btn" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
+  <div id="detailDrawerModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="w-full max-w-lg bg-[#0e1015] border border-white/15 rounded-t-[32px] sm:rounded-[32px] p-6 max-h-[85vh] flex flex-col space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <h3 id="drawerModalTitle" class="font-bold text-white text-base">Details</h3>
+        <button type="button" onclick="closeDrawerModal()" class="p-1 text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      
-      <form id="edit-profile-form" class="space-y-4 text-xs">
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8] block mb-1">USERNAME / ALIAS</label>
-          <input type="text" id="input-username" required class="w-full bg-[#0A0B0E] border border-white/15 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#E8C997] transition-all" />
-        </div>
-        
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8] block mb-1">SHIPPING ADDRESS</label>
-          <textarea id="input-address" rows="3" required class="w-full bg-[#0A0B0E] border border-white/15 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#E8C997] transition-all"></textarea>
-        </div>
-
-        <div>
-          <label class="text-[10px] font-bold uppercase tracking-wider text-[#94A3B8] block mb-1">AVATAR IMAGE</label>
-          <input type="file" id="photo-file-input" accept="image/*" class="hidden" />
-          <label for="photo-file-input" id="file-label" class="block w-full bg-[#0A0B0E] border border-dashed border-white/20 rounded-2xl p-4 text-center text-xs text-slate-400 cursor-pointer hover:border-[#E8C997] transition-all">Choose Image File</label>
-          <img id="live-file-preview" class="w-16 h-16 rounded-2xl object-cover mt-3 hidden border border-[#E8C997]/50 shadow-md" alt="Preview" />
-        </div>
-
-        <div class="flex gap-3 pt-2">
-          <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-[#C5A880] via-[#E8C997] to-[#C5A880] text-black font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:brightness-110 transition-all cursor-pointer">Save Changes</button>
-        </div>
-      </form>
+      <div id="drawerModalContent" class="overflow-y-auto custom-scroll flex-1 space-y-3 pr-1"></div>
     </div>
+  </div>
 
-    <!-- WELCOME CARD PLACEHOLDER -->
-    <div id="profile-welcome-card" class="bg-[#111318] border border-white/10 rounded-3xl p-8 text-center space-y-4 shadow-xl">
-      <div class="w-12 h-12 rounded-2xl bg-[#E8C997]/10 border border-[#E8C997]/30 text-[#E8C997] flex items-center justify-center mx-auto">
-        <i data-lucide="shield-check" class="w-6 h-6"></i>
-      </div>
-      <h3 class="text-lg font-bold text-white">Atelier Member Session Active</h3>
-      <p class="text-xs text-[#94A3B8] max-w-sm mx-auto">Your credentials and delivery destination are securely synced with Lenka Stores.</p>
-    </div>
-
-  </main>
-
-  <script src="js/config.js"></script>
-  <script src="js/profile.js"></script>
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
+    let currentProfile = {
+      username: "V. Udayteja",
+      phone: "+91 89776 27028",
+      address: "Add your delivery address",
+      avatar: "default-avatar.png",
+      isLoggedIn: true
+    };
+    let uploadedImageBase64 = null;
+
+    function initProfile() {
+      const saved = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
+      if (saved) currentProfile = Object.assign(currentProfile, saved);
+
+      const loggedPhone = localStorage.getItem('lenka_logged_in_phone');
+      if (loggedPhone) currentProfile.phone = loggedPhone;
+
+      renderProfileHeader();
+      updateSummaries();
       if (window.lucide) lucide.createIcons();
-    });
+    }
+
+    function renderProfileHeader() {
+      document.getElementById('profileNameDisplay').innerText = currentProfile.username;
+      document.getElementById('profilePhoneDisplay').innerText = currentProfile.phone;
+      document.getElementById('profileAddressDisplay').querySelector('span').innerText = currentProfile.address;
+      
+      const avatarSrc = currentProfile.avatar || 'default-avatar.png';
+      document.getElementById('profileAvatarImg').src = avatarSrc;
+      document.getElementById('liveAvatarPreview').src = avatarSrc;
+
+      document.getElementById('editUsernameInput').value = currentProfile.username;
+      document.getElementById('editAddressInput').value = currentProfile.address === 'Add your delivery address' ? '' : currentProfile.address;
+
+      const authBtn = document.getElementById('authBottomBtnText');
+      if (authBtn) authBtn.innerText = currentProfile.isLoggedIn ? "Logout" : "Login";
+    }
+
+    function toggleEditView(show) {
+      const normal = document.getElementById('profileHeaderNormal');
+      const edit = document.getElementById('profileHeaderEdit');
+      if (show) {
+        normal.classList.add('hidden');
+        edit.classList.remove('hidden');
+      } else {
+        edit.classList.add('hidden');
+        normal.classList.remove('hidden');
+      }
+    }
+
+    function handleDeviceImageUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('uploadLabelText').innerText = file.name.slice(0, 16) + '...';
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          uploadedImageBase64 = evt.target.result;
+          document.getElementById('liveAvatarPreview').src = uploadedImageBase64;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleSaveProfile(e) {
+      e.preventDefault();
+      currentProfile.username = document.getElementById('editUsernameInput').value.trim();
+      currentProfile.address = document.getElementById('editAddressInput').value.trim() || 'Add your delivery address';
+      if (uploadedImageBase64) {
+        currentProfile.avatar = uploadedImageBase64;
+      }
+      localStorage.setItem('lenka_user_profile', JSON.stringify(currentProfile));
+      renderProfileHeader();
+      toggleEditView(false);
+      alert("Profile and avatar updated successfully!");
+    }
+
+    function updateSummaries() {
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      const active = orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled');
+      const history = orders.filter(o => o.status === 'Delivered');
+      const favs = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
+
+      document.getElementById('activeOrdersSummary').innerText = `${active.length} orders in progress`;
+      document.getElementById('favoritesSummary').innerText = `${favs.length} items saved`;
+      document.getElementById('historySummary').innerText = `${history.length} delivered consignments`;
+    }
+
+    function openDrawerModal(type) {
+      const modal = document.getElementById('detailDrawerModal');
+      const title = document.getElementById('drawerModalTitle');
+      const content = document.getElementById('drawerModalContent');
+      content.innerHTML = '';
+
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+
+      if (type === 'orders') {
+        title.innerText = 'Active Consignments';
+        const active = orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled');
+        if (active.length === 0) {
+          content.innerHTML = '<p class="text-xs text-slate-500 py-8 text-center">No active orders in progress.</p>';
+        } else {
+          active.forEach(ord => {
+            content.innerHTML += `
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
+                <div class="flex justify-between font-bold text-white"><span>#${ord.orderId||ord.id}</span><span class="text-amber-400">${ord.status||'Confirmed'}</span></div>
+                <p class="text-slate-300">${ord.itemsSummary||'Item'}</p>
+                <p class="text-slate-500">Total: ₹${ord.totalAmount||0} • ${ord.shippingDate||'Processing'}</p>
+              </div>`;
+          });
+        }
+      } else if (type === 'history') {
+        title.innerText = 'Delivered Order History';
+        const history = orders.filter(o => o.status === 'Delivered');
+        if (history.length === 0) {
+          content.innerHTML = '<p class="text-xs text-slate-500 py-8 text-center">No delivered orders yet.</p>';
+        } else {
+          history.forEach(ord => {
+            content.innerHTML += `
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1 text-xs">
+                <div class="flex justify-between font-bold text-white"><span>#${ord.orderId||ord.id}</span><span class="text-emerald-400">Delivered ✓</span></div>
+                <p class="text-slate-400">${ord.itemsSummary||'Item'} • ₹${ord.totalAmount||0}</p>
+              </div>`;
+          });
+        }
+      } else if (type === 'favorites') {
+        title.innerText = 'Wishlist & Favorites';
+        const favs = JSON.parse(localStorage.getItem('lenka_favorites') || '[]');
+        const catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+        const items = catalog.filter(p => favs.includes(p.id));
+        if (items.length === 0) {
+          content.innerHTML = '<p class="text-xs text-slate-500 py-8 text-center">No items added to favorites.</p>';
+        } else {
+          items.forEach(p => {
+            content.innerHTML += `
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3 text-xs">
+                <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover" />
+                <div class="flex-1"><h5 class="font-bold text-white truncate">${p.title}</h5><p class="text-[#E8C997]">₹${p.offerPrice}</p></div>
+              </div>`;
+          });
+        }
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeDrawerModal() {
+      document.getElementById('detailDrawerModal').classList.add('hidden');
+    }
+
+    function handleAuthAction() {
+      if (currentProfile.isLoggedIn) {
+        if (!confirm("Are you sure you want to log out?")) return;
+        currentProfile.isLoggedIn = false;
+        localStorage.removeItem('lenka_logged_in_phone');
+        localStorage.removeItem('lenka_user_profile');
+        window.location.href = "index.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', initProfile);
   </script>
 </body>
 </html>
