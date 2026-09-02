@@ -46,3 +46,38 @@
   border: 1px solid rgba(197, 168, 128, 0.35) !important;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(197, 168, 128, 0.2) !important;
 }
+/* Gen Z Profile Page Styles */
+.profile-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 20px 90px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'Inter', sans-serif;
+}
+.back-nav a { text-decoration: none; color: #6b7280; font-weight: 500; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
+.profile-slot { background: #ffffff; border-radius: 24px; padding: 20px 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between; transition: transform 0.2s; }
+.profile-slot:hover { transform: translateY(-2px); }
+.slot-header-card { position: relative; justify-content: flex-start; gap: 20px; }
+.avatar-ring-wrapper { width: 80px; height: 80px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); flex-shrink: 0; }
+.main-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #fff; }
+.user-info h1 { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: #111827; }
+.user-info p { font-size: 0.85rem; color: #6b7280; margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+.edit-btn { position: absolute; top: 20px; right: 20px; background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.slot-edit-card { flex-direction: column; align-items: stretch; gap: 16px; }
+.file-drop-area { border: 2px dashed #cbd5e1; border-radius: 16px; padding: 20px; text-align: center; position: relative; cursor: pointer; background: #fafafa; }
+.file-drop-area input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group input, .form-group textarea { padding: 12px 14px; border-radius: 12px; border: 1px solid #e5e7eb; outline: none; font-size: 0.9rem; }
+.form-actions { display: flex; gap: 10px; }
+.btn-primary, .btn-secondary { flex: 1; padding: 12px; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; }
+.btn-primary { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; }
+.btn-secondary { background: #f3f4f6; color: #111827; }
+.card-content { display: flex; align-items: center; gap: 16px; }
+.icon-box { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; }
+.gradient-1 { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+.gradient-2 { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+.gradient-3 { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+.floating-auth-container { position: fixed; bottom: 24px; right: 24px; z-index: 100; }
+.auth-pill-btn { background: #111827; color: white; border: none; padding: 14px 22px; border-radius: 50px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); display: flex; align-items: center; gap: 8px; }
