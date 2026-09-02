@@ -1,4 +1,4 @@
-// ATELIER SHOPPING BAG & CART ENGINE
+// ATELIER SHOPPING CART & BAG MANAGEMENT ENGINE
 
 function getCart() {
   try {
@@ -15,9 +15,18 @@ function saveCart(cart) {
 }
 
 function addToBag(productId) {
-  const catalog = window.LenkaApp && window.LenkaApp.catalog ? window.LenkaApp.catalog : JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-  const product = catalog.find(p => String(p.id) === String(productId));
+  // Check global liveCatalog or localStorage
+  let catalog = window.liveCatalog || [];
+  if (catalog.length === 0) {
+    try {
+      catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    } catch (e) {
+      catalog = [];
+    }
+  }
 
+  const product = catalog.find(p => String(p.id) === String(productId));
+  
   if (!product) {
     alert("Product item not found in live inventory.");
     return;
@@ -25,16 +34,15 @@ function addToBag(productId) {
 
   const cart = getCart();
   const existing = cart.find(item => String(item.id) === String(productId));
-
+  
   if (existing) {
     existing.quantity = (existing.quantity || 1) + 1;
   } else {
     cart.push({
       id: product.id,
       name: product.title || product.name,
-      price: product.offerPrice || product.price,
-      image: product.image,
-      category: product.category,
+      price: Number(product.offerPrice || product.price) || 0,
+      image: product.image || (Array.isArray(product.images) ? product.images[0] : '') || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800',
       quantity: 1
     });
   }
@@ -43,19 +51,18 @@ function addToBag(productId) {
   openCartDrawer();
 }
 
-function removeFromCart(productId) {
-  let cart = getCart();
-  cart = cart.filter(item => String(item.id) !== String(productId));
+function removeFromCart(id) {
+  let cart = getCart().filter(i => String(i.id) !== String(id));
   saveCart(cart);
 }
 
-function updateQuantity(productId, qty) {
+function updateQuantity(id, qty) {
   let cart = getCart();
-  const item = cart.find(i => String(i.id) === String(productId));
+  const item = cart.find(i => String(i.id) === String(id));
   if (item) {
     item.quantity = Number(qty);
     if (item.quantity <= 0) {
-      return removeFromCart(productId);
+      return removeFromCart(id);
     }
   }
   saveCart(cart);
@@ -63,101 +70,66 @@ function updateQuantity(productId, qty) {
 
 function updateCartUI() {
   const cart = getCart();
-  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  // Update badge counters in navbar
-  const badge = document.getElementById('navCartCount');
-  if (badge) badge.innerText = totalCount;
+  const countEl = document.getElementById('navCartCount');
+  if (countEl) countEl.innerText = count;
 
   const subtotalEl = document.getElementById('cartSubtotalPrice');
-  if (subtotalEl) subtotalEl.innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+  if (subtotalEl) subtotalEl.innerText = `₹${subtotal}`;
 
-  const container = document.getElementById('cartItemsList');
-  if (!container) return;
+  const list = document.getElementById('cartItemsList');
+  if (!list) return;
+  list.innerHTML = '';
 
-  container.innerHTML = '';
   if (cart.length === 0) {
-    container.innerHTML = `
-      <div class="text-center py-16 space-y-3">
-        <i data-lucide="shopping-bag" class="w-10 h-10 text-slate-600 mx-auto"></i>
-        <p class="text-xs text-slate-400">Your Atelier bag is currently empty.</p>
-      </div>
-    `;
+    list.innerHTML = '<p class="text-xs text-slate-500 text-center py-12">Your Atelier bag is currently empty.</p>';
     if (window.lucide) lucide.createIcons();
     return;
   }
 
   cart.forEach(item => {
-    const el = document.createElement('div');
-    el.className = "flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10";
-    el.innerHTML = `
-      <img src="${item.image}" class="w-14 h-14 rounded-xl object-cover bg-black" />
-      <div class="flex-1 min-w-0">
-        <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
-        <p class="text-xs font-semibold text-[#C5A880] mt-0.5">₹${item.price}</p>
-        <div class="flex items-center gap-2 mt-2">
-          <button onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-6 h-6 rounded-lg bg-white/10 text-white flex items-center justify-center text-xs font-bold hover:bg-white/20">-</button>
-          <span class="text-xs font-mono text-white">${item.quantity}</span>
-          <button onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-6 h-6 rounded-lg bg-white/10 text-white flex items-center justify-center text-xs font-bold hover:bg-white/20">+</button>
+    list.innerHTML += `
+      <div class="p-3 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-3 text-xs">
+        <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover bg-black" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'" />
+        <div class="flex-1 min-w-0">
+          <h5 class="font-bold text-white truncate">${item.name}</h5>
+          <span class="text-[#C5A880] font-bold">₹${item.price}</span>
+          <div class="flex items-center gap-2 mt-1.5">
+            <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold flex items-center justify-center cursor-pointer">-</button>
+            <span class="font-mono">${item.quantity}</span>
+            <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold flex items-center justify-center cursor-pointer">+</button>
+          </div>
         </div>
-      </div>
-      <button onclick="removeFromCart('${item.id}')" class="p-2 text-slate-500 hover:text-red-400 transition-colors">
-        <i data-lucide="trash-2" class="w-4 h-4"></i>
-      </button>
-    `;
-    container.appendChild(el);
+        <button type="button" onclick="removeFromCart('${item.id}')" class="p-1.5 text-red-400 hover:text-red-300 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>`;
   });
 
   if (window.lucide) lucide.createIcons();
 }
 
 function openCartDrawer() {
-  const drawer = document.getElementById('cartDrawer');
-  if (drawer) drawer.classList.remove('translate-x-full');
+  const d = document.getElementById('cartDrawer');
+  if (d) d.classList.remove('translate-x-full');
   updateCartUI();
 }
 
 function closeCartDrawer() {
-  const drawer = document.getElementById('cartDrawer');
-  if (drawer) drawer.classList.add('translate-x-full');
+  const d = document.getElementById('cartDrawer');
+  if (d) d.classList.add('translate-x-full');
 }
 
-function openCheckoutModal() {
-  const cart = getCart();
-  if (cart.length === 0) {
-    alert("Your bag is empty.");
-    return;
-  }
-  closeCartDrawer();
-  const modal = document.getElementById('checkoutModal');
-  if (modal) modal.classList.remove('hidden');
-
-  // Pre-fill profile name & phone if saved
-  const profile = JSON.parse(localStorage.getItem('lenka_profile') || 'null');
-  if (profile) {
-    const nameInp = document.getElementById('orderClientName');
-    const phoneInp = document.getElementById('orderClientPhone');
-    const addrInp = document.getElementById('orderClientAddress');
-    if (nameInp && !nameInp.value) nameInp.value = profile.name;
-    if (phoneInp && !phoneInp.value) phoneInp.value = profile.phone;
-    if (addrInp && !addrInp.value) addrInp.value = profile.address;
-  }
-}
-
-function closeCheckoutModal() {
-  const modal = document.getElementById('checkoutModal');
-  if (modal) modal.classList.add('hidden');
-}
-
-// Expose globally
+// Global window exposure
+window.getCart = getCart;
+window.saveCart = saveCart;
 window.addToBag = addToBag;
 window.removeFromCart = removeFromCart;
 window.updateQuantity = updateQuantity;
+window.updateCartUI = updateCartUI;
 window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
-window.openCheckoutModal = openCheckoutModal;
-window.closeCheckoutModal = closeCheckoutModal;
-window.updateCartUI = updateCartUI;
 
-window.addEventListener('DOMContentLoaded', updateCartUI);
+window.addEventListener('DOMContentLoaded', () => {
+  updateCartUI();
+});
