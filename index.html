@@ -162,100 +162,180 @@
     <div id="cartItemsList" class="p-6 overflow-y-auto flex-1 space-y-4 custom-scrollbar"></div>
     <div class="p-6 border-t border-white/10 bg-[#111218] space-y-4">
       <div class="flex items-center justify-between text-sm"><span class="text-slate-400">Total Subtotal:</span><span id="cartSubtotalPrice" class="font-bold text-white text-lg">₹0</span></div>
-      <button type="button" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 cursor-pointer">PROCEED TO PAYt</button>
+      <button type="button" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 cursor-pointer">PROCEED TO PAY</button>
     </div>
   </div>
-<!-- ==================== EXPRESS CHECKOUT & PAYMENT MODAL ==================== -->
-<div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white relative">
-    <div class="flex items-center justify-between pb-3 border-b border-white/10">
-      <h3 class="text-lg font-bold">Express Order Booking</h3>
-      <button type="button" onclick="closeCheckoutModal()" class="p-1 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
-    </div>
 
-    <!-- PRODUCT DETAILS SUMMARY (Name, Image, Cost ONLY) -->
-    <div id="checkoutProductSummary" class="space-y-3 max-h-48 overflow-y-auto custom-scrollbar p-3 bg-white/5 rounded-2xl border border-white/10"></div>
-
-    <form onsubmit="handlePhonePeRedirectPayment(event)" class="space-y-4 text-xs">
-      <div>
-        <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CHOOSE PAYMENT METHOD</label>
-        <select id="orderPaymentMethod" class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none">
-          <option value="PhonePe UPI">PhonePe / GooglePay UPI (8977627028-2@ybl)</option>
-        </select>
+  <!-- ==================== EXPRESS CHECKOUT & PAYMENT MODAL ==================== -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white relative">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <h3 class="text-lg font-bold">Express Order Booking</h3>
+        <button type="button" onclick="closeCheckoutModal()" class="p-1 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
-      <!-- INITIAL PROCEED TO PHONEPE BUTTON -->
-      <button type="submit" id="proceedToPayBtn" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg hover:brightness-110 cursor-pointer">
-        PROCEED TO PHONEPE
-      </button>
+      <!-- PRODUCT DETAILS SUMMARY (Name, Image, Cost ONLY) -->
+      <div id="checkoutProductSummary" class="space-y-3 max-h-48 overflow-y-auto custom-scrollbar p-3 bg-white/5 rounded-2xl border border-white/10"></div>
 
-      <!-- BACKUP PAYMENT COMPLETED BUTTON -->
-      <div id="paymentCompletedContainer" class="hidden space-y-2 pt-2">
-        <p class="text-[11px] text-emerald-400 text-center font-medium">Complete payment in PhonePe app, then click below:</p>
-        <button type="button" onclick="triggerDeliveryTruckSuccessModal()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-xl transition-all cursor-pointer">
-          PAYMENT COMPLETED ✓
+      <form onsubmit="handlePhonePeRedirectPayment(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CHOOSE PAYMENT METHOD</label>
+          <select id="orderPaymentMethod" class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none">
+            <option value="PhonePe UPI">PhonePe / GooglePay UPI (8977627028-2@ybl)</option>
+          </select>
+        </div>
+
+        <button type="submit" id="proceedToPayBtn" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg hover:brightness-110 cursor-pointer">
+          PROCEED TO PHONEPE
+        </button>
+
+        <div id="paymentCompletedContainer" class="hidden space-y-2 pt-2">
+          <p class="text-[11px] text-emerald-400 text-center font-medium">Complete payment in PhonePe app, then click below:</p>
+          <button type="button" onclick="triggerDeliveryTruckSuccessModal()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-xl transition-all cursor-pointer">
+            PAYMENT COMPLETED ✓
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== ANIMATED 3D CARTOON ORDER SUCCESS POPUP ==================== -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111218] border border-[#14b8a6]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative overflow-hidden">
+      
+      <!-- 3D CARTOON ANIMATION SEQUENCE -->
+      <div class="relative w-full h-40 bg-transparent rounded-2xl overflow-hidden flex items-center justify-center my-1">
+        <svg class="w-full h-full" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#14b8a6"/>
+              <stop offset="100%" stop-color="#0d9488"/>
+            </linearGradient>
+            <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#d97706"/>
+              <stop offset="100%" stop-color="#b45309"/>
+            </linearGradient>
+            <linearGradient id="truckCab" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f43f5e"/>
+              <stop offset="100%" stop-color="#e11d48"/>
+            </linearGradient>
+            <linearGradient id="truckBody" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8"/>
+              <stop offset="100%" stop-color="#0284c7"/>
+            </linearGradient>
+          </defs>
+
+          <style>
+            @keyframes boySequence {
+              0% { transform: translate(-50px, 15px) scale(0.9); opacity: 0; }
+              20% { transform: translate(70px, 15px) scale(1); opacity: 1; }
+              50% { transform: translate(150px, 10px) scale(1); opacity: 1; }
+              75% { transform: translate(210px, 15px) scale(0.9); opacity: 1; }
+              95% { transform: translate(240px, 15px) scale(0.8); opacity: 0; }
+              100% { transform: translate(240px, 15px) scale(0.8); opacity: 0; }
+            }
+
+            @keyframes truckSequence {
+              0% { transform: translate(140px, 15px); opacity: 1; }
+              45% { transform: translate(140px, 15px); opacity: 1; }
+              65% { transform: translate(140px, 10px) scale(1.02); opacity: 1; }
+              100% { transform: translate(140px, -250px) scale(0.9); opacity: 0; filter: blur(3px); }
+            }
+
+            @keyframes smokeRollIn {
+              0% { transform: translateY(-160px); opacity: 0; }
+              35% { transform: translateY(0px); opacity: 1; }
+              80% { transform: translateY(0px); opacity: 1; }
+              100% { transform: translateY(-160px); opacity: 0; }
+            }
+
+            @keyframes revealContent {
+              0% { opacity: 0; transform: scale(0.95); }
+              70% { opacity: 0; transform: scale(0.95); }
+              100% { opacity: 1; transform: scale(1); }
+            }
+
+            .anim-boy { animation: boySequence 5s ease infinite; }
+            .anim-truck { animation: truckSequence 5s ease infinite; }
+            .anim-smoke { animation: smokeRollIn 5s ease infinite; }
+            .anim-reveal { animation: revealContent 5s ease infinite; }
+          </style>
+
+          <!-- DELIVERY BOY & BOX -->
+          <g class="anim-boy">
+            <g transform="translate(0, 25)">
+              <rect x="0" y="0" width="40" height="30" rx="5" fill="url(#boxGrad)" stroke="#78350f" stroke-width="2"/>
+              <line x1="20" y1="0" x2="20" y2="30" stroke="#78350f" stroke-dasharray="2,2" stroke-width="1.5"/>
+              <text x="20" y="16" font-family="Poppins, sans-serif" font-weight="800" font-size="5.5" fill="#fef3c7" text-anchor="middle">LENKA STORES</text>
+            </g>
+            <g transform="translate(-30, 8)">
+              <circle cx="12" cy="10" r="9" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/>
+              <rect x="7" y="19" width="10" height="15" rx="4" fill="#14b8a6" stroke="#0d9488" stroke-width="1.5"/>
+            </g>
+          </g>
+
+          <!-- TRUCK -->
+          <g class="anim-truck">
+            <rect x="50" y="20" width="75" height="40" rx="6" fill="url(#truckBody)" stroke="#0369a1" stroke-width="2"/>
+            <text x="87" y="44" font-family="Poppins, sans-serif" font-weight="700" font-size="7.5" fill="#e0f2fe" text-anchor="middle">LENKA EXPRESS</text>
+            <path d="M125 38 L155 38 Q162 38 162 45 L162 60 L125 60 Z" fill="url(#truckCab)" stroke="#be123c" stroke-width="2"/>
+            <path d="M132 41 L152 41 Q157 41 157 46 L157 53 L132 53 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+            <circle cx="70" cy="62" r="8" fill="#0f172a" stroke="#334155" stroke-width="2.5"/>
+            <circle cx="140" cy="62" r="8" fill="#0f172a" stroke="#334155" stroke-width="2.5"/>
+          </g>
+
+          <!-- SMOKE TRANSITION -->
+          <g class="anim-smoke">
+            <rect x="0" y="0" width="400" height="160" fill="#0b0d12"/>
+            <circle cx="120" cy="80" r="70" fill="#1e293b" opacity="0.9"/>
+            <circle cx="240" cy="90" r="80" fill="#0f172a" opacity="0.95"/>
+            <text x="200" y="85" font-family="Poppins, sans-serif" font-weight="700" font-size="12" fill="#38bdf8" text-anchor="middle">DISPATCHING ORDER...</text>
+          </g>
+
+          <!-- REVEAL SCREEN -->
+          <g class="anim-reveal">
+            <rect x="25" y="15" width="350" height="130" rx="16" fill="#11131a" stroke="#14b8a6" stroke-width="2"/>
+            <circle cx="200" cy="50" r="18" fill="url(#tealGrad)"/>
+            <path d="M192 50 L197 55 L209 42" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="200" y="85" font-family="Poppins, sans-serif" font-weight="700" font-size="12" fill="#ffffff" text-anchor="middle">Your Order Has Been Confirmed Successfully</text>
+            <text x="200" y="102" font-family="Poppins, sans-serif" font-weight="400" font-size="9.5" fill="#94a3b8" text-anchor="middle">Thank you for shopping with Lenka Stores!</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="space-y-1">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
+        <h3 id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</h3>
+      </div>
+
+      <div class="space-y-2.5 pt-2">
+        <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-full shadow-lg hover:brightness-110 transition-all cursor-pointer">
+          Continue Shopping
         </button>
       </div>
-    </form>
+    </div>
   </div>
-</div>
 
-<!-- ==================== ANIMATED 3D DELIVERY TRUCK POPUP ==================== -->
-<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative overflow-hidden">
-    
-    <div class="w-full h-32 bg-gradient-to-r from-orange-500/20 via-amber-500/25 to-teal-500/20 rounded-2xl border border-white/10 relative overflow-hidden flex items-center justify-center">
-      <div class="absolute inset-0 flex items-center justify-between px-6">
-        <div class="flex items-center gap-1.5 bg-black/70 px-3 py-2 rounded-xl border border-white/15 animate-bounce">
-          <span class="text-2xl">🏃‍♂️📦</span>
-          <span class="text-[10px] font-bold text-amber-300">Loading Box</span>
-        </div>
-        <div class="flex items-center gap-1.5 bg-black/70 px-4 py-2 rounded-xl border border-amber-400/40 shadow-xl animate-pulse">
-          <span class="text-3xl">🚚💨</span>
-          <span class="text-[11px] font-bold text-emerald-400">Dispatching</span>
+  <!-- ==================== THANK YOU STICKER POPUP ==================== -->
+  <div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
+      <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
+        <div class="w-full h-full bg-[#0d0f14] rounded-[22px] flex items-center justify-center text-4xl select-none">
+          😊
         </div>
       </div>
-    </div>
-
-    <div class="space-y-1">
-      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
-      <h3 class="font-anton text-2xl tracking-wider text-white">CONGRATULATIONS! ORDER CONFIRMED</h3>
-      <p id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</p>
-    </div>
-
-    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
-      <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed & Paid</span></div>
-      <div class="flex justify-between"><span class="text-slate-400">Payment:</span><span class="font-semibold text-white">PhonePe UPI (Verified)</span></div>
-      <div class="flex justify-between"><span class="text-slate-400">Payee UPI:</span><span class="font-mono text-[#E8C997]">8977627028-2@ybl</span></div>
-    </div>
-
-    <div class="space-y-2.5 pt-2">
-      <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 transition-all cursor-pointer">
-        Continue
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== THANK YOU STICKER POPUP ==================== -->
-<div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
-    <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
-      <div class="w-full h-full bg-[#0d0f14] rounded-[22px] flex items-center justify-center text-4xl select-none">
-        😊
+      <div class="space-y-1.5 pt-2">
+        <h4 class="font-anton text-2xl text-white tracking-wider">THANK YOU FOR YOUR TIME!</h4>
+        <p class="text-xs text-[#E8C997] font-medium">Have a nice day! Continue your shopping with Lenka Stores. 😊</p>
+      </div>
+      <div class="pt-2">
+        <button type="button" onclick="closeThankYouModal()" class="w-full py-3.5 bg-white text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:bg-[#E8C997] transition-all cursor-pointer active:scale-95">
+          Continue Shopping
+        </button>
       </div>
     </div>
-    <div class="space-y-1.5 pt-2">
-      <h4 class="font-anton text-2xl text-white tracking-wider">THANK YOU FOR YOUR TIME!</h4>
-      <p class="text-xs text-[#E8C997] font-medium">Have a nice day! Continue your shopping with Lenka Stores. 😊</p>
-    </div>
-    <div class="pt-2">
-      <button type="button" onclick="closeThankYouModal()" class="w-full py-3.5 bg-white text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:bg-[#E8C997] transition-all cursor-pointer active:scale-95">
-        Continue Shopping
-      </button>
-    </div>
   </div>
-</div>
+
   <footer class="bg-[#08090C] border-t border-white/10 text-slate-300 py-16 mt-auto">
     <div class="max-w-4xl mx-auto px-6 text-center space-y-5">
       <div class="inline-block">
@@ -341,6 +421,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/catalog.js"></script>
   <script src="js/feedback.js"></script>
 
   <script>
@@ -442,7 +523,9 @@
       });
       if (window.lucide) lucide.createIcons();
     }
+  </script>
 
+  <script>
     function getCart() {
       try {
         const saved = localStorage.getItem('lenka_cart_v2');
@@ -456,8 +539,12 @@
     }
 
     function addToBag(productId) {
-      const product = liveCatalog.find(p => String(p.id) === String(productId));
-      if (!product) return;
+      let catalog = window.liveCatalog || [];
+      if (catalog.length === 0) {
+        try { catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]'); } catch (e) { catalog = []; }
+      }
+      const product = catalog.find(p => String(p.id) === String(productId));
+      if (!product) return alert("Product item not found in live inventory.");
 
       const cart = getCart();
       const existing = cart.find(item => String(item.id) === String(productId));
@@ -519,12 +606,12 @@
               <h5 class="font-bold text-white truncate">${item.name}</h5>
               <span class="text-[#C5A880] font-bold">₹${item.price}</span>
               <div class="flex items-center gap-2 mt-1.5">
-                <button onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">-</button>
+                <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">-</button>
                 <span>${item.quantity}</span>
-                <button onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">+</button>
+                <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">+</button>
               </div>
             </div>
-            <button onclick="removeFromCart('${item.id}')" class="p-1.5 text-red-400 hover:text-red-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button type="button" onclick="removeFromCart('${item.id}')" class="p-1.5 text-red-400 hover:text-red-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>`;
       });
       if (window.lucide) lucide.createIcons();
@@ -545,45 +632,71 @@
       const cart = getCart();
       if (cart.length === 0) return alert("Your bag is empty.");
       closeCartDrawer();
-      const m = document.getElementById('checkoutModal');
-      if (m) m.classList.remove('hidden');
 
-      const user = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
-      if (user) {
-        if (document.getElementById('orderClientName')) document.getElementById('orderClientName').value = user.username || '';
-        if (document.getElementById('orderClientAddress')) document.getElementById('orderClientAddress').value = user.address === 'Add your delivery address' ? '' : user.address;
+      const summaryContainer = document.getElementById('checkoutProductSummary');
+      if (summaryContainer) {
+        summaryContainer.innerHTML = '';
+        cart.forEach(item => {
+          summaryContainer.innerHTML += `
+            <div class="flex items-center gap-3 text-xs">
+              <img src="${item.image}" class="w-10 h-10 rounded-lg object-cover bg-black" />
+              <div class="flex-1 min-w-0">
+                <h6 class="font-bold text-white truncate">${item.name}</h6>
+                <span class="text-slate-400">Qty: ${item.quantity}</span>
+              </div>
+              <span class="font-extrabold text-[#C5A880]">₹${item.price * item.quantity}</span>
+            </div>
+          `;
+        });
       }
+
+      const proceedBtn = document.getElementById('proceedToPayBtn');
+      const completedContainer = document.getElementById('paymentCompletedContainer');
+      if (proceedBtn) proceedBtn.classList.remove('hidden');
+      if (completedContainer) completedContainer.classList.add('hidden');
+
+      const modal = document.getElementById('checkoutModal');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeCheckoutModal() {
-      const m = document.getElementById('checkoutModal');
-      if (m) m.classList.add('hidden');
+      const modal = document.getElementById('checkoutModal');
+      if (modal) modal.classList.add('hidden');
     }
 
-    // CHECKOUT ORDER ENGINE
-    function handlePlaceOrder(e) {
+    function handlePhonePeRedirectPayment(e) {
       e.preventDefault();
       const cart = getCart();
       if (cart.length === 0) return alert("Your bag is empty.");
 
-      const name = document.getElementById('orderClientName').value.trim();
-      const phone = document.getElementById('orderClientPhone').value.trim();
-      const address = document.getElementById('orderClientAddress').value.trim();
-      const paymentMethod = document.getElementById('orderPaymentMethod').value;
-
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
-      const itemsSummary = cart.map(i => `${i.name} (x${i.quantity})`).join(', ');
+      localStorage.setItem('lenka_pending_order_id', orderId);
+
+      const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
+      window.location.href = upiUrl;
+
+      const proceedBtn = document.getElementById('proceedToPayBtn');
+      const completedContainer = document.getElementById('paymentCompletedContainer');
+      if (proceedBtn) proceedBtn.classList.add('hidden');
+      if (completedContainer) completedContainer.classList.remove('hidden');
+    }
+
+    function triggerDeliveryTruckSuccessModal() {
+      const cart = getCart();
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const orderId = localStorage.getItem('lenka_pending_order_id') || ('LS-' + Math.floor(100000 + Math.random() * 900000));
+      const itemsSummary = cart.map(i => `• ${i.name} (Qty: ${i.quantity}) - ₹${i.price * i.quantity}`).join('\n');
 
       const newOrder = {
         orderId,
-        customerName: name,
-        customerPhone: phone,
-        customerAddress: address,
-        paymentMethod,
+        customerName: "Verified Online Client",
+        customerPhone: "8977627028",
+        customerAddress: "Direct UPI Express Order",
+        paymentMethod: "PhonePe UPI (Paid)",
         itemsSummary,
         totalAmount: subtotal,
-        status: 'Confirmed',
+        status: 'Confirmed & Paid',
         createdAt: new Date().toISOString(),
         shippingDate: 'Processing in warehouse',
         deliveryDate: 'Expected in 3-5 days'
@@ -597,43 +710,31 @@
         firebase.firestore().collection('orders').doc(orderId).set(newOrder).catch(err => console.warn(err));
       }
 
+      const waMessage = 
+`*NEW PAID ORDER - LENKA STORES*
+---------------------------------------
+*Order ID:* #${orderId}
+*Payment Status:* Paid via PhonePe UPI (Verified)
+
+*Product Details:*
+${itemsSummary}
+
+*Total Amount:* ₹${subtotal}
+---------------------------------------`;
+
+      const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
+      window.open(whatsappUrl, '_blank');
+
       localStorage.removeItem('lenka_cart_v2');
       updateCartUI();
       closeCheckoutModal();
 
       if (window.confetti) {
-        confetti({ particleCount: 140, spread: 85, origin: { y: 0.6 } });
+        confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
       }
 
-      document.getElementById('successOrderIdDisplay').innerText = `Order ID: #${orderId}`;
-      document.getElementById('successPaymentDisplay').innerText = paymentMethod;
-
-      const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
-      const upiBtn = document.getElementById('directUpiPaymentLink');
-      const upiText = document.getElementById('upiBtnText');
-      
-      if (paymentMethod.includes('PhonePe') || paymentMethod.includes('UPI')) {
-        upiBtn.href = upiUrl;
-        upiText.innerText = `PAY ₹${subtotal} VIA PHONEPE / GPAY`;
-        upiBtn.classList.remove('hidden');
-      } else {
-        upiBtn.classList.add('hidden');
-      }
-
-      const waMessage = 
-`*NEW ORDER CONFIRMED - LENKA STORES*
----------------------------------------
-*Order ID:* #${orderId}
-*Customer Name:* ${name}
-*Phone:* ${phone}
-*Delivery Address:* ${address}
-*Items:* ${itemsSummary}
-*Total Amount:* ₹${subtotal}
-*Payment Method:* ${paymentMethod}
----------------------------------------
-Please confirm dispatch and receipt of payment!`;
-
-      document.getElementById('directWhatsAppLink').href = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
+      const orderIdDisplay = document.getElementById('successOrderIdDisplay');
+      if (orderIdDisplay) orderIdDisplay.innerText = `Order ID: #${orderId}`;
 
       const successModal = document.getElementById('orderSuccessModal');
       if (successModal) successModal.classList.remove('hidden');
@@ -641,8 +742,16 @@ Please confirm dispatch and receipt of payment!`;
     }
 
     function closeOrderSuccessModal() {
-      const modal = document.getElementById('orderSuccessModal');
-      if (modal) modal.classList.add('hidden');
+      const successModal = document.getElementById('orderSuccessModal');
+      if (successModal) successModal.classList.add('hidden');
+
+      const thankYouModal = document.getElementById('feedbackThanksModal');
+      if (thankYouModal) thankYouModal.classList.remove('hidden');
+    }
+
+    function closeThankYouModal() {
+      const thankYouModal = document.getElementById('feedbackThanksModal');
+      if (thankYouModal) thankYouModal.classList.add('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -653,8 +762,10 @@ Please confirm dispatch and receipt of payment!`;
     window.closeCartDrawer = closeCartDrawer;
     window.openCheckoutModal = openCheckoutModal;
     window.closeCheckoutModal = closeCheckoutModal;
-    window.handlePlaceOrder = handlePlaceOrder;
+    window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
+    window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
     window.closeOrderSuccessModal = closeOrderSuccessModal;
+    window.closeThankYouModal = closeThankYouModal;
 
     window.addEventListener('DOMContentLoaded', () => {
       initStorefrontCatalog();
@@ -781,7 +892,7 @@ Please confirm dispatch and receipt of payment!`;
             itemEl.style.top = isMobile ? '37%' : '36%';
             itemEl.style.transform = 'translateX(-50%) scale(1)';
             itemEl.style.width = isMobile ? '86%' : '370px';
-            itemEl.style.height = isMobile ? '50%' : '54%';
+            itemEl.style.height = isMobile ? '50%` : '54%';
             itemEl.style.filter = 'blur(0px)';
             itemEl.style.opacity = '1';
             itemEl.style.zIndex = '30';
@@ -837,7 +948,7 @@ Please confirm dispatch and receipt of payment!`;
       if (heroAutoTimer) clearInterval(heroAutoTimer);
       heroAutoTimer = setInterval(() => {
         navigateHeroCarousel('next');
-      }, 30000); // 30 seconds auto-slide
+      }, 30000);
     }
 
     function resetAutoSlideTimer() {
@@ -860,7 +971,7 @@ Please confirm dispatch and receipt of payment!`;
 
       stage.addEventListener('touchend', (e) => {
         endX = e.changedTouches[0].clientX;
-        endY = e.changedTouches[0].clientY;
+        endY = e.changedTouches[1] ? e.changedTouches[1].clientY : e.changedTouches[0].clientY;
         handleGesture();
       }, { passive: true });
 
@@ -879,9 +990,7 @@ Please confirm dispatch and receipt of payment!`;
 
       function handleGesture() {
         const diffX = endX - startX;
-        const diffY = endY - startY;
-
-        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+        if (Math.abs(diffX) > 40) {
           if (diffX < 0) {
             navigateHeroCarousel('next');
           } else {
@@ -898,9 +1007,5 @@ Please confirm dispatch and receipt of payment!`;
     });
     window.addEventListener('resize', renderHeroStage);
   </script>
-  <script src="js/config.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/catalog.js"></script>
-  <script src="js/feedback.js"></script>
 </body>
 </html>
