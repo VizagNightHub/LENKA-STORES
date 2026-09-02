@@ -130,3 +130,72 @@ function clientLogOutSession() {
 
 window.checkAndOpenProfile = checkAndOpenProfile;
 window.clientLogOutSession = clientLogOutSession;
+// RENDER ACTIVE CONSIGNMENTS WITH "CANCEL ORDER" DELETION BUTTON
+function renderActiveConsignmentsModal() {
+  const container = document.getElementById('activeConsignmentsList') || document.getElementById('userOrdersContainer');
+  if (!container) return;
+
+  const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+  container.innerHTML = '';
+
+  if (orders.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-12 space-y-2">
+        <p class="text-xs text-slate-400">No active consignments found.</p>
+      </div>
+    `;
+    return;
+  }
+
+  orders.forEach(ord => {
+    const orderId = ord.orderId || ord.id;
+    const card = document.createElement('div');
+    card.className = "p-4 rounded-2xl bg-[#11131A] border border-white/10 space-y-3 shadow-lg mb-3";
+    card.innerHTML = `
+      <div class="flex items-center justify-between border-b border-white/5 pb-2">
+        <span class="text-xs font-mono font-bold text-[#C5A880]">#${orderId}</span>
+        <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">${ord.status || 'Confirmed'}</span>
+      </div>
+
+      <div class="text-xs space-y-1 text-slate-300">
+        <p class="font-medium text-white">${ord.itemsSummary || 'Consignment Items'}</p>
+        <p class="text-[11px] text-slate-400">Total: <strong class="text-white">₹${ord.totalAmount || 0}</strong> • ${ord.shippingDate || 'Processing in warehouse'}</p>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button type="button" onclick="cancelAndDeleteOrder('${orderId}')" class="px-3.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5">
+          <i data-lucide="x-circle" class="w-3.5 h-3.5"></i>
+          <span>Cancel Order</span>
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  if (window.lucide) lucide.createIcons();
+}
+
+// CANCELLATION & DELETION HANDLER
+async function cancelAndDeleteOrder(orderId) {
+  if (!confirm(`Are you sure you want to cancel and delete Order #${orderId}?`)) return;
+
+  // Remove order from local storage
+  let orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+  orders = orders.filter(o => String(o.orderId || o.id) !== String(orderId));
+  localStorage.setItem('lenka_orders', JSON.stringify(orders));
+
+  // Delete order from Firebase Firestore database
+  if (window.firebase && firebase.apps.length) {
+    try {
+      await firebase.firestore().collection('orders').doc(orderId).delete();
+    } catch (err) {
+      console.warn("Firestore order deletion note:", err);
+    }
+  }
+
+  alert(`Order #${orderId} has been successfully cancelled and removed.`);
+  renderActiveConsignmentsModal();
+}
+
+window.cancelAndDeleteOrder = cancelAndDeleteOrder;
+window.renderActiveConsignmentsModal = renderActiveConsignmentsModal;
