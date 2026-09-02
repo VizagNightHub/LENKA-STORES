@@ -1,10 +1,6 @@
 // DEDICATED ATELIER PROFILE & SESSION CONTROLLER
 
 document.addEventListener('DOMContentLoaded', () => {
-    initProfileEngine();
-});
-
-function initProfileEngine() {
     const displayUsername = document.getElementById('display-username');
     if (!displayUsername) return; 
 
@@ -44,17 +40,15 @@ function initProfileEngine() {
 
     renderProfile();
 
-    if (editProfileBtn && profileDisplaySection && profileEditSection) {
+    if (editProfileBtn && profileEditSection) {
         editProfileBtn.addEventListener('click', () => {
-            profileDisplaySection.style.display = 'none';
-            profileEditSection.style.display = 'flex';
+            if (profileEditSection) profileEditSection.style.display = 'flex';
         });
     }
 
-    if (cancelEditBtn && profileDisplaySection && profileEditSection) {
+    if (cancelEditBtn && profileEditSection) {
         cancelEditBtn.addEventListener('click', () => {
-            profileEditSection.style.display = 'none';
-            profileDisplaySection.style.display = 'flex';
+            if (profileEditSection) profileEditSection.style.display = 'none';
         });
     }
 
@@ -86,7 +80,6 @@ function initProfileEngine() {
             localStorage.setItem('lenka_user_profile', JSON.stringify(savedData));
             renderProfile();
             if (profileEditSection) profileEditSection.style.display = 'none';
-            if (profileDisplaySection) profileDisplaySection.style.display = 'flex';
         });
     }
 
@@ -100,37 +93,21 @@ function initProfileEngine() {
                     window.location.href = "index.html";
                 }
             } else {
-                if (typeof openAuthModal === 'function') {
-                    openAuthModal();
-                } else {
-                    window.location.href = "index.html";
-                }
+                window.location.href = "index.html";
             }
         });
     }
-}
+});
 
-// GLOBAL HELPERS FOR CLIENT SESSION MANAGEMENT
+// GLOBAL HELPERS
 function checkAndOpenProfile() {
-  const loggedPhone = localStorage.getItem('lenka_logged_in_phone');
-  if (!loggedPhone) {
-    if (typeof openAuthModal === 'function') {
-      openAuthModal();
-    } else {
-      alert("Please authenticate with your mobile number first.");
-    }
-  } else {
-    if (typeof openProfileDrawer === 'function') {
-      openProfileDrawer();
-    }
-  }
+  window.location.href = "profile.html";
 }
 
 function clientLogOutSession() {
   if (!confirm("Are you sure you want to log out?")) return;
   localStorage.removeItem('lenka_logged_in_phone');
-  localStorage.removeItem('lenka_profile');
-  if (typeof closeProfileDrawer === 'function') closeProfileDrawer();
+  localStorage.removeItem('lenka_user_profile');
   window.location.href = "index.html";
 }
 
