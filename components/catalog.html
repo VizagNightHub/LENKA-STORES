@@ -1,16 +1,20 @@
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full">
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-white/5 gap-4">
+<main id="mainStoreCatalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full space-y-8">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
     <div>
-      <h2 id="currentCategoryHeading" class="font-serif text-3xl text-white">Live Catalog</h2>
-      <p class="text-xs text-slate-400 mt-1">Real-time dynamic inventory streamed live from Firebase Cloud</p>
+      <span class="text-xs uppercase font-bold tracking-[0.2em] text-[#C5A880] block">Curated Luxury</span>
+      <h2 id="currentCategoryHeading" class="font-serif text-3xl sm:text-4xl text-white">Live Catalog</h2>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button type="button" onclick="filterCategory('all')" class="px-4 py-2 rounded-xl bg-white text-black font-semibold text-xs cursor-pointer shadow-sm">All Items</button>
+      <button type="button" onclick="filterCategory('Audio & Wireless Earbuds')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer hover:text-white transition-colors">Audio</button>
+      <button type="button" onclick="filterCategory('Battery Banks & Power Gear')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer hover:text-white transition-colors">Power Gear</button>
+      <button type="button" onclick="filterCategory('Men\'s Apparel & Fashion')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer hover:text-white transition-colors">Fashion</button>
     </div>
   </div>
 
-  <!-- THE DYNAMIC PRODUCT GRID -->
-  <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10"></div>
-  
-  <div id="emptyCatalogState" class="hidden text-center py-20">
-    <i data-lucide="package-open" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
-    <p class="text-slate-400 text-sm">No inventory items listed in this atelier.</p>
+  <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <div id="emptyCatalogState" class="hidden text-center py-16 space-y-2">
+    <i data-lucide="package-open" class="w-12 h-12 text-slate-500 mx-auto"></i>
+    <p class="text-slate-400 text-sm">No items found in this collection.</p>
   </div>
 </main>
