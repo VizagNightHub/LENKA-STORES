@@ -1,44 +1,45 @@
-<!-- 3D ORDER SUCCESS OVERLAY COMPONENT -->
-<div id="orderSuccessOverlay" 
-     class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300" 
-     role="dialog" 
-     aria-modal="true" 
-     aria-live="polite" 
-     aria-labelledby="successHeadline">
-  
-  <!-- 3D Particle Canvas Container -->
-  <canvas id="orderSuccessCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
-
-  <!-- Centered Glass Card -->
-  <div id="successCardBox" 
-       class="relative z-10 w-full max-w-[420px] rounded-3xl p-8 text-center fine-glass-box shadow-2xl space-y-6 transform scale-[0.85] opacity-0 transition-all duration-500">
+<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative overflow-hidden">
     
-    <!-- Status Pill -->
-    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-noir-950/70 border border-bronze-400/30 backdrop-blur-md">
-      <span class="w-2 h-2 rounded-full bg-bronze-400 animate-ping"></span>
-      <span class="text-[10px] uppercase tracking-[0.25em] text-bronze-300 font-semibold font-sans">RESERVATION CONFIRMED</span>
+    <div class="w-full h-28 bg-gradient-to-r from-orange-500/20 via-amber-500/20 to-teal-500/20 rounded-2xl border border-white/10 relative overflow-hidden flex items-center justify-center">
+      <div class="absolute inset-0 flex items-center justify-between px-6 animate-pulse">
+        <div class="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/15 animate-bounce">
+          <span class="text-xl">🏃‍♂️📦</span>
+          <span class="text-[10px] font-bold text-amber-300">Loading Box</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-black/60 px-4 py-2 rounded-xl border border-amber-400/40 shadow-lg animate-pulse">
+          <span class="text-2xl">🚚💨</span>
+          <span class="text-[11px] font-bold text-emerald-400">Dispatching</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Word-by-Word Headline Container -->
-    <h2 id="successHeadline" class="font-serif text-2xl sm:text-3xl text-[#F2EFE9] font-normal leading-tight"></h2>
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
+      <h3 class="font-anton text-2xl tracking-wider text-white">CONGRATULATIONS! ORDER CONFIRMED</h3>
+      <p id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</p>
+    </div>
 
-    <!-- Order Metadata & Buttons (Fades in after headline) -->
-    <div id="successDetails" class="opacity-0 space-y-5 transition-opacity duration-500">
-      <div class="p-3.5 rounded-xl bg-noir-950/60 border border-white/5 space-y-1">
-        <p class="text-[11px] text-slate-400 font-sans tracking-wide">Consignment Tracking Reference</p>
-        <p id="successOrderIdText" class="font-mono text-sm text-bronze-400 font-semibold tracking-wider">#LS000000</p>
-      </div>
+    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
+      <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed</span></div>
+      <div class="flex justify-between"><span class="text-slate-400">Payment:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
+      <div class="flex justify-between"><span class="text-slate-400">Payee UPI:</span><span class="font-mono text-[#E8C997]">8977627028-2@ybl</span></div>
+    </div>
 
-      <div class="flex flex-col gap-2.5 pt-2">
-        <button id="successTrackBtn" 
-                class="w-full py-3.5 rounded-xl bg-gradient-to-r from-bronze-500 via-bronze-400 to-[#E8C997] text-noir-950 font-sans font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:brightness-110 shadow-lg cursor-pointer">
-          Track Your Order
-        </button>
-        <button id="successCloseBtn" 
-                class="w-full py-3 rounded-xl bg-transparent hover:bg-white/5 border border-white/10 text-slate-300 font-sans text-xs uppercase tracking-wider transition-all cursor-pointer">
-          Continue Shopping
-        </button>
-      </div>
+    <div class="space-y-2.5 pt-2">
+      <a id="directUpiPaymentLink" href="javascript:void(0)" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+        <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
+        <span id="upiBtnText">PROCEED TO PAY</span>
+      </a>
+
+      <a id="directWhatsAppLink" href="javascript:void(0)" target="_blank" class="w-full py-4 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        <span>SEND ORDER TO WHATSAPP</span>
+      </a>
+
+      <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+        Continue to Confirmation
+      </button>
     </div>
   </div>
 </div>
