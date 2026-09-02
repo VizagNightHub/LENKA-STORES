@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Lenka Stores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css"> <!-- Linked to your CSS folder -->
+</head>
+<body>
+    <div class="profile-container">
+        <div class="back-nav">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+        </div>
+
+        <!-- SLOT 1: Profile Header -->
+        <section class="profile-slot slot-header-card" id="profile-display-section">
+            <div class="avatar-ring-wrapper">
+                <img id="profile-avatar-preview" src="default-avatar.png" alt="User Avatar" class="main-avatar">
+            </div>
+            <div class="user-info">
+                <h1 id="display-username">V. Udayteja</h1>
+                <p id="display-address"><i class="fa-solid fa-location-dot"></i> Add your delivery address</p>
+            </div>
+            <button id="edit-profile-btn" class="edit-btn" title="Edit Profile">
+                <i class="fa-solid fa-pencil"></i>
+            </button>
+        </section>
+
+        <!-- EDIT PROFILE INLINE VIEW -->
+        <section class="profile-slot slot-edit-card" id="profile-edit-section" style="display: none;">
+            <h3>Edit Profile</h3>
+            <form id="edit-profile-form">
+                <div class="file-drop-area" id="drop-area">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="file-label">Drag & drop photo here or browse</span>
+                    <input type="file" id="photo-file-input" accept="image/*">
+                </div>
+                <div class="preview-container">
+                    <img id="live-file-preview" src="" alt="Preview" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label for="input-username">Username</label>
+                    <input type="text" id="input-username" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="input-address">Delivery Address</label>
+                    <textarea id="input-address" rows="3" placeholder="Enter full address"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-edit-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- SLOT 2: Order Status -->
+        <a href="orders.html" class="profile-slot nav-card">
+            <div class="card-content">
+                <div class="icon-box gradient-1"><i class="fa-solid fa-box-open"></i></div>
+                <div>
+                    <h2>Order Status</h2>
+                    <p id="order-status-summary">2 orders in progress</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right chevron"></i>
+        </a>
+
+        <!-- SLOT 3: Favorites -->
+        <a href="wishlist.html" class="profile-slot nav-card">
+            <div class="card-content">
+                <div class="icon-box gradient-2"><i class="fa-solid fa-heart"></i></div>
+                <div>
+                    <h2>Favorites</h2>
+                    <p id="wishlist-summary">5 items saved</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right chevron"></i>
+        </a>
+
+        <!-- SLOT 4: Order History -->
+        <a href="history.html" class="profile-slot nav-card">
+            <div class="card-content">
+                <div class="icon-box gradient-3"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div>
+                    <h2>Order History</h2>
+                    <p>View past completed purchases</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right chevron"></i>
+        </a>
+    </div>
+
+    <!-- BOTTOM-RIGHT AUTH BUTTON -->
+    <div class="floating-auth-container">
+        <button id="auth-toggle-btn" class="auth-pill-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> <span id="auth-btn-text">Logout</span>
+        </button>
+    </div>
+
+    <script src="js/profile.js"></script> <!-- Linked to your js folder -->
+</body>
+</html>
