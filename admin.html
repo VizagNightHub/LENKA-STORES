@@ -696,7 +696,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    async function handlePublishProduct(e) {
+async function handlePublishProduct(e) {
       e.preventDefault();
       const btn = document.getElementById('publishBtn');
       if (btn) {
@@ -710,7 +710,12 @@
       const offerPrice = Number(document.getElementById('fieldOfferPrice').value) || 0;
       const discountTag = document.getElementById('fieldDiscountTag')?.value.trim() || '';
       const description = document.getElementById('fieldDescription')?.value.trim() || 'Curated luxury piece.';
-      const image = document.getElementById('fieldImageUrls').value.trim();
+      
+      // Parse multiple image URLs separated by commas or newlines
+      const rawImagesInput = document.getElementById('fieldImageUrls').value.trim();
+      const imagesArray = rawImagesInput.split(/,|\n/).map(s => s.trim()).filter(s => s.length > 0);
+      const primaryImage = imagesArray[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
+
       const prodId = 'prod_' + Date.now();
 
       const newProd = {
@@ -720,8 +725,8 @@
         offerPrice,
         discountTag,
         description,
-        image,
-        images: [image],
+        image: primaryImage,       // Main thumbnail image
+        images: imagesArray,       // Full gallery array of multiple images
         createdAt: new Date().toISOString()
       };
 
@@ -729,8 +734,9 @@
         liveProducts.unshift({ id: prodId, ...newProd });
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
         renderProductsGrid();
+        
         await db.collection('products').doc(prodId).set(newProd);
-        alert(`Product "${title}" is now LIVE on Lenka Stores!`);
+        alert(`Product "${title}" with ${imagesArray.length} image(s) published live!`);
         document.getElementById('productPublishForm').reset();
         switchTab('inventory');
       } catch (err) {
