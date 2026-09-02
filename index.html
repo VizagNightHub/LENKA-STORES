@@ -518,5 +518,45 @@
       if (window.lucide) lucide.createIcons();
     });
   </script>
+  <!-- ORDER SUCCESS / PAYMENT CONFIRMATION POPUP MODAL -->
+<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/40 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative">
+    
+    <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
+      <i data-lucide="check" class="w-8 h-8"></i>
+    </div>
+
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT SECURED</span>
+      <h3 class="font-anton text-2xl tracking-wider">ORDER PLACED SUCCESSFULLY!</h3>
+      <p id="successOrderIdDisplay" class="text-xs font-mono text-slate-400">Order ID: #LS-992026</p>
+    </div>
+
+    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
+      <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed & Reserved</span></div>
+      <div class="flex justify-between"><span class="text-slate-400">Payment Option:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
+      <div class="flex justify-between"><span class="text-slate-400">Client Concierge:</span><span class="text-white">+91 89776 27028</span></div>
+    </div>
+
+    <div class="space-y-2.5 pt-2">
+      <!-- Direct Payment Link -->
+      <a id="paymentGatewayLink" href="https://phonepe.com" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all cursor-pointer">
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+        <span>COMPLETE PAYMENT NOW</span>
+      </a>
+
+      <!-- Direct WhatsApp Invoice Link -->
+      <a id="whatsappInvoiceLink" href="https://wa.me/918977627028" target="_blank" class="w-full py-3.5 bg-[#25D366] text-black font-bold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all cursor-pointer">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        <span>SEND INVOICE TO WHATSAPP</span>
+      </a>
+
+      <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+        Return to Storefront
+      </button>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
