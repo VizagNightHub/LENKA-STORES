@@ -1,104 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | Lenka Stores</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css"> <!-- Linked to your CSS folder -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LENKA STORES | Client Profile</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
-<body>
-    <div class="profile-container">
-        <div class="back-nav">
-            <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+<body class="bg-[#0A0B0D] text-slate-200 font-sans min-h-screen flex flex-col">
+
+  <header class="px-6 sm:px-12 py-5 border-b border-white/10 flex items-center justify-between bg-[#111218]">
+    <div class="flex items-center gap-4" id="profile-display-section">
+      <img id="profile-avatar-preview" class="w-12 h-12 rounded-full object-cover border border-[#C5A880]/50" src="default-avatar.png" alt="Profile" />
+      <div>
+        <h3 id="display-username" class="font-bold text-white text-lg">V. Udayteja</h3>
+        <p id="display-address" class="text-xs text-slate-400"><i class="fa-solid fa-location-dot"></i> Add your delivery address</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-3">
+      <button type="button" id="auth-toggle-btn" class="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+        <span id="auth-btn-text">Logout</span>
+      </button>
+      <a href="index.html" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </a>
+    </div>
+  </header>
+
+  <div class="px-6 sm:px-12 py-3 border-b border-white/10 bg-[#0E0F14] flex items-center gap-2 overflow-x-auto">
+    <button type="button" id="edit-profile-btn" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs flex items-center gap-2 cursor-pointer shrink-0">
+      <i data-lucide="edit-3" class="w-4 h-4"></i>
+      <span>Edit Profile</span>
+    </button>
+  </div>
+
+  <main class="p-6 sm:p-12 max-w-4xl mx-auto w-full flex-1 space-y-6">
+    
+    <div id="profile-edit-section" class="hidden flex-col space-y-6 bg-[#111218] p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl">
+      <h4 class="text-base font-bold text-white uppercase tracking-wider">Edit Client Information</h4>
+      
+      <form id="edit-profile-form" class="space-y-4">
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">FULL NAME</label>
+          <input type="text" id="input-username" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]" />
+        </div>
+        
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">DELIVERY ADDRESS</label>
+          <textarea id="input-address" rows="3" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880]"></textarea>
         </div>
 
-        <!-- SLOT 1: Profile Header -->
-        <section class="profile-slot slot-header-card" id="profile-display-section">
-            <div class="avatar-ring-wrapper">
-                <img id="profile-avatar-preview" src="default-avatar.png" alt="User Avatar" class="main-avatar">
-            </div>
-            <div class="user-info">
-                <h1 id="display-username">V. Udayteja</h1>
-                <p id="display-address"><i class="fa-solid fa-location-dot"></i> Add your delivery address</p>
-            </div>
-            <button id="edit-profile-btn" class="edit-btn" title="Edit Profile">
-                <i class="fa-solid fa-pencil"></i>
-            </button>
-        </section>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">UPLOAD NEW AVATAR</label>
+          <input type="file" id="photo-file-input" accept="image/*" class="hidden" />
+          <label for="photo-file-input" id="file-label" class="block w-full bg-[#16181E] border border-dashed border-white/20 rounded-xl p-3 text-center text-xs text-slate-400 cursor-pointer hover:border-[#C5A880]">Choose File</label>
+          <img id="live-file-preview" class="w-16 h-16 rounded-full object-cover mt-3 hidden border border-white/20" alt="Preview" />
+        </div>
 
-        <!-- EDIT PROFILE INLINE VIEW -->
-        <section class="profile-slot slot-edit-card" id="profile-edit-section" style="display: none;">
-            <h3>Edit Profile</h3>
-            <form id="edit-profile-form">
-                <div class="file-drop-area" id="drop-area">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span id="file-label">Drag & drop photo here or browse</span>
-                    <input type="file" id="photo-file-input" accept="image/*">
-                </div>
-                <div class="preview-container">
-                    <img id="live-file-preview" src="" alt="Preview" style="display: none;">
-                </div>
-                <div class="form-group">
-                    <label for="input-username">Username</label>
-                    <input type="text" id="input-username" required placeholder="Enter your name">
-                </div>
-                <div class="form-group">
-                    <label for="input-address">Delivery Address</label>
-                    <textarea id="input-address" rows="3" placeholder="Enter full address"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" id="cancel-edit-btn" class="btn-secondary">Cancel</button>
-                    <button type="submit" class="btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </section>
-
-        <!-- SLOT 2: Order Status -->
-        <a href="orders.html" class="profile-slot nav-card">
-            <div class="card-content">
-                <div class="icon-box gradient-1"><i class="fa-solid fa-box-open"></i></div>
-                <div>
-                    <h2>Order Status</h2>
-                    <p id="order-status-summary">2 orders in progress</p>
-                </div>
-            </div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
-        </a>
-
-        <!-- SLOT 3: Favorites -->
-        <a href="wishlist.html" class="profile-slot nav-card">
-            <div class="card-content">
-                <div class="icon-box gradient-2"><i class="fa-solid fa-heart"></i></div>
-                <div>
-                    <h2>Favorites</h2>
-                    <p id="wishlist-summary">5 items saved</p>
-                </div>
-            </div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
-        </a>
-
-        <!-- SLOT 4: Order History -->
-        <a href="history.html" class="profile-slot nav-card">
-            <div class="card-content">
-                <div class="icon-box gradient-3"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                <div>
-                    <h2>Order History</h2>
-                    <p>View past completed purchases</p>
-                </div>
-            </div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
-        </a>
+        <div class="flex gap-3 pt-2">
+          <button type="button" id="cancel-edit-btn" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase cursor-pointer">Cancel</button>
+          <button type="submit" class="flex-1 py-3 bg-gradient-to-r from-[#C5A880] to-[#E8C997] text-black font-bold text-xs uppercase rounded-xl cursor-pointer">Save Changes</button>
+        </div>
+      </form>
     </div>
 
-    <!-- BOTTOM-RIGHT AUTH BUTTON -->
-    <div class="floating-auth-container">
-        <button id="auth-toggle-btn" class="auth-pill-btn">
-            <i class="fa-solid fa-right-from-bracket"></i> <span id="auth-btn-text">Logout</span>
-        </button>
-    </div>
+  </main>
 
-    <script src="js/profile.js"></script> <!-- Linked to your js folder -->
+  <script src="js/config.js"></script>
+  <script src="js/profile.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
 </body>
 </html>
