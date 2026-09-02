@@ -15,7 +15,6 @@ function saveCart(cart) {
 }
 
 function addToBag(productId) {
-  // Check global liveCatalog or localStorage
   let catalog = window.liveCatalog || [];
   if (catalog.length === 0) {
     try {
@@ -26,7 +25,6 @@ function addToBag(productId) {
   }
 
   const product = catalog.find(p => String(p.id) === String(productId));
-  
   if (!product) {
     alert("Product item not found in live inventory.");
     return;
@@ -42,7 +40,7 @@ function addToBag(productId) {
       id: product.id,
       name: product.title || product.name,
       price: Number(product.offerPrice || product.price) || 0,
-      image: product.image || (Array.isArray(product.images) ? product.images[0] : '') || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800',
+      image: product.image || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : '') || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800',
       quantity: 1
     });
   }
@@ -61,9 +59,7 @@ function updateQuantity(id, qty) {
   const item = cart.find(i => String(i.id) === String(id));
   if (item) {
     item.quantity = Number(qty);
-    if (item.quantity <= 0) {
-      return removeFromCart(id);
-    }
+    if (item.quantity <= 0) return removeFromCart(id);
   }
   saveCart(cart);
 }
@@ -120,6 +116,36 @@ function closeCartDrawer() {
   if (d) d.classList.add('translate-x-full');
 }
 
+function openCheckoutModal() {
+  const cart = getCart();
+  if (cart.length === 0) {
+    alert("Your bag is empty.");
+    return;
+  }
+  closeCartDrawer();
+  const modal = document.getElementById('checkoutModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    // Pre-fill profile info if available
+    const user = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
+    if (user) {
+      const nameInput = document.getElementById('orderClientName');
+      const phoneInput = document.getElementById('orderClientPhone');
+      const addressInput = document.getElementById('orderClientAddress');
+      if (nameInput && !nameInput.value) nameInput.value = user.username || '';
+      if (phoneInput && !phoneInput.value && user.phone) phoneInput.value = user.phone;
+      if (addressInput && !addressInput.value && user.address !== 'Add your delivery address') {
+        addressInput.value = user.address;
+      }
+    }
+  }
+}
+
+function closeCheckoutModal() {
+  const modal = document.getElementById('checkoutModal');
+  if (modal) modal.classList.add('hidden');
+}
+
 // Global window exposure
 window.getCart = getCart;
 window.saveCart = saveCart;
@@ -129,7 +155,5 @@ window.updateQuantity = updateQuantity;
 window.updateCartUI = updateCartUI;
 window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
-
-window.addEventListener('DOMContentLoaded', () => {
-  updateCartUI();
-});
+window.openCheckoutModal = openCheckoutModal;
+window.closeCheckoutModal = closeCheckoutModal;
