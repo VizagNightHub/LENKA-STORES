@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lenka Studios //Made by LENKA VENTURES</title>
+  <title>Cyber Ronin // Neural Edges</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -24,159 +24,62 @@
       --orange: #E07020;
       --card: rgba(10, 8, 7, 0.58);
     }
-
     html, body {
       background-color: #C45A18;
       color: var(--cream);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
-
     .heading-font, h1, h2, h3 {
       font-family: 'Orbitron-Medium', 'Arial Narrow', sans-serif;
-      font-weight: 400;
-      letter-spacing: 0.02em;
+      font-weight: 400; letter-spacing: 0.02em;
     }
-
     .hero {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden;
-      background: #C45A18;
+      position: relative; width: 100%; height: 100vh; height: 100dvh; overflow: hidden; background: #C45A18;
     }
-
-    .hero-base-img {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background-size: cover;
-      background-position: center center;
-    }
-
+    .hero-base-img { position: absolute; inset: 0; z-index: 1; background-size: cover; background-position: center center; }
     .hero-reveal-img {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background-size: cover;
-      background-position: center center;
+      position: absolute; inset: 0; z-index: 2; pointer-events: none; background-size: cover; background-position: center center;
       -webkit-mask-image: radial-gradient(circle 0px at -999px -999px, #fff, transparent);
       mask-image: radial-gradient(circle 0px at -999px -999px, #fff, transparent);
     }
-
     .hero-ui {
-      position: absolute;
-      inset: 0;
-      z-index: 8;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 1fr auto;
-      padding: 36px 44px 40px;
-      pointer-events: none;
+      position: absolute; inset: 0; z-index: 8; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; padding: 36px 44px 40px; pointer-events: none;
     }
-
     .hero-ui * { pointer-events: auto; }
-
-    .hero-left {
-      grid-column: 1;
-      grid-row: 1 / -1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 28px;
-      min-width: 0;
-    }
-
-    .hero-copy {
-      max-width: 520px;
-      padding-right: 56px;
-    }
-
-    .hero-copy h1 {
-      font-size: clamp(1.55rem, 3.6vw, 3.15rem);
-      line-height: 1.05;
-      text-transform: uppercase;
-      color: var(--cream);
-      text-shadow: 0 2px 28px rgba(0,0,0,0.22);
-      margin: 0;
-    }
-
+    .hero-left { grid-column: 1; grid-row: 1 / -1; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 28px; min-width: 0; }
+    .hero-copy { max-width: 520px; padding-right: 56px; }
+    .hero-copy h1 { font-size: clamp(1.55rem, 3.6vw, 3.15rem); line-height: 1.05; text-transform: uppercase; color: var(--cream); text-shadow: 0 2px 28px rgba(0,0,0,0.22); margin: 0; }
     .pull-line { display: block; }
-
-    .hero-copy p {
-      margin-top: 18px;
-      max-width: 340px;
-      font-size: 13.5px;
-      font-weight: 400;
-      line-height: 1.55;
-      color: var(--muted);
-    }
-
-    .icon-row { display: flex; gap: 10px; margin-top: 22px; }
-
-    .icon-btn {
-      width: 38px; height: 38px; border-radius: 50%;
-      border: 1px solid rgba(251,219,175,0.55);
-      background: transparent; color: var(--cream);
-      display: grid; place-items: center;
-      transition: background 0.25s ease, border-color 0.25s ease;
-      cursor: pointer;
-    }
-    .icon-btn:hover { background: rgba(251,219,175,0.1); border-color: var(--cream); }
-
+    .hero-copy p { margin-top: 18px; max-width: 340px; font-size: 13.5px; font-weight: 400; line-height: 1.55; color: var(--muted); }
     .product-card {
-      width: min(320px, 100%);
-      display: grid;
-      grid-template-columns: 86px 1fr;
-      grid-template-rows: auto auto;
-      gap: 10px 14px; padding: 12px;
-      border-radius: 18px; background: var(--card);
-      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(251,219,175,0.08);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      width: min(320px, 100%); display: grid; grid-template-columns: 86px 1fr; grid-template-rows: auto auto; gap: 10px 14px; padding: 12px;
+      border-radius: 18px; background: var(--card); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(251,219,175,0.08); box-shadow: 0 18px 50px rgba(0,0,0,0.28);
     }
-
-    .product-thumb {
-      grid-column: 1; grid-row: 1 / -1;
-      width: 86px; min-height: 86px; border-radius: 12px;
-      overflow: hidden; background-size: cover; background-position: center;
-    }
-
+    .product-thumb { grid-column: 1; grid-row: 1 / -1; width: 86px; min-height: 86px; border-radius: 12px; overflow: hidden; background-size: cover; background-position: center; }
     .product-body { grid-column: 2; grid-row: 1; }
     .product-body h2 { font-size: 11px; line-height: 1.25; text-transform: uppercase; color: var(--cream); margin: 0; }
     .product-body p { margin-top: 6px; font-size: 11.5px; line-height: 1.45; color: var(--muted); margin-bottom: 0; }
-
     .cart-btn {
-      grid-column: 2; grid-row: 2; justify-self: start; align-self: end;
-      border: 1px solid var(--cream); border-radius: 999px;
-      padding: 7px 16px; font-size: 12px; font-weight: 500;
-      color: var(--cream); background: transparent; cursor: pointer;
+      grid-column: 2; grid-row: 2; justify-self: start; align-self: end; border: 1px solid var(--cream); border-radius: 999px;
+      padding: 7px 16px; font-size: 12px; font-weight: 500; color: var(--cream); background: transparent; cursor: pointer;
     }
-
     .hero-page { position: absolute; top: 36px; right: 44px; font-size: 13px; letter-spacing: 0.08em; color: rgba(251,219,175,0.78); z-index: 8; }
     .specs { grid-column: 2; grid-row: 3; justify-self: end; width: min(340px, 100%); }
     .specs h3 { font-size: 11px; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.12em; margin-top: 0; }
     .spec-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 7px 0; border-top: 1px solid rgba(251,219,175,0.12); }
     .spec-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
     .spec-value { font-size: 12.5px; color: var(--cream); text-align: right; white-space: nowrap; }
-
     @keyframes heroImageIn { from { opacity: 0; transform: scale(1.18); } to { opacity: 1; transform: scale(1); } }
     .hero-image-animate { animation: heroImageIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; animation-delay: 0.15s; opacity: 0; }
-
     @keyframes wordPullUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .pull-word { display: inline-block; opacity: 0; transform: translateY(20px); }
     .pull-word:not(:last-child) { margin-right: 0.3em; }
     .words-visible .pull-word { animation: wordPullUp 0.55s ease forwards; }
-
     @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
     .fade-up-reveal { opacity: 0; transform: translateY(14px); filter: blur(8px); }
     .fade-up-reveal.is-visible { animation: fadeUp 0.7s ease forwards; }
-
     .custom-scrollbar::-webkit-scrollbar { width: 5px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
   </style>
@@ -235,16 +138,12 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
             <h2 class="text-2xl font-bold tracking-tight text-slate-900">Hero Ads & Video Commercials Manager</h2>
-            <p class="text-xs text-slate-500">Manage video ads and promo banners for your storefront hero section.</p>
+            <p class="text-xs text-slate-500">Edit, add, or delete individual video ads and promo slots.</p>
           </div>
           <div class="flex items-center gap-2">
             <button type="button" onclick="addNewOptionalAdSlot()" class="px-3.5 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-semibold text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer">
               <i data-lucide="plus" class="w-3.5 h-3.5 text-emerald-400"></i>
               <span>+ Add Video/Ad Slot</span>
-            </button>
-            <button type="button" onclick="clearAllAds()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              <span>Clear All Ads</span>
             </button>
           </div>
         </div>
@@ -307,6 +206,22 @@
       </div>
 
     </main>
+  </div>
+
+  <div id="editProductModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white p-6 rounded-3xl space-y-4 text-slate-900 shadow-2xl">
+      <h3 class="text-lg font-bold">Edit Product</h3>
+      <form onsubmit="handleSaveEditedProduct(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="editProdId" />
+        <div><label class="font-bold uppercase text-slate-500 block mb-1">Title</label><input type="text" id="editTitle" required class="w-full bg-slate-100 p-2.5 rounded-xl border" /></div>
+        <div><label class="font-bold uppercase text-slate-500 block mb-1">Offer Price</label><input type="number" id="editOfferPrice" required class="w-full bg-slate-100 p-2.5 rounded-xl border" /></div>
+        <div><label class="font-bold uppercase text-slate-500 block mb-1">Image URL</label><input type="text" id="editImage" required class="w-full bg-slate-100 p-2.5 rounded-xl border" /></div>
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeEditModal()" class="w-1/2 py-2.5 bg-slate-200 rounded-xl font-bold">Cancel</button>
+          <button type="submit" class="w-1/2 py-2.5 bg-black text-white rounded-xl font-bold">Save</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <main class="hero" id="vanguardLockWall">
@@ -423,7 +338,6 @@
       checkSecurityAuth();
     }
 
-    // FIREBASE & STATE
     const firebaseConfig = {
       apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
       authDomain: "lenkastores-website.firebaseapp.com",
@@ -434,15 +348,12 @@
       measurementId: "G-3JT9WKQ318"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     let liveProducts = [];
     let liveOrders = [];
     let liveFeedbacks = [];
-    let activeOrderFilter = 'all';
     let currentHeroAds = [];
 
     function initDashboardEngines() {
@@ -468,6 +379,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    // HERO ADS MANAGER
     function initHeroAdsManager() {
       const savedAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
       currentHeroAds = Array.isArray(savedAds) ? savedAds : [];
@@ -490,15 +402,10 @@
       if (currentHeroAds.length === 0) {
         container.innerHTML = `
           <div class="col-span-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center space-y-3">
-            <i data-lucide="video-off" class="w-10 h-10 text-slate-400 mx-auto"></i>
-            <div>
-              <h4 class="font-bold text-slate-800 text-sm">No Ads Currently Active</h4>
-              <p class="text-xs text-slate-500 mt-0.5">Click "+ Add Video/Ad Slot" to add ads.</p>
-            </div>
+            <h4 class="font-bold text-slate-800 text-sm">No Ads Currently Active</h4>
             <button type="button" onclick="addNewOptionalAdSlot()" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl cursor-pointer">+ Add First Ad Slot</button>
           </div>
         `;
-        if (window.lucide) lucide.createIcons();
         return;
       }
 
@@ -507,8 +414,8 @@
         card.className = "p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4 relative";
         card.innerHTML = `
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Slot #${idx + 1}</span>
-            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-slate-400 hover:text-red-600 transition-colors cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Ad Slot #${idx + 1}</span>
+            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-red-600 hover:bg-red-50 cursor-pointer" title="Delete Ad"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
           <div class="space-y-3">
             <div>
@@ -542,18 +449,8 @@
       renderHeroAdsForm();
     }
 
-    function clearAllAds() {
-      if (!confirm("Clear all ads?")) return;
-      currentHeroAds = [];
-      renderHeroAdsForm();
-    }
-
     async function handleSaveHeroAds(e) {
       e.preventDefault();
-      const saveBtn = document.getElementById('saveHeroAdsBtn');
-      saveBtn.disabled = true;
-      saveBtn.innerText = "SYNCING LIVE ADS...";
-
       const updatedAds = [];
       for (let i = 0; i < currentHeroAds.length; i++) {
         const url = document.getElementById(`heroAdUrl-${i}`)?.value.trim() || '';
@@ -561,23 +458,13 @@
         const title = document.getElementById(`heroAdTitle-${i}`)?.value.trim() || 'Hero Ad';
         if (url) updatedAds.push({ id: i, url, bg, title });
       }
-
       currentHeroAds = updatedAds;
-
-      try {
-        localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
-        await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
-        alert("Successfully synced custom ad(s)!");
-      } catch (err) {
-        console.warn(err);
-        alert("Saved locally and synced.");
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>SYNC ADS & VIDEOS TO STOREFRONT</span>`;
-        if (window.lucide) lucide.createIcons();
-      }
+      localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
+      await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
+      alert("Successfully synced ads!");
     }
 
+    // PRODUCTS CATALOG (EDIT & DELETE)
     function initProducts() {
       const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       if (saved.length > 0) { liveProducts = saved; renderProductsGrid(); }
@@ -595,12 +482,83 @@
       container.innerHTML = '';
       liveProducts.forEach(prod => {
         const card = document.createElement('div');
-        card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-2";
-        card.innerHTML = `<h4 class="font-bold text-slate-900 text-sm">${prod.title}</h4><p class="text-xs text-slate-500">₹${prod.offerPrice}</p>`;
+        card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col justify-between space-y-3";
+        card.innerHTML = `
+          <div>
+            <img src="${prod.image}" class="w-full h-32 object-cover rounded-xl mb-2" />
+            <h4 class="font-bold text-slate-900 text-sm">${prod.title}</h4>
+            <p class="text-xs text-slate-500">₹${prod.offerPrice}</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" onclick="openEditModal('${prod.id}')" class="w-1/2 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl cursor-pointer">Edit</button>
+            <button type="button" onclick="deleteProduct('${prod.id}')" class="w-1/2 py-2 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-xl cursor-pointer">Delete</button>
+          </div>
+        `;
         container.appendChild(card);
       });
+      if (window.lucide) lucide.createIcons();
     }
 
+    async function handlePublishProduct(e) {
+      e.preventDefault();
+      const title = document.getElementById('fieldTitle').value.trim();
+      const originalPrice = Number(document.getElementById('fieldOriginalPrice').value);
+      const offerPrice = Number(document.getElementById('fieldOfferPrice').value);
+      const image = document.getElementById('fieldImageUrls').value.trim();
+      const prodId = 'prod_' + Date.now();
+
+      const newProd = { title, originalPrice, offerPrice, image, images: [image] };
+      liveProducts.unshift({ id: prodId, ...newProd });
+      localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
+      renderProductsGrid();
+      await db.collection('products').doc(prodId).set(newProd);
+      alert("Product published!");
+      switchTab('inventory');
+    }
+
+    function openEditModal(id) {
+      const prod = liveProducts.find(p => String(p.id) === String(id));
+      if (!prod) return;
+      document.getElementById('editProdId').value = prod.id;
+      document.getElementById('editTitle').value = prod.title;
+      document.getElementById('editOfferPrice').value = prod.offerPrice;
+      document.getElementById('editImage').value = prod.image;
+      document.getElementById('editProductModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editProductModal').classList.add('hidden');
+    }
+
+    async function handleSaveEditedProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('editProdId').value;
+      const title = document.getElementById('editTitle').value.trim();
+      const offerPrice = Number(document.getElementById('editOfferPrice').value);
+      const image = document.getElementById('editImage').value.trim();
+
+      const idx = liveProducts.findIndex(p => String(p.id) === String(id));
+      if (idx !== -1) {
+        liveProducts[idx].title = title;
+        liveProducts[idx].offerPrice = offerPrice;
+        liveProducts[idx].image = image;
+        localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
+      }
+      renderProductsGrid();
+      await db.collection('products').doc(id).update({ title, offerPrice, image });
+      closeEditModal();
+      alert("Product updated!");
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm("Permanently delete this product?")) return;
+      liveProducts = liveProducts.filter(p => String(p.id) !== String(id));
+      localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
+      renderProductsGrid();
+      await db.collection('products').doc(id).delete();
+    }
+
+    // ORDERS HUB
     function initOrders() {
       const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       if (saved.length > 0) { liveOrders = saved; renderOrders(); }
@@ -615,7 +573,32 @@
     function renderOrders() {
       const container = document.getElementById('ordersContainer');
       if (!container) return;
-      container.innerHTML = `<p class="text-xs text-slate-500">${liveOrders.length} orders loaded.</p>`;
+      container.innerHTML = '';
+      if (liveOrders.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500">No orders placed yet.</p>`;
+        return;
+      }
+      liveOrders.forEach(ord => {
+        const id = ord.orderId || ord.id;
+        const card = document.createElement('div');
+        card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center justify-between text-xs";
+        card.innerHTML = `
+          <div>
+            <span class="font-mono font-bold">Order #${id}</span>
+            <p class="text-slate-500">${ord.customerName || 'Client'} • ₹${ord.totalAmount || 0} • Status: <strong class="text-slate-900">${ord.status || 'Confirmed'}</strong></p>
+          </div>
+          <button type="button" onclick="deleteOrder('${id}')" class="px-3 py-1.5 bg-red-50 text-red-600 font-bold rounded-xl cursor-pointer">Delete Order</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function deleteOrder(id) {
+      if (!confirm(`Delete order #${id}?`)) return;
+      liveOrders = liveOrders.filter(o => String(o.orderId || o.id) !== String(id));
+      localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
+      renderOrders();
+      await db.collection('orders').doc(id).delete();
     }
 
     function initFeedbacks() {
@@ -636,53 +619,17 @@
     (function () {
       const revealImg = document.getElementById('reveal-img');
       const heroMain = document.querySelector('.hero');
-
       function updateSpotlight(x, y) {
         if (!revealImg || !heroMain) return;
         const rect = heroMain.getBoundingClientRect();
-        const relX = x - rect.left;
-        const relY = y - rect.top;
-        const w = window.innerWidth;
-        const radius = w < 480 ? 120 : (w < 720 ? 160 : 260);
-
-        const maskVal = `radial-gradient(circle ${radius}px at ${relX}px ${relY}px, #fff 0%, #fff 40%, rgba(255,255,255,0.75) 60%, rgba(255,255,255,0.4) 75%, rgba(255,255,255,0.12) 88%, transparent 100%)`;
+        const maskVal = `radial-gradient(circle 220px at ${x - rect.left}px ${y - rect.top}px, #fff 0%, #fff 40%, transparent 100%)`;
         revealImg.style.webkitMaskImage = maskVal;
         revealImg.style.maskImage = maskVal;
       }
-
       window.addEventListener('mousemove', (e) => updateSpotlight(e.clientX, e.clientY));
-      window.addEventListener('touchmove', (e) => {
-        if (e.touches && e.touches[0]) updateSpotlight(e.touches[0].clientX, e.touches[0].clientY);
-      }, { passive: true });
-
-      let globalWordIndex = 0;
-      document.querySelectorAll('.words-pull-up').forEach(el => {
-        if (el.dataset.split) return;
-        el.dataset.split = 'true';
-        const text = el.textContent.trim();
-        el.textContent = '';
-        text.split(/\s+/).forEach(word => {
-          if (!word) return;
-          const span = document.createElement('span');
-          span.className = 'pull-word';
-          span.textContent = word;
-          span.style.animationDelay = `${globalWordIndex * 0.1}s`;
-          el.appendChild(span);
-          globalWordIndex++;
-        });
-      });
-
-      document.querySelectorAll('.words-pull-up').forEach(el => el.classList.add('words-visible'));
-      document.querySelectorAll('.fade-up-reveal').forEach(el => {
-        const delay = el.getAttribute('data-delay') || '0';
-        el.style.animationDelay = `${delay}s`;
-        el.classList.add('is-visible');
-      });
     })();
 
-    window.addEventListener('DOMContentLoaded', () => {
-      checkSecurityAuth();
-    });
+    window.addEventListener('DOMContentLoaded', () => { checkSecurityAuth(); });
   </script>
 </body>
 </html>
