@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Only run this script if we are actually on profile.html
+    const displayUsername = document.getElementById('display-username');
+    if (!displayUsername) return; 
+
     const profileDisplaySection = document.getElementById('profile-display-section');
     const profileEditSection = document.getElementById('profile-edit-section');
     const editProfileBtn = document.getElementById('edit-profile-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
     const editProfileForm = document.getElementById('edit-profile-form');
     
-    const displayUsername = document.getElementById('display-username');
     const displayAddress = document.getElementById('display-address');
     const inputUsername = document.getElementById('input-username');
     const inputAddress = document.getElementById('input-address');
