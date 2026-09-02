@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lenka Studios // Powered By lenka ventures </title>
+  <title>Cyber Ronin // Neural Edges</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://db.onlinewebfonts.com/c/b1314443e183d1cdd77049077c46facc?family=Orbitron-Medium" rel="stylesheet" type="text/css" />
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -100,7 +100,11 @@
         </div>
 
         <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
-          <button type="button" onclick="switchTab('hero-ads')" id="tabBtn-hero-ads" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+          <button type="button" onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-black text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0">
+            <i data-lucide="package-check" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Orders Hub</span>
+          </button>
+          <button type="button" onclick="switchTab('hero-ads')" id="tabBtn-hero-ads" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="play-square" class="w-3.5 h-3.5 text-rose-500"></i>
             <span>Hero Ads Manager</span>
           </button>
@@ -112,17 +116,9 @@
             <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
             <span>Add Product</span>
           </button>
-          <button type="button" onclick="switchTab('orders')" id="tabBtn-orders" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-            <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
-            <span>Orders Hub</span>
-          </button>
           <button type="button" onclick="switchTab('users')" id="tabBtn-users" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
             <i data-lucide="users" class="w-3.5 h-3.5"></i>
             <span>Clients</span>
-          </button>
-          <button type="button" onclick="switchTab('feedback')" id="tabBtn-feedback" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0">
-            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-            <span>Inquiries</span>
           </button>
           <button type="button" onclick="lockStudioTerminal()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i>
@@ -134,11 +130,28 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
       
-      <div id="section-hero-ads" class="space-y-6">
+      <div id="section-orders" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Consignment Orders Hub & Dispatch Portal</h2>
+            <p class="text-xs text-slate-500">Confirm orders, update shipping and delivery dates, and sync status live to Lenka Stores customers.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="initOrders()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+              <span>Refresh Orders</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="ordersContainer" class="space-y-4"></div>
+      </div>
+
+      <div id="section-hero-ads" class="hidden space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 gap-3">
           <div>
             <h2 class="text-2xl font-bold tracking-tight text-slate-900">Hero Ads & Video Commercials Manager</h2>
-            <p class="text-xs text-slate-500">Edit, add, or delete individual video ads and promo slots.</p>
+            <p class="text-xs text-slate-500">Edit, add, or delete video ads and promo slots.</p>
           </div>
           <div class="flex items-center gap-2">
             <button type="button" onclick="addNewOptionalAdSlot()" class="px-3.5 py-2 rounded-xl bg-black hover:bg-slate-800 text-white font-semibold text-xs transition-all flex items-center gap-1.5 shadow-sm cursor-pointer">
@@ -190,19 +203,9 @@
         </form>
       </div>
 
-      <div id="section-orders" class="hidden space-y-6">
-        <h2 class="text-2xl font-bold text-slate-900">Orders Hub</h2>
-        <div id="ordersContainer" class="space-y-4"></div>
-      </div>
-
       <div id="section-users" class="hidden space-y-6">
         <h2 class="text-2xl font-bold text-slate-900">Clients</h2>
         <div id="clientsContainer" class="space-y-3"></div>
-      </div>
-
-      <div id="section-feedback" class="hidden space-y-6">
-        <h2 class="text-2xl font-bold text-slate-900">Inquiries</h2>
-        <div id="feedbacksContainer" class="space-y-4"></div>
       </div>
 
     </main>
@@ -353,18 +356,16 @@
 
     let liveProducts = [];
     let liveOrders = [];
-    let liveFeedbacks = [];
     let currentHeroAds = [];
 
     function initDashboardEngines() {
+      initOrders();
       initHeroAdsManager();
       initProducts();
-      initOrders();
-      initFeedbacks();
     }
 
     function switchTab(tabId) {
-      const tabs = ['hero-ads', 'inventory', 'add-product', 'orders', 'users', 'feedback'];
+      const tabs = ['orders', 'hero-ads', 'inventory', 'add-product', 'users'];
       tabs.forEach(t => {
         const sec = document.getElementById(`section-${t}`);
         const btn = document.getElementById(`tabBtn-${t}`);
@@ -379,7 +380,169 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // HERO ADS MANAGER
+    // ==================== LIVE ORDERS MANAGEMENT ENGINE ====================
+    function initOrders() {
+      const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      if (saved.length > 0) { liveOrders = saved; renderOrders(); }
+
+      db.collection('orders').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+        liveOrders = [];
+        snapshot.forEach(doc => liveOrders.push({ id: doc.id, ...doc.data() }));
+        localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
+        renderOrders();
+        renderClientsDirectory();
+      }, err => {
+        console.warn("Firestore listener note:", err);
+        renderOrders();
+      });
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (liveOrders.length === 0) {
+        container.innerHTML = `
+          <div class="p-10 rounded-2xl bg-white border border-slate-200 text-center space-y-2">
+            <i data-lucide="package-open" class="w-10 h-10 text-slate-400 mx-auto"></i>
+            <p class="text-xs text-slate-500 font-medium">No customer orders recorded yet.</p>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      liveOrders.forEach(ord => {
+        const orderId = ord.orderId || ord.id;
+        const currentStatus = ord.status || 'Confirmed';
+        const card = document.createElement('div');
+        card.className = "p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4";
+        card.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
+            <div>
+              <span class="text-xs font-mono font-bold text-slate-900">CONSIGNMENT #${orderId}</span>
+              <p class="text-xs text-slate-600 mt-0.5 font-medium">Client: <strong class="text-slate-900">${ord.customerName || 'Customer'}</strong> (${ord.customerPhone || 'N/A'})</p>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-slate-500">Live Stage:</span>
+              <select id="statusSelect-${orderId}" class="bg-slate-100 border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-800 focus:outline-none">
+                <option value="Confirmed" ${currentStatus === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="Dispatched" ${currentStatus === 'Dispatched' ? 'selected' : ''}>In Shipping (Dispatched)</option>
+                <option value="OutForDelivery" ${currentStatus === 'OutForDelivery' ? 'selected' : ''}>Out For Delivery</option>
+                <option value="Delivered" ${currentStatus === 'Delivered' ? 'selected' : ''}>Delivered (Completed)</option>
+                <option value="Cancelled" ${currentStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+
+              <button type="button" onclick="saveOrderDeliveryDetails('${orderId}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer flex items-center gap-1">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                <span>Save & Sync</span>
+              </button>
+
+              <button type="button" onclick="deleteOrder('${orderId}')" class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg cursor-pointer transition-all" title="Delete Order">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">ITEMS ORDERED</span>
+              <p class="text-slate-800 font-medium">${ord.itemsSummary || 'Item'}</p>
+              <p class="text-slate-500 mt-1">Payment: <strong class="text-slate-900">${ord.paymentMethod || 'UPI'}</strong> (₹${ord.totalAmount || 0})</p>
+            </div>
+
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">SHIPPING DESTINATION</span>
+              <p class="text-slate-700 leading-relaxed">${ord.customerAddress || 'Address on file'}</p>
+            </div>
+
+            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-0.5">Shipping Date Text</label>
+                <input type="text" id="shipDate-${orderId}" value="${ord.shippingDate || 'Processing in warehouse'}" placeholder="e.g. Dispatched on 03 Sep" class="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs text-slate-800 focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-[9px] font-bold uppercase tracking-wider text-slate-500 block mb-0.5">Delivery Status / Date</label>
+                <input type="text" id="delivDate-${orderId}" value="${ord.deliveryDate || 'Expected in 3-5 days'}" placeholder="e.g. Expected by 06 Sep" class="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs text-slate-800 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function saveOrderDeliveryDetails(orderId) {
+      const status = document.getElementById(`statusSelect-${orderId}`).value;
+      const shippingDate = document.getElementById(`shipDate-${orderId}`).value.trim();
+      const deliveryDate = document.getElementById(`delivDate-${orderId}`).value.trim();
+
+      const updatePayload = {
+        status: status,
+        shippingDate: shippingDate,
+        deliveryDate: deliveryDate,
+        updatedAt: new Date().toISOString()
+      };
+
+      // 1. Update local cache
+      const idx = liveOrders.findIndex(o => (o.orderId || o.id) === orderId);
+      if (idx !== -1) {
+        liveOrders[idx] = Object.assign(liveOrders[idx], updatePayload);
+        localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
+      }
+
+      // 2. Sync directly to Firestore
+      try {
+        await db.collection('orders').doc(orderId).update(updatePayload);
+        alert(`Order #${orderId} status & delivery updates synced live to customer!`);
+      } catch (err) {
+        console.warn("Firestore update notice:", err);
+        alert(`Order #${orderId} updated locally and saved!`);
+      }
+
+      renderOrders();
+    }
+
+    async function deleteOrder(orderId) {
+      if (!confirm(`Are you sure you want to permanently delete Order #${orderId}?`)) return;
+      liveOrders = liveOrders.filter(o => (o.orderId || o.id) !== orderId);
+      localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
+      renderOrders();
+      try {
+        await db.collection('orders').doc(orderId).delete();
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    function renderClientsDirectory() {
+      const container = document.getElementById('clientsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      const uniqueClients = {};
+      liveOrders.forEach(o => {
+        if (o.customerPhone && !uniqueClients[o.customerPhone]) {
+          uniqueClients[o.customerPhone] = { name: o.customerName || 'Client', phone: o.customerPhone, address: o.customerAddress || 'N/A' };
+        }
+      });
+      const list = Object.values(uniqueClients);
+      if (list.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 py-8 text-center">No registered client records yet.</p>`;
+        return;
+      }
+      list.forEach(c => {
+        const item = document.createElement('div');
+        item.className = "p-4 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between";
+        item.innerHTML = `<div><h4 class="text-xs font-bold text-slate-900">${c.name}</h4><p class="text-xs text-slate-500">${c.phone}</p><p class="text-[11px] text-slate-400 truncate max-w-sm mt-0.5">${c.address}</p></div>`;
+        container.appendChild(item);
+      });
+    }
+
+    // ==================== HERO ADS ENGINE ====================
     function initHeroAdsManager() {
       const savedAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
       currentHeroAds = Array.isArray(savedAds) ? savedAds : [];
@@ -415,20 +578,20 @@
         card.innerHTML = `
           <div class="flex items-center justify-between pb-2 border-b border-slate-100">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Ad Slot #${idx + 1}</span>
-            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-red-600 hover:bg-red-50 cursor-pointer" title="Delete Ad"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-red-600 hover:bg-red-50 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
           <div class="space-y-3">
             <div>
-              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">MEDIA URL</label>
+              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image URL)</label>
               <input type="text" id="heroAdUrl-${idx}" value="${ad.url || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900" />
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">BG COLOR</label>
+                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">BG COLOR (HEX)</label>
                 <input type="text" id="heroAdBg-${idx}" value="${ad.bg || '#F4845F'}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
               </div>
               <div>
-                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">TITLE</label>
+                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">CAMPAIGN TITLE</label>
                 <input type="text" id="heroAdTitle-${idx}" value="${ad.title || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
               </div>
             </div>
@@ -461,10 +624,10 @@
       currentHeroAds = updatedAds;
       localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
       await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
-      alert("Successfully synced ads!");
+      alert("Successfully synced ads to storefront!");
     }
 
-    // PRODUCTS CATALOG (EDIT & DELETE)
+    // ==================== PRODUCTS CATALOG ENGINE ====================
     function initProducts() {
       const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
       if (saved.length > 0) { liveProducts = saved; renderProductsGrid(); }
@@ -556,63 +719,6 @@
       localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
       renderProductsGrid();
       await db.collection('products').doc(id).delete();
-    }
-
-    // ORDERS HUB
-    function initOrders() {
-      const saved = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      if (saved.length > 0) { liveOrders = saved; renderOrders(); }
-      db.collection('orders').get().then(snapshot => {
-        liveOrders = [];
-        snapshot.forEach(doc => liveOrders.push({ id: doc.id, ...doc.data() }));
-        localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
-        renderOrders();
-      }).catch(err => console.warn(err));
-    }
-
-    function renderOrders() {
-      const container = document.getElementById('ordersContainer');
-      if (!container) return;
-      container.innerHTML = '';
-      if (liveOrders.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500">No orders placed yet.</p>`;
-        return;
-      }
-      liveOrders.forEach(ord => {
-        const id = ord.orderId || ord.id;
-        const card = document.createElement('div');
-        card.className = "bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center justify-between text-xs";
-        card.innerHTML = `
-          <div>
-            <span class="font-mono font-bold">Order #${id}</span>
-            <p class="text-slate-500">${ord.customerName || 'Client'} • ₹${ord.totalAmount || 0} • Status: <strong class="text-slate-900">${ord.status || 'Confirmed'}</strong></p>
-          </div>
-          <button type="button" onclick="deleteOrder('${id}')" class="px-3 py-1.5 bg-red-50 text-red-600 font-bold rounded-xl cursor-pointer">Delete Order</button>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    async function deleteOrder(id) {
-      if (!confirm(`Delete order #${id}?`)) return;
-      liveOrders = liveOrders.filter(o => String(o.orderId || o.id) !== String(id));
-      localStorage.setItem('lenka_orders', JSON.stringify(liveOrders));
-      renderOrders();
-      await db.collection('orders').doc(id).delete();
-    }
-
-    function initFeedbacks() {
-      db.collection('feedbacks').get().then(snapshot => {
-        liveFeedbacks = [];
-        snapshot.forEach(doc => liveFeedbacks.push({ id: doc.id, ...doc.data() }));
-        renderFeedbacks();
-      }).catch(err => console.warn(err));
-    }
-
-    function renderFeedbacks() {
-      const container = document.getElementById('feedbacksContainer');
-      if (!container) return;
-      container.innerHTML = `<p class="text-xs text-slate-500">${liveFeedbacks.length} inquiries loaded.</p>`;
     }
 
     // Spotlight Engine
