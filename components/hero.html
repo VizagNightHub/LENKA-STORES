@@ -1,14 +1,18 @@
 <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 94vh;">
   <div class="relative w-full h-[94vh] overflow-hidden flex flex-col justify-between">
+    
+    <!-- NOISE OVERLAY -->
     <div class="absolute inset-0 pointer-events-none" style="z-index: 5; opacity: 0.35; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
 
+    <!-- TOP LEFT BADGE -->
     <div class="absolute top-4 left-4 sm:top-6 sm:left-8 text-[11px] sm:text-xs font-semibold uppercase text-white/90" style="z-index: 15; letter-spacing: 0.18em;">
       LENKA STORES
     </div>
 
-    <!-- 3D "LENKA" HEADLINE -->
+    <!-- 3D "LENKA" HEADLINE (TOP 10% - STAYS CLEAR) -->
     <div id="headlineTiltContainer" class="perspective-headline absolute inset-x-0 flex justify-center items-center pointer-events-auto" style="z-index: 8; top: 10%;">
       <div id="headlineInnerGrid" class="flex items-center justify-center gap-1.5 sm:gap-3 px-4 w-full max-w-5xl cursor-crosshair">
+        
         <div id="letterBox-0" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
           <svg class="w-full h-full" viewBox="0 0 100 135">
             <defs><clipPath id="clip-L"><text x="50" y="68" class="letter-svg-text" font-size="140">L</text></clipPath></defs>
@@ -16,6 +20,7 @@
             <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
           </svg>
         </div>
+
         <div id="letterBox-1" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
           <svg class="w-full h-full" viewBox="0 0 100 135">
             <defs><clipPath id="clip-E"><text x="50" y="68" class="letter-svg-text" font-size="140">E</text></clipPath></defs>
@@ -23,6 +28,7 @@
             <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
           </svg>
         </div>
+
         <div id="letterBox-2" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
           <svg class="w-full h-full" viewBox="0 0 100 135">
             <defs><clipPath id="clip-N"><text x="50" y="68" class="letter-svg-text" font-size="140">N</text></clipPath></defs>
@@ -30,6 +36,7 @@
             <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
           </svg>
         </div>
+
         <div id="letterBox-3" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
           <svg class="w-full h-full" viewBox="0 0 100 135">
             <defs><clipPath id="clip-K"><text x="50" y="68" class="letter-svg-text" font-size="140">K</text></clipPath></defs>
@@ -37,6 +44,7 @@
             <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
           </svg>
         </div>
+
         <div id="letterBox-4" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
           <svg class="w-full h-full" viewBox="0 0 100 135">
             <defs><clipPath id="clip-A"><text x="50" y="68" class="letter-svg-text" font-size="140">A</text></clipPath></defs>
@@ -44,32 +52,38 @@
             <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
           </svg>
         </div>
+
       </div>
     </div>
 
-    <!-- GET STARTED BUTTON -->
+    <!-- GET STARTED BUTTON (TOP 26%) -->
     <div class="absolute inset-x-0 flex justify-center" style="top: 26%; z-index: 20;">
       <button id="heroGetStartedBtn" type="button" onclick="scrollToLiveCatalog()" class="font-anton uppercase rounded-full px-7 py-3 sm:px-11 sm:py-3.5 bg-white cursor-pointer active:scale-95 shadow-2xl hover:scale-105 transition-all" style="color: #F4845F; letter-spacing: 0.08em; font-size: clamp(12px, 1.8vw, 17px);">
         GET STARTED
       </button>
     </div>
 
-    <!-- CENTERED AD STAGE -->
-    <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 10;"></div>
+    <!-- SWIPABLE HERO AD STAGE (EXACTLY IN RED BOX ZONE UNDER BUTTON) -->
+    <div class="absolute inset-x-0 pointer-events-auto flex items-center justify-center cursor-grab active:cursor-grabbing" style="top: 35%; bottom: 12%; z-index: 12;">
+      <div id="heroCarouselStage" class="relative w-full h-full max-w-5xl mx-auto flex items-center justify-center"></div>
+    </div>
 
+    <!-- BOTTOM CONTROLS & ARROWS -->
     <div id="heroNavControls" class="absolute bottom-5 left-4 sm:bottom-8 sm:left-12 text-white" style="z-index: 25; max-width: 280px;">
       <p class="font-bold uppercase mb-1 text-sm sm:text-base">LENKA STORES</p>
       <p class="hidden sm:block text-[11px] text-white/80 mb-2.5 leading-relaxed">Discover fashion and electronics curated for modern living.</p>
       <div id="navArrowButtons" class="flex items-center gap-2.5 hidden">
-        <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-        <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+        <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+        <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
       </div>
     </div>
 
+    <!-- EXPLORE BUTTON -->
     <div class="absolute bottom-5 right-4 sm:bottom-8 sm:right-12 text-white" style="z-index: 25;">
       <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white cursor-pointer hover:opacity-100 transition-opacity" style="font-size: clamp(20px, 3.5vw, 44px); opacity: 0.95;">
         <span>EXPLORE</span><i data-lucide="arrow-right" class="w-5 h-5 sm:w-8 sm:h-8"></i>
       </button>
     </div>
+
   </div>
 </section>
