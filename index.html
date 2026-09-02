@@ -706,6 +706,12 @@ Please confirm dispatch and receipt of payment!`;
     let activeHeroIndex = 0;
     let isHeroAnimating = false;
 
+<!-- HERO CAROUSEL ENGINE (CENTERED UNDER GET STARTED BUTTON) -->
+  <script>
+    let heroMediaSlots = [];
+    let activeHeroIndex = 0;
+    let isHeroAnimating = false;
+
     function initHeroMediaEngine() {
       const saved = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
       heroMediaSlots = Array.isArray(saved) ? saved : [];
@@ -743,15 +749,15 @@ Please confirm dispatch and receipt of payment!`;
         const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('cloudfront.net');
         const card = document.createElement('div');
         card.id = `carouselItem-${idx}`;
-        // Clean luxury border and rounded frame centered under button
-        card.className = "absolute rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.45)] border-2 border-white/20 bg-black";
-        card.style.transition = "all 650ms cubic-bezier(0.4,0,0.2,1)";
-        card.style.willChange = "transform, filter, opacity, left, bottom, height, width";
+        // Centered luxury card frame with rounded corners & clean border
+        card.className = "absolute rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-2 border-white/20 bg-black";
+        card.style.transition = "all 600ms cubic-bezier(0.4, 0, 0.2, 1)";
+        card.style.willChange = "transform, filter, opacity, left, top, width, height";
 
         if (isVideo) {
           card.innerHTML = `<video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="${slot.url}" type="video/mp4" /></video>`;
         } else {
-          card.innerHTML = `<img src="${slot.url}" alt="${slot.title || 'Lenka'}" class="w-full h-full object-cover" />`;
+          card.innerHTML = `<img src="${slot.url}" alt="${slot.title || 'Lenka'}" draggable="false" class="w-full h-full object-cover" />`;
         }
         stage.appendChild(card);
       });
@@ -775,54 +781,64 @@ Please confirm dispatch and receipt of payment!`;
         const itemEl = document.getElementById(`carouselItem-${idx}`);
         if (!itemEl) return;
 
+        // Exactly 1 Ad Slot -> Centered strictly below GET STARTED
         if (total === 1) {
-          // Centered directly below the GET STARTED button with clean borders
-          itemEl.style.transform = `translateX(-50%) scale(1)`;
+          itemEl.style.left = '50%';
+          itemEl.style.top = isMobile ? '36%' : '35%';
+          itemEl.style.transform = 'translateX(-50%) scale(1)';
+          itemEl.style.width = isMobile ? '84%' : '360px';
+          itemEl.style.height = isMobile ? '52%' : '56%';
           itemEl.style.filter = 'blur(0px)';
           itemEl.style.opacity = '1';
           itemEl.style.zIndex = '30';
-          itemEl.style.left = '50%';
-          itemEl.style.top = isMobile ? '35%' : '34%';
-          itemEl.style.height = isMobile ? '52%' : '56%';
-          itemEl.style.width = isMobile ? '82%' : '380px';
-        } else {
+        } 
+        // 2 or More Ad Slots (Carousel)
+        else {
           const relativePos = (idx - activeHeroIndex + total) % total;
+
+          // ACTIVE CENTER CARD (Below GET STARTED, never covering LENKA)
           if (relativePos === 0) {
-            itemEl.style.transform = `translateX(-50%) scale(1)`;
+            itemEl.style.left = '50%';
+            itemEl.style.top = isMobile ? '36%' : '35%';
+            itemEl.style.transform = 'translateX(-50%) scale(1)';
+            itemEl.style.width = isMobile ? '82%' : '360px';
+            itemEl.style.height = isMobile ? '52%' : '56%';
             itemEl.style.filter = 'blur(0px)';
             itemEl.style.opacity = '1';
             itemEl.style.zIndex = '30';
-            itemEl.style.left = '50%';
-            itemEl.style.top = isMobile ? '35%' : '34%';
-            itemEl.style.height = isMobile ? '52%' : '56%';
-            itemEl.style.width = isMobile ? '82%' : '380px';
-          } else if (relativePos === 1) {
+          } 
+          // RIGHT SIDE CARD
+          else if (relativePos === 1) {
+            itemEl.style.left = isMobile ? '88%' : '76%';
+            itemEl.style.top = isMobile ? '39%' : '38%';
             itemEl.style.transform = 'translateX(-50%) scale(0.85)';
-            itemEl.style.filter = 'blur(2px)';
-            itemEl.style.opacity = '0.75';
-            itemEl.style.zIndex = '15';
-            itemEl.style.left = isMobile ? '85%' : '76%';
-            itemEl.style.top = isMobile ? '38%' : '37%';
+            itemEl.style.width = isMobile ? '65%' : '300px';
             itemEl.style.height = isMobile ? '44%' : '48%';
-            itemEl.style.width = isMobile ? '68%' : '310px';
-          } else if (relativePos === total - 1) {
+            itemEl.style.filter = 'blur(2px)';
+            itemEl.style.opacity = '0.7';
+            itemEl.style.zIndex = '15';
+          } 
+          // LEFT SIDE CARD
+          else if (relativePos === total - 1) {
+            itemEl.style.left = isMobile ? '12%' : '24%';
+            itemEl.style.top = isMobile ? '39%' : '38%';
             itemEl.style.transform = 'translateX(-50%) scale(0.85)';
-            itemEl.style.filter = 'blur(2px)';
-            itemEl.style.opacity = '0.75';
-            itemEl.style.zIndex = '15';
-            itemEl.style.left = isMobile ? '15%' : '24%';
-            itemEl.style.top = isMobile ? '38%' : '37%';
+            itemEl.style.width = isMobile ? '65%' : '300px';
             itemEl.style.height = isMobile ? '44%' : '48%';
-            itemEl.style.width = isMobile ? '68%' : '310px';
-          } else {
-            itemEl.style.transform = 'translateX(-50%) scale(0.7)';
-            itemEl.style.filter = 'blur(4px)';
-            itemEl.style.opacity = '0.35';
-            itemEl.style.zIndex = '5';
+            itemEl.style.filter = 'blur(2px)';
+            itemEl.style.opacity = '0.7';
+            itemEl.style.zIndex = '15';
+          } 
+          // BACKGROUND CARDS
+          else {
             itemEl.style.left = '50%';
             itemEl.style.top = '40%';
-            itemEl.style.height = '38%';
+            itemEl.style.transform = 'translateX(-50%) scale(0.7)';
             itemEl.style.width = '240px';
+            itemEl.style.height = '38%';
+            itemEl.style.filter = 'blur(4px)';
+            itemEl.style.opacity = '0.2';
+            itemEl.style.zIndex = '5';
           }
         }
       });
@@ -837,7 +853,7 @@ Please confirm dispatch and receipt of payment!`;
       else activeHeroIndex = (activeHeroIndex - 1 + total) % total;
       
       renderHeroStage();
-      setTimeout(() => { isHeroAnimating = false; }, 650);
+      setTimeout(() => { isHeroAnimating = false; }, 600);
     };
 
     window.scrollToLiveCatalog = function() {
