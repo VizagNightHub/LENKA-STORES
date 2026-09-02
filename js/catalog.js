@@ -1,7 +1,7 @@
 // LIVE CATALOG & PRODUCT SYNCHRONIZATION ENGINE
 
 let liveCatalog = [];
-let currentCategoryFilter = 'all';
+window.liveCatalog = liveCatalog; // ensures cart.js can access it
 
 function initStorefrontCatalog() {
   // 1. Load local backup cache immediately
