@@ -102,18 +102,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (authToggleBtn) {
         authToggleBtn.addEventListener('click', () => {
-            if (savedData.isLoggedIn) {
-                if (confirm("Log out of your account?")) {
-                    savedData.isLoggedIn = false;
-                    localStorage.setItem('lenka_user_profile', JSON.stringify(savedData));
-                    localStorage.removeItem('lenka_logged_in_phone');
-                    window.location.href = "index.html";
-                }
-            } else {
+            if (confirm("Are you sure you want to log out of Lenka Stores?")) {
+                // Completely clear user session and profile data
+                localStorage.removeItem('lenka_user_profile');
+                localStorage.removeItem('lenka_logged_in_phone');
+                localStorage.removeItem('lenka_cart_v2');
+                
+                // Force redirect back to the storefront home page
                 window.location.href = "index.html";
             }
         });
     }
+
+    // Auto-render consignments on page load if container exists
+    renderActiveConsignmentsModal();
 });
 
 // GLOBAL HELPERS
@@ -123,13 +125,12 @@ function checkAndOpenProfile() {
 
 function clientLogOutSession() {
     if (!confirm("Are you sure you want to log out?")) return;
-    localStorage.removeItem('lenka_logged_in_phone');
     localStorage.removeItem('lenka_user_profile');
+    localStorage.removeItem('lenka_logged_in_phone');
+    localStorage.removeItem('lenka_cart_v2');
     window.location.href = "index.html";
 }
 
-window.checkAndOpenProfile = checkAndOpenProfile;
-window.clientLogOutSession = clientLogOutSession;
 // RENDER ACTIVE CONSIGNMENTS WITH "CANCEL ORDER" DELETION BUTTON
 function renderActiveConsignmentsModal() {
   const container = document.getElementById('activeConsignmentsList') || document.getElementById('userOrdersContainer');
@@ -150,7 +151,7 @@ function renderActiveConsignmentsModal() {
   orders.forEach(ord => {
     const orderId = ord.orderId || ord.id;
     const card = document.createElement('div');
-    card.className = "p-4 rounded-2xl bg-[#11131A] border border-white/10 space-y-3 shadow-lg mb-3";
+    card.className = "p-4 rounded-2xl bg-[#11131A] border border-white/10 space-y-3 shadow-lg mb-3 text-white";
     card.innerHTML = `
       <div class="flex items-center justify-between border-b border-white/5 pb-2">
         <span class="text-xs font-mono font-bold text-[#C5A880]">#${orderId}</span>
@@ -197,5 +198,7 @@ async function cancelAndDeleteOrder(orderId) {
   renderActiveConsignmentsModal();
 }
 
+window.checkAndOpenProfile = checkAndOpenProfile;
+window.clientLogOutSession = clientLogOutSession;
 window.cancelAndDeleteOrder = cancelAndDeleteOrder;
 window.renderActiveConsignmentsModal = renderActiveConsignmentsModal;
