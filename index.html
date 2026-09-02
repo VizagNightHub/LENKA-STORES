@@ -9,17 +9,14 @@
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-family='serif' font-size='52' font-weight='bold' fill='%23C5A880' text-anchor='middle'%3ELS%3C/text%3E%3C/svg%3E" />
   
-  <!-- CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- LUXURY & DISPLAY FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- FIREBASE SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -37,10 +34,8 @@
 
 <body class="bg-[#07080A] text-slate-200 font-sans antialiased selection:bg-[#C5A880] selection:text-black min-h-screen flex flex-col">
 
-  <!-- ==================== 1. TOP NAVBAR (PROFILE ICON IN TOP-LEFT) ==================== -->
   <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3 flex items-center justify-between">
     
-    <!-- TOP-LEFT: USER PROFILE AVATAR BUTTON (Navigates to profile.html) -->
     <div class="flex items-center gap-3">
       <a href="profile.html" class="p-1 rounded-full bg-gradient-to-tr from-[#f4845f] to-[#e8c997] p-0.5 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer" title="Go to Profile">
         <img id="navProfileAvatar" src="default-avatar.png" alt="Profile" class="w-8 h-8 rounded-full object-cover bg-black" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'" />
@@ -52,7 +47,6 @@
       </div>
     </div>
 
-    <!-- TOP-RIGHT: BAG -->
     <div class="flex items-center gap-3">
       <button type="button" onclick="openCartDrawer()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer">
         <i data-lucide="shopping-bag" class="w-4 h-4"></i>
@@ -62,7 +56,6 @@
     </div>
   </header>
 
-  <!-- ==================== 2. HERO SECTION ==================== -->
   <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 94vh;">
     <div class="relative w-full h-[94vh] overflow-hidden flex flex-col justify-between">
       <div class="absolute inset-0 pointer-events-none" style="z-index: 5; opacity: 0.35; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
@@ -71,7 +64,6 @@
         LENKA STORES
       </div>
 
-      <!-- 3D "LENKA" OBJECT-IN-LETTER HEADLINE -->
       <div id="headlineTiltContainer" class="perspective-headline absolute inset-x-0 flex justify-center items-center pointer-events-auto" style="z-index: 8; top: 10%;">
         <div id="headlineInnerGrid" class="flex items-center justify-center gap-1.5 sm:gap-3 px-4 w-full max-w-5xl cursor-crosshair">
           <div id="letterBox-0" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
@@ -124,20 +116,19 @@
         <p class="font-bold uppercase mb-1 text-sm sm:text-base">LENKA STORES</p>
         <p class="hidden sm:block text-[11px] text-white/80 mb-2.5 leading-relaxed">Discover fashion and electronics curated for modern living.</p>
         <div id="navArrowButtons" class="flex items-center gap-2.5 hidden">
-          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
         </div>
       </div>
 
       <div class="absolute bottom-5 right-4 sm:bottom-8 sm:right-12 text-white" style="z-index: 25;">
-        <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white cursor-pointer hover:opacity-100" style="font-size: clamp(20px, 3.5vw, 44px); opacity: 0.95;">
+        <button type="button" onclick="scrollToLiveCatalog()" class="flex items-center gap-2 font-anton uppercase text-white cursor-pointer hover:opacity-100 transition-opacity" style="font-size: clamp(20px, 3.5vw, 44px); opacity: 0.95;">
           <span>EXPLORE</span><i data-lucide="arrow-right" class="w-5 h-5 sm:w-8 sm:h-8"></i>
         </button>
       </div>
     </div>
   </section>
 
-  <!-- ==================== 3. CATALOG GRID ==================== -->
   <main id="mainStoreCatalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full space-y-8">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
@@ -145,17 +136,20 @@
         <h2 id="currentCategoryHeading" class="font-serif text-3xl sm:text-4xl text-white">Live Catalog</h2>
       </div>
       <div class="flex flex-wrap gap-2">
-        <button type="button" onclick="filterCategory('all')" class="px-4 py-2 rounded-xl bg-white text-black font-semibold text-xs cursor-pointer">All Items</button>
-        <button type="button" onclick="filterCategory('Audio & Wireless Earbuds')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer">Audio</button>
-        <button type="button" onclick="filterCategory('Battery Banks & Power Gear')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer">Power Gear</button>
-        <button type="button" onclick="filterCategory('Men\'s Apparel & Fashion')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer">Fashion</button>
+        <button type="button" onclick="filterCategory('all')" class="px-4 py-2 rounded-xl bg-white text-black font-semibold text-xs cursor-pointer shadow-sm">All Items</button>
+        <button type="button" onclick="filterCategory('Audio & Wireless Earbuds')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer hover:text-white transition-colors">Audio</button>
+        <button type="button" onclick="filterCategory('Battery Banks & Power Gear')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer hover:text-white transition-colors">Power Gear</button>
+        <button type="button" onclick="filterCategory('Men\'s Apparel & Fashion')" class="px-4 py-2 rounded-xl bg-[#111216] text-slate-300 border border-white/10 text-xs cursor-pointer hover:text-white transition-colors">Fashion</button>
       </div>
     </div>
 
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="emptyCatalogState" class="hidden text-center py-16 space-y-2">
+      <i data-lucide="package-open" class="w-12 h-12 text-slate-500 mx-auto"></i>
+      <p class="text-slate-400 text-sm">Loading catalog items from Lenka Studios...</p>
+    </div>
   </main>
 
-  <!-- ==================== 4. CART BAG DRAWER ==================== -->
   <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#0E0F14] border-l border-white/15 shadow-2xl translate-x-full transition-transform duration-300 flex flex-col justify-between">
     <div class="p-6 border-b border-white/10 flex items-center justify-between">
       <div class="flex items-center gap-2">
@@ -171,7 +165,6 @@
     </div>
   </div>
 
-  <!-- ==================== 5. EXPRESS CHECKOUT MODAL ==================== -->
   <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
@@ -203,7 +196,6 @@
     </div>
   </div>
 
-  <!-- ==================== 6. PAYMENT CONFIRMATION & WHATSAPP MODAL ==================== -->
   <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative">
       <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
@@ -240,17 +232,14 @@
     </div>
   </div>
 
-  <!-- ==================== 7. GEN-Z ABOUT & FOOTER ==================== -->
   <footer class="bg-[#08090C] border-t border-white/10 text-slate-300 py-16 mt-auto">
     <div class="max-w-4xl mx-auto px-6 text-center space-y-5">
       
-      <!-- HEADING: ABOUT -->
       <div class="inline-block">
         <span class="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C5A880] block mb-1">COMPANY PROFILE</span>
         <h3 class="font-anton text-3xl sm:text-4xl text-white tracking-wider uppercase">ABOUT</h3>
       </div>
 
-      <!-- 3 LINES INFO -->
       <div class="space-y-1.5 text-xs sm:text-sm text-slate-400 font-medium leading-relaxed">
         <p class="text-white font-semibold">Lenka stores all rights to LENKA VENTURES</p>
         <p>Lenka stores is made by VizagNightHub Under LENKA VENTURES</p>
@@ -260,7 +249,6 @@
         </p>
       </div>
 
-      <!-- 4TH LINE: GEN-Z FEEDBACK BUTTON -->
       <div class="pt-3">
         <button type="button" onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-white/10 via-white/5 to-white/10 hover:from-[#C5A880]/20 hover:to-[#E8C997]/20 border border-[#C5A880]/40 text-[#E8C997] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(197,168,128,0.15)] hover:shadow-[0_0_25px_rgba(232,201,151,0.3)] hover:scale-105 active:scale-95 cursor-pointer">
           <i data-lucide="message-square-heart" class="w-4 h-4 text-[#C5A880]"></i>
@@ -274,7 +262,6 @@
     </div>
   </footer>
 
-  <!-- ==================== FEEDBACK FORM MODAL ==================== -->
   <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#101218] border border-white/15 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-5 text-white relative">
       <button type="button" onclick="closeFeedbackModal()" class="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer">
@@ -308,7 +295,6 @@
     </div>
   </div>
 
-  <!-- ==================== CELEBRATION STICKER POPUP ==================== -->
   <div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
       <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
@@ -330,20 +316,219 @@
     </div>
   </div>
 
-  <!-- SCRIPTS -->
-  <script src="js/config.js"></script>
-  <script src="js/cart.js"></script>
-
-  <!-- CART & FEEDBACK GLOBAL ENGINE -->
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
+      authDomain: "lenkastores-website.firebaseapp.com",
+      projectId: "lenkastores-website",
+      storageBucket: "lenkastores-website.firebasestorage.app",
+      messagingSenderId: "17683527030",
+      appId: "1:17683527030:web:b443d717f2c89ee177f657",
+      measurementId: "G-3JT9WKQ318"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let liveCatalog = [];
+    let currentCategoryFilter = 'all';
+
+    function initStorefrontCatalog() {
+      const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      if (saved.length > 0) {
+        liveCatalog = saved;
+        renderCatalog();
+      }
+
+      db.collection('products').onSnapshot(snapshot => {
+        liveCatalog = [];
+        snapshot.forEach(doc => liveCatalog.push({ id: doc.id, ...doc.data() }));
+        localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
+        renderCatalog();
+      }, err => {
+        console.warn("Catalog sync warning:", err);
+        renderCatalog();
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategoryFilter = cat;
+      const heading = document.getElementById('currentCategoryHeading');
+      if (heading) heading.innerText = cat === 'all' ? 'Live Catalog' : cat;
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('productGrid');
+      const emptyState = document.getElementById('emptyCatalogState');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      let filtered = liveCatalog;
+      if (currentCategoryFilter !== 'all') {
+        filtered = liveCatalog.filter(p => p.category === currentCategoryFilter);
+      }
+
+      if (filtered.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
+        card.innerHTML = `
+          <div>
+            <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative">
+              <img src="${p.image || (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'}" alt="${p.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10">${p.discountTag}</span>` : ''}
+            </div>
+            <span class="text-[9px] uppercase font-bold tracking-widest text-[#C5A880]">${p.category || 'Atelier Exclusive'}</span>
+            <h4 class="font-bold text-white text-base mt-1 line-clamp-1">${p.title}</h4>
+            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${p.description || 'Precision crafted and tuned for modern luxury.'}</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/10">
+            <div>
+              ${p.originalPrice ? `<span class="text-xs text-slate-500 line-through mr-1.5">₹${p.originalPrice}</span>` : ''}
+              <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
+            </div>
+            <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+              Add To Bag
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+  </script>
+
+  <script>
+    // CART STATE
+    function getCart() {
+      try {
+        const saved = localStorage.getItem('lenka_cart_v2');
+        return saved ? JSON.parse(saved) : [];
+      } catch (e) { return []; }
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('lenka_cart_v2', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function addToBag(productId) {
+      const product = liveCatalog.find(p => String(p.id) === String(productId));
+      if (!product) return;
+
+      const cart = getCart();
+      const existing = cart.find(item => String(item.id) === String(productId));
+      if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.title,
+          price: product.offerPrice,
+          image: product.image || (product.images && product.images[0]),
+          quantity: 1
+        });
+      }
+      saveCart(cart);
+      openCartDrawer();
+    }
+
+    function removeFromCart(id) {
+      let cart = getCart().filter(i => String(i.id) !== String(id));
+      saveCart(cart);
+    }
+
+    function updateQuantity(id, qty) {
+      let cart = getCart();
+      const item = cart.find(i => String(i.id) === String(id));
+      if (item) {
+        item.quantity = Number(qty);
+        if (item.quantity <= 0) return removeFromCart(id);
+      }
+      saveCart(cart);
+    }
+
+    function updateCartUI() {
+      const cart = getCart();
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      const countEl = document.getElementById('navCartCount');
+      if (countEl) countEl.innerText = count;
+
+      const subtotalEl = document.getElementById('cartSubtotalPrice');
+      if (subtotalEl) subtotalEl.innerText = `₹${subtotal}`;
+
+      const list = document.getElementById('cartItemsList');
+      if (!list) return;
+      list.innerHTML = '';
+
+      if (cart.length === 0) {
+        list.innerHTML = '<p class="text-xs text-slate-500 text-center py-12">Your atelier bag is empty.</p>';
+        return;
+      }
+
+      cart.forEach(item => {
+        list.innerHTML += `
+          <div class="p-3 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-3 text-xs">
+            <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover" />
+            <div class="flex-1">
+              <h5 class="font-bold text-white truncate">${item.name}</h5>
+              <span class="text-[#C5A880] font-bold">₹${item.price}</span>
+              <div class="flex items-center gap-2 mt-1.5">
+                <button onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">-</button>
+                <span>${item.quantity}</span>
+                <button onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">+</button>
+              </div>
+            </div>
+            <button onclick="removeFromCart('${item.id}')" class="p-1.5 text-red-400 hover:text-red-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </div>`;
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openCartDrawer() {
+      const d = document.getElementById('cartDrawer');
+      if (d) d.classList.remove('translate-x-full');
+      updateCartUI();
+    }
+
+    function closeCartDrawer() {
+      const d = document.getElementById('cartDrawer');
+      if (d) d.classList.add('translate-x-full');
+    }
+
+    function openCheckoutModal() {
+      const cart = getCart();
+      if (cart.length === 0) return alert("Your bag is empty.");
+      closeCartDrawer();
+      const m = document.getElementById('checkoutModal');
+      if (m) m.classList.remove('hidden');
+
+      const user = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
+      if (user) {
+        if (document.getElementById('orderClientName')) document.getElementById('orderClientName').value = user.username || '';
+        if (document.getElementById('orderClientAddress')) document.getElementById('orderClientAddress').value = user.address === 'Add your delivery address' ? '' : user.address;
+      }
+    }
+
+    function closeCheckoutModal() {
+      const m = document.getElementById('checkoutModal');
+      if (m) m.classList.add('hidden');
+    }
+
     // CHECKOUT ORDER ENGINE
     function handlePlaceOrder(e) {
       e.preventDefault();
-      const cart = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
-      if (cart.length === 0) {
-        alert("Your bag is empty.");
-        return;
-      }
+      const cart = getCart();
+      if (cart.length === 0) return alert("Your bag is empty.");
 
       const name = document.getElementById('orderClientName').value.trim();
       const phone = document.getElementById('orderClientPhone').value.trim();
@@ -377,17 +562,11 @@
       }
 
       localStorage.removeItem('lenka_cart_v2');
-      if (typeof window.updateCartUI === 'function') window.updateCartUI();
-
-      const checkoutModal = document.getElementById('checkoutModal');
-      if (checkoutModal) checkoutModal.classList.add('hidden');
+      updateCartUI();
+      closeCheckoutModal();
 
       if (window.confetti) {
-        confetti({
-          particleCount: 140,
-          spread: 85,
-          origin: { y: 0.6 }
-        });
+        confetti({ particleCount: 140, spread: 85, origin: { y: 0.6 } });
       }
 
       document.getElementById('successOrderIdDisplay').innerText = `Order ID: #${orderId}`;
@@ -418,8 +597,7 @@
 ---------------------------------------
 Please confirm dispatch and receipt of payment!`;
 
-      const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
-      document.getElementById('directWhatsAppLink').href = whatsappUrl;
+      document.getElementById('directWhatsAppLink').href = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
 
       const successModal = document.getElementById('orderSuccessModal');
       if (successModal) successModal.classList.remove('hidden');
@@ -454,9 +632,7 @@ Please confirm dispatch and receipt of payment!`;
       const modal = document.getElementById('feedbackThanksModal');
       if (modal) {
         modal.classList.remove('hidden');
-        if (window.confetti) {
-          confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
-        }
+        if (window.confetti) confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
       }
     }
 
@@ -498,6 +674,13 @@ Please confirm dispatch and receipt of payment!`;
       openFeedbackThanksModal();
     }
 
+    window.addToBag = addToBag;
+    window.updateQuantity = updateQuantity;
+    window.removeFromCart = removeFromCart;
+    window.openCartDrawer = openCartDrawer;
+    window.closeCartDrawer = closeCartDrawer;
+    window.openCheckoutModal = openCheckoutModal;
+    window.closeCheckoutModal = closeCheckoutModal;
     window.handlePlaceOrder = handlePlaceOrder;
     window.closeOrderSuccessModal = closeOrderSuccessModal;
     window.openFeedbackModal = openFeedbackModal;
@@ -507,6 +690,8 @@ Please confirm dispatch and receipt of payment!`;
     window.handleSendFeedback = handleSendFeedback;
 
     window.addEventListener('DOMContentLoaded', () => {
+      initStorefrontCatalog();
+      updateCartUI();
       const savedUser = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
       if (savedUser && savedUser.avatar) {
         const navImg = document.getElementById('navProfileAvatar');
@@ -516,10 +701,10 @@ Please confirm dispatch and receipt of payment!`;
     });
   </script>
 
-  <!-- HERO CAROUSEL ENGINE -->
   <script>
     let heroMediaSlots = [];
     let activeHeroIndex = 0;
+    let isHeroAnimating = false;
 
     function initHeroMediaEngine() {
       const saved = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
@@ -539,17 +724,29 @@ Please confirm dispatch and receipt of payment!`;
 
     function buildAndRenderMediaStage() {
       const stage = document.getElementById('heroCarouselStage');
+      const arrowControls = document.getElementById('navArrowButtons');
       if (!stage) return;
       stage.innerHTML = '';
-      if (heroMediaSlots.length === 0) { renderHeroStage(); return; }
+
+      if (heroMediaSlots.length === 0) {
+        if (arrowControls) arrowControls.classList.add('hidden');
+        renderHeroStage();
+        return;
+      }
+
+      if (arrowControls) {
+        if (heroMediaSlots.length <= 1) arrowControls.classList.add('hidden');
+        else arrowControls.classList.remove('hidden');
+      }
 
       heroMediaSlots.forEach((slot, idx) => {
         const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('cloudfront.net');
         const card = document.createElement('div');
         card.id = `carouselItem-${idx}`;
-        card.className = "absolute rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.35)] border-2 border-white/20 bg-black";
+        // Clean luxury border and rounded frame centered under button
+        card.className = "absolute rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.45)] border-2 border-white/20 bg-black";
         card.style.transition = "all 650ms cubic-bezier(0.4,0,0.2,1)";
-        card.style.willChange = "transform, filter, opacity, left, bottom, height";
+        card.style.willChange = "transform, filter, opacity, left, bottom, height, width";
 
         if (isVideo) {
           card.innerHTML = `<video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="${slot.url}" type="video/mp4" /></video>`;
@@ -558,6 +755,7 @@ Please confirm dispatch and receipt of payment!`;
         }
         stage.appendChild(card);
       });
+
       renderHeroStage();
     }
 
@@ -570,23 +768,77 @@ Please confirm dispatch and receipt of payment!`;
 
       if (heroRoot) heroRoot.style.backgroundColor = currentTheme.bg || '#F4845F';
       if (getStartedBtn) getStartedBtn.style.color = currentTheme.bg || '#F4845F';
+
       if (total === 0) return;
 
       heroMediaSlots.forEach((_, idx) => {
         const itemEl = document.getElementById(`carouselItem-${idx}`);
         if (!itemEl) return;
+
         if (total === 1) {
+          // Centered directly below the GET STARTED button with clean borders
           itemEl.style.transform = `translateX(-50%) scale(1)`;
           itemEl.style.filter = 'blur(0px)';
           itemEl.style.opacity = '1';
           itemEl.style.zIndex = '30';
           itemEl.style.left = '50%';
-          itemEl.style.height = isMobile ? '46%' : '52%';
-          itemEl.style.width = isMobile ? '72%' : '360px';
-          itemEl.style.bottom = isMobile ? '12%' : '6%';
+          itemEl.style.top = isMobile ? '35%' : '34%';
+          itemEl.style.height = isMobile ? '52%' : '56%';
+          itemEl.style.width = isMobile ? '82%' : '380px';
+        } else {
+          const relativePos = (idx - activeHeroIndex + total) % total;
+          if (relativePos === 0) {
+            itemEl.style.transform = `translateX(-50%) scale(1)`;
+            itemEl.style.filter = 'blur(0px)';
+            itemEl.style.opacity = '1';
+            itemEl.style.zIndex = '30';
+            itemEl.style.left = '50%';
+            itemEl.style.top = isMobile ? '35%' : '34%';
+            itemEl.style.height = isMobile ? '52%' : '56%';
+            itemEl.style.width = isMobile ? '82%' : '380px';
+          } else if (relativePos === 1) {
+            itemEl.style.transform = 'translateX(-50%) scale(0.85)';
+            itemEl.style.filter = 'blur(2px)';
+            itemEl.style.opacity = '0.75';
+            itemEl.style.zIndex = '15';
+            itemEl.style.left = isMobile ? '85%' : '76%';
+            itemEl.style.top = isMobile ? '38%' : '37%';
+            itemEl.style.height = isMobile ? '44%' : '48%';
+            itemEl.style.width = isMobile ? '68%' : '310px';
+          } else if (relativePos === total - 1) {
+            itemEl.style.transform = 'translateX(-50%) scale(0.85)';
+            itemEl.style.filter = 'blur(2px)';
+            itemEl.style.opacity = '0.75';
+            itemEl.style.zIndex = '15';
+            itemEl.style.left = isMobile ? '15%' : '24%';
+            itemEl.style.top = isMobile ? '38%' : '37%';
+            itemEl.style.height = isMobile ? '44%' : '48%';
+            itemEl.style.width = isMobile ? '68%' : '310px';
+          } else {
+            itemEl.style.transform = 'translateX(-50%) scale(0.7)';
+            itemEl.style.filter = 'blur(4px)';
+            itemEl.style.opacity = '0.35';
+            itemEl.style.zIndex = '5';
+            itemEl.style.left = '50%';
+            itemEl.style.top = '40%';
+            itemEl.style.height = '38%';
+            itemEl.style.width = '240px';
+          }
         }
       });
     }
+
+    window.navigateHeroCarousel = function(direction) {
+      const total = heroMediaSlots.length;
+      if (total <= 1 || isHeroAnimating) return;
+      isHeroAnimating = true;
+
+      if (direction === 'next') activeHeroIndex = (activeHeroIndex + 1) % total;
+      else activeHeroIndex = (activeHeroIndex - 1 + total) % total;
+      
+      renderHeroStage();
+      setTimeout(() => { isHeroAnimating = false; }, 650);
+    };
 
     window.scrollToLiveCatalog = function() {
       const el = document.getElementById('mainStoreCatalog');
@@ -595,8 +847,8 @@ Please confirm dispatch and receipt of payment!`;
 
     window.addEventListener('DOMContentLoaded', () => {
       initHeroMediaEngine();
-      if (typeof window.updateCartUI === 'function') window.updateCartUI();
     });
+    window.addEventListener('resize', renderHeroStage);
   </script>
 </body>
 </html>
