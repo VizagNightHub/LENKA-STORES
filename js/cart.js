@@ -142,7 +142,6 @@ function openCheckoutModal() {
     });
   }
 
-  // Reset payment buttons view
   const proceedBtn = document.getElementById('proceedToPayBtn');
   const completedContainer = document.getElementById('paymentCompletedContainer');
   if (proceedBtn) proceedBtn.classList.remove('hidden');
@@ -151,7 +150,6 @@ function openCheckoutModal() {
   const modal = document.getElementById('checkoutModal');
   if (modal) modal.classList.remove('hidden');
 }
-
 function closeCheckoutModal() {
   const modal = document.getElementById('checkoutModal');
   if (modal) modal.classList.add('hidden');
