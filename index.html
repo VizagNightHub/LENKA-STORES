@@ -35,9 +35,8 @@
 <body class="bg-[#07080A] text-slate-200 font-sans antialiased selection:bg-[#C5A880] selection:text-black min-h-screen flex flex-col">
 
   <header class="sticky top-0 z-40 bg-[#0A0B0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3 flex items-center justify-between">
-    
     <div class="flex items-center gap-3">
-      <a href="profile.html" class="p-1 rounded-full bg-gradient-to-tr from-[#f4845f] to-[#e8c997] p-0.5 hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer" title="Go to Profile">
+      <a href="profile.html" class="p-1 rounded-full bg-gradient-to-tr from-[#f4845f] to-[#e8c997] hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer" title="Client Profile">
         <img id="navProfileAvatar" src="default-avatar.png" alt="Profile" class="w-8 h-8 rounded-full object-cover bg-black" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'" />
       </a>
       
@@ -110,14 +109,16 @@
         </button>
       </div>
 
-      <div id="heroCarouselStage" class="absolute inset-0 pointer-events-none" style="z-index: 10;"></div>
+      <div class="absolute inset-x-0 pointer-events-auto flex items-center justify-center cursor-grab active:cursor-grabbing" style="top: 35%; bottom: 12%; z-index: 12;">
+        <div id="heroCarouselStage" class="relative w-full h-full max-w-5xl mx-auto flex items-center justify-center"></div>
+      </div>
 
       <div id="heroNavControls" class="absolute bottom-5 left-4 sm:bottom-8 sm:left-12 text-white" style="z-index: 25; max-width: 280px;">
         <p class="font-bold uppercase mb-1 text-sm sm:text-base">LENKA STORES</p>
         <p class="hidden sm:block text-[11px] text-white/80 mb-2.5 leading-relaxed">Discover fashion and electronics curated for modern living.</p>
         <div id="navArrowButtons" class="flex items-center gap-2.5 hidden">
-          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-all"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/25 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/25 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
         </div>
       </div>
 
@@ -146,7 +147,7 @@
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     <div id="emptyCatalogState" class="hidden text-center py-16 space-y-2">
       <i data-lucide="package-open" class="w-12 h-12 text-slate-500 mx-auto"></i>
-      <p class="text-slate-400 text-sm">Loading catalog items from Lenka Studios...</p>
+      <p class="text-slate-400 text-sm">No items found in this collection.</p>
     </div>
   </main>
 
@@ -234,7 +235,6 @@
 
   <footer class="bg-[#08090C] border-t border-white/10 text-slate-300 py-16 mt-auto">
     <div class="max-w-4xl mx-auto px-6 text-center space-y-5">
-      
       <div class="inline-block">
         <span class="text-[10px] uppercase font-bold tracking-[0.3em] text-[#C5A880] block mb-1">COMPANY PROFILE</span>
         <h3 class="font-anton text-3xl sm:text-4xl text-white tracking-wider uppercase">ABOUT</h3>
@@ -274,21 +274,21 @@
         <p class="text-xs text-slate-400">Tell us what you love or how we can elevate your experience.</p>
       </div>
 
-      <form id="feedbackForm" onsubmit="handleSendFeedback(event)" class="space-y-3.5 text-xs">
+      <form id="feedbackForm" onsubmit="submitFeedback(event)" class="space-y-3.5 text-xs">
         <div>
           <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Your Name</label>
-          <input type="text" id="fbName" placeholder="e.g. Uday" required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all" />
+          <input type="text" id="feedbackName" placeholder="e.g. Uday" required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all" />
         </div>
         <div>
           <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">WhatsApp / Phone</label>
-          <input type="tel" id="fbPhone" placeholder="+91 89776 27028" required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all" />
+          <input type="tel" id="feedbackPhone" placeholder="+91 89776 27028" required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all" />
         </div>
         <div>
           <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Message / Thoughts</label>
-          <textarea id="fbMessage" rows="3" placeholder="Tell us anything..." required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all"></textarea>
+          <textarea id="feedbackMessage" rows="3" placeholder="Tell us anything..." required class="w-full bg-[#171922] border border-white/10 rounded-2xl p-3.5 text-xs text-white focus:outline-none focus:border-[#C5A880] transition-all"></textarea>
         </div>
 
-        <button type="submit" id="fbSubmitBtn" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+        <button type="submit" id="feedbackSubmitBtn" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all cursor-pointer">
           SEND FEEDBACK
         </button>
       </form>
@@ -316,6 +316,10 @@
     </div>
   </div>
 
+  <script src="js/config.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/feedback.js"></script>
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
@@ -342,7 +346,19 @@
 
       db.collection('products').onSnapshot(snapshot => {
         liveCatalog = [];
-        snapshot.forEach(doc => liveCatalog.push({ id: doc.id, ...doc.data() }));
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          liveCatalog.push({
+            id: doc.id,
+            title: d.title || 'Untitled Product',
+            category: d.category || 'Audio & Wireless Earbuds',
+            originalPrice: d.originalPrice || 0,
+            offerPrice: d.offerPrice || d.price || 0,
+            discountTag: d.discountTag || '',
+            description: d.description || '',
+            image: d.image || (Array.isArray(d.images) ? d.images[0] : '') || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'
+          });
+        });
         localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
         renderCatalog();
       }, err => {
@@ -403,10 +419,7 @@
       });
       if (window.lucide) lucide.createIcons();
     }
-  </script>
 
-  <script>
-    // CART STATE
     function getCart() {
       try {
         const saved = localStorage.getItem('lenka_cart_v2');
@@ -610,70 +623,6 @@ Please confirm dispatch and receipt of payment!`;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // FEEDBACK MODAL CONTROLLERS
-    function openFeedbackModal() {
-      const modal = document.getElementById('feedbackModal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        const profile = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
-        if (profile) {
-          const nameField = document.getElementById('fbName');
-          if (nameField && !nameField.value) nameField.value = profile.username || '';
-        }
-      }
-    }
-
-    function closeFeedbackModal() {
-      const modal = document.getElementById('feedbackModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function openFeedbackThanksModal() {
-      const modal = document.getElementById('feedbackThanksModal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        if (window.confetti) confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 } });
-      }
-    }
-
-    function closeFeedbackThanksModal() {
-      const modal = document.getElementById('feedbackThanksModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    async function handleSendFeedback(e) {
-      e.preventDefault();
-      const btn = document.getElementById('fbSubmitBtn');
-      btn.disabled = true;
-      btn.innerText = "SENDING...";
-
-      const name = document.getElementById('fbName').value.trim();
-      const phone = document.getElementById('fbPhone').value.trim();
-      const message = document.getElementById('fbMessage').value.trim();
-
-      const fbData = {
-        name,
-        phone,
-        message,
-        timestamp: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
-        createdAt: new Date().toISOString()
-      };
-
-      const saved = JSON.parse(localStorage.getItem('lenka_feedbacks') || '[]');
-      saved.unshift(fbData);
-      localStorage.setItem('lenka_feedbacks', JSON.stringify(saved));
-
-      if (window.firebase && firebase.apps.length) {
-        firebase.firestore().collection('feedbacks').add(fbData).catch(err => console.warn(err));
-      }
-
-      document.getElementById('feedbackForm').reset();
-      btn.disabled = false;
-      btn.innerText = "SEND FEEDBACK";
-      closeFeedbackModal();
-      openFeedbackThanksModal();
-    }
-
     window.addToBag = addToBag;
     window.updateQuantity = updateQuantity;
     window.removeFromCart = removeFromCart;
@@ -683,11 +632,6 @@ Please confirm dispatch and receipt of payment!`;
     window.closeCheckoutModal = closeCheckoutModal;
     window.handlePlaceOrder = handlePlaceOrder;
     window.closeOrderSuccessModal = closeOrderSuccessModal;
-    window.openFeedbackModal = openFeedbackModal;
-    window.closeFeedbackModal = closeFeedbackModal;
-    window.openFeedbackThanksModal = openFeedbackThanksModal;
-    window.closeFeedbackThanksModal = closeFeedbackThanksModal;
-    window.handleSendFeedback = handleSendFeedback;
 
     window.addEventListener('DOMContentLoaded', () => {
       initStorefrontCatalog();
@@ -705,21 +649,33 @@ Please confirm dispatch and receipt of payment!`;
     let heroMediaSlots = [];
     let activeHeroIndex = 0;
     let isHeroAnimating = false;
+    let heroAutoTimer = null;
 
-<!-- HERO CAROUSEL ENGINE (CENTERED UNDER GET STARTED BUTTON) -->
-  <script>
-    let heroMediaSlots = [];
-    let activeHeroIndex = 0;
-    let isHeroAnimating = false;
+    const DEFAULT_HERO_MEDIA = [
+      {
+        id: 0,
+        url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260831_123709_183f0065-efb2-4bb2-a849-13aaa5af2f3f.mp4",
+        bg: "#F4845F",
+        title: "Lenka Wireless Audio"
+      },
+      {
+        id: 1,
+        url: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800",
+        bg: "#E07020",
+        title: "Atelier Couture"
+      }
+    ];
 
     function initHeroMediaEngine() {
       const saved = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
-      heroMediaSlots = Array.isArray(saved) ? saved : [];
+      heroMediaSlots = Array.isArray(saved) && saved.length > 0 ? saved : DEFAULT_HERO_MEDIA;
       buildAndRenderMediaStage();
+      startAutoSlideTimer();
+      setupTouchSwipeGestures();
 
       if (window.firebase && firebase.apps.length) {
         firebase.firestore().collection('settings').doc('hero_ads').onSnapshot(doc => {
-          if (doc.exists && Array.isArray(doc.data().media)) {
+          if (doc.exists && Array.isArray(doc.data().media) && doc.data().media.length > 0) {
             heroMediaSlots = doc.data().media;
             localStorage.setItem('lenka_hero_ads', JSON.stringify(heroMediaSlots));
             buildAndRenderMediaStage();
@@ -734,30 +690,29 @@ Please confirm dispatch and receipt of payment!`;
       if (!stage) return;
       stage.innerHTML = '';
 
-      if (heroMediaSlots.length === 0) {
-        if (arrowControls) arrowControls.classList.add('hidden');
-        renderHeroStage();
-        return;
-      }
-
       if (arrowControls) {
         if (heroMediaSlots.length <= 1) arrowControls.classList.add('hidden');
         else arrowControls.classList.remove('hidden');
       }
 
       heroMediaSlots.forEach((slot, idx) => {
-        const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('cloudfront.net');
+        const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('.mp4') || slot.url.includes('cloudfront.net');
         const card = document.createElement('div');
         card.id = `carouselItem-${idx}`;
-        // Centered luxury card frame with rounded corners & clean border
         card.className = "absolute rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-2 border-white/20 bg-black";
         card.style.transition = "all 600ms cubic-bezier(0.4, 0, 0.2, 1)";
         card.style.willChange = "transform, filter, opacity, left, top, width, height";
 
         if (isVideo) {
-          card.innerHTML = `<video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="${slot.url}" type="video/mp4" /></video>`;
+          card.innerHTML = `
+            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-cover pointer-events-none">
+              <source src="${slot.url}" type="video/mp4" />
+            </video>
+          `;
         } else {
-          card.innerHTML = `<img src="${slot.url}" alt="${slot.title || 'Lenka'}" draggable="false" class="w-full h-full object-cover" />`;
+          card.innerHTML = `
+            <img src="${slot.url}" alt="${slot.title || 'Lenka Ad'}" draggable="false" class="w-full h-full object-cover pointer-events-none" />
+          `;
         }
         stage.appendChild(card);
       });
@@ -781,85 +736,139 @@ Please confirm dispatch and receipt of payment!`;
         const itemEl = document.getElementById(`carouselItem-${idx}`);
         if (!itemEl) return;
 
-        // Exactly 1 Ad Slot -> Centered strictly below GET STARTED
+        const vid = itemEl.querySelector('video');
+        if (vid) {
+          vid.play().catch(() => {});
+        }
+
         if (total === 1) {
           itemEl.style.left = '50%';
-          itemEl.style.top = isMobile ? '36%' : '35%';
+          itemEl.style.top = isMobile ? '37%' : '36%';
           itemEl.style.transform = 'translateX(-50%) scale(1)';
-          itemEl.style.width = isMobile ? '84%' : '360px';
-          itemEl.style.height = isMobile ? '52%' : '56%';
+          itemEl.style.width = isMobile ? '86%' : '370px';
+          itemEl.style.height = isMobile ? '50%' : '54%';
           itemEl.style.filter = 'blur(0px)';
           itemEl.style.opacity = '1';
           itemEl.style.zIndex = '30';
-        } 
-        // 2 or More Ad Slots (Carousel)
-        else {
+        } else {
           const relativePos = (idx - activeHeroIndex + total) % total;
 
-          // ACTIVE CENTER CARD (Below GET STARTED, never covering LENKA)
           if (relativePos === 0) {
             itemEl.style.left = '50%';
-            itemEl.style.top = isMobile ? '36%' : '35%';
+            itemEl.style.top = isMobile ? '37%' : '36%';
             itemEl.style.transform = 'translateX(-50%) scale(1)';
-            itemEl.style.width = isMobile ? '82%' : '360px';
-            itemEl.style.height = isMobile ? '52%' : '56%';
+            itemEl.style.width = isMobile ? '86%' : '370px';
+            itemEl.style.height = isMobile ? '50%' : '54%';
             itemEl.style.filter = 'blur(0px)';
             itemEl.style.opacity = '1';
             itemEl.style.zIndex = '30';
-          } 
-          // RIGHT SIDE CARD
-          else if (relativePos === 1) {
-            itemEl.style.left = isMobile ? '88%' : '76%';
-            itemEl.style.top = isMobile ? '39%' : '38%';
+          } else if (relativePos === 1) {
+            itemEl.style.left = isMobile ? '90%' : '78%';
+            itemEl.style.top = isMobile ? '40%' : '39%';
             itemEl.style.transform = 'translateX(-50%) scale(0.85)';
-            itemEl.style.width = isMobile ? '65%' : '300px';
-            itemEl.style.height = isMobile ? '44%' : '48%';
-            itemEl.style.filter = 'blur(2px)';
+            itemEl.style.width = isMobile ? '68%' : '300px';
+            itemEl.style.height = isMobile ? '42%' : '46%';
+            itemEl.style.filter = 'blur(2.5px)';
             itemEl.style.opacity = '0.7';
             itemEl.style.zIndex = '15';
-          } 
-          // LEFT SIDE CARD
-          else if (relativePos === total - 1) {
-            itemEl.style.left = isMobile ? '12%' : '24%';
-            itemEl.style.top = isMobile ? '39%' : '38%';
+          } else if (relativePos === total - 1) {
+            itemEl.style.left = isMobile ? '10%' : '22%';
+            itemEl.style.top = isMobile ? '40%' : '39%';
             itemEl.style.transform = 'translateX(-50%) scale(0.85)';
-            itemEl.style.width = isMobile ? '65%' : '300px';
-            itemEl.style.height = isMobile ? '44%' : '48%';
-            itemEl.style.filter = 'blur(2px)';
+            itemEl.style.width = isMobile ? '68%' : '300px';
+            itemEl.style.height = isMobile ? '42%' : '46%';
+            itemEl.style.filter = 'blur(2.5px)';
             itemEl.style.opacity = '0.7';
             itemEl.style.zIndex = '15';
-          } 
-          // BACKGROUND CARDS
-          else {
+          } else {
             itemEl.style.left = '50%';
-            itemEl.style.top = '40%';
+            itemEl.style.top = '42%';
             itemEl.style.transform = 'translateX(-50%) scale(0.7)';
             itemEl.style.width = '240px';
-            itemEl.style.height = '38%';
-            itemEl.style.filter = 'blur(4px)';
-            itemEl.style.opacity = '0.2';
+            itemEl.style.height = '36%';
+            itemEl.style.filter = 'blur(5px)';
+            itemEl.style.opacity = '0';
             itemEl.style.zIndex = '5';
           }
         }
       });
     }
 
-    window.navigateHeroCarousel = function(direction) {
+    function navigateHeroCarousel(direction) {
       const total = heroMediaSlots.length;
       if (total <= 1 || isHeroAnimating) return;
       isHeroAnimating = true;
 
-      if (direction === 'next') activeHeroIndex = (activeHeroIndex + 1) % total;
-      else activeHeroIndex = (activeHeroIndex - 1 + total) % total;
+      if (direction === 'next') {
+        activeHeroIndex = (activeHeroIndex + 1) % total;
+      } else {
+        activeHeroIndex = (activeHeroIndex - 1 + total) % total;
+      }
       
       renderHeroStage();
+      resetAutoSlideTimer();
       setTimeout(() => { isHeroAnimating = false; }, 600);
-    };
+    }
 
-    window.scrollToLiveCatalog = function() {
-      const el = document.getElementById('mainStoreCatalog');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    };
+    function startAutoSlideTimer() {
+      if (heroAutoTimer) clearInterval(heroAutoTimer);
+      heroAutoTimer = setInterval(() => {
+        navigateHeroCarousel('next');
+      }, 30000); // 30 seconds auto-slide
+    }
+
+    function resetAutoSlideTimer() {
+      startAutoSlideTimer();
+    }
+
+    function setupTouchSwipeGestures() {
+      const stage = document.getElementById('heroCarouselStage');
+      if (!stage) return;
+
+      let startX = 0;
+      let startY = 0;
+      let endX = 0;
+      let endY = 0;
+
+      stage.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+
+      stage.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        endY = e.changedTouches[0].clientY;
+        handleGesture();
+      }, { passive: true });
+
+      let isMouseDown = false;
+      stage.addEventListener('mousedown', (e) => {
+        isMouseDown = true;
+        startX = e.clientX;
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!isMouseDown) return;
+        isMouseDown = false;
+        endX = e.clientX;
+        handleGesture();
+      });
+
+      function handleGesture() {
+        const diffX = endX - startX;
+        const diffY = endY - startY;
+
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+          if (diffX < 0) {
+            navigateHeroCarousel('next');
+          } else {
+            navigateHeroCarousel('prev');
+          }
+        }
+      }
+    }
+
+    window.navigateHeroCarousel = navigateHeroCarousel;
 
     window.addEventListener('DOMContentLoaded', () => {
       initHeroMediaEngine();
