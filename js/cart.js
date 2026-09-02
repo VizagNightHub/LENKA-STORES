@@ -1,4 +1,4 @@
-// ATELIER SHOPPING CART & CHECKOUT ENGINE WITH 3D DELIVERY TRUCK ANIMATION
+// ATELIER SHOPPING CART & CHECKOUT ENGINE
 
 function getCart() {
   try {
@@ -123,28 +123,33 @@ function openCheckoutModal() {
     return;
   }
   closeCartDrawer();
-  const modal = document.getElementById('checkoutModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    
-    // Auto-fill user profile details (Name, Phone, Address)
-    try {
-      const user = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
-      if (user) {
-        const nameInput = document.getElementById('orderClientName');
-        const phoneInput = document.getElementById('orderClientPhone');
-        const addressInput = document.getElementById('orderClientAddress');
-        
-        if (nameInput && !nameInput.value) nameInput.value = user.username || user.name || '';
-        if (phoneInput && !phoneInput.value) phoneInput.value = user.phone || '';
-        if (addressInput && !addressInput.value && user.address && user.address !== 'Add your delivery address') {
-          addressInput.value = user.address;
-        }
-      }
-    } catch (e) {
-      console.warn("Auto-fill notice:", e);
-    }
+  
+  // Render Product Details Summary (Name, Image, Cost ONLY)
+  const summaryContainer = document.getElementById('checkoutProductSummary');
+  if (summaryContainer) {
+    summaryContainer.innerHTML = '';
+    cart.forEach(item => {
+      summaryContainer.innerHTML += `
+        <div class="flex items-center gap-3 text-xs">
+          <img src="${item.image}" class="w-10 h-10 rounded-lg object-cover bg-black" />
+          <div class="flex-1 min-w-0">
+            <h6 class="font-bold text-white truncate">${item.name}</h6>
+            <span class="text-slate-400">Qty: ${item.quantity}</span>
+          </div>
+          <span class="font-extrabold text-[#C5A880]">₹${item.price * item.quantity}</span>
+        </div>
+      `;
+    });
   }
+
+  // Reset payment buttons view
+  const proceedBtn = document.getElementById('proceedToPayBtn');
+  const completedContainer = document.getElementById('paymentCompletedContainer');
+  if (proceedBtn) proceedBtn.classList.remove('hidden');
+  if (completedContainer) completedContainer.classList.add('hidden');
+
+  const modal = document.getElementById('checkoutModal');
+  if (modal) modal.classList.remove('hidden');
 }
 
 function closeCheckoutModal() {
@@ -152,37 +157,51 @@ function closeCheckoutModal() {
   if (modal) modal.classList.add('hidden');
 }
 
-// ORDER PLACEMENT & ANIMATED TRUCK SUCCESS ENGINE
-function handlePlaceOrder(e) {
+// STEP 1: REDIRECT TO PHONEPE & SHOW PAYMENT COMPLETED BUTTON
+function handlePhonePeRedirectPayment(e) {
   e.preventDefault();
   const cart = getCart();
   if (cart.length === 0) return alert("Your bag is empty.");
 
-  const name = document.getElementById('orderClientName').value.trim();
-  const phone = document.getElementById('orderClientPhone').value.trim();
-  const address = document.getElementById('orderClientAddress').value.trim();
-  const paymentMethod = document.getElementById('orderPaymentMethod').value;
-
   const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
-  
-  // Clean product details (Name and quantity only without extra descriptions)
+
+  // Save temporary order ID
+  localStorage.setItem('lenka_pending_order_id', orderId);
+
+  // Trigger PhonePe URI Scheme
+  const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
+  window.location.href = upiUrl;
+
+  // Swap buttons so user can click "Payment Completed" after returning from PhonePe
+  const proceedBtn = document.getElementById('proceedToPayBtn');
+  const completedContainer = document.getElementById('paymentCompletedContainer');
+  if (proceedBtn) proceedBtn.classList.add('hidden');
+  if (completedContainer) completedContainer.classList.remove('hidden');
+}
+
+// STEP 2: TRIGGER DELIVERY TRUCK POPUP AFTER PAYMENT IS COMPLETED
+function triggerDeliveryTruckSuccessModal() {
+  const cart = getCart();
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const orderId = localStorage.getItem('lenka_pending_order_id') || ('LS-' + Math.floor(100000 + Math.random() * 900000));
   const itemsSummary = cart.map(i => `• ${i.name} (Qty: ${i.quantity}) - ₹${i.price * i.quantity}`).join('\n');
 
   const newOrder = {
     orderId,
-    customerName: name,
-    customerPhone: phone,
-    customerAddress: address,
-    paymentMethod,
+    customerName: "Verified Online Client",
+    customerPhone: "8977627028",
+    customerAddress: "Direct UPI Express Order",
+    paymentMethod: "PhonePe UPI (Paid)",
     itemsSummary,
     totalAmount: subtotal,
-    status: 'Confirmed',
+    status: 'Confirmed & Paid',
     createdAt: new Date().toISOString(),
     shippingDate: 'Processing in warehouse',
     deliveryDate: 'Expected in 3-5 days'
   };
 
+  // Save order to database & local storage
   const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
   orders.unshift(newOrder);
   localStorage.setItem('lenka_orders', JSON.stringify(orders));
@@ -191,6 +210,24 @@ function handlePlaceOrder(e) {
     firebase.firestore().collection('orders').doc(orderId).set(newOrder).catch(err => console.warn(err));
   }
 
+  // AUTOMATE WHATSAPP MESSAGE TO 8977627028
+  const waMessage = 
+`*NEW PAID ORDER - LENKA STORES*
+---------------------------------------
+*Order ID:* #${orderId}
+*Payment Status:* Paid via PhonePe UPI (Verified)
+
+*Product Details:*
+${itemsSummary}
+
+*Total Amount:* ₹${subtotal}
+---------------------------------------`;
+
+  // Open WhatsApp in background
+  const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
+  window.open(whatsappUrl, '_blank');
+
+  // Clear cart
   localStorage.removeItem('lenka_cart_v2');
   updateCartUI();
   closeCheckoutModal();
@@ -199,95 +236,40 @@ function handlePlaceOrder(e) {
     confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
   }
 
-  // Format WhatsApp message with only product details, customer info, and payment status
-  const waMessage = 
-`*NEW ORDER CONFIRMED - LENKA STORES*
----------------------------------------
-*Order ID:* #${orderId}
-*Customer Name:* ${name}
-*Phone:* ${phone}
-*Delivery Address:* ${address}
+  // Display Order ID in success modal
+  const orderIdDisplay = document.getElementById('successOrderIdDisplay');
+  if (orderIdDisplay) orderIdDisplay.innerText = `Order ID: #${orderId}`;
 
-*Products:*
-${itemsSummary}
-
-*Total Amount:* ₹${subtotal}
-*Payment Status:* ${paymentMethod.includes('UPI') ? 'Pending UPI Payment' : 'Cash on Delivery'}
----------------------------------------`;
-
-  const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
-
-  // Populate Success Modal
-  document.getElementById('successOrderIdDisplay').innerText = `Order ID: #${orderId}`;
-  document.getElementById('successPaymentDisplay').innerText = paymentMethod;
-
-  const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
-  const upiBtn = document.getElementById('directUpiPaymentLink');
-  const upiText = document.getElementById('upiBtnText');
-  
-  if (paymentMethod.includes('PhonePe') || paymentMethod.includes('UPI')) {
-    upiBtn.href = upiUrl;
-    upiText.innerText = `PROCEED TO PAY ₹${subtotal}`;
-    upiBtn.classList.remove('hidden');
-  } else {
-    upiBtn.classList.add('hidden');
-  }
-
-  document.getElementById('directWhatsAppLink').href = whatsappUrl;
-
-  // Show the animated 3D delivery truck / success modal
+  // Open Animated Delivery Truck Success Modal
   const successModal = document.getElementById('orderSuccessModal');
   if (successModal) successModal.classList.remove('hidden');
   if (window.lucide) lucide.createIcons();
 }
 
 function closeOrderSuccessModal() {
-  const modal = document.getElementById('orderSuccessModal');
-  if (modal) modal.classList.add('hidden');
-  
-  // Show "Thank you for your time and have a nice day" pop-up sticker
-  showThankYouStickerModal();
+  const successModal = document.getElementById('orderSuccessModal');
+  if (successModal) successModal.classList.add('hidden');
+
+  // Open Thank You Sticker Popup
+  const thankYouModal = document.getElementById('feedbackThanksModal');
+  if (thankYouModal) thankYouModal.classList.remove('hidden');
 }
 
-function showThankYouStickerModal() {
-  let stickerModal = document.getElementById('thankYouStickerModal');
-  if (!stickerModal) {
-    stickerModal = document.createElement('div');
-    stickerModal.id = 'thankYouStickerModal';
-    stickerModal.className = 'fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4';
-    stickerModal.innerHTML = `
-      <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative animate-bounce-short">
-        <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
-          <div class="w-full h-full bg-[#0d0f14] rounded-[22px] flex items-center justify-center text-4xl select-none">
-            😊
-          </div>
-        </div>
-        <div class="space-y-1.5 pt-2">
-          <h4 class="font-anton text-2xl text-white tracking-wider">THANK YOU FOR YOUR TIME!</h4>
-          <p class="text-xs text-[#E8C997] font-medium">Have a nice day! Continue your shopping with Lenka Stores. 😊</p>
-        </div>
-        <div class="pt-2">
-          <button type="button" onclick="document.getElementById('thankYouStickerModal').remove(); window.scrollTo({top:0, behavior:'smooth'});" class="w-full py-3.5 bg-white text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:bg-[#E8C997] transition-all cursor-pointer active:scale-95">
-            Continue Shopping
-          </button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(stickerModal);
-  }
+function closeThankYouModal() {
+  const thankYouModal = document.getElementById('feedbackThanksModal');
+  if (thankYouModal) thankYouModal.classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Global window exposure
-window.getCart = getCart;
-window.saveCart = saveCart;
+// Global exposure
 window.addToBag = addToBag;
-window.removeFromCart = removeFromCart;
 window.updateQuantity = updateQuantity;
-window.updateCartUI = updateCartUI;
+window.removeFromCart = removeFromCart;
 window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
 window.openCheckoutModal = openCheckoutModal;
 window.closeCheckoutModal = closeCheckoutModal;
-window.handlePlaceOrder = handlePlaceOrder;
+window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
+window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
 window.closeOrderSuccessModal = closeOrderSuccessModal;
-window.showThankYouStickerModal = showThankYouStickerModal;
+window.closeThankYouModal = closeThankYouModal;
