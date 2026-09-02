@@ -1,45 +1,125 @@
-<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative overflow-hidden">
-    
-    <div class="w-full h-28 bg-gradient-to-r from-orange-500/20 via-amber-500/20 to-teal-500/20 rounded-2xl border border-white/10 relative overflow-hidden flex items-center justify-center">
-      <div class="absolute inset-0 flex items-center justify-between px-6 animate-pulse">
-        <div class="flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/15 animate-bounce">
-          <span class="text-xl">🏃‍♂️📦</span>
-          <span class="text-[10px] font-bold text-amber-300">Loading Box</span>
-        </div>
-        <div class="flex items-center gap-1.5 bg-black/60 px-4 py-2 rounded-xl border border-amber-400/40 shadow-lg animate-pulse">
-          <span class="text-2xl">🚚💨</span>
-          <span class="text-[11px] font-bold text-emerald-400">Dispatching</span>
-        </div>
-      </div>
-    </div>
+<div class="relative w-full h-44 bg-transparent rounded-2xl overflow-hidden flex items-center justify-center my-2">
+  <svg class="w-full h-full" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#14b8a6"/>
+        <stop offset="100%" stop-color="#0d9488"/>
+      </linearGradient>
+      <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#d97706"/>
+        <stop offset="100%" stop-color="#b45309"/>
+      </linearGradient>
+      <linearGradient id="truckCab" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#f43f5e"/>
+        <stop offset="100%" stop-color="#e11d48"/>
+      </linearGradient>
+      <linearGradient id="truckBody" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#38bdf8"/>
+        <stop offset="100%" stop-color="#0284c7"/>
+      </linearGradient>
+    </defs>
 
-    <div class="space-y-1">
-      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
-      <h3 class="font-anton text-2xl tracking-wider text-white">CONGRATULATIONS! ORDER CONFIRMED</h3>
-      <p id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</p>
-    </div>
+    <style>
+      /* --- SCENE SEQUENCE TIMELINE (Total ~5.5s) --- */
+      
+      /* 1. Delivery Boy & Box (0s - 1.2s) */
+      @keyframes boySequence {
+        0% { transform: translate(-60px, 20px) scale(0.9); opacity: 0; }
+        20% { transform: translate(80px, 20px) scale(1); opacity: 1; }
+        50% { transform: translate(160px, 15px) scale(1); opacity: 1; }
+        70% { transform: translate(210px, 25px) scale(0.9); opacity: 1; }
+        90% { transform: translate(250px, 25px) scale(0.8); opacity: 0; }
+        100% { transform: translate(250px, 25px) scale(0.8); opacity: 0; }
+      }
 
-    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
-      <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed</span></div>
-      <div class="flex justify-between"><span class="text-slate-400">Payment:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
-      <div class="flex justify-between"><span class="text-slate-400">Payee UPI:</span><span class="font-mono text-[#E8C997]">8977627028-2@ybl</span></div>
-    </div>
+      /* 2. Truck Loading & Departure (1.2s - 3.2s) */
+      @keyframes truckSequence {
+        0% { transform: translate(150px, 20px); opacity: 1; }
+        40% { transform: translate(150px, 20px); opacity: 1; } /* Loading */
+        60% { transform: translate(150px, 15px) scale(1.02); opacity: 1; } /* Engine start */
+        100% { transform: translate(150px, -300px) scale(0.9); opacity: 0; filter: blur(4px); } /* Drives Upward */
+      }
 
-    <div class="space-y-2.5 pt-2">
-      <a id="directUpiPaymentLink" href="javascript:void(0)" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-        <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
-        <span id="upiBtnText">PROCEED TO PAY</span>
-      </a>
+      /* 3. Smoke Transition Roll-in (3.2s - 4.5s) */
+      @keyframes smokeRollIn {
+        0% { transform: translateY(-180px); opacity: 0; }
+        40% { transform: translateY(0px); opacity: 1; }
+        80% { transform: translateY(0px); opacity: 1; }
+        100% { transform: translateY(-180px); opacity: 0; }
+      }
 
-      <a id="directWhatsAppLink" href="javascript:void(0)" target="_blank" class="w-full py-4 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-        <i data-lucide="message-circle" class="w-4 h-4"></i>
-        <span>SEND ORDER TO WHATSAPP</span>
-      </a>
+      /* 4. Final Screen Reveal (4.5s onwards) */
+      @keyframes revealContent {
+        0% { opacity: 0; transform: scale(0.95); }
+        70% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+      }
 
-      <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
-        Continue to Confirmation
-      </button>
-    </div>
-  </div>
+      .anim-boy { animation: boySequence 5.2s ease infinite; }
+      .anim-truck { animation: truckSequence 5.2s ease infinite; }
+      .anim-smoke { animation: smokeRollIn 5.2s ease infinite; }
+      .anim-reveal { animation: revealContent 5.2s ease infinite; }
+    </style>
+
+    <!-- SCENE CONTAINER -->
+    <g>
+      <!-- DELIVERY BOY & BOX (0 - 1.2s) -->
+      <g class="anim-boy">
+        <!-- Chunky 3D Box -->
+        <g transform="translate(0, 30)">
+          <rect x="0" y="0" width="45" height="35" rx="6" fill="url(#boxGrad)" stroke="#78350f" stroke-width="2"/>
+          <line x1="22.5" y1="0" x2="22.5" y2="35" stroke="#78350f" stroke-dasharray="3,3" stroke-width="1.5"/>
+          <text x="22.5" y="18" font-family="Poppins, sans-serif" font-weight="800" font-size="6" fill="#fef3c7" text-anchor="middle">LENKA STORES</text>
+        </g>
+        <!-- Cute 3D Boy Character -->
+        <g transform="translate(-35, 10)">
+          <!-- Head -->
+          <circle cx="15" cy="12" r="10" fill="#fbbf24" stroke="#d97706" stroke-width="2"/>
+          <!-- Body -->
+          <rect x="8" y="22" width="14" height="18" rx="5" fill="#14b8a6" stroke="#0d9488" stroke-width="2"/>
+          <!-- Legs -->
+          <rect x="10" y="38" width="4" height="12" rx="2" fill="#1e293b"/>
+          <rect x="16" y="35" width="4" height="12" rx="2" fill="#1e293b"/>
+        </g>
+      </g>
+
+      <!-- TRUCK & CARGO (1.2 - 3.2s) -->
+      <g class="anim-truck">
+        <!-- Truck Cargo Body -->
+        <rect x="60" y="25" width="80" height="45" rx="8" fill="url(#truckBody)" stroke="#0369a1" stroke-width="2.5"/>
+        <text x="100" y="52" font-family="Poppins, sans-serif" font-weight="700" font-size="8" fill="#e0f2fe" text-anchor="middle">LENKA EXPRESS</text>
+        <!-- Truck Cab -->
+        <path d="M140 45 L170 45 Q178 45 178 53 L178 70 L140 70 Z" fill="url(#truckCab)" stroke="#be123c" stroke-width="2.5"/>
+        <path d="M148 48 L168 48 Q174 48 174 54 L174 62 L148 62 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- Wheels with motion spin -->
+        <circle cx="80" cy="73" r="10" fill="#0f172a" stroke="#334155" stroke-width="3"/>
+        <circle cx="80" cy="73" r="3" fill="#94a3b8"/>
+        <circle cx="155" cy="73" r="10" fill="#0f172a" stroke="#334155" stroke-width="3"/>
+        <circle cx="155" cy="73" r="3" fill="#94a3b8"/>
+        <!-- Exhaust Smoke Puff -->
+        <circle cx="50" cy="65" r="6" fill="#cbd5e1" opacity="0.8"/>
+        <circle cx="40" cy="60" r="9" fill="#cbd5e1" opacity="0.6"/>
+      </g>
+
+      <!-- THICK SMOKE TRANSITION (3.2 - 4.5s) -->
+      <g class="anim-smoke">
+        <rect x="0" y="0" width="400" height="180" fill="#0b0d12"/>
+        <circle cx="100" cy="90" r="80" fill="#1e293b" opacity="0.9"/>
+        <circle cx="230" cy="100" r="90" fill="#0f172a" opacity="0.95"/>
+        <circle cx="330" cy="80" r="70" fill="#1e293b" opacity="0.9"/>
+        <text x="200" y="95" font-family="Poppins, sans-serif" font-weight="700" font-size="14" fill="#38bdf8" text-anchor="middle">DISPATCHING ORDER...</text>
+      </g>
+
+      <!-- REVEAL SCREEN (4.5s - 5.5s+) -->
+      <g class="anim-reveal">
+        <rect x="20" y="20" width="360" height="140" rx="20" fill="#11131a" stroke="#14b8a6" stroke-width="2.5" filter="drop-shadow(0px 10px 20px rgba(0,0,0,0.5))"/>
+        <!-- Success Icon Checkmark -->
+        <circle cx="200" cy="60" r="22" fill="#14b8a6"/>
+        <path d="M190 60 L197 67 L212 51" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Text Heading -->
+        <text x="200" y="98" font-family="Poppins, sans-serif" font-weight="700" font-size="13" fill="#ffffff" text-anchor="middle">Your Order Has Been Confirmed Successfully</text>
+        <text x="200" y="116" font-family="Poppins, sans-serif" font-weight="400" font-size="10" fill="#94a3b8" text-anchor="middle">Thank you for shopping with Lenka Stores!</text>
+      </g>
+    </g>
+  </svg>
 </div>
