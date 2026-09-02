@@ -162,77 +162,100 @@
     <div id="cartItemsList" class="p-6 overflow-y-auto flex-1 space-y-4 custom-scrollbar"></div>
     <div class="p-6 border-t border-white/10 bg-[#111218] space-y-4">
       <div class="flex items-center justify-between text-sm"><span class="text-slate-400">Total Subtotal:</span><span id="cartSubtotalPrice" class="font-bold text-white text-lg">₹0</span></div>
-      <button type="button" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 cursor-pointer">Proceed to Checkout</button>
+      <button type="button" onclick="openCheckoutModal()" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 cursor-pointer">PROCEED TO PAYt</button>
     </div>
   </div>
-
-  <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white">
-      <div class="flex items-center justify-between pb-3 border-b border-white/10">
-        <h3 class="text-lg font-bold">Express Order Booking</h3>
-        <button type="button" onclick="closeCheckoutModal()" class="p-1 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-      <form onsubmit="handlePlaceOrder(event)" class="space-y-4 text-xs">
-        <div>
-          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CLIENT NAME</label>
-          <input type="text" id="orderClientName" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]" />
-        </div>
-        <div>
-          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">WHATSAPP / PHONE NUMBER</label>
-          <input type="tel" id="orderClientPhone" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]" />
-        </div>
-        <div>
-          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">SHIPPING DESTINATION</label>
-          <textarea id="orderClientAddress" rows="2" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none focus:border-[#C5A880]"></textarea>
-        </div>
-        <div>
-          <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">PAYMENT METHOD</label>
-          <select id="orderPaymentMethod" class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none">
-            <option value="PhonePe UPI">PhonePe / GooglePay UPI (8977627028-2@ybl)</option>
-            <option value="Cash on Delivery">Cash on Delivery</option>
-          </select>
-        </div>
-        <button type="submit" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase rounded-xl shadow-lg cursor-pointer">CONFIRM & DISPATCH ORDER</button>
-      </form>
+<!-- ==================== EXPRESS CHECKOUT & PAYMENT MODAL ==================== -->
+<div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white relative">
+    <div class="flex items-center justify-between pb-3 border-b border-white/10">
+      <h3 class="text-lg font-bold">Express Order Booking</h3>
+      <button type="button" onclick="closeCheckoutModal()" class="p-1 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
     </div>
-  </div>
 
-  <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative">
-      <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
-        <i data-lucide="check" class="w-8 h-8"></i>
+    <!-- PRODUCT DETAILS SUMMARY (Name, Image, Cost ONLY) -->
+    <div id="checkoutProductSummary" class="space-y-3 max-h-48 overflow-y-auto custom-scrollbar p-3 bg-white/5 rounded-2xl border border-white/10"></div>
+
+    <form onsubmit="handlePhonePeRedirectPayment(event)" class="space-y-4 text-xs">
+      <div>
+        <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">CHOOSE PAYMENT METHOD</label>
+        <select id="orderPaymentMethod" class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white focus:outline-none">
+          <option value="PhonePe UPI">PhonePe / GooglePay UPI (8977627028-2@ybl)</option>
+        </select>
       </div>
 
-      <div class="space-y-1">
-        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
-        <h3 class="font-anton text-2xl tracking-wider text-white">ORDER PLACED SUCCESSFULLY!</h3>
-        <p id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</p>
-      </div>
+      <!-- INITIAL PROCEED TO PHONEPE BUTTON -->
+      <button type="submit" id="proceedToPayBtn" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-lg hover:brightness-110 cursor-pointer">
+        PROCEED TO PHONEPE
+      </button>
 
-      <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
-        <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed</span></div>
-        <div class="flex justify-between"><span class="text-slate-400">Payment:</span><span id="successPaymentDisplay" class="font-semibold text-white">PhonePe UPI</span></div>
-        <div class="flex justify-between"><span class="text-slate-400">Payee UPI:</span><span class="font-mono text-[#E8C997]">8977627028-2@ybl</span></div>
-      </div>
-
-      <div class="space-y-2.5 pt-2">
-        <a id="directUpiPaymentLink" href="javascript:void(0)" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-          <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
-          <span id="upiBtnText">PAY VIA PHONEPE / GPAY UPI</span>
-        </a>
-
-        <a id="directWhatsAppLink" href="javascript:void(0)" target="_blank" class="w-full py-4 bg-[#25D366] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-          <i data-lucide="message-circle" class="w-4 h-4"></i>
-          <span>SEND CONFIRMATION TO WHATSAPP</span>
-        </a>
-
-        <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
-          Return to Storefront
+      <!-- BACKUP PAYMENT COMPLETED BUTTON -->
+      <div id="paymentCompletedContainer" class="hidden space-y-2 pt-2">
+        <p class="text-[11px] text-emerald-400 text-center font-medium">Complete payment in PhonePe app, then click below:</p>
+        <button type="button" onclick="triggerDeliveryTruckSuccessModal()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-xl transition-all cursor-pointer">
+          PAYMENT COMPLETED ✓
         </button>
       </div>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== ANIMATED 3D DELIVERY TRUCK POPUP ==================== -->
+<div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-[#111218] border border-[#C5A880]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative overflow-hidden">
+    
+    <div class="w-full h-32 bg-gradient-to-r from-orange-500/20 via-amber-500/25 to-teal-500/20 rounded-2xl border border-white/10 relative overflow-hidden flex items-center justify-center">
+      <div class="absolute inset-0 flex items-center justify-between px-6">
+        <div class="flex items-center gap-1.5 bg-black/70 px-3 py-2 rounded-xl border border-white/15 animate-bounce">
+          <span class="text-2xl">🏃‍♂️📦</span>
+          <span class="text-[10px] font-bold text-amber-300">Loading Box</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-black/70 px-4 py-2 rounded-xl border border-amber-400/40 shadow-xl animate-pulse">
+          <span class="text-3xl">🚚💨</span>
+          <span class="text-[11px] font-bold text-emerald-400">Dispatching</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-1">
+      <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">CONSIGNMENT RESERVED</span>
+      <h3 class="font-anton text-2xl tracking-wider text-white">CONGRATULATIONS! ORDER CONFIRMED</h3>
+      <p id="successOrderIdDisplay" class="text-xs font-mono text-[#E8C997]">Order ID: #LS-992026</p>
+    </div>
+
+    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2 text-xs">
+      <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="text-amber-400 font-bold">Confirmed & Paid</span></div>
+      <div class="flex justify-between"><span class="text-slate-400">Payment:</span><span class="font-semibold text-white">PhonePe UPI (Verified)</span></div>
+      <div class="flex justify-between"><span class="text-slate-400">Payee UPI:</span><span class="font-mono text-[#E8C997]">8977627028-2@ybl</span></div>
+    </div>
+
+    <div class="space-y-2.5 pt-2">
+      <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 transition-all cursor-pointer">
+        Continue
+      </button>
     </div>
   </div>
+</div>
 
+<!-- ==================== THANK YOU STICKER POPUP ==================== -->
+<div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
+    <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
+      <div class="w-full h-full bg-[#0d0f14] rounded-[22px] flex items-center justify-center text-4xl select-none">
+        😊
+      </div>
+    </div>
+    <div class="space-y-1.5 pt-2">
+      <h4 class="font-anton text-2xl text-white tracking-wider">THANK YOU FOR YOUR TIME!</h4>
+      <p class="text-xs text-[#E8C997] font-medium">Have a nice day! Continue your shopping with Lenka Stores. 😊</p>
+    </div>
+    <div class="pt-2">
+      <button type="button" onclick="closeThankYouModal()" class="w-full py-3.5 bg-white text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:bg-[#E8C997] transition-all cursor-pointer active:scale-95">
+        Continue Shopping
+      </button>
+    </div>
+  </div>
+</div>
   <footer class="bg-[#08090C] border-t border-white/10 text-slate-300 py-16 mt-auto">
     <div class="max-w-4xl mx-auto px-6 text-center space-y-5">
       <div class="inline-block">
