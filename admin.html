@@ -217,10 +217,10 @@
             </div>
           </div>
 
-        <div>
-  <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">IMAGE URLS (Paste comma-separated links for multiple gallery images)</label>
-  <textarea id="fieldImageUrls" rows="2" required placeholder="https://image1.jpg, https://image2.jpg" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none"></textarea>
-</div>
+          <div>
+            <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">IMAGE URLS (Paste comma-separated links for multiple gallery images)</label>
+            <textarea id="fieldImageUrls" rows="2" required placeholder="https://image1.jpg, https://image2.jpg" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none"></textarea>
+          </div>
 
           <div>
             <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">DESCRIPTION</label>
@@ -250,10 +250,13 @@
         <input type="hidden" id="editProdId" />
         <div><label class="font-bold uppercase text-slate-500 block mb-1">Title</label><input type="text" id="editTitle" required class="w-full bg-slate-100 p-2.5 rounded-xl border" /></div>
         <div><label class="font-bold uppercase text-slate-500 block mb-1">Offer Price</label><input type="number" id="editOfferPrice" required class="w-full bg-slate-100 p-2.5 rounded-xl border" /></div>
-        <div><label class="font-bold uppercase text-slate-500 block mb-1">Image URL</label><input type="text" id="editImage" required class="w-full bg-slate-100 p-2.5 rounded-xl border" /></div>
+        <div>
+          <label class="font-bold uppercase text-slate-500 block mb-1">IMAGE URLS (Comma separated)</label>
+          <textarea id="editModalImageUrls" rows="2" required placeholder="https://image1.jpg, https://image2.jpg" class="w-full bg-slate-100 p-2.5 rounded-xl border"></textarea>
+        </div>
         <div class="flex gap-2 pt-2">
-          <button type="button" onclick="closeEditModal()" class="w-1/2 py-2.5 bg-slate-200 rounded-xl font-bold">Cancel</button>
-          <button type="submit" class="w-1/2 py-2.5 bg-black text-white rounded-xl font-bold">Save</button>
+          <button type="button" onclick="closeEditModal()" class="w-1/2 py-2.5 bg-slate-200 rounded-xl font-bold cursor-pointer">Cancel</button>
+          <button type="submit" class="w-1/2 py-2.5 bg-black text-white rounded-xl font-bold cursor-pointer">Save</button>
         </div>
       </form>
     </div>
@@ -696,67 +699,71 @@
       if (window.lucide) lucide.createIcons();
     }
 
-async function handlePublishProduct(e) {
-  e.preventDefault();
-  const btn = document.getElementById('publishBtn');
-  if (btn) {
-    btn.disabled = true;
-    btn.innerText = "PUBLISHING TO CLOUD...";
-  }
+    async function handlePublishProduct(e) {
+      e.preventDefault();
+      const btn = document.getElementById('publishBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = "PUBLISHING TO CLOUD...";
+      }
 
-  const category = document.getElementById('fieldCategory')?.value || "Audio & Wireless Earbuds";
-  const title = document.getElementById('fieldTitle').value.trim();
-  const originalPrice = Number(document.getElementById('fieldOriginalPrice').value) || 0;
-  const offerPrice = Number(document.getElementById('fieldOfferPrice').value) || 0;
-  const discountTag = document.getElementById('fieldDiscountTag')?.value.trim() || '';
-  const description = document.getElementById('fieldDescription')?.value.trim() || 'Curated luxury piece.';
-  
-  // Parse multiple image URLs separated by commas or newlines
-  const rawImagesInput = document.getElementById('fieldImageUrls').value.trim();
-  const imagesArray = rawImagesInput.split(/,|\n/).map(s => s.trim()).filter(s => s.length > 0);
-  const primaryImage = imagesArray[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
+      const category = document.getElementById('fieldCategory')?.value || "Audio & Wireless Earbuds";
+      const title = document.getElementById('fieldTitle').value.trim();
+      const originalPrice = Number(document.getElementById('fieldOriginalPrice').value) || 0;
+      const offerPrice = Number(document.getElementById('fieldOfferPrice').value) || 0;
+      const discountTag = document.getElementById('fieldDiscountTag')?.value.trim() || '';
+      const description = document.getElementById('fieldDescription')?.value.trim() || 'Curated luxury piece.';
+      
+      const rawImagesInput = document.getElementById('fieldImageUrls').value.trim();
+      const imagesArray = rawImagesInput.split(/,|\n/).map(s => s.trim()).filter(s => s.length > 0);
+      const primaryImage = imagesArray[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
 
-  const prodId = 'prod_' + Date.now();
+      const prodId = 'prod_' + Date.now();
 
-  const newProd = {
-    title,
-    category,
-    originalPrice,
-    offerPrice,
-    discountTag,
-    description,
-    image: primaryImage,       // Main thumbnail image
-    images: imagesArray,       // Full gallery array of multiple images
-    createdAt: new Date().toISOString()
-  };
+      const newProd = {
+        title,
+        category,
+        originalPrice,
+        offerPrice,
+        discountTag,
+        description,
+        image: primaryImage,
+        images: imagesArray,
+        createdAt: new Date().toISOString()
+      };
 
-  try {
-    liveProducts.unshift({ id: prodId, ...newProd });
-    localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
-    renderProductsGrid();
-    
-    await db.collection('products').doc(prodId).set(newProd);
-    alert(`Product "${title}" with ${imagesArray.length} image(s) published live!`);
-    document.getElementById('productPublishForm').reset();
-    switchTab('inventory');
-  } catch (err) {
-    console.error("Firestore Publish Error:", err);
-    alert("Published locally.");
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerText = "PUBLISH PRODUCT TO LIVE STORE";
+      try {
+        liveProducts.unshift({ id: prodId, ...newProd });
+        localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
+        renderProductsGrid();
+        
+        await db.collection('products').doc(prodId).set(newProd);
+        alert(`Product "${title}" with ${imagesArray.length} image(s) published live!`);
+        document.getElementById('productPublishForm').reset();
+        switchTab('inventory');
+      } catch (err) {
+        console.error("Firestore Publish Error:", err);
+        alert("Published locally.");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = "PUBLISH PRODUCT TO LIVE STORE";
+        }
+      }
     }
-  }
-}
 
     function openEditModal(id) {
       const prod = liveProducts.find(p => String(p.id) === String(id));
       if (!prod) return;
       document.getElementById('editProdId').value = prod.id;
-      document.getElementById('editTitle').value = prod.title;
-      document.getElementById('editOfferPrice').value = prod.offerPrice;
-      document.getElementById('editImage').value = prod.image;
+      document.getElementById('editTitle').value = prod.title || '';
+      document.getElementById('editOfferPrice').value = prod.offerPrice || '';
+      
+      const imagesString = Array.isArray(prod.images) && prod.images.length > 0 
+        ? prod.images.join(', ') 
+        : (prod.image || '');
+      document.getElementById('editModalImageUrls').value = imagesString;
+
       document.getElementById('editProductModal').classList.remove('hidden');
     }
 
@@ -769,19 +776,29 @@ async function handlePublishProduct(e) {
       const id = document.getElementById('editProdId').value;
       const title = document.getElementById('editTitle').value.trim();
       const offerPrice = Number(document.getElementById('editOfferPrice').value);
-      const image = document.getElementById('editImage').value.trim();
+      
+      const rawImages = document.getElementById('editModalImageUrls').value.trim();
+      const imagesArray = rawImages.split(/,|\n/).map(s => s.trim()).filter(s => s.length > 0);
+      const primaryImage = imagesArray[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
 
       const idx = liveProducts.findIndex(p => String(p.id) === String(id));
       if (idx !== -1) {
         liveProducts[idx].title = title;
         liveProducts[idx].offerPrice = offerPrice;
-        liveProducts[idx].image = image;
+        liveProducts[idx].image = primaryImage;
+        liveProducts[idx].images = imagesArray;
         localStorage.setItem('lenka_catalog', JSON.stringify(liveProducts));
       }
       renderProductsGrid();
-      await db.collection('products').doc(id).update({ title, offerPrice, image });
+      
+      try {
+        await db.collection('products').doc(id).update({ title, offerPrice, image: primaryImage, images: imagesArray });
+      } catch (err) {
+        console.warn("Firestore update note:", err);
+      }
+
       closeEditModal();
-      alert("Product updated!");
+      alert("Product updated successfully!");
     }
 
     async function deleteProduct(id) {
