@@ -238,27 +238,23 @@
               95% { transform: translate(240px, 15px) scale(0.8); opacity: 0; }
               100% { transform: translate(240px, 15px) scale(0.8); opacity: 0; }
             }
-
             @keyframes truckSequence {
               0% { transform: translate(140px, 15px); opacity: 1; }
               45% { transform: translate(140px, 15px); opacity: 1; }
               65% { transform: translate(140px, 10px) scale(1.02); opacity: 1; }
               100% { transform: translate(140px, -250px) scale(0.9); opacity: 0; filter: blur(3px); }
             }
-
             @keyframes smokeRollIn {
               0% { transform: translateY(-160px); opacity: 0; }
               35% { transform: translateY(0px); opacity: 1; }
               80% { transform: translateY(0px); opacity: 1; }
               100% { transform: translateY(-160px); opacity: 0; }
             }
-
             @keyframes revealContent {
               0% { opacity: 0; transform: scale(0.95); }
               70% { opacity: 0; transform: scale(0.95); }
               100% { opacity: 1; transform: scale(1); }
             }
-
             .anim-boy { animation: boySequence 5s ease infinite; }
             .anim-truck { animation: truckSequence 5s ease infinite; }
             .anim-smoke { animation: smokeRollIn 5s ease infinite; }
@@ -316,25 +312,7 @@
     </div>
   </div>
 
-  <div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
-      <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
-        <div class="w-full h-full bg-[#0d0f14] rounded-[22px] flex items-center justify-center text-4xl select-none">
-          😊
-        </div>
-      </div>
-      <div class="space-y-1.5 pt-2">
-        <h4 class="font-anton text-2xl text-white tracking-wider">THANK YOU FOR YOUR TIME!</h4>
-        <p class="text-xs text-[#E8C997] font-medium">Have a nice day! Continue your shopping with Lenka Stores. 😊</p>
-      </div>
-      <div class="pt-2">
-        <button type="button" onclick="closeThankYouModal()" class="w-full py-3.5 bg-white text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-lg hover:bg-[#E8C997] transition-all cursor-pointer active:scale-95">
-          Continue Shopping
-        </button>
-      </div>
-    </div>
-  </div>
-
+  <!-- ABOUT / FOOTER SECTION -->
   <footer class="bg-[#08090C] border-t border-white/10 text-slate-300 py-16 mt-auto">
     <div class="max-w-4xl mx-auto px-6 text-center space-y-5">
       <div class="inline-block">
@@ -364,6 +342,7 @@
     </div>
   </footer>
 
+  <!-- FEEDBACK MODAL -->
   <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#101218] border border-white/15 rounded-[32px] p-6 sm:p-8 shadow-2xl space-y-5 text-white relative">
       <button type="button" onclick="closeFeedbackModal()" class="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer">
@@ -397,6 +376,7 @@
     </div>
   </div>
 
+  <!-- FEEDBACK THANKS MODAL -->
   <div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
       <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
@@ -423,5 +403,197 @@
   <script src="js/catalog.js"></script>
   <script src="js/feedback.js"></script>
   <script src="js/hero.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
+      authDomain: "lenkastores-website.firebaseapp.com",
+      projectId: "lenkastores-website",
+      storageBucket: "lenkastores-website.firebasestorage.app",
+      messagingSenderId: "17683527030",
+      appId: "1:17683527030:web:b443d717f2c89ee177f657",
+      measurementId: "G-3JT9WKQ318"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let liveCatalog = [];
+    let currentCategoryFilter = 'all';
+
+    function initStorefrontCatalog() {
+      const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+      if (saved.length > 0) {
+        liveCatalog = saved;
+        renderCatalog();
+      }
+
+      db.collection('products').onSnapshot(snapshot => {
+        liveCatalog = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          const imagesList = Array.isArray(d.images) && d.images.length > 0 
+            ? d.images 
+            : [d.image || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'];
+
+          liveCatalog.push({
+            id: doc.id,
+            title: d.title || 'Untitled Product',
+            category: d.category || 'Audio & Wireless Earbuds',
+            originalPrice: d.originalPrice || 0,
+            offerPrice: d.offerPrice || d.price || 0,
+            discountTag: d.discountTag || '',
+            description: d.description || '',
+            image: imagesList[0],
+            images: imagesList
+          });
+        });
+        localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
+        renderCatalog();
+      }, err => {
+        console.warn("Catalog sync warning:", err);
+        renderCatalog();
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategoryFilter = String(cat).trim().toLowerCase();
+      const heading = document.getElementById('currentCategoryHeading');
+      if (heading) {
+        heading.innerText = (currentCategoryFilter === 'all') ? 'Live Catalog' : cat;
+      }
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('productGrid');
+      const emptyState = document.getElementById('emptyCatalogState');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      let filtered = liveCatalog;
+      if (currentCategoryFilter !== 'all') {
+        filtered = liveCatalog.filter(p => String(p.category || '').trim().toLowerCase() === currentCategoryFilter);
+      }
+
+      if (filtered.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+      if (emptyState) emptyState.classList.add('hidden');
+
+      filtered.forEach((p, index) => {
+        const imagesList = Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image];
+        const hasMultipleImages = imagesList.length > 1;
+        const sliderId = `prodSlider_${p.id || index}`;
+
+        const card = document.createElement('div');
+        card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
+        card.innerHTML = `
+          <div>
+            <div id="wrapper_${sliderId}" class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative group select-none cursor-grab active:cursor-grabbing">
+              <div id="${sliderId}" class="w-full h-full flex transition-transform duration-300 ease-out pointer-events-none" style="width: ${imagesList.length * 100}%;">
+                ${imagesList.map(img => `<img src="${img}" class="w-full h-full object-cover shrink-0 pointer-events-none" style="width: calc(100% / ${imagesList.length});" />`).join('')}
+              </div>
+              
+              ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10 z-10">${p.discountTag}</span>` : ''}
+
+              ${hasMultipleImages ? `
+                <button type="button" onclick="slideProductImage('${sliderId}', -1, ${imagesList.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20">❮</button>
+                <button type="button" onclick="slideProductImage('${sliderId}', 1, ${imagesList.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20">❯</button>
+                
+                <div id="dots_${sliderId}" class="absolute bottom-2 inset-x-0 flex justify-center gap-1 z-10">
+                  ${imagesList.map((_, i) => `<span class="w-1.5 h-1.5 rounded-full bg-white/${i === 0 ? '100' : '40'} transition-all"></span>`).join('')}
+                </div>
+              ` : ''}
+            </div>
+
+            <span class="text-[9px] uppercase font-bold tracking-widest text-[#C5A880]">${p.category || 'Atelier Exclusive'}</span>
+            <h4 class="font-bold text-white text-base mt-1 line-clamp-1">${p.title}</h4>
+            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${p.description || 'Precision crafted and tuned for modern luxury.'}</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/10">
+            <div>
+              ${p.originalPrice ? `<span class="text-xs text-slate-500 line-through mr-1.5">₹${p.originalPrice}</span>` : ''}
+              <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
+            </div>
+            <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+              Add To Bag
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        if (hasMultipleImages) {
+          setTimeout(() => setupProductSwipeGestures(sliderId, imagesList.length), 50);
+        }
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    window.productSliderIndices = window.productSliderIndices || {};
+    function slideProductImage(sliderId, direction, totalImages) {
+      if (window.productSliderIndices[sliderId] === undefined) window.productSliderIndices[sliderId] = 0;
+      let currentIndex = window.productSliderIndices[sliderId];
+      currentIndex = (currentIndex + direction + totalImages) % totalImages;
+      window.productSliderIndices[sliderId] = currentIndex;
+
+      const sliderEl = document.getElementById(sliderId);
+      if (sliderEl) {
+        const percentage = -(currentIndex * (100 / totalImages));
+        sliderEl.style.transform = `translateX(${percentage}%)`;
+      }
+
+      const dotsContainer = document.getElementById(`dots_${sliderId}`);
+      if (dotsContainer) {
+        const dots = dotsContainer.children;
+        for (let i = 0; i < dots.length; i++) {
+          dots[i].className = `w-1.5 h-1.5 rounded-full bg-white/${i === currentIndex ? '100' : '40'} transition-all`;
+        }
+      }
+    }
+
+    function setupProductSwipeGestures(sliderId, totalImages) {
+      const wrapper = document.getElementById(`wrapper_${sliderId}`);
+      if (!wrapper) return;
+
+      let startX = 0;
+      let endX = 0;
+      let isDragging = false;
+
+      wrapper.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+
+      wrapper.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+      }, { passive: true });
+
+      wrapper.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        endX = e.clientX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const diffX = endX - startX;
+        if (Math.abs(diffX) > 35) {
+          if (diffX < 0) {
+            slideProductImage(sliderId, 1, totalImages);
+          } else {
+            slideProductImage(sliderId, -1, totalImages);
+          }
+        }
+      }
+    }
+  </script>
 </body>
 </html>
