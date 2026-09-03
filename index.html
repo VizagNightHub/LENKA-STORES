@@ -483,7 +483,8 @@
       if (emptyState) emptyState.classList.add('hidden');
 
       filtered.forEach((p, index) => {
-        const imagesList = Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image];
+        // Ensure images array is always valid
+        const imagesList = Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'];
         const hasMultipleImages = imagesList.length > 1;
         const sliderId = `prodSlider_${p.id || index}`;
 
@@ -491,19 +492,23 @@
         card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
         card.innerHTML = `
           <div>
-            <div id="wrapper_${sliderId}" class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative group select-none cursor-grab active:cursor-grabbing">
-              <div id="${sliderId}" class="w-full h-full flex transition-transform duration-300 ease-out pointer-events-none" style="width: ${imagesList.length * 100}%;">
-                ${imagesList.map(img => `<img src="${img}" class="w-full h-full object-cover shrink-0 pointer-events-none" style="width: calc(100% / ${imagesList.length});" />`).join('')}
+            <!-- IMAGE SLIDER CONTAINER WITH TOUCH SWIPE & DRAG LISTENERS -->
+            <div id="wrapper_${sliderId}" class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative group select-none cursor-grab active:cursor-grabbing touch-pan-y">
+              
+              <!-- SLIDER TRACK: Width is dynamically set to 100% * number of images -->
+              <div id="${sliderId}" class="h-full flex transition-transform duration-300 ease-out pointer-events-none" style="width: ${imagesList.length * 100}%;">
+                ${imagesList.map(img => `<img src="${img}" class="h-full object-cover shrink-0 pointer-events-none" style="width: ${100 / imagesList.length}%;" />`).join('')}
               </div>
               
               ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10 z-10">${p.discountTag}</span>` : ''}
 
+              <!-- SLIDER NAVIGATION ARROWS (Visible on hover / Always active on touch devices) -->
               ${hasMultipleImages ? `
-                <button type="button" onclick="slideProductImage('${sliderId}', -1, ${imagesList.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20">❮</button>
-                <button type="button" onclick="slideProductImage('${sliderId}', 1, ${imagesList.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20">❯</button>
+                <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', -1, ${imagesList.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❮</button>
+                <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', 1, ${imagesList.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❯</button>
                 
-                <div id="dots_${sliderId}" class="absolute bottom-2 inset-x-0 flex justify-center gap-1 z-10">
-                  ${imagesList.map((_, i) => `<span class="w-1.5 h-1.5 rounded-full bg-white/${i === 0 ? '100' : '40'} transition-all"></span>`).join('')}
+                <div id="dots_${sliderId}" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10 pointer-events-none">
+                  ${imagesList.map((_, i) => `<span class="w-2 h-2 rounded-full bg-white/${i === 0 ? '100' : '40'} shadow transition-all"></span>`).join('')}
                 </div>
               ` : ''}
             </div>
@@ -525,6 +530,7 @@
         `;
         grid.appendChild(card);
 
+        // Attach touch swipe & mouse drag gestures if there are multiple images
         if (hasMultipleImages) {
           setTimeout(() => setupProductSwipeGestures(sliderId, imagesList.length), 50);
         }
@@ -532,6 +538,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    // SLIDER CONTROLLER FUNCTION
     window.productSliderIndices = window.productSliderIndices || {};
     function slideProductImage(sliderId, direction, totalImages) {
       if (window.productSliderIndices[sliderId] === undefined) window.productSliderIndices[sliderId] = 0;
@@ -549,11 +556,12 @@
       if (dotsContainer) {
         const dots = dotsContainer.children;
         for (let i = 0; i < dots.length; i++) {
-          dots[i].className = `w-1.5 h-1.5 rounded-full bg-white/${i === currentIndex ? '100' : '40'} transition-all`;
+          dots[i].className = `w-2 h-2 rounded-full bg-white/${i === currentIndex ? '100' : '40'} shadow transition-all`;
         }
       }
     }
 
+    // TOUCH SWIPE & MOUSE DRAG GESTURE ENGINE (MOBILE & DESKTOP)
     function setupProductSwipeGestures(sliderId, totalImages) {
       const wrapper = document.getElementById(`wrapper_${sliderId}`);
       if (!wrapper) return;
@@ -585,10 +593,12 @@
 
       function handleSwipe() {
         const diffX = endX - startX;
-        if (Math.abs(diffX) > 35) {
+        if (Math.abs(diffX) > 30) { // sensitivity threshold
           if (diffX < 0) {
+            // Swipe Left -> Next Image
             slideProductImage(sliderId, 1, totalImages);
           } else {
+            // Swipe Right -> Previous Image
             slideProductImage(sliderId, -1, totalImages);
           }
         }
