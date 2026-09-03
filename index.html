@@ -57,6 +57,7 @@
 
   <section id="lenkaHeroRoot" class="relative w-full overflow-hidden select-none" style="background-color: #F4845F; transition: background-color 650ms cubic-bezier(0.4, 0, 0.2, 1); min-height: 94vh;">
     <div class="relative w-full h-[94vh] overflow-hidden flex flex-col justify-between">
+      
       <div class="absolute inset-0 pointer-events-none" style="z-index: 5; opacity: 0.35; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E&quot;); background-size: 200px 200px; background-repeat: repeat;"></div>
 
       <div class="absolute top-4 left-4 sm:top-6 sm:left-8 text-[11px] sm:text-xs font-semibold uppercase text-white/90" style="z-index: 15; letter-spacing: 0.18em;">
@@ -65,6 +66,7 @@
 
       <div id="headlineTiltContainer" class="perspective-headline absolute inset-x-0 flex justify-center items-center pointer-events-auto" style="z-index: 8; top: 10%;">
         <div id="headlineInnerGrid" class="flex items-center justify-center gap-1.5 sm:gap-3 px-4 w-full max-w-5xl cursor-crosshair">
+          
           <div id="letterBox-0" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs><clipPath id="clip-L"><text x="50" y="68" class="letter-svg-text" font-size="140">L</text></clipPath></defs>
@@ -72,6 +74,7 @@
               <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
             </svg>
           </div>
+
           <div id="letterBox-1" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs><clipPath id="clip-E"><text x="50" y="68" class="letter-svg-text" font-size="140">E</text></clipPath></defs>
@@ -79,6 +82,7 @@
               <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
             </svg>
           </div>
+
           <div id="letterBox-2" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs><clipPath id="clip-N"><text x="50" y="68" class="letter-svg-text" font-size="140">N</text></clipPath></defs>
@@ -86,6 +90,7 @@
               <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
             </svg>
           </div>
+
           <div id="letterBox-3" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs><clipPath id="clip-K"><text x="50" y="68" class="letter-svg-text" font-size="140">K</text></clipPath></defs>
@@ -93,6 +98,7 @@
               <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
             </svg>
           </div>
+
           <div id="letterBox-4" class="letter-3d-box relative w-14 sm:w-24 md:w-32 lg:w-40 aspect-[0.7/1] drop-shadow-[0_12px_25px_rgba(0,0,0,0.35)]">
             <svg class="w-full h-full" viewBox="0 0 100 135">
               <defs><clipPath id="clip-A"><text x="50" y="68" class="letter-svg-text" font-size="140">A</text></clipPath></defs>
@@ -100,6 +106,7 @@
               <text x="50" y="68" class="letter-svg-text" font-size="140" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.95"></text>
             </svg>
           </div>
+
         </div>
       </div>
 
@@ -109,7 +116,7 @@
         </button>
       </div>
 
-      <div class="absolute inset-x-0 pointer-events-auto flex items-center justify-center cursor-grab active:cursor-grabbing" style="top: 35%; bottom: 12%; z-index: 12;">
+      <div class="absolute inset-x-0 pointer-events-auto flex items-center justify-center cursor-grab active:cursor-grabbing" style="top: 34%; bottom: 12%; z-index: 12;">
         <div id="heroCarouselStage" class="relative w-full h-full max-w-5xl mx-auto flex items-center justify-center"></div>
       </div>
 
@@ -117,8 +124,8 @@
         <p class="font-bold uppercase mb-1 text-sm sm:text-base">LENKA STORES</p>
         <p class="hidden sm:block text-[11px] text-white/80 mb-2.5 leading-relaxed">Discover fashion and electronics curated for modern living.</p>
         <div id="navArrowButtons" class="flex items-center gap-2.5 hidden">
-          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/25 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/25 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('prev')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+          <button type="button" onclick="navigateHeroCarousel('next')" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white bg-black/20 backdrop-blur-sm flex items-center justify-center text-white cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
         </div>
       </div>
 
@@ -127,6 +134,7 @@
           <span>EXPLORE</span><i data-lucide="arrow-right" class="w-5 h-5 sm:w-8 sm:h-8"></i>
         </button>
       </div>
+
     </div>
   </section>
 
@@ -166,7 +174,6 @@
     </div>
   </div>
 
-  <!-- ==================== EXPRESS CHECKOUT & PAYMENT MODAL ==================== -->
   <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111218] border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-white relative">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
@@ -174,7 +181,6 @@
         <button type="button" onclick="closeCheckoutModal()" class="p-1 text-slate-400 hover:text-white cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
-      <!-- PRODUCT DETAILS SUMMARY (Name, Image, Cost ONLY) -->
       <div id="checkoutProductSummary" class="space-y-3 max-h-48 overflow-y-auto custom-scrollbar p-3 bg-white/5 rounded-2xl border border-white/10"></div>
 
       <form onsubmit="handlePhonePeRedirectPayment(event)" class="space-y-4 text-xs">
@@ -199,11 +205,9 @@
     </div>
   </div>
 
-  <!-- ==================== ANIMATED 3D CARTOON ORDER SUCCESS POPUP ==================== -->
   <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111218] border border-[#14b8a6]/50 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-5 text-center text-white relative overflow-hidden">
       
-      <!-- 3D CARTOON ANIMATION SEQUENCE -->
       <div class="relative w-full h-40 bg-transparent rounded-2xl overflow-hidden flex items-center justify-center my-1">
         <svg class="w-full h-full" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -261,7 +265,6 @@
             .anim-reveal { animation: revealContent 5s ease infinite; }
           </style>
 
-          <!-- DELIVERY BOY & BOX -->
           <g class="anim-boy">
             <g transform="translate(0, 25)">
               <rect x="0" y="0" width="40" height="30" rx="5" fill="url(#boxGrad)" stroke="#78350f" stroke-width="2"/>
@@ -274,7 +277,6 @@
             </g>
           </g>
 
-          <!-- TRUCK -->
           <g class="anim-truck">
             <rect x="50" y="20" width="75" height="40" rx="6" fill="url(#truckBody)" stroke="#0369a1" stroke-width="2"/>
             <text x="87" y="44" font-family="Poppins, sans-serif" font-weight="700" font-size="7.5" fill="#e0f2fe" text-anchor="middle">LENKA EXPRESS</text>
@@ -284,7 +286,6 @@
             <circle cx="140" cy="62" r="8" fill="#0f172a" stroke="#334155" stroke-width="2.5"/>
           </g>
 
-          <!-- SMOKE TRANSITION -->
           <g class="anim-smoke">
             <rect x="0" y="0" width="400" height="160" fill="#0b0d12"/>
             <circle cx="120" cy="80" r="70" fill="#1e293b" opacity="0.9"/>
@@ -292,7 +293,6 @@
             <text x="200" y="85" font-family="Poppins, sans-serif" font-weight="700" font-size="12" fill="#38bdf8" text-anchor="middle">DISPATCHING ORDER...</text>
           </g>
 
-          <!-- REVEAL SCREEN -->
           <g class="anim-reveal">
             <rect x="25" y="15" width="350" height="130" rx="16" fill="#11131a" stroke="#14b8a6" stroke-width="2"/>
             <circle cx="200" cy="50" r="18" fill="url(#tealGrad)"/>
@@ -316,7 +316,6 @@
     </div>
   </div>
 
-  <!-- ==================== THANK YOU STICKER POPUP ==================== -->
   <div id="feedbackThanksModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="max-w-sm w-full bg-[#11131A] border-2 border-[#C5A880]/50 rounded-[36px] p-8 text-center space-y-4 shadow-[0_0_50px_rgba(197,168,128,0.25)] relative">
       <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#f4845f] via-[#c5a880] to-[#e8c997] p-1 mx-auto shadow-2xl">
@@ -419,594 +418,6 @@
     </div>
   </div>
 
-  <script src="js/config.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/catalog.js"></script>
-  <script src="js/feedback.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDXwQhinA5N5IRamLjr4viHvM7oeLNaVOc",
-      authDomain: "lenkastores-website.firebaseapp.com",
-      projectId: "lenkastores-website",
-      storageBucket: "lenkastores-website.firebasestorage.app",
-      messagingSenderId: "17683527030",
-      appId: "1:17683527030:web:b443d717f2c89ee177f657",
-      measurementId: "G-3JT9WKQ318"
-    };
-
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    let liveCatalog = [];
-    let currentCategoryFilter = 'all';
-
-    function initStorefrontCatalog() {
-      const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-      if (saved.length > 0) {
-        liveCatalog = saved;
-        renderCatalog();
-      }
-
-      db.collection('products').onSnapshot(snapshot => {
-        liveCatalog = [];
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          liveCatalog.push({
-            id: doc.id,
-            title: d.title || 'Untitled Product',
-            category: d.category || 'Audio & Wireless Earbuds',
-            originalPrice: d.originalPrice || 0,
-            offerPrice: d.offerPrice || d.price || 0,
-            discountTag: d.discountTag || '',
-            description: d.description || '',
-            image: d.image || (Array.isArray(d.images) ? d.images[0] : '') || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'
-          });
-        });
-        localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
-        renderCatalog();
-      }, err => {
-        console.warn("Catalog sync warning:", err);
-        renderCatalog();
-      });
-    }
-
-    function filterCategory(cat) {
-      currentCategoryFilter = cat;
-      const heading = document.getElementById('currentCategoryHeading');
-      if (heading) heading.innerText = cat === 'all' ? 'Live Catalog' : cat;
-      renderCatalog();
-    }
-
-    function renderCatalog() {
-      const grid = document.getElementById('productGrid');
-      const emptyState = document.getElementById('emptyCatalogState');
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      let filtered = liveCatalog;
-      if (currentCategoryFilter !== 'all') {
-        filtered = liveCatalog.filter(p => p.category === currentCategoryFilter);
-      }
-
-      if (filtered.length === 0) {
-        if (emptyState) emptyState.classList.remove('hidden');
-        return;
-      }
-      if (emptyState) emptyState.classList.add('hidden');
-
-      filtered.forEach(p => {
-        const card = document.createElement('div');
-        card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
-        card.innerHTML = `
-          <div>
-            <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative">
-              <img src="${p.image || (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'}" alt="${p.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-              ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10">${p.discountTag}</span>` : ''}
-            </div>
-            <span class="text-[9px] uppercase font-bold tracking-widest text-[#C5A880]">${p.category || 'Atelier Exclusive'}</span>
-            <h4 class="font-bold text-white text-base mt-1 line-clamp-1">${p.title}</h4>
-            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${p.description || 'Precision crafted and tuned for modern luxury.'}</p>
-          </div>
-
-          <div class="flex items-center justify-between pt-3 border-t border-white/10">
-            <div>
-              ${p.originalPrice ? `<span class="text-xs text-slate-500 line-through mr-1.5">₹${p.originalPrice}</span>` : ''}
-              <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
-            </div>
-            <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-              Add To Bag
-            </button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      if (window.lucide) lucide.createIcons();
-    }
-  </script>
-
-  <script>
-    function getCart() {
-      try {
-        const saved = localStorage.getItem('lenka_cart_v2');
-        return saved ? JSON.parse(saved) : [];
-      } catch (e) { return []; }
-    }
-
-    function saveCart(cart) {
-      localStorage.setItem('lenka_cart_v2', JSON.stringify(cart));
-      updateCartUI();
-    }
-
-    function addToBag(productId) {
-      let catalog = window.liveCatalog || [];
-      if (catalog.length === 0) {
-        try { catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]'); } catch (e) { catalog = []; }
-      }
-      const product = catalog.find(p => String(p.id) === String(productId));
-      if (!product) return alert("Product item not found in live inventory.");
-
-      const cart = getCart();
-      const existing = cart.find(item => String(item.id) === String(productId));
-      if (existing) {
-        existing.quantity = (existing.quantity || 1) + 1;
-      } else {
-        cart.push({
-          id: product.id,
-          name: product.title,
-          price: product.offerPrice,
-          image: product.image || (product.images && product.images[0]),
-          quantity: 1
-        });
-      }
-      saveCart(cart);
-      openCartDrawer();
-    }
-
-    function removeFromCart(id) {
-      let cart = getCart().filter(i => String(i.id) !== String(id));
-      saveCart(cart);
-    }
-
-    function updateQuantity(id, qty) {
-      let cart = getCart();
-      const item = cart.find(i => String(i.id) === String(id));
-      if (item) {
-        item.quantity = Number(qty);
-        if (item.quantity <= 0) return removeFromCart(id);
-      }
-      saveCart(cart);
-    }
-
-    function updateCartUI() {
-      const cart = getCart();
-      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-      const countEl = document.getElementById('navCartCount');
-      if (countEl) countEl.innerText = count;
-
-      const subtotalEl = document.getElementById('cartSubtotalPrice');
-      if (subtotalEl) subtotalEl.innerText = `₹${subtotal}`;
-
-      const list = document.getElementById('cartItemsList');
-      if (!list) return;
-      list.innerHTML = '';
-
-      if (cart.length === 0) {
-        list.innerHTML = '<p class="text-xs text-slate-500 text-center py-12">Your atelier bag is empty.</p>';
-        return;
-      }
-
-      cart.forEach(item => {
-        list.innerHTML += `
-          <div class="p-3 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-3 text-xs">
-            <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover" />
-            <div class="flex-1">
-              <h5 class="font-bold text-white truncate">${item.name}</h5>
-              <span class="text-[#C5A880] font-bold">₹${item.price}</span>
-              <div class="flex items-center gap-2 mt-1.5">
-                <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">-</button>
-                <span>${item.quantity}</span>
-                <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold">+</button>
-              </div>
-            </div>
-            <button type="button" onclick="removeFromCart('${item.id}')" class="p-1.5 text-red-400 hover:text-red-300"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          </div>`;
-      });
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function openCartDrawer() {
-      const d = document.getElementById('cartDrawer');
-      if (d) d.classList.remove('translate-x-full');
-      updateCartUI();
-    }
-
-    function closeCartDrawer() {
-      const d = document.getElementById('cartDrawer');
-      if (d) d.classList.add('translate-x-full');
-    }
-
-    function openCheckoutModal() {
-      const cart = getCart();
-      if (cart.length === 0) return alert("Your bag is empty.");
-      closeCartDrawer();
-
-      const summaryContainer = document.getElementById('checkoutProductSummary');
-      if (summaryContainer) {
-        summaryContainer.innerHTML = '';
-        cart.forEach(item => {
-          summaryContainer.innerHTML += `
-            <div class="flex items-center gap-3 text-xs">
-              <img src="${item.image}" class="w-10 h-10 rounded-lg object-cover bg-black" />
-              <div class="flex-1 min-w-0">
-                <h6 class="font-bold text-white truncate">${item.name}</h6>
-                <span class="text-slate-400">Qty: ${item.quantity}</span>
-              </div>
-              <span class="font-extrabold text-[#C5A880]">₹${item.price * item.quantity}</span>
-            </div>
-          `;
-        });
-      }
-
-      const proceedBtn = document.getElementById('proceedToPayBtn');
-      const completedContainer = document.getElementById('paymentCompletedContainer');
-      if (proceedBtn) proceedBtn.classList.remove('hidden');
-      if (completedContainer) completedContainer.classList.add('hidden');
-
-      const modal = document.getElementById('checkoutModal');
-      if (modal) modal.classList.remove('hidden');
-    }
-
-    function closeCheckoutModal() {
-      const modal = document.getElementById('checkoutModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function handlePhonePeRedirectPayment(e) {
-      e.preventDefault();
-      const cart = getCart();
-      if (cart.length === 0) return alert("Your bag is empty.");
-
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
-      localStorage.setItem('lenka_pending_order_id', orderId);
-
-      const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
-      window.location.href = upiUrl;
-
-      const proceedBtn = document.getElementById('proceedToPayBtn');
-      const completedContainer = document.getElementById('paymentCompletedContainer');
-      if (proceedBtn) proceedBtn.classList.add('hidden');
-      if (completedContainer) completedContainer.classList.remove('hidden');
-    }
-
-    function triggerDeliveryTruckSuccessModal() {
-      const cart = getCart();
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      const orderId = localStorage.getItem('lenka_pending_order_id') || ('LS-' + Math.floor(100000 + Math.random() * 900000));
-      const itemsSummary = cart.map(i => `• ${i.name} (Qty: ${i.quantity}) - ₹${i.price * i.quantity}`).join('\n');
-
-      const newOrder = {
-        orderId,
-        customerName: "Verified Online Client",
-        customerPhone: "8977627028",
-        customerAddress: "Direct UPI Express Order",
-        paymentMethod: "PhonePe UPI (Paid)",
-        itemsSummary,
-        totalAmount: subtotal,
-        status: 'Confirmed & Paid',
-        createdAt: new Date().toISOString(),
-        shippingDate: 'Processing in warehouse',
-        deliveryDate: 'Expected in 3-5 days'
-      };
-
-      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-      orders.unshift(newOrder);
-      localStorage.setItem('lenka_orders', JSON.stringify(orders));
-
-      if (window.firebase && firebase.apps.length) {
-        firebase.firestore().collection('orders').doc(orderId).set(newOrder).catch(err => console.warn(err));
-      }
-
-      const waMessage = 
-`*NEW PAID ORDER - LENKA STORES*
----------------------------------------
-*Order ID:* #${orderId}
-*Payment Status:* Paid via PhonePe UPI (Verified)
-
-*Product Details:*
-${itemsSummary}
-
-*Total Amount:* ₹${subtotal}
----------------------------------------`;
-
-      const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
-      window.open(whatsappUrl, '_blank');
-
-      localStorage.removeItem('lenka_cart_v2');
-      updateCartUI();
-      closeCheckoutModal();
-
-      if (window.confetti) {
-        confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
-      }
-
-      const orderIdDisplay = document.getElementById('successOrderIdDisplay');
-      if (orderIdDisplay) orderIdDisplay.innerText = `Order ID: #${orderId}`;
-
-      const successModal = document.getElementById('orderSuccessModal');
-      if (successModal) successModal.classList.remove('hidden');
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeOrderSuccessModal() {
-      const successModal = document.getElementById('orderSuccessModal');
-      if (successModal) successModal.classList.add('hidden');
-
-      const thankYouModal = document.getElementById('feedbackThanksModal');
-      if (thankYouModal) thankYouModal.classList.remove('hidden');
-    }
-
-    function closeThankYouModal() {
-      const thankYouModal = document.getElementById('feedbackThanksModal');
-      if (thankYouModal) thankYouModal.classList.add('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    window.addToBag = addToBag;
-    window.updateQuantity = updateQuantity;
-    window.removeFromCart = removeFromCart;
-    window.openCartDrawer = openCartDrawer;
-    window.closeCartDrawer = closeCartDrawer;
-    window.openCheckoutModal = openCheckoutModal;
-    window.closeCheckoutModal = closeCheckoutModal;
-    window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
-    window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
-    window.closeOrderSuccessModal = closeOrderSuccessModal;
-    window.closeThankYouModal = closeThankYouModal;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      initStorefrontCatalog();
-      updateCartUI();
-      const savedUser = JSON.parse(localStorage.getItem('lenka_user_profile') || 'null');
-      if (savedUser && savedUser.avatar) {
-        const navImg = document.getElementById('navProfileAvatar');
-        if (navImg) navImg.src = savedUser.avatar;
-      }
-      if (window.lucide) lucide.createIcons();
-    });
-  </script>
-
-  <script>
-    let heroMediaSlots = [];
-    let activeHeroIndex = 0;
-    let isHeroAnimating = false;
-    let heroAutoTimer = null;
-
-    const DEFAULT_HERO_MEDIA = [
-      {
-        id: 0,
-        url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260831_123709_183f0065-efb2-4bb2-a849-13aaa5af2f3f.mp4",
-        bg: "#F4845F",
-        title: "Lenka Wireless Audio"
-      },
-      {
-        id: 1,
-        url: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800",
-        bg: "#E07020",
-        title: "Atelier Couture"
-      }
-    ];
-
-    function initHeroMediaEngine() {
-      const saved = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
-      heroMediaSlots = Array.isArray(saved) && saved.length > 0 ? saved : DEFAULT_HERO_MEDIA;
-      buildAndRenderMediaStage();
-      startAutoSlideTimer();
-      setupTouchSwipeGestures();
-
-      if (window.firebase && firebase.apps.length) {
-        firebase.firestore().collection('settings').doc('hero_ads').onSnapshot(doc => {
-          if (doc.exists && Array.isArray(doc.data().media) && doc.data().media.length > 0) {
-            heroMediaSlots = doc.data().media;
-            localStorage.setItem('lenka_hero_ads', JSON.stringify(heroMediaSlots));
-            buildAndRenderMediaStage();
-          }
-        }, err => console.warn(err));
-      }
-    }
-
-    function buildAndRenderMediaStage() {
-      const stage = document.getElementById('heroCarouselStage');
-      const arrowControls = document.getElementById('navArrowButtons');
-      if (!stage) return;
-      stage.innerHTML = '';
-
-      if (arrowControls) {
-        if (heroMediaSlots.length <= 1) arrowControls.classList.add('hidden');
-        else arrowControls.classList.remove('hidden');
-      }
-
-      heroMediaSlots.forEach((slot, idx) => {
-        const isVideo = slot.url.endsWith('.mp4') || slot.url.endsWith('.webm') || slot.url.includes('.mp4') || slot.url.includes('cloudfront.net');
-        const card = document.createElement('div');
-        card.id = `carouselItem-${idx}`;
-        card.className = "absolute rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-2 border-white/20 bg-black";
-        card.style.transition = "all 600ms cubic-bezier(0.4, 0, 0.2, 1)";
-        card.style.willChange = "transform, filter, opacity, left, top, width, height";
-
-        if (isVideo) {
-          card.innerHTML = `
-            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-cover pointer-events-none">
-              <source src="${slot.url}" type="video/mp4" />
-            </video>
-          `;
-        } else {
-          card.innerHTML = `
-            <img src="${slot.url}" alt="${slot.title || 'Lenka Ad'}" draggable="false" class="w-full h-full object-cover pointer-events-none" />
-          `;
-        }
-        stage.appendChild(card);
-      });
-
-      renderHeroStage();
-    }
-
-    function renderHeroStage() {
-      const isMobile = window.innerWidth < 640;
-      const total = heroMediaSlots.length;
-      const heroRoot = document.getElementById('lenkaHeroRoot');
-      const getStartedBtn = document.getElementById('heroGetStartedBtn');
-      const currentTheme = heroMediaSlots[activeHeroIndex] || { bg: '#F4845F' };
-
-      if (heroRoot) heroRoot.style.backgroundColor = currentTheme.bg || '#F4845F';
-      if (getStartedBtn) getStartedBtn.style.color = currentTheme.bg || '#F4845F';
-
-      if (total === 0) return;
-
-      heroMediaSlots.forEach((_, idx) => {
-        const itemEl = document.getElementById(`carouselItem-${idx}`);
-        if (!itemEl) return;
-
-        const vid = itemEl.querySelector('video');
-        if (vid) {
-          vid.play().catch(() => {});
-        }
-
-        if (total === 1) {
-          itemEl.style.left = '50%';
-          itemEl.style.top = isMobile ? '37%' : '36%';
-          itemEl.style.transform = 'translateX(-50%) scale(1)';
-          itemEl.style.width = isMobile ? '86%' : '370px';
-          itemEl.style.height = isMobile ? '50%' : '54%';
-          itemEl.style.filter = 'blur(0px)';
-          itemEl.style.opacity = '1';
-          itemEl.style.zIndex = '30';
-        } else {
-          const relativePos = (idx - activeHeroIndex + total) % total;
-
-          if (relativePos === 0) {
-            itemEl.style.left = '50%';
-            itemEl.style.top = isMobile ? '37%' : '36%';
-            itemEl.style.transform = 'translateX(-50%) scale(1)';
-            itemEl.style.width = isMobile ? '86%' : '370px';
-            itemEl.style.height = isMobile ? '50%` : '54%';
-            itemEl.style.filter = 'blur(0px)';
-            itemEl.style.opacity = '1';
-            itemEl.style.zIndex = '30';
-          } else if (relativePos === 1) {
-            itemEl.style.left = isMobile ? '90%' : '78%';
-            itemEl.style.top = isMobile ? '40%' : '39%';
-            itemEl.style.transform = 'translateX(-50%) scale(0.85)';
-            itemEl.style.width = isMobile ? '68%' : '300px';
-            itemEl.style.height = isMobile ? '42%' : '46%';
-            itemEl.style.filter = 'blur(2.5px)';
-            itemEl.style.opacity = '0.7';
-            itemEl.style.zIndex = '15';
-          } else if (relativePos === total - 1) {
-            itemEl.style.left = isMobile ? '10%' : '22%';
-            itemEl.style.top = isMobile ? '40%' : '39%';
-            itemEl.style.transform = 'translateX(-50%) scale(0.85)';
-            itemEl.style.width = isMobile ? '68%' : '300px';
-            itemEl.style.height = isMobile ? '42%' : '46%';
-            itemEl.style.filter = 'blur(2.5px)';
-            itemEl.style.opacity = '0.7';
-            itemEl.style.zIndex = '15';
-          } else {
-            itemEl.style.left = '50%';
-            itemEl.style.top = '42%';
-            itemEl.style.transform = 'translateX(-50%) scale(0.7)';
-            itemEl.style.width = '240px';
-            itemEl.style.height = '36%';
-            itemEl.style.filter = 'blur(5px)';
-            itemEl.style.opacity = '0';
-            itemEl.style.zIndex = '5';
-          }
-        }
-      });
-    }
-
-    function navigateHeroCarousel(direction) {
-      const total = heroMediaSlots.length;
-      if (total <= 1 || isHeroAnimating) return;
-      isHeroAnimating = true;
-
-      if (direction === 'next') {
-        activeHeroIndex = (activeHeroIndex + 1) % total;
-      } else {
-        activeHeroIndex = (activeHeroIndex - 1 + total) % total;
-      }
-      
-      renderHeroStage();
-      resetAutoSlideTimer();
-      setTimeout(() => { isHeroAnimating = false; }, 600);
-    }
-
-    function startAutoSlideTimer() {
-      if (heroAutoTimer) clearInterval(heroAutoTimer);
-      heroAutoTimer = setInterval(() => {
-        navigateHeroCarousel('next');
-      }, 30000);
-    }
-
-    function resetAutoSlideTimer() {
-      startAutoSlideTimer();
-    }
-
-    function setupTouchSwipeGestures() {
-      const stage = document.getElementById('heroCarouselStage');
-      if (!stage) return;
-
-      let startX = 0;
-      let startY = 0;
-      let endX = 0;
-      let endY = 0;
-
-      stage.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-      }, { passive: true });
-
-      stage.addEventListener('touchend', (e) => {
-        endX = e.changedTouches[0].clientX;
-        endY = e.changedTouches[1] ? e.changedTouches[1].clientY : e.changedTouches[0].clientY;
-        handleGesture();
-      }, { passive: true });
-
-      let isMouseDown = false;
-      stage.addEventListener('mousedown', (e) => {
-        isMouseDown = true;
-        startX = e.clientX;
-      });
-
-      window.addEventListener('mouseup', (e) => {
-        if (!isMouseDown) return;
-        isMouseDown = false;
-        endX = e.clientX;
-        handleGesture();
-      });
-
-      function handleGesture() {
-        const diffX = endX - startX;
-        if (Math.abs(diffX) > 40) {
-          if (diffX < 0) {
-            navigateHeroCarousel('next');
-          } else {
-            navigateHeroCarousel('prev');
-          }
-        }
-      }
-    }
-
-    window.navigateHeroCarousel = navigateHeroCarousel;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      initHeroMediaEngine();
-    });
-    window.addEventListener('resize', renderHeroStage);
-  </script>
   <script src="js/config.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/catalog.js"></script>
