@@ -200,6 +200,26 @@ function renderActiveConsignmentsModal() {
   if (window.lucide) lucide.createIcons();
 }
 
+// Profile Form Default Values Update
+function loadProfileForm() {
+  const savedUser = JSON.parse(localStorage.getItem('lenka_user_profile') || '{}');
+  
+  const nameInput = document.getElementById('profileNameInput');
+  const phoneInput = document.getElementById('profilePhoneInput');
+
+  if (nameInput) {
+    // If a saved name exists, populate it as value; otherwise, leave empty so placeholder shows
+    nameInput.value = savedUser.name || '';
+    nameInput.placeholder = "Enter your name";
+  }
+
+  if (phoneInput) {
+    // If a saved number exists, populate it as value; otherwise, leave empty so placeholder shows
+    phoneInput.value = savedUser.phone || '';
+    phoneInput.placeholder = "Enter your number";
+  }
+}
+
 // CANCELLATION & DELETION HANDLER
 async function cancelAndDeleteOrder(orderId) {
   if (!confirm(`Are you sure you want to cancel and delete Order #${orderId}?`)) return;
