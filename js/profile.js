@@ -136,14 +136,19 @@ function checkAndOpenProfile() {
     window.location.href = "profile.html";
 }
 
-// FIX 2: Complete and robust session clearing and redirection logout flow
+// FIX 2: Complete and robust session clearing and redirection logout flow (Handles both button ID selectors and global onclick bindings safely)
 function clientLogOutSession() {
+    if (window.event) {
+        window.event.preventDefault();
+    }
+    
     if (!confirm("Are you sure you want to log out of Lenka Stores?")) return;
     
     // Clear client storage tokens and profile session data completely
     localStorage.removeItem('lenka_user_profile');
     localStorage.removeItem('lenka_logged_in_phone');
     localStorage.removeItem('lenka_cart_v2');
+    localStorage.removeItem('lenka_pending_order_id');
     sessionStorage.clear();
 
     // Clear authentication cookies if any exist
@@ -152,8 +157,17 @@ function clientLogOutSession() {
     });
 
     // Force clean redirect back to guest storefront homepage
-    window.location.href = "index.html";
+    window.location.replace("index.html");
 }
+
+// Global safety listener to catch any logout buttons or menu toggles dynamically by ID or class across all pages
+document.addEventListener('click', (e) => {
+    const targetLogout = e.target.closest('#auth-toggle-btn, .logout-btn, [data-action="logout"]');
+    if (targetLogout) {
+        e.preventDefault();
+        clientLogOutSession();
+    }
+});
 
 // RENDER ACTIVE CONSIGNMENTS WITH "CANCEL ORDER" DELETION BUTTON
 function renderActiveConsignmentsModal() {
