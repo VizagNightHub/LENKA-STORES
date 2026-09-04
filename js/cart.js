@@ -1,273 +1,180 @@
-// ATELIER SHOPPING CART & CHECKOUT ENGINE
+// ATELIER CATALOG & TOUCH SLIDER ENGINE (CRASH-PROOF)
 
-function getCart() {
-  try {
-    const saved = localStorage.getItem('lenka_cart_v2');
-    return saved ? JSON.parse(saved) : [];
-  } catch (e) {
-    return [];
+let liveCatalog = [];
+let currentCategoryFilter = 'all';
+
+function initStorefrontCatalog() {
+  const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+  if (saved.length > 0) {
+    liveCatalog = saved;
+    renderCatalog();
+  }
+
+  if (typeof firebase !== 'undefined' && firebase.apps.length) {
+    firebase.firestore().collection('products').onSnapshot(snapshot => {
+      liveCatalog = [];
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        let imagesList = [];
+        if (Array.isArray(d.images) && d.images.length > 0) {
+          imagesList = d.images;
+        } else if (d.image) {
+          imagesList = [d.image];
+        } else {
+          imagesList = ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'];
+        }
+
+        liveCatalog.push({
+          id: doc.id,
+          title: d.title || 'Untitled Product',
+          category: d.category || 'Audio & Wireless Earbuds',
+          originalPrice: d.originalPrice || 0,
+          offerPrice: d.offerPrice || d.price || 0,
+          discountTag: d.discountTag || '',
+          description: d.description || '',
+          image: imagesList[0],
+          images: imagesList
+        });
+      });
+      localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
+      renderCatalog();
+    }, err => {
+      console.warn("Catalog sync warning:", err);
+      renderCatalog();
+    });
+  } else {
+    renderCatalog();
   }
 }
 
-function saveCart(cart) {
-  localStorage.setItem('lenka_cart_v2', JSON.stringify(cart));
-  updateCartUI();
+function filterCategory(cat) {
+  currentCategoryFilter = String(cat).trim().toLowerCase();
+  const heading = document.getElementById('currentCategoryHeading');
+  if (heading) {
+    heading.innerText = (currentCategoryFilter === 'all') ? 'Live Catalog' : cat;
+  }
+  renderCatalog();
 }
 
-function addToBag(productId) {
-  let catalog = window.liveCatalog || [];
-  if (catalog.length === 0) {
-    try {
-      catalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-    } catch (e) {
-      catalog = [];
+function renderCatalog() {
+  const grid = document.getElementById('productGrid');
+  const emptyState = document.getElementById('emptyCatalogState');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  let filtered = liveCatalog;
+  if (currentCategoryFilter !== 'all') {
+    filtered = liveCatalog.filter(p => String(p.category || '').trim().toLowerCase() === currentCategoryFilter);
+  }
+
+  if (filtered.length === 0) {
+    if (emptyState) emptyState.classList.remove('hidden');
+    return;
+  }
+  if (emptyState) emptyState.classList.add('hidden');
+
+  filtered.forEach((p, index) => {
+    const imagesList = Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image];
+    const hasMultipleImages = imagesList.length > 1;
+    const sliderId = `prodSlider_${p.id || index}`;
+
+    const card = document.createElement('div');
+    card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
+    card.innerHTML = `
+      <div>
+        <div id="wrapper_${sliderId}" class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative group select-none cursor-grab active:cursor-grabbing touch-pan-y">
+          
+          <div id="${sliderId}" class="h-full flex transition-transform duration-300 ease-out pointer-events-none" style="width: ${imagesList.length * 100}%;">
+            ${imagesList.map(img => `<img src="${img}" class="h-full object-cover shrink-0 pointer-events-none" style="width: ${100 / imagesList.length}%;" />`).join('')}
+          </div>
+          
+          ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10 z-10">${p.discountTag}</span>` : ''}
+
+          ${hasMultipleImages ? `
+            <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', -1, ${imagesList.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❮</button>
+            <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', 1, ${imagesList.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❯</button>
+            
+            <div id="dots_${sliderId}" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10 pointer-events-none">
+              ${imagesList.map((_, i) => `<span class="w-2 h-2 rounded-full bg-white/${i === 0 ? '100' : '40'} shadow transition-all"></span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+
+        <span class="text-[9px] uppercase font-bold tracking-widest text-[#C5A880]">${p.category || 'Atelier Exclusive'}</span>
+        <h4 class="font-bold text-white text-base mt-1 line-clamp-1">${p.title}</h4>
+        <p class="text-xs text-slate-400 mt-1 line-clamp-2">${p.description || 'Precision crafted and tuned for modern luxury.'}</p>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-white/10">
+        <div>
+          ${p.originalPrice ? `<span class="text-xs text-slate-500 line-through mr-1.5">₹${p.originalPrice}</span>` : ''}
+          <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
+        </div>
+        <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+          Add To Bag
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+
+    if (hasMultipleImages) {
+      setTimeout(() => setupProductSwipeGestures(sliderId, imagesList.length), 50);
+    }
+  });
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+}
+
+window.productSliderIndices = window.productSliderIndices || {};
+function slideProductImage(sliderId, direction, totalImages) {
+  if (window.productSliderIndices[sliderId] === undefined) window.productSliderIndices[sliderId] = 0;
+  let currentIndex = window.productSliderIndices[sliderId];
+  currentIndex = (currentIndex + direction + totalImages) % totalImages;
+  window.productSliderIndices[sliderId] = currentIndex;
+
+  const sliderEl = document.getElementById(sliderId);
+  if (sliderEl) {
+    const percentage = -(currentIndex * (100 / totalImages));
+    sliderEl.style.transform = `translateX(${percentage}%)`;
+  }
+
+  const dotsContainer = document.getElementById(`dots_${sliderId}`);
+  if (dotsContainer) {
+    const dots = dotsContainer.children;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].className = `w-2 h-2 rounded-full bg-white/${i === currentIndex ? '100' : '40'} shadow transition-all`;
     }
   }
-
-  const product = catalog.find(p => String(p.id) === String(productId));
-  if (!product) {
-    alert("Product item not found in live inventory.");
-    return;
-  }
-
-  const cart = getCart();
-  const existing = cart.find(item => String(item.id) === String(productId));
-  
-  if (existing) {
-    existing.quantity = (existing.quantity || 1) + 1;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.title || product.name,
-      price: Number(product.offerPrice || product.price) || 0,
-      image: product.image || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : '') || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800',
-      quantity: 1
-    });
-  }
-
-  saveCart(cart);
-  openCartDrawer();
 }
 
-function removeFromCart(id) {
-  let cart = getCart().filter(i => String(i.id) !== String(id));
-  saveCart(cart);
+function setupProductSwipeGestures(sliderId, totalImages) {
+  const wrapper = document.getElementById(`wrapper_${sliderId}`);
+  if (!wrapper) return;
+
+  let startX = 0;
+  let endX = 0;
+
+  wrapper.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  wrapper.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].clientX;
+    const diffX = endX - startX;
+    if (Math.abs(diffX) > 30) {
+      if (diffX < 0) {
+        slideProductImage(sliderId, 1, totalImages);
+      } else {
+        slideProductImage(sliderId, -1, totalImages);
+      }
+    }
+  }, { passive: true });
 }
 
-function updateQuantity(id, qty) {
-  let cart = getCart();
-  const item = cart.find(i => String(i.id) === String(id));
-  if (item) {
-    item.quantity = Number(qty);
-    if (item.quantity <= 0) return removeFromCart(id);
-  }
-  saveCart(cart);
+window.filterCategory = filterCategory;
+window.slideProductImage = slideProductImage;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initStorefrontCatalog);
+} else {
+  initStorefrontCatalog();
 }
-
-function updateCartUI() {
-  const cart = getCart();
-  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-  const countEl = document.getElementById('navCartCount');
-  if (countEl) countEl.innerText = count;
-
-  const subtotalEl = document.getElementById('cartSubtotalPrice');
-  if (subtotalEl) subtotalEl.innerText = `₹${subtotal}`;
-
-  const list = document.getElementById('cartItemsList');
-  if (!list) return;
-  list.innerHTML = '';
-
-  if (cart.length === 0) {
-    list.innerHTML = '<p class="text-xs text-slate-500 text-center py-12">Your Atelier bag is currently empty.</p>';
-    if (window.lucide) lucide.createIcons();
-    return;
-  }
-
-  cart.forEach(item => {
-    list.innerHTML += `
-      <div class="p-3 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-3 text-xs">
-        <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover bg-black" onerror="this.src='https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'" />
-        <div class="flex-1 min-w-0">
-          <h5 class="font-bold text-white truncate">${item.name}</h5>
-          <span class="text-[#C5A880] font-bold">₹${item.price}</span>
-          <div class="flex items-center gap-2 mt-1.5">
-            <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold flex items-center justify-center cursor-pointer">-</button>
-            <span class="font-mono">${item.quantity}</span>
-            <button type="button" onclick="updateQuantity('${item.id}', ${item.quantity + 1})" class="w-5 h-5 rounded bg-white/10 text-white font-bold flex items-center justify-center cursor-pointer">+</button>
-          </div>
-        </div>
-        <button type="button" onclick="removeFromCart('${item.id}')" class="p-1.5 text-red-400 hover:text-red-300 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-      </div>`;
-  });
-
-  if (window.lucide) lucide.createIcons();
-}
-
-function openCartDrawer() {
-  const d = document.getElementById('cartDrawer');
-  if (d) d.classList.remove('translate-x-full');
-  updateCartUI();
-}
-
-function closeCartDrawer() {
-  const d = document.getElementById('cartDrawer');
-  if (d) d.classList.add('translate-x-full');
-}
-
-function openCheckoutModal() {
-  const cart = getCart();
-  if (cart.length === 0) {
-    alert("Your bag is empty.");
-    return;
-  }
-  closeCartDrawer();
-  
-  // Render Product Details Summary (Name, Image, Cost ONLY)
-  const summaryContainer = document.getElementById('checkoutProductSummary');
-  if (summaryContainer) {
-    summaryContainer.innerHTML = '';
-    cart.forEach(item => {
-      summaryContainer.innerHTML += `
-        <div class="flex items-center gap-3 text-xs">
-          <img src="${item.image}" class="w-10 h-10 rounded-lg object-cover bg-black" />
-          <div class="flex-1 min-w-0">
-            <h6 class="font-bold text-white truncate">${item.name}</h6>
-            <span class="text-slate-400">Qty: ${item.quantity}</span>
-          </div>
-          <span class="font-extrabold text-[#C5A880]">₹${item.price * item.quantity}</span>
-        </div>
-      `;
-    });
-  }
-
-  const proceedBtn = document.getElementById('proceedToPayBtn');
-  const completedContainer = document.getElementById('paymentCompletedContainer');
-  if (proceedBtn) proceedBtn.classList.remove('hidden');
-  if (completedContainer) completedContainer.classList.add('hidden');
-
-  const modal = document.getElementById('checkoutModal');
-  if (modal) modal.classList.remove('hidden');
-}
-function closeCheckoutModal() {
-  const modal = document.getElementById('checkoutModal');
-  if (modal) modal.classList.add('hidden');
-}
-
-// STEP 1: REDIRECT TO PHONEPE & SHOW PAYMENT COMPLETED BUTTON
-function handlePhonePeRedirectPayment(e) {
-  e.preventDefault();
-  const cart = getCart();
-  if (cart.length === 0) return alert("Your bag is empty.");
-
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
-
-  // Save temporary order ID
-  localStorage.setItem('lenka_pending_order_id', orderId);
-
-  // Trigger PhonePe URI Scheme
-  const upiUrl = `upi://pay?pa=8977627028-2@ybl&pn=Lenka%20Stores&am=${subtotal}&cu=INR&tn=Order%20${orderId}`;
-  window.location.href = upiUrl;
-
-  // Swap buttons so user can click "Payment Completed" after returning from PhonePe
-  const proceedBtn = document.getElementById('proceedToPayBtn');
-  const completedContainer = document.getElementById('paymentCompletedContainer');
-  if (proceedBtn) proceedBtn.classList.add('hidden');
-  if (completedContainer) completedContainer.classList.remove('hidden');
-}
-
-// STEP 2: TRIGGER DELIVERY TRUCK POPUP AFTER PAYMENT IS COMPLETED
-function triggerDeliveryTruckSuccessModal() {
-  const cart = getCart();
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const orderId = localStorage.getItem('lenka_pending_order_id') || ('LS-' + Math.floor(100000 + Math.random() * 900000));
-  const itemsSummary = cart.map(i => `• ${i.name} (Qty: ${i.quantity}) - ₹${i.price * i.quantity}`).join('\n');
-
-  const newOrder = {
-    orderId,
-    customerName: "Verified Online Client",
-    customerPhone: "8977627028",
-    customerAddress: "Direct UPI Express Order",
-    paymentMethod: "PhonePe UPI (Paid)",
-    itemsSummary,
-    totalAmount: subtotal,
-    status: 'Confirmed & Paid',
-    createdAt: new Date().toISOString(),
-    shippingDate: 'Processing in warehouse',
-    deliveryDate: 'Expected in 3-5 days'
-  };
-
-  // Save order to database & local storage
-  const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
-  orders.unshift(newOrder);
-  localStorage.setItem('lenka_orders', JSON.stringify(orders));
-
-  if (window.firebase && firebase.apps.length) {
-    firebase.firestore().collection('orders').doc(orderId).set(newOrder).catch(err => console.warn(err));
-  }
-
-  // AUTOMATE WHATSAPP MESSAGE TO 8977627028
-  const waMessage = 
-`*NEW PAID ORDER - LENKA STORES*
----------------------------------------
-*Order ID:* #${orderId}
-*Payment Status:* Paid via PhonePe UPI (Verified)
-
-*Product Details:*
-${itemsSummary}
-
-*Total Amount:* ₹${subtotal}
----------------------------------------`;
-
-  // Open WhatsApp in background
-  const whatsappUrl = `https://wa.me/918977627028?text=${encodeURIComponent(waMessage)}`;
-  window.open(whatsappUrl, '_blank');
-
-  // Clear cart
-  localStorage.removeItem('lenka_cart_v2');
-  updateCartUI();
-  closeCheckoutModal();
-
-  if (window.confetti) {
-    confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
-  }
-
-  // Display Order ID in success modal
-  const orderIdDisplay = document.getElementById('successOrderIdDisplay');
-  if (orderIdDisplay) orderIdDisplay.innerText = `Order ID: #${orderId}`;
-
-  // Open Animated Delivery Truck Success Modal
-  const successModal = document.getElementById('orderSuccessModal');
-  if (successModal) successModal.classList.remove('hidden');
-  if (window.lucide) lucide.createIcons();
-}
-
-function closeOrderSuccessModal() {
-  const successModal = document.getElementById('orderSuccessModal');
-  if (successModal) successModal.classList.add('hidden');
-
-  // Open Thank You Sticker Popup
-  const thankYouModal = document.getElementById('feedbackThanksModal');
-  if (thankYouModal) thankYouModal.classList.remove('hidden');
-}
-
-function closeThankYouModal() {
-  const thankYouModal = document.getElementById('feedbackThanksModal');
-  if (thankYouModal) thankYouModal.classList.add('hidden');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Global exposure
-window.addToBag = addToBag;
-window.updateQuantity = updateQuantity;
-window.removeFromCart = removeFromCart;
-window.openCartDrawer = openCartDrawer;
-window.closeCartDrawer = closeCartDrawer;
-window.openCheckoutModal = openCheckoutModal;
-window.closeCheckoutModal = closeCheckoutModal;
-window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
-window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
-window.closeOrderSuccessModal = closeOrderSuccessModal;
-window.closeThankYouModal = closeThankYouModal;
