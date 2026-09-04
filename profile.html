@@ -332,17 +332,17 @@
     }
 
     function handleAuthAction() {
-      if (currentProfile.isLoggedIn) {
+    if (typeof clientLogOutSession === 'function') {
+        clientLogOutSession();
+    } else {
         if (!confirm("Are you sure you want to log out?")) return;
-        currentProfile.isLoggedIn = false;
         localStorage.removeItem('lenka_logged_in_phone');
         localStorage.removeItem('lenka_user_profile');
+        localStorage.removeItem('lenka_cart_v2');
+        sessionStorage.clear();
         window.location.href = "index.html";
-      } else {
-        window.location.href = "index.html";
-      }
     }
-
+}
     window.addEventListener('DOMContentLoaded', initProfile);
   </script>
 </body>
