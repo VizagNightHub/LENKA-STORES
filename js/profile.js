@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayAddress = document.getElementById('display-address');
     const inputUsername = document.getElementById('input-username');
     const inputAddress = document.getElementById('input-address');
+    const inputPhone = document.getElementById('input-phone'); // Optional phone input if present in form
     
     const profileAvatarPreview = document.getElementById('profile-avatar-preview');
     const photoFileInput = document.getElementById('photo-file-input');
@@ -20,32 +21,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const authToggleBtn = document.getElementById('auth-toggle-btn');
     const authBtnText = document.getElementById('auth-btn-text');
 
-    // Retrieve profile data or initialize with default user details
+    // Retrieve profile data or initialize cleanly with blank/placeholder defaults instead of hardcoded demo data
     let savedData;
     try {
         savedData = JSON.parse(localStorage.getItem('lenka_user_profile')) || {
-            username: "V. Udayteja",
-            address: "Add your delivery address",
+            username: "",
+            number: "",
+            address: "",
             avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300",
-            isLoggedIn: true
+            isLoggedIn: false
         };
     } catch (e) {
         savedData = {
-            username: "V. Udayteja",
-            address: "Add your delivery address",
+            username: "",
+            number: "",
+            address: "",
             avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300",
-            isLoggedIn: true
+            isLoggedIn: false
         };
     }
 
     function renderProfile() {
-        if (displayUsername) displayUsername.textContent = savedData.username || "V. Udayteja";
+        if (displayUsername) displayUsername.textContent = savedData.username || "Guest User";
         if (displayAddress) {
             displayAddress.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${savedData.address || "Add your delivery address"}`;
         }
         if (profileAvatarPreview && savedData.avatar) profileAvatarPreview.src = savedData.avatar;
-        if (inputUsername) inputUsername.value = savedData.username || "";
-        if (inputAddress) inputAddress.value = savedData.address === "Add your delivery address" ? "" : savedData.address;
+        
+        // FIX 1: Set placeholder attributes explicitly and only assign value if saved data exists
+        if (inputUsername) {
+            inputUsername.placeholder = "Enter your name";
+            inputUsername.value = savedData.username || "";
+        }
+        if (inputAddress) {
+            inputAddress.placeholder = "Enter your delivery address";
+            inputAddress.value = savedData.address || "";
+        }
+        if (inputPhone) {
+            inputPhone.placeholder = "Enter your number";
+            inputPhone.value = savedData.number || localStorage.getItem('lenka_logged_in_phone') || "";
+        }
+
         if (authBtnText) authBtnText.textContent = savedData.isLoggedIn ? "Logout" : "Login";
     }
 
@@ -88,11 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (editProfileForm) {
         editProfileForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            savedData.username = inputUsername ? inputUsername.value.trim() : "V. Udayteja";
-            savedData.address = inputAddress && inputAddress.value.trim() ? inputAddress.value.trim() : "Add your delivery address";
+            savedData.username = inputUsername ? inputUsername.value.trim() : "";
+            savedData.address = inputAddress ? inputAddress.value.trim() : "";
+            if (inputPhone) savedData.number = inputPhone.value.trim();
             savedData.avatar = temporaryImageBase64;
+            savedData.isLoggedIn = true;
             
             localStorage.setItem('lenka_user_profile', JSON.stringify(savedData));
+            if (savedData.number) {
+                localStorage.setItem('lenka_logged_in_phone', savedData.number);
+            }
             renderProfile();
             
             if (profileEditSection) profileEditSection.style.display = 'none';
@@ -102,15 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (authToggleBtn) {
         authToggleBtn.addEventListener('click', () => {
-            if (confirm("Are you sure you want to log out of Lenka Stores?")) {
-                // Completely clear user session and profile data
-                localStorage.removeItem('lenka_user_profile');
-                localStorage.removeItem('lenka_logged_in_phone');
-                localStorage.removeItem('lenka_cart_v2');
-                
-                // Force redirect back to the storefront home page
-                window.location.href = "index.html";
-            }
+            clientLogOutSession();
         });
     }
 
@@ -123,11 +136,22 @@ function checkAndOpenProfile() {
     window.location.href = "profile.html";
 }
 
+// FIX 2: Complete and robust session clearing and redirection logout flow
 function clientLogOutSession() {
-    if (!confirm("Are you sure you want to log out?")) return;
+    if (!confirm("Are you sure you want to log out of Lenka Stores?")) return;
+    
+    // Clear client storage tokens and profile session data completely
     localStorage.removeItem('lenka_user_profile');
     localStorage.removeItem('lenka_logged_in_phone');
     localStorage.removeItem('lenka_cart_v2');
+    sessionStorage.clear();
+
+    // Clear authentication cookies if any exist
+    document.cookie.split(";").forEach((c) => {
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // Force clean redirect back to guest storefront homepage
     window.location.href = "index.html";
 }
 
@@ -180,12 +204,10 @@ function renderActiveConsignmentsModal() {
 async function cancelAndDeleteOrder(orderId) {
   if (!confirm(`Are you sure you want to cancel and delete Order #${orderId}?`)) return;
 
-  // Remove order from local storage
   let orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
   orders = orders.filter(o => String(o.orderId || o.id) !== String(orderId));
   localStorage.setItem('lenka_orders', JSON.stringify(orders));
 
-  // Delete order from Firebase Firestore database
   if (window.firebase && firebase.apps.length) {
     try {
       await firebase.firestore().collection('orders').doc(orderId).delete();
