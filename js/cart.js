@@ -12,17 +12,16 @@ function initCart() {
   updateCartBadge();
 }
 
-// Add product to bag
+// Add product to bag with robust global catalog checking
 function addToBag(productId) {
-  const catalogSource = window.liveCatalog || liveCatalog;
-  const product = catalogSource ? catalogSource.find(p => String(p.id) === String(productId)) : null;
-
+  const availableCatalog = window.liveCatalog || (typeof liveCatalog !== 'undefined' ? liveCatalog : []);
+  const product = availableCatalog.find(p => String(p.id) === String(productId));
+  
   if (!product) {
-    console.warn("Product not found for ID:", productId);
+    console.warn("Product could not be found in catalog for ID:", productId);
+    alert("Unable to add product. Please refresh the page.");
     return;
   }
-  // ... rest of your cart addition logic
-}
 
   const existingItem = cartItems.find(item => String(item.id) === String(productId));
   if (existingItem) {
@@ -168,7 +167,6 @@ function handlePhonePeRedirectPayment(e) {
 
   const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
   
-  // Simulated secure gateway trigger
   if (proceedBtn) {
     proceedBtn.disabled = true;
     proceedBtn.textContent = "INITIALIZING SECURE CHECKOUT...";
@@ -186,8 +184,6 @@ function forwardOrderToSupplier(orderData) {
   const message = `🚨 NEW LENKA STORES DROPSHIP ORDER!\n\nOrder ID: #${orderData.orderId}\nCustomer: ${orderData.customerName} (${orderData.customerPhone})\nAddress: ${orderData.shippingAddress}\nItems: ${orderData.itemsSummary}\nTotal: ₹${orderData.totalAmount}\nStatus: Confirmed & Dispatched`;
   
   const whatsappUrl = `https://wa.me/${supplierPhone}?text=${encodeURIComponent(message)}`;
-  
-  // Open supplier WhatsApp dispatch link in background tab
   window.open(whatsappUrl, '_blank');
 }
 
@@ -198,7 +194,6 @@ async function triggerDeliveryTruckSuccessModal() {
   const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
   const itemsSummary = cartItems.map(i => `${i.title} (x${i.quantity})`).join(', ');
 
-  // Get customer details if available from form or localStorage
   const customerNameInput = document.getElementById('customerName');
   const customerPhoneInput = document.getElementById('customerPhone');
   const shippingAddressInput = document.getElementById('shippingAddress');
@@ -218,10 +213,8 @@ async function triggerDeliveryTruckSuccessModal() {
     shippingDate: new Date().toLocaleDateString()
   };
 
-  // Automatically Forward Order to Supplier via WhatsApp
   forwardOrderToSupplier(newOrder);
 
-  // Save order to local storage history
   let existingOrders = [];
   try {
     existingOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
@@ -231,7 +224,6 @@ async function triggerDeliveryTruckSuccessModal() {
   existingOrders.unshift(newOrder);
   localStorage.setItem('lenka_orders', JSON.stringify(existingOrders));
 
-  // Sync to Firebase Firestore if configured
   if (typeof firebase !== 'undefined' && firebase.apps.length) {
     try {
       await firebase.firestore().collection('orders').doc(orderId).set({
@@ -243,12 +235,10 @@ async function triggerDeliveryTruckSuccessModal() {
     }
   }
 
-  // Clear cart
   cartItems = [];
   localStorage.removeItem('lenka_cart_v2');
   updateCartBadge();
 
-  // Display success modal & run confetti if available
   const successModal = document.getElementById('orderSuccessModal');
   const orderIdDisplay = document.getElementById('successOrderIdDisplay');
   if (orderIdDisplay) orderIdDisplay.textContent = `Order ID: #${orderId}`;
@@ -265,31 +255,20 @@ function closeOrderSuccessModal() {
   window.location.reload();
 }
 
-// Add product to bag with fallback check
-function addToBag(productId) {
-  // Check global catalog or fallback to local variable
-  const availableCatalog = window.liveCatalog || (typeof liveCatalog !== 'undefined' ? liveCatalog : []);
-  const product = availableCatalog.find(p => String(p.id) === String(productId));
-  
-  if (!product) {
-    console.warn("Product could not be found in catalog for ID:", productId);
-    alert("Unable to add product. Please refresh the page.");
-    return;
-  }
+// Expose all necessary functions globally to window
+window.addToBag = addToBag;
+window.updateCartQuantity = updateCartQuantity;
+window.openCartDrawer = openCartDrawer;
+window.closeCartDrawer = closeCartDrawer;
+window.openCheckoutModal = openCheckoutModal;
+window.closeCheckoutModal = closeCheckoutModal;
+window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
+window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
+window.closeOrderSuccessModal = closeOrderSuccessModal;
 
-  const existingItem = cartItems.find(item => String(item.id) === String(productId));
-  if (existingItem) {
-    existingItem.quantity = (existingItem.quantity || 1) + 1;
-  } else {
-    cartItems.push({
-      id: product.id,
-      title: product.title,
-      price: product.offerPrice || product.price || 0,
-      image: product.image,
-      quantity: 1
-    });
-  }
-
-  saveAndSyncCart();
-  openCartDrawer();
+// Auto initialize cart on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCart);
+} else {
+  initCart();
 }
