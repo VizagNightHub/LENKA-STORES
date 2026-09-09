@@ -14,13 +14,15 @@ function initCart() {
 
 // Add product to bag
 function addToBag(productId) {
-  // Ensure liveCatalog is available globally from catalog.js
-  const product = typeof window.liveCatalog !== 'undefined' ? window.liveCatalog.find(p => String(p.id) === String(productId)) : null;
-  
+  const catalogSource = window.liveCatalog || liveCatalog;
+  const product = catalogSource ? catalogSource.find(p => String(p.id) === String(productId)) : null;
+
   if (!product) {
-    console.warn("Product not found in live catalog for ID:", productId);
+    console.warn("Product not found for ID:", productId);
     return;
   }
+  // ... rest of your cart addition logic
+}
 
   const existingItem = cartItems.find(item => String(item.id) === String(productId));
   if (existingItem) {
