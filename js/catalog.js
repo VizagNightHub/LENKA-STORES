@@ -113,8 +113,8 @@ function renderCatalog() {
           <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
         </div>
         <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-          Add To Bag
-        </button>
+         Add To Bag
+      </button>
       </div>
     `;
     grid.appendChild(card);
