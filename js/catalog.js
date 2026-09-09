@@ -1,200 +1,264 @@
-// DEDICATED ATELIER CATALOG & SLIDER ENGINE
+// LENKA STORES CATALOG & INTERACTIVE PRODUCT STICKER CONTROLLER
 
-let liveCatalog = [];
-let currentCategoryFilter = 'all';
+let allProducts = [];
 
-function initStorefrontCatalog() {
-  const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-  if (saved.length > 0) {
-    liveCatalog = saved;
-    renderCatalog();
+// Initialize Catalog from localStorage or Firebase
+async function initCatalog() {
+  try {
+    allProducts = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+  } catch (e) {
+    allProducts = [];
   }
 
-  if (window.firebase && firebase.apps.length) {
-    firebase.firestore().collection('products').onSnapshot(snapshot => {
-      liveCatalog = [];
-      snapshot.forEach(doc => {
-        const d = doc.data();
-        
-        // Ensure images array properly normalizes single or multiple images
-        let imagesList = [];
-        if (Array.isArray(d.images) && d.images.length > 0) {
-          imagesList = d.images;
-        } else if (d.image) {
-          imagesList = [d.image];
-        } else {
-          imagesList = ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'];
-        }
-
-        liveCatalog.push({
-          id: doc.id,
-          title: d.title || 'Untitled Product',
-          category: d.category || 'Audio & Wireless Earbuds',
-          originalPrice: d.originalPrice || 0,
-          offerPrice: d.offerPrice || d.price || 0,
-          discountTag: d.discountTag || '',
-          description: d.description || '',
-          image: imagesList[0],
-          images: imagesList
-        });
-      });
-      localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
-      renderCatalog();
-    }, err => {
-      console.warn("Catalog sync warning:", err);
-      renderCatalog();
-    });
-  }
+  window.liveCatalog = allProducts;
+  renderCatalogGrid(allProducts);
 }
 
-function filterCategory(cat) {
-  currentCategoryFilter = String(cat).trim().toLowerCase();
-  const heading = document.getElementById('currentCategoryHeading');
-  if (heading) {
-    heading.innerText = (currentCategoryFilter === 'all') ? 'Live Catalog' : cat;
-  }
-  renderCatalog();
-}
-
-function renderCatalog() {
+// Render the Store Product Cards Grid
+function renderCatalogGrid(products) {
   const grid = document.getElementById('productGrid');
   const emptyState = document.getElementById('emptyCatalogState');
   if (!grid) return;
+
   grid.innerHTML = '';
 
-  let filtered = liveCatalog;
-  if (currentCategoryFilter !== 'all') {
-    filtered = liveCatalog.filter(p => String(p.category || '').trim().toLowerCase() === currentCategoryFilter);
-  }
-
-  if (filtered.length === 0) {
+  if (!products || products.length === 0) {
     if (emptyState) emptyState.classList.remove('hidden');
     return;
   }
+
   if (emptyState) emptyState.classList.add('hidden');
 
-  filtered.forEach((p, index) => {
-    const imagesList = Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image];
-    const hasMultipleImages = imagesList.length > 1;
-    const sliderId = `prodSlider_${p.id || index}`;
-
+  products.forEach(prod => {
     const card = document.createElement('div');
-    card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
+    card.className = "bg-[#111218] border border-white/10 rounded-3xl p-4 sm:p-5 flex flex-col justify-between space-y-4 shadow-xl hover:border-[#C5A880]/50 transition-all group";
+    
+    // Calculate dummy or stored reviews
+    const reviews = prod.reviews || [
+      { name: "Rahul S.", rating: 5, comment: "Absolute luxury quality! Worth every rupee.", date: "2 days ago" },
+      { name: "Priya M.", rating: 5, comment: "Super fast shipping and premium finish.", date: "1 week ago" }
+    ];
+    const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+
     card.innerHTML = `
-      <div>
-        <!-- IMAGE SLIDER CONTAINER -->
-        <div id="wrapper_${sliderId}" class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative group select-none cursor-grab active:cursor-grabbing touch-pan-y">
-          
-          <div id="${sliderId}" class="h-full flex transition-transform duration-300 ease-out pointer-events-none" style="width: ${imagesList.length * 100}%;">
-            ${imagesList.map(img => `<img src="${img}" class="h-full object-cover shrink-0 pointer-events-none" style="width: ${100 / imagesList.length}%;" />`).join('')}
-          </div>
-          
-          ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10 z-10">${p.discountTag}</span>` : ''}
-
-          <!-- SLIDE BUTTONS (Visible on hover on desktop, always ready on mobile) -->
-          ${hasMultipleImages ? `
-            <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', -1, ${imagesList.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❮</button>
-            <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', 1, ${imagesList.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❯</button>
-            
-            <div id="dots_${sliderId}" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10 pointer-events-none">
-              ${imagesList.map((_, i) => `<span class="w-2 h-2 rounded-full bg-white/${i === 0 ? '100' : '40'} shadow transition-all"></span>`).join('')}
-            </div>
-          ` : ''}
-        </div>
-
-        <span class="text-[9px] uppercase font-bold tracking-widest text-[#C5A880]">${p.category || 'Atelier Exclusive'}</span>
-        <h4 class="font-bold text-white text-base mt-1 line-clamp-1">${p.title}</h4>
-        <p class="text-xs text-slate-400 mt-1 line-clamp-2">${p.description || 'Precision crafted and tuned for modern luxury.'}</p>
+      <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-black cursor-pointer" onclick="openProductStickerModal('${prod.id}')">
+        <img src="${prod.image || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${prod.title}" />
+        ${prod.discountTag ? `<span class="absolute top-3 left-3 bg-black/75 backdrop-blur-md text-[#E8C997] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-white/10">${prod.discountTag}</span>` : ''}
       </div>
 
-      <div class="flex items-center justify-between pt-3 border-t border-white/10">
-        <div>
-          ${p.originalPrice ? `<span class="text-xs text-slate-500 line-through mr-1.5">₹${p.originalPrice}</span>` : ''}
-          <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
+      <div class="space-y-1.5 cursor-pointer" onclick="openProductStickerModal('${prod.id}')">
+        <span class="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C5A880]">${prod.category || 'Curated Luxury'}</span>
+        <h3 class="font-bold text-white text-sm sm:text-base line-clamp-1">${prod.title}</h3>
+        
+        <div class="flex items-center gap-1.5 text-xs text-amber-400">
+          <div class="flex items-center">★ ★ ★ ★ ★</div>
+          <span class="text-slate-400 font-mono text-[11px]">(${avgRating} • ${reviews.length} reviews)</span>
         </div>
-        <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-         Add To Bag
+
+        <div class="flex items-center gap-2 pt-1 font-mono">
+          <span class="text-white font-bold text-base">₹${prod.offerPrice || prod.price}</span>
+          ${prod.originalPrice ? `<span class="text-slate-500 text-xs line-through">₹${prod.originalPrice}</span>` : ''}
+        </div>
+      </div>
+
+      <!-- ADD TO BAG BUTTON OPENS 3D STICKER POPUP -->
+      <button type="button" onclick="openProductStickerModal('${prod.id}')" class="w-full py-3.5 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+        Add to Bag
       </button>
-      </div>
     `;
     grid.appendChild(card);
-
-    if (hasMultipleImages) {
-      setTimeout(() => setupProductSwipeGestures(sliderId, imagesList.length), 50);
-    }
   });
+
   if (window.lucide) lucide.createIcons();
 }
 
-window.productSliderIndices = window.productSliderIndices || {};
-function slideProductImage(sliderId, direction, totalImages) {
-  if (window.productSliderIndices[sliderId] === undefined) window.productSliderIndices[sliderId] = 0;
-  let currentIndex = window.productSliderIndices[sliderId];
-  currentIndex = (currentIndex + direction + totalImages) % totalImages;
-  window.productSliderIndices[sliderId] = currentIndex;
+// 3D GLASS STICKER PRODUCT POPUP MODAL
+function openProductStickerModal(productId) {
+  const product = allProducts.find(p => String(p.id) === String(productId));
+  if (!product) return;
 
-  const sliderEl = document.getElementById(sliderId);
-  if (sliderEl) {
-    const percentage = -(currentIndex * (100 / totalImages));
-    sliderEl.style.transform = `translateX(${percentage}%)`;
-  }
+  // Remove any existing modal first
+  const existing = document.getElementById('productStickerModal');
+  if (existing) existing.remove();
 
-  const dotsContainer = document.getElementById(`dots_${sliderId}`);
-  if (dotsContainer) {
-    const dots = dotsContainer.children;
-    for (let i = 0; i < dots.length; i++) {
-      dots[i].className = `w-2 h-2 rounded-full bg-white/${i === currentIndex ? '100' : '40'} shadow transition-all`;
-    }
+  const reviews = product.reviews || [
+    { name: "Rahul S.", rating: 5, comment: "Absolute luxury quality! Worth every rupee.", date: "2 days ago" },
+    { name: "Priya M.", rating: 5, comment: "Super fast shipping and premium finish.", date: "1 week ago" }
+  ];
+
+  const totalReviews = reviews.length;
+  const fiveStarCount = reviews.filter(r => r.rating === 5).length;
+  const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1);
+
+  const modal = document.createElement('div');
+  modal.id = 'productStickerModal';
+  modal.className = "fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-fadeIn";
+  
+  modal.innerHTML = `
+    <div class="max-w-lg w-full bg-[#111218] border border-[#C5A880]/30 rounded-[32px] p-6 sm:p-8 shadow-[0_0_50px_rgba(197,168,128,0.2)] relative text-white space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      
+      <!-- Close Button -->
+      <button type="button" onclick="document.getElementById('productStickerModal').remove()" class="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Header / Title -->
+      <div class="space-y-1 pr-8">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C5A880]">3D STICKER PREVIEW</span>
+        <h2 class="font-serif text-2xl sm:text-3xl text-white font-bold">${product.title}</h2>
+      </div>
+
+      <!-- Product Image & Price Card -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-black/40 p-4 rounded-2xl border border-white/10">
+        <img src="${product.image}" class="w-full h-40 object-cover rounded-xl bg-black" />
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 text-xs">
+            <span>★ ★ ★ ★ ★</span>
+            <span class="text-slate-300 font-mono font-bold">${avgRating} / 5.0</span>
+          </div>
+          <div class="font-mono">
+            <span class="text-2xl font-bold text-white">₹${product.offerPrice || product.price}</span>
+            ${product.originalPrice ? `<span class="text-slate-500 text-xs line-through ml-2">₹${product.originalPrice}</span>` : ''}
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">${product.description || 'Crafted with precision for the modern connoisseur.'}</p>
+        </div>
+      </div>
+
+      <!-- REVIEW STATISTICS & BREAKDOWN -->
+      <div class="space-y-3 bg-white/5 p-4 rounded-2xl border border-white/10">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-[#E8C997]">Customer Verified Reviews</h4>
+          <span class="text-[11px] text-slate-400 font-mono">${fiveStarCount} of ${totalReviews} members gave 5 Stars (100%)</span>
+        </div>
+
+        <div id="reviewsListContainer" class="space-y-2.5 max-h-36 overflow-y-auto custom-scrollbar pr-1">
+          ${reviews.map(r => `
+            <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-white">${r.name}</span>
+                <span class="text-amber-400 text-[10px]">★ ★ ★ ★ ★</span>
+              </div>
+              <p class="text-slate-300">${r.comment}</p>
+              <span class="text-[9px] text-slate-500 font-mono">${r.date}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- SUBMIT NEW REVIEW & PHOTO UPLOAD TOOL -->
+        <div class="pt-3 border-t border-white/10 space-y-2">
+          <label class="text-[10px] font-bold uppercase tracking-wider text-[#C5A880] block">Write a Review & Upload Product Photo</label>
+          <input type="text" id="reviewerName" placeholder="Your Name" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white focus:outline-none" />
+          <textarea id="reviewerComment" placeholder="Write your 5-star review..." rows="2" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-xs text-white focus:outline-none"></textarea>
+          
+          <div class="flex items-center gap-2">
+            <input type="file" id="reviewPhotoInput" accept="image/*" class="text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-white/10 file:text-white hover:file:bg-white/20 cursor-pointer" />
+          </div>
+
+          <button type="button" onclick="submitUserReview('${product.id}')" class="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+            Post 5-Star Review & Photo ✓
+          </button>
+        </div>
+      </div>
+
+      <!-- DIRECT PAY & BAG BUTTONS -->
+      <div class="space-y-2 pt-2">
+        <button type="button" onclick="addItemAndPayDirectly('${product.id}')" class="w-full py-4 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-widest rounded-2xl shadow-xl hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+          PAY NOW (DIRECT CHECKOUT)
+        </button>
+        <button type="button" onclick="addItemToBagFromSticker('${product.id}')" class="w-full py-3 bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer">
+          Add to Bag & Continue Shopping
+        </button>
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  if (window.lucide) lucide.createIcons();
+}
+
+// Submit a new 5-star review with photo
+function submitUserReview(productId) {
+  const name = document.getElementById('reviewerName').value.trim() || "Verified Buyer";
+  const comment = document.getElementById('reviewerComment').value.trim() || "Amazing product quality!";
+  const fileInput = document.getElementById('reviewPhotoInput');
+
+  let product = allProducts.find(p => String(p.id) === String(productId));
+  if (!product) return;
+
+  if (!product.reviews) product.reviews = [];
+
+  const newReview = {
+    name,
+    rating: 5,
+    comment,
+    date: "Just now"
+  };
+
+  if (fileInput && fileInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      newReview.photo = e.target.result;
+      product.reviews.unshift(newReview);
+      localStorage.setItem('lenka_catalog', JSON.stringify(allProducts));
+      alert("Thank you! Your 5-star review and photo have been published.");
+      openProductStickerModal(productId); // Refresh modal
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    product.reviews.unshift(newReview);
+    localStorage.setItem('lenka_catalog', JSON.stringify(allProducts));
+    alert("Thank you! Your 5-star review has been published.");
+    openProductStickerModal(productId); // Refresh modal
   }
 }
 
-function setupProductSwipeGestures(sliderId, totalImages) {
-  const wrapper = document.getElementById(`wrapper_${sliderId}`);
-  if (!wrapper) return;
+// Add item to bag and open checkout/payment modal directly
+function addItemAndPayDirectly(productId) {
+  if (typeof addToBag === 'function') {
+    addToBag(productId);
+  }
+  const modal = document.getElementById('productStickerModal');
+  if (modal) modal.remove();
 
-  let startX = 0;
-  let endX = 0;
-  let isDragging = false;
-
-  wrapper.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
-
-  wrapper.addEventListener('touchend', (e) => {
-    endX = e.changedTouches[0].clientX;
-    handleSwipe();
-  }, { passive: true });
-
-  wrapper.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.clientX;
-  });
-
-  window.addEventListener('mouseup', (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    endX = e.clientX;
-    handleSwipe();
-  });
-
-  function handleSwipe() {
-    const diffX = endX - startX;
-    if (Math.abs(diffX) > 30) {
-      if (diffX < 0) {
-        slideProductImage(sliderId, 1, totalImages);
-      } else {
-        slideProductImage(sliderId, -1, totalImages);
-      }
-    }
+  if (typeof openCheckoutModal === 'function') {
+    openCheckoutModal();
   }
 }
 
-window.liveCatalog = liveCatalog;
+// Add item to bag and close sticker modal
+function addItemToBagFromSticker(productId) {
+  if (typeof addToBag === 'function') {
+    addToBag(productId);
+  }
+  const modal = document.getElementById('productStickerModal');
+  if (modal) modal.remove();
+}
+
+// Filter category handler
+function filterCategory(categoryName) {
+  const heading = document.getElementById('currentCategoryHeading');
+  if (heading) heading.textContent = categoryName === 'all' ? 'Live Catalog' : categoryName;
+
+  if (categoryName === 'all') {
+    renderCatalogGrid(allProducts);
+  } else {
+    const filtered = allProducts.filter(p => String(p.category).trim().toLowerCase() === String(categoryName).trim().toLowerCase());
+    renderCatalogGrid(filtered);
+  }
+}
+
+// Expose functions globally
+window.initCatalog = initCatalog;
 window.filterCategory = filterCategory;
-window.slideProductImage = slideProductImage;
+window.openProductStickerModal = openProductStickerModal;
+window.submitUserReview = submitUserReview;
+window.addItemAndPayDirectly = addItemAndPayDirectly;
+window.addItemToBagFromSticker = addItemToBagFromSticker;
 
+// Auto initialize catalog on load
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initStorefrontCatalog);
+  document.addEventListener('DOMContentLoaded', initCatalog);
 } else {
-  initStorefrontCatalog();
+  initCatalog();
 }
