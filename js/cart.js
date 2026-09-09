@@ -12,34 +12,6 @@ function initCart() {
   updateCartBadge();
 }
 
-// Add product to bag with robust global catalog checking
-function addToBag(productId) {
-  const availableCatalog = window.liveCatalog || (typeof liveCatalog !== 'undefined' ? liveCatalog : []);
-  const product = availableCatalog.find(p => String(p.id) === String(productId));
-  
-  if (!product) {
-    console.warn("Product could not be found in catalog for ID:", productId);
-    alert("Unable to add product. Please refresh the page.");
-    return;
-  }
-
-  const existingItem = cartItems.find(item => String(item.id) === String(productId));
-  if (existingItem) {
-    existingItem.quantity = (existingItem.quantity || 1) + 1;
-  } else {
-    cartItems.push({
-      id: product.id,
-      title: product.title,
-      price: product.offerPrice || product.price || 0,
-      image: product.image,
-      quantity: 1
-    });
-  }
-
-  saveAndSyncCart();
-  openCartDrawer();
-}
-
 // Update cart quantity
 function updateCartQuantity(productId, delta) {
   const item = cartItems.find(i => String(i.id) === String(productId));
@@ -196,11 +168,18 @@ async function triggerDeliveryTruckSuccessModal() {
 
   const customerNameInput = document.getElementById('customerName');
   const customerPhoneInput = document.getElementById('customerPhone');
-  const shippingAddressInput = document.getElementById('shippingAddress');
 
   const customerName = customerNameInput ? customerNameInput.value : "Valued Customer";
   const customerPhone = customerPhoneInput ? customerPhoneInput.value : (localStorage.getItem('lenka_logged_in_phone') || "Not Provided");
-  const shippingAddress = shippingAddressInput ? shippingAddressInput.value : "Address provided via checkout";
+
+  // Collect structured 5-line address fields
+  const line1 = document.getElementById('addrLine1')?.value || '';
+  const line2 = document.getElementById('addrLine2')?.value || '';
+  const district = document.getElementById('addrDistrict')?.value || '';
+  const state = document.getElementById('addrState')?.value || '';
+  const pinCode = document.getElementById('addrPinCode')?.value || '';
+
+  const shippingAddress = `${line1}, ${line2}, ${district}, ${state} - ${pinCode}`.trim();
 
   const newOrder = {
     orderId,
@@ -289,4 +268,23 @@ function addToBag(productId) {
 
   saveAndSyncCart();
   openCartDrawer();
+}
+
+// Expose functions globally to window
+window.addToBag = addToBag;
+window.updateCartQuantity = updateCartQuantity;
+window.openCartDrawer = openCartDrawer;
+window.closeCartDrawer = closeCartDrawer;
+window.openCheckoutModal = openCheckoutModal;
+window.closeCheckoutModal = closeCheckoutModal;
+window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
+window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
+window.closeOrderSuccessModal = closeOrderSuccessModal;
+window.forwardOrderToSupplier = forwardOrderToSupplier;
+
+// Auto initialize cart on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCart);
+} else {
+  initCart();
 }
