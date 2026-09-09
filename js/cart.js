@@ -265,20 +265,31 @@ function closeOrderSuccessModal() {
   window.location.reload();
 }
 
-// Expose all necessary functions globally to window
-window.addToBag = addToBag;
-window.updateCartQuantity = updateCartQuantity;
-window.openCartDrawer = openCartDrawer;
-window.closeCartDrawer = closeCartDrawer;
-window.openCheckoutModal = openCheckoutModal;
-window.closeCheckoutModal = closeCheckoutModal;
-window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
-window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
-window.closeOrderSuccessModal = closeOrderSuccessModal;
+// Add product to bag with fallback check
+function addToBag(productId) {
+  // Check global catalog or fallback to local variable
+  const availableCatalog = window.liveCatalog || (typeof liveCatalog !== 'undefined' ? liveCatalog : []);
+  const product = availableCatalog.find(p => String(p.id) === String(productId));
+  
+  if (!product) {
+    console.warn("Product could not be found in catalog for ID:", productId);
+    alert("Unable to add product. Please refresh the page.");
+    return;
+  }
 
-// Auto initialize cart on load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCart);
-} else {
-  initCart();
+  const existingItem = cartItems.find(item => String(item.id) === String(productId));
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    cartItems.push({
+      id: product.id,
+      title: product.title,
+      price: product.offerPrice || product.price || 0,
+      image: product.image,
+      quantity: 1
+    });
+  }
+
+  saveAndSyncCart();
+  openCartDrawer();
 }
