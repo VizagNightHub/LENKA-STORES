@@ -184,7 +184,7 @@
       <div id="checkoutProductSummary" class="space-y-3 max-h-48 overflow-y-auto custom-scrollbar p-3 bg-white/5 rounded-2xl border border-white/10"></div>
 
       <form onsubmit="handlePhonePeRedirectPayment(event)" class="space-y-4 text-xs">
-        <div class="space-y-3">
+        <div class="space-y-3 pt-2">
           <div>
             <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Full Name</label>
             <input type="text" id="customerName" placeholder="Enter your name" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
@@ -193,9 +193,17 @@
             <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Phone Number</label>
             <input type="tel" id="customerPhone" placeholder="Enter your phone number" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
           </div>
-          <div>
-            <label class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Shipping Address</label>
-            <textarea id="shippingAddress" rows="2" placeholder="Enter full delivery address" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none"></textarea>
+
+          <!-- Structured 5-Line Address Fields -->
+          <div class="space-y-2 pt-1 border-t border-white/10">
+            <label class="text-[10px] font-bold uppercase text-[#C5A880] block">Shipping Address</label>
+            <input type="text" id="addrLine1" placeholder="Line 1: Door No, Apartment / Street" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
+            <input type="text" id="addrLine2" placeholder="Line 2: Area / Landmark" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="addrDistrict" placeholder="District" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
+              <input type="text" id="addrState" placeholder="State" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
+            </div>
+            <input type="text" id="addrPinCode" placeholder="PIN Code (e.g., 530016)" required class="w-full bg-[#16181E] border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none" />
           </div>
         </div>
 
