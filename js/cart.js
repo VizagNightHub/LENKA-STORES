@@ -255,8 +255,7 @@ function closeOrderSuccessModal() {
   window.location.reload();
 }
 
-/function addToBag(productId) {
-  // Try global catalog first, then fallback to localStorage cache
+function addToBag(productId) {
   let availableCatalog = window.liveCatalog || [];
   if (availableCatalog.length === 0) {
     try {
@@ -266,15 +265,16 @@ function closeOrderSuccessModal() {
     }
   }
 
-  const product = availableCatalog.find(p => String(p.id) === String(productId));
+  // Flexible match using loose equality or string conversion
+  const product = availableCatalog.find(p => String(p.id).trim() === String(productId).trim());
   
   if (!product) {
-    console.warn("Product could not be found for ID:", productId);
-    alert("Unable to add product. Please ensure the catalog has loaded completely.");
+    console.warn("Product lookup failed for ID:", productId, "Available catalog:", availableCatalog);
+    alert("Unable to add product. Please refresh the page.");
     return;
   }
 
-  const existingItem = cartItems.find(item => String(item.id) === String(productId));
+  const existingItem = cartItems.find(item => String(item.id).trim() === String(product.id).trim());
   if (existingItem) {
     existingItem.quantity = (existingItem.quantity || 1) + 1;
   } else {
