@@ -1,181 +1,253 @@
-// ATELIER CATALOG & TOUCH SLIDER ENGINE (CRASH-PROOF)
+// ATELIER CART, BAG & CHECKOUT CONTROLLER (CRASH-PROOF)
 
-let liveCatalog = [];
-let currentCategoryFilter = 'all';
+let cartItems = [];
 
-function initStorefrontCatalog() {
-  const saved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
-  if (saved.length > 0) {
-    liveCatalog = saved;
-    renderCatalog();
+// Initialize cart from localStorage on load
+function initCart() {
+  try {
+    cartItems = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
+  } catch (e) {
+    cartItems = [];
   }
-
-  if (typeof firebase !== 'undefined' && firebase.apps.length) {
-    firebase.firestore().collection('products').onSnapshot(snapshot => {
-      liveCatalog = [];
-      snapshot.forEach(doc => {
-        const d = doc.data();
-        let imagesList = [];
-        if (Array.isArray(d.images) && d.images.length > 0) {
-          imagesList = d.images;
-        } else if (d.image) {
-          imagesList = [d.image];
-        } else {
-          imagesList = ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800'];
-        }
-
-        liveCatalog.push({
-          id: doc.id,
-          title: d.title || 'Untitled Product',
-          category: d.category || 'Audio & Wireless Earbuds',
-          originalPrice: d.originalPrice || 0,
-          offerPrice: d.offerPrice || d.price || 0,
-          discountTag: d.discountTag || '',
-          description: d.description || '',
-          image: imagesList[0],
-          images: imagesList
-        });
-      });
-      localStorage.setItem('lenka_catalog', JSON.stringify(liveCatalog));
-      renderCatalog();
-    }, err => {
-      console.warn("Catalog sync warning:", err);
-      renderCatalog();
-    });
-  } else {
-    renderCatalog();
-  }
+  updateCartBadge();
 }
 
-function filterCategory(cat) {
-  currentCategoryFilter = String(cat).trim().toLowerCase();
-  const heading = document.getElementById('currentCategoryHeading');
-  if (heading) {
-    heading.innerText = (currentCategoryFilter === 'all') ? 'Live Catalog' : cat;
-  }
-  renderCatalog();
-}
-
-function renderCatalog() {
-  const grid = document.getElementById('productGrid');
-  const emptyState = document.getElementById('emptyCatalogState');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  let filtered = liveCatalog;
-  if (currentCategoryFilter !== 'all') {
-    filtered = liveCatalog.filter(p => String(p.category || '').trim().toLowerCase() === currentCategoryFilter);
-  }
-
-  if (filtered.length === 0) {
-    if (emptyState) emptyState.classList.remove('hidden');
+// Add product to bag
+function addToBag(productId) {
+  // Ensure liveCatalog is available globally
+  const product = typeof liveCatalog !== 'undefined' ? liveCatalog.find(p => String(p.id) === String(productId)) : null;
+  
+  if (!product) {
+    console.warn("Product not found in live catalog for ID:", productId);
     return;
   }
-  if (emptyState) emptyState.classList.add('hidden');
 
-  filtered.forEach((p, index) => {
-    const imagesList = Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image];
-    const hasMultipleImages = imagesList.length > 1;
-    const sliderId = `prodSlider_${p.id || index}`;
+  const existingItem = cartItems.find(item => String(item.id) === String(productId));
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    cartItems.push({
+      id: product.id,
+      title: product.title,
+      price: product.offerPrice || product.price || 0,
+      image: product.image,
+      quantity: 1
+    });
+  }
 
-    const card = document.createElement('div');
-    card.className = "bg-[#111318] border border-white/10 rounded-3xl p-5 shadow-xl hover:border-[#C5A880]/50 transition-all flex flex-col justify-between space-y-4";
-    card.innerHTML = `
-      <div>
-        <div id="wrapper_${sliderId}" class="aspect-video w-full rounded-2xl overflow-hidden bg-black mb-3.5 relative group select-none cursor-grab active:cursor-grabbing touch-pan-y">
-          
-          <div id="${sliderId}" class="h-full flex transition-transform duration-300 ease-out pointer-events-none" style="width: ${imagesList.length * 100}%;">
-            ${imagesList.map(img => `<img src="${img}" class="h-full object-cover shrink-0 pointer-events-none" style="width: ${100 / imagesList.length}%;" />`).join('')}
-          </div>
-          
-          ${p.discountTag ? `<span class="absolute top-2.5 left-2.5 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg border border-white/10 z-10">${p.discountTag}</span>` : ''}
+  saveAndSyncCart();
+  openCartDrawer();
+}
 
-          ${hasMultipleImages ? `
-            <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', -1, ${imagesList.length})" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❮</button>
-            <button type="button" onclick="event.stopPropagation(); slideProductImage('${sliderId}', 1, ${imagesList.length})" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center sm:opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20 text-sm font-bold shadow-md">❯</button>
-            
-            <div id="dots_${sliderId}" class="absolute bottom-2 inset-x-0 flex justify-center gap-1.5 z-10 pointer-events-none">
-              ${imagesList.map((_, i) => `<span class="w-2 h-2 rounded-full bg-white/${i === 0 ? '100' : '40'} shadow transition-all"></span>`).join('')}
-            </div>
-          ` : ''}
-        </div>
+// Update cart quantity
+function updateCartQuantity(productId, delta) {
+  const item = cartItems.find(i => String(i.id) === String(productId));
+  if (!item) return;
 
-        <span class="text-[9px] uppercase font-bold tracking-widest text-[#C5A880]">${p.category || 'Atelier Exclusive'}</span>
-        <h4 class="font-bold text-white text-base mt-1 line-clamp-1">${p.title}</h4>
-        <p class="text-xs text-slate-400 mt-1 line-clamp-2">${p.description || 'Precision crafted and tuned for modern luxury.'}</p>
-      </div>
+  item.quantity += delta;
+  if (item.quantity <= 0) {
+    cartItems = cartItems.filter(i => String(i.id) !== String(productId));
+  }
 
-      <div class="flex items-center justify-between pt-3 border-t border-white/10">
-        <div>
-          ${p.originalPrice ? `<span class="text-xs text-slate-500 line-through mr-1.5">₹${p.originalPrice}</span>` : ''}
-          <span class="text-base font-extrabold text-white">₹${p.offerPrice || 0}</span>
-        </div>
-        <button type="button" onclick="addToBag('${p.id}')" class="px-4 py-2 bg-gradient-to-r from-[#A88B63] via-[#C5A880] to-[#E8C997] text-black font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-          Add To Bag
-        </button>
+  saveAndSyncCart();
+}
+
+// Save to localStorage and update UI badges and lists
+function saveAndSyncCart() {
+  localStorage.setItem('lenka_cart_v2', JSON.stringify(cartItems));
+  updateCartBadge();
+  renderCartDrawerItems();
+}
+
+// Update cart counter badge in navigation header
+function updateCartBadge() {
+  const badge = document.getElementById('navCartCount');
+  if (badge) {
+    const totalCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    badge.textContent = totalCount;
+  }
+}
+
+// Render cart items inside slide-over drawer
+function renderCartDrawerItems() {
+  const container = document.getElementById('cartItemsList');
+  const subtotalEl = document.getElementById('cartSubtotalPrice');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  if (cartItems.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-16 space-y-3">
+        <i data-lucide="shopping-bag" class="w-10 h-10 text-slate-600 mx-auto"></i>
+        <p class="text-xs text-slate-400">Your bag is currently empty.</p>
       </div>
     `;
-    grid.appendChild(card);
+    if (subtotalEl) subtotalEl.textContent = '₹0';
+    if (window.lucide && window.lucide.createIcons) lucide.createIcons();
+    return;
+  }
 
-    if (hasMultipleImages) {
-      setTimeout(() => setupProductSwipeGestures(sliderId, imagesList.length), 50);
-    }
+  let subtotal = 0;
+
+  cartItems.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+
+    const row = document.createElement('div');
+    row.className = "flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#161820] border border-white/10";
+    row.innerHTML = `
+      <img src="${item.image || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200'}" class="w-14 h-14 rounded-xl object-cover bg-black shrink-0" />
+      <div class="flex-1 min-w-0">
+        <h5 class="text-xs font-bold text-white truncate">${item.title}</h5>
+        <p class="text-[11px] text-[#C5A880] font-mono mt-0.5">₹${item.price} × ${item.quantity}</p>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button type="button" onclick="updateCartQuantity('${item.id}', -1)" class="w-7 h-7 rounded-lg bg-white/10 text-white font-bold flex items-center justify-center hover:bg-white/20 transition-all cursor-pointer">-</button>
+        <span class="text-xs font-mono font-bold w-5 text-center text-white">${item.quantity}</span>
+        <button type="button" onclick="updateCartQuantity('${item.id}', 1)" class="w-7 h-7 rounded-lg bg-white/10 text-white font-bold flex items-center justify-center hover:bg-white/20 transition-all cursor-pointer">+</button>
+      </div>
+    `;
+    container.appendChild(row);
   });
-  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+  if (window.lucide && window.lucide.createIcons) lucide.createIcons();
 }
 
-window.productSliderIndices = window.productSliderIndices || {};
-function slideProductImage(sliderId, direction, totalImages) {
-  if (window.productSliderIndices[sliderId] === undefined) window.productSliderIndices[sliderId] = 0;
-  let currentIndex = window.productSliderIndices[sliderId];
-  currentIndex = (currentIndex + direction + totalImages) % totalImages;
-  window.productSliderIndices[sliderId] = currentIndex;
-
-  const sliderEl = document.getElementById(sliderId);
-  if (sliderEl) {
-    const percentage = -(currentIndex * (100 / totalImages));
-    sliderEl.style.transform = `translateX(${percentage}%)`;
-  }
-
-  const dotsContainer = document.getElementById(`dots_${sliderId}`);
-  if (dotsContainer) {
-    const dots = dotsContainer.children;
-    for (let i = 0; i < dots.length; i++) {
-   dots[i].className = `w-2 h-2 rounded-full bg-white/${i === currentIndex ? '100' : '40'} shadow transition-all`;
-    }
+// Cart Drawer Open/Close Controls
+function openCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  if (drawer) {
+    drawer.classList.remove('translate-x-full');
+    renderCartDrawerItems();
   }
 }
 
-function setupProductSwipeGestures(sliderId, totalImages) {
-  const wrapper = document.getElementById(`wrapper_${sliderId}`);
-  if (!wrapper) return;
-
-  let startX = 0;
-  let endX = 0;
-
-  wrapper.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
-
-  wrapper.addEventListener('touchend', (e) => {
-    endX = e.changedTouches[0].clientX;
-    const diffX = endX - startX;
-    if (Math.abs(diffX) > 30) {
-      if (diffX < 0) {
-        slideProductImage(sliderId, 1, totalImages);
-      } else {
-        slideProductImage(sliderId, -1, totalImages);
-      }
-    }
-  }, { passive: true });
+function closeCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  if (drawer) {
+    drawer.classList.add('translate-x-full');
+  }
 }
 
-window.filterCategory = filterCategory;
-window.slideProductImage = slideProductImage;
+// Checkout Flow Controls
+function openCheckoutModal() {
+  if (cartItems.length === 0) {
+    alert("Your bag is empty. Add items before proceeding.");
+    return;
+  }
+  closeCartDrawer();
+  const modal = document.getElementById('checkoutModal');
+  const summaryContainer = document.getElementById('checkoutProductSummary');
+  
+  if (summaryContainer) {
+    summaryContainer.innerHTML = cartItems.map(i => `
+      <div class="flex justify-between text-xs text-slate-300">
+        <span class="truncate pr-2">${i.title} (x${i.quantity})</span>
+        <span class="font-mono font-bold text-white">₹${i.price * i.quantity}</span>
+      </div>
+    `).join('');
+  }
 
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeCheckoutModal() {
+  const modal = document.getElementById('checkoutModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+// PhonePe Payment Gateway Handler & Order Placement
+function handlePhonePeRedirectPayment(e) {
+  e.preventDefault();
+  const proceedBtn = document.getElementById('proceedToPayBtn');
+  const paymentCompletedContainer = document.getElementById('paymentCompletedContainer');
+
+  const upiId = "8977627028-2@ybl";
+  const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  const payUrl = `upi://pay?pa=${upiId}&pn=LENKA%20STORES&am=${totalAmount}&cu=INR`;
+
+  // Trigger UPI intent link
+  window.location.href = payUrl;
+
+  if (proceedBtn) proceedBtn.classList.add('hidden');
+  if (paymentCompletedContainer) paymentCompletedContainer.classList.remove('hidden');
+}
+
+// Successful Order Placement & Delivery Truck Modal Trigger
+async function triggerDeliveryTruckSuccessModal() {
+  closeCheckoutModal();
+  const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
+  const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  const itemsSummary = cartItems.map(i => `${i.title} (x${i.quantity})`).join(', ');
+
+  const newOrder = {
+    orderId,
+    itemsSummary,
+    totalAmount,
+    status: 'Confirmed & Dispatched',
+    shippingDate: new Date().toLocaleDateString()
+  };
+
+  // Save order to local storage history
+  let existingOrders = [];
+  try {
+    existingOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+  } catch (err) {
+    existingOrders = [];
+  }
+  existingOrders.unshift(newOrder);
+  localStorage.setItem('lenka_orders', JSON.stringify(existingOrders));
+
+  // Sync to Firebase Firestore if configured
+  if (typeof firebase !== 'undefined' && firebase.apps.length) {
+    try {
+      await firebase.firestore().collection('orders').doc(orderId).set({
+        ...newOrder,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) {
+      console.warn("Firestore order sync note:", err);
+    }
+  }
+
+  // Clear cart
+  cartItems = [];
+  localStorage.removeItem('lenka_cart_v2');
+  updateCartBadge();
+
+  // Display success modal & run confetti if available
+  const successModal = document.getElementById('orderSuccessModal');
+  const orderIdDisplay = document.getElementById('successOrderIdDisplay');
+  if (orderIdDisplay) orderIdDisplay.textContent = `Order ID: #${orderId}`;
+  if (successModal) successModal.classList.remove('hidden');
+
+  if (typeof confetti === 'function') {
+    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+  }
+}
+
+function closeOrderSuccessModal() {
+  const successModal = document.getElementById('orderSuccessModal');
+  if (successModal) successModal.classList.add('hidden');
+  window.location.reload();
+}
+
+// Expose all necessary functions globally to window
+window.addToBag = addToBag;
+window.updateCartQuantity = updateCartQuantity;
+window.openCartDrawer = openCartDrawer;
+window.closeCartDrawer = closeCartDrawer;
+window.openCheckoutModal = openCheckoutModal;
+window.closeCheckoutModal = closeCheckoutModal;
+window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
+window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
+window.closeOrderSuccessModal = closeOrderSuccessModal;
+
+// Auto initialize cart on load
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initStorefrontCatalog);
+  document.addEventListener('DOMContentLoaded', initCart);
 } else {
-  initStorefrontCatalog();
-  window.openCartDrawer = openCartDrawer;
+  initCart();
 }
