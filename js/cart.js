@@ -15,7 +15,7 @@ function initCart() {
 // Add product to bag
 function addToBag(productId) {
   // Ensure liveCatalog is available globally from catalog.js
-  const product = typeof liveCatalog !== 'undefined' ? liveCatalog.find(p => String(p.id) === String(productId)) : null;
+  const product = typeof window.liveCatalog !== 'undefined' ? window.liveCatalog.find(p => String(p.id) === String(productId)) : null;
   
   if (!product) {
     console.warn("Product not found in live catalog for ID:", productId);
