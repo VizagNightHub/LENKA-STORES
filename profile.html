@@ -70,9 +70,9 @@
 
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2">
-            <h2 id="profileNameDisplay" class="font-extrabold text-xl sm:text-2xl text-white tracking-tight truncate">V. Udayteja</h2>
+            <h2 id="profileNameDisplay" class="font-extrabold text-xl sm:text-2xl text-white tracking-tight truncate"></h2>
           </div>
-          <p id="profilePhoneDisplay" class="text-xs text-slate-400 font-mono mt-0.5">+91 89776 27028</p>
+          <p id="profilePhoneDisplay" class="text-xs text-slate-400 font-mono mt-0.5"></p>
         </div>
       </div>
 
@@ -99,7 +99,7 @@
 
           <div>
             <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Full Name</label>
-            <input type="text" id="editUsernameInput" required class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#C5A880]" />
+            <input type="text" id="editUsernameInput" placeholder="Enter your name" required class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#C5A880]" />
           </div>
 
           <div>
@@ -181,10 +181,10 @@
 
   <script>
     let currentProfile = {
-      username: "V. Udayteja",
-      phone: "+91 89776 27028",
+      username: "",
+      phone: "",
       avatar: "default-avatar.png",
-      isLoggedIn: true
+      isLoggedIn: false
     };
     let uploadedImageBase64 = null;
 
@@ -201,18 +201,18 @@
     }
 
     function renderProfileHeader() {
-      document.getElementById('profileNameDisplay').innerText = currentProfile.username;
-      document.getElementById('profilePhoneDisplay').innerText = currentProfile.phone;
+      document.getElementById('profileNameDisplay').innerText = currentProfile.username || "Guest User";
+      document.getElementById('profilePhoneDisplay').innerText = currentProfile.phone || "No phone linked";
       
       const avatarSrc = currentProfile.avatar || 'default-avatar.png';
       document.getElementById('profileAvatarImg').src = avatarSrc;
       document.getElementById('liveAvatarPreview').src = avatarSrc;
 
-      document.getElementById('editUsernameInput').value = currentProfile.username;
-      document.getElementById('editPhoneInput').value = currentProfile.phone;
+      document.getElementById('editUsernameInput').value = currentProfile.username || "";
+      document.getElementById('editPhoneInput').value = currentProfile.phone || "";
 
       const authBtn = document.getElementById('authBottomBtnText');
-      if (authBtn) authBtn.innerText = currentProfile.isLoggedIn ? "Logout" : "Login";
+      if (authBtn) authBtn.innerText = currentProfile.isLoggedIn && currentProfile.username ? "Logout" : "Login";
     }
 
     function toggleEditView(show) {
@@ -243,7 +243,8 @@
     function handleSaveProfile(e) {
       e.preventDefault();
       currentProfile.username = document.getElementById('editUsernameInput').value.trim();
-      currentProfile.phone = document.getElementById('editPhoneInput').value.trim() || '+91 89776 27028';
+      currentProfile.phone = document.getElementById('editPhoneInput').value.trim();
+      currentProfile.isLoggedIn = true;
       if (uploadedImageBase64) {
         currentProfile.avatar = uploadedImageBase64;
       }
