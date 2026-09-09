@@ -255,20 +255,38 @@ function closeOrderSuccessModal() {
   window.location.reload();
 }
 
-// Expose all necessary functions globally to window
-window.addToBag = addToBag;
-window.updateCartQuantity = updateCartQuantity;
-window.openCartDrawer = openCartDrawer;
-window.closeCartDrawer = closeCartDrawer;
-window.openCheckoutModal = openCheckoutModal;
-window.closeCheckoutModal = closeCheckoutModal;
-window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
-window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
-window.closeOrderSuccessModal = closeOrderSuccessModal;
+/function addToBag(productId) {
+  // Try global catalog first, then fallback to localStorage cache
+  let availableCatalog = window.liveCatalog || [];
+  if (availableCatalog.length === 0) {
+    try {
+      availableCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    } catch (e) {
+      availableCatalog = [];
+    }
+  }
 
-// Auto initialize cart on load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCart);
-} else {
-  initCart();
+  const product = availableCatalog.find(p => String(p.id) === String(productId));
+  
+  if (!product) {
+    console.warn("Product could not be found for ID:", productId);
+    alert("Unable to add product. Please ensure the catalog has loaded completely.");
+    return;
+  }
+
+  const existingItem = cartItems.find(item => String(item.id) === String(productId));
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    cartItems.push({
+      id: product.id,
+      title: product.title,
+      price: product.offerPrice || product.price || 0,
+      image: product.image,
+      quantity: 1
+    });
+  }
+
+  saveAndSyncCart();
+  openCartDrawer();
 }
