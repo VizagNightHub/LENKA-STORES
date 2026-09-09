@@ -73,10 +73,6 @@
             <h2 id="profileNameDisplay" class="font-extrabold text-xl sm:text-2xl text-white tracking-tight truncate">V. Udayteja</h2>
           </div>
           <p id="profilePhoneDisplay" class="text-xs text-slate-400 font-mono mt-0.5">+91 89776 27028</p>
-          <p id="profileAddressDisplay" class="text-xs text-[#E8C997] flex items-center gap-1.5 mt-1.5 truncate">
-            <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i>
-            <span class="truncate">Add your delivery address</span>
-          </p>
         </div>
       </div>
 
@@ -107,8 +103,8 @@
           </div>
 
           <div>
-            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Delivery Destination Address</label>
-            <textarea id="editAddressInput" rows="2" required class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#C5A880]"></textarea>
+            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Mobile Number Slot</label>
+            <input type="tel" id="editPhoneInput" placeholder="+91 89776 27028" required class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#C5A880]" />
           </div>
 
           <div class="flex gap-2 pt-2">
@@ -167,9 +163,10 @@
   </div>
 
   <div class="fixed bottom-6 right-6 z-40">
-   <button type="button" id="authBottomBtn" onclick="clientLogOutSession()" class="...">
-  <span id="authBottomBtnText">Logout</span>
-</button>
+   <button type="button" id="authBottomBtn" onclick="handleAuthAction()" class="flex items-center gap-2 px-5 py-3 rounded-2xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 font-extrabold text-xs uppercase tracking-wider shadow-xl transition-all active:scale-95 cursor-pointer">
+     <i data-lucide="log-out" class="w-4 h-4"></i>
+     <span id="authBottomBtnText">Logout</span>
+   </button>
   </div>
 
   <div id="detailDrawerModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -186,7 +183,6 @@
     let currentProfile = {
       username: "V. Udayteja",
       phone: "+91 89776 27028",
-      address: "Add your delivery address",
       avatar: "default-avatar.png",
       isLoggedIn: true
     };
@@ -207,14 +203,13 @@
     function renderProfileHeader() {
       document.getElementById('profileNameDisplay').innerText = currentProfile.username;
       document.getElementById('profilePhoneDisplay').innerText = currentProfile.phone;
-      document.getElementById('profileAddressDisplay').querySelector('span').innerText = currentProfile.address;
       
       const avatarSrc = currentProfile.avatar || 'default-avatar.png';
       document.getElementById('profileAvatarImg').src = avatarSrc;
       document.getElementById('liveAvatarPreview').src = avatarSrc;
 
       document.getElementById('editUsernameInput').value = currentProfile.username;
-      document.getElementById('editAddressInput').value = currentProfile.address === 'Add your delivery address' ? '' : currentProfile.address;
+      document.getElementById('editPhoneInput').value = currentProfile.phone;
 
       const authBtn = document.getElementById('authBottomBtnText');
       if (authBtn) authBtn.innerText = currentProfile.isLoggedIn ? "Logout" : "Login";
@@ -248,11 +243,12 @@
     function handleSaveProfile(e) {
       e.preventDefault();
       currentProfile.username = document.getElementById('editUsernameInput').value.trim();
-      currentProfile.address = document.getElementById('editAddressInput').value.trim() || 'Add your delivery address';
+      currentProfile.phone = document.getElementById('editPhoneInput').value.trim() || '+91 89776 27028';
       if (uploadedImageBase64) {
         currentProfile.avatar = uploadedImageBase64;
       }
       localStorage.setItem('lenka_user_profile', JSON.stringify(currentProfile));
+      localStorage.setItem('lenka_logged_in_phone', currentProfile.phone);
       renderProfileHeader();
       toggleEditView(false);
       alert("Profile and avatar updated successfully!");
@@ -332,17 +328,18 @@
     }
 
     function handleAuthAction() {
-    if (typeof clientLogOutSession === 'function') {
-        clientLogOutSession();
-    } else {
-        if (!confirm("Are you sure you want to log out?")) return;
-        localStorage.removeItem('lenka_logged_in_phone');
-        localStorage.removeItem('lenka_user_profile');
-        localStorage.removeItem('lenka_cart_v2');
-        sessionStorage.clear();
-        window.location.href = "index.html";
+      if (typeof clientLogOutSession === 'function') {
+          clientLogOutSession();
+      } else {
+          if (!confirm("Are you sure you want to log out?")) return;
+          localStorage.removeItem('lenka_logged_in_phone');
+          localStorage.removeItem('lenka_user_profile');
+          localStorage.removeItem('lenka_cart_v2');
+          sessionStorage.clear();
+          window.location.href = "index.html";
+      }
     }
-}
+
     window.addEventListener('DOMContentLoaded', initProfile);
   </script>
 </body>
