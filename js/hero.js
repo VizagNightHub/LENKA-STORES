@@ -60,17 +60,16 @@ function renderHeroCarouselStage() {
 
   const slideWrapper = document.createElement('div');
   slideWrapper.className = "relative w-full h-full flex items-center justify-center p-4 transition-all duration-500 ease-out";
-  
   slideWrapper.innerHTML = `
     <div class="relative w-full max-w-xl aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-black">
       <video autoplay loop muted playsinline class="w-full h-full object-cover">
-        <source src="${currentAd.videoUrl || currentAd.image}" type="video/mp4">
+        <source src="${currentAd.url || currentAd.videoUrl}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
       <div class="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-between">
         <div>
           <h4 class="text-xs font-bold text-white truncate">${currentAd.title || 'Lenka Featured Ad'}</h4>
-          <p class="text-[10px] text-[#C5A880] font-mono mt-0.5">${currentAd.subtitle || 'Tap explore to discover more'}</p>
+          <p class="text-[10px] text-[#C5A880] font-mono mt-0.5">Tap explore to discover more</p>
         </div>
         <button type="button" onclick="scrollToLiveCatalog()" class="px-4 py-2 bg-white text-black font-extrabold text-[10px] uppercase tracking-wider rounded-xl shadow hover:bg-[#C5A880] transition-all cursor-pointer">
           Explore
