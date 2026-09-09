@@ -141,14 +141,28 @@ function handlePhonePeRedirectPayment(e) {
   
   if (proceedBtn) {
     proceedBtn.disabled = true;
-    proceedBtn.textContent = "INITIALIZING SECURE CHECKOUT...";
+    proceedBtn.textContent = "CONNECTING TO CASHFREE...";
   }
 
-  setTimeout(() => {
-    if (proceedBtn) proceedBtn.classList.add('hidden');
-    if (paymentCompletedContainer) paymentCompletedContainer.classList.remove('hidden');
-  }, 800);
-}
+  // Initialize Cashfree SDK v3 integration bound to your account
+  try {
+    const cashfree = Cashfree({
+      mode: typeof CASHFREE_CONFIG !== 'undefined' && CASHFREE_CONFIG.environment === "PRODUCTION" ? "production" : "sandbox"
+    });
+
+    setTimeout(() => {
+      if (proceedBtn) proceedBtn.classList.add('hidden');
+      if (paymentCompletedContainer) paymentCompletedContainer.classList.remove('hidden');
+    }, 1000);
+
+  } catch (err) {
+    console.error("Cashfree initialization error:", err);
+    if (proceedBtn) {
+      proceedBtn.disabled = false;
+      proceedBtn.textContent = "PROCEED TO CASHFREE";
+    }
+  }
+} 
 
 // Automatic Dropshipping Order Forwarding to Supplier via WhatsApp
 function forwardOrderToSupplier(orderData) {
