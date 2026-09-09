@@ -743,7 +743,6 @@
       const discountTag = document.getElementById('fieldDiscountTag')?.value.trim() || '';
       const description = document.getElementById('fieldDescription')?.value.trim() || 'Curated luxury piece.';
       
-      // Collect all image URLs from dynamic boxes
       const inputs = document.querySelectorAll('.addProductImgInput');
       const imagesArray = Array.from(inputs).map(inp => inp.value.trim()).filter(s => s.length > 0);
       const primaryImage = imagesArray[0] || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800';
@@ -771,7 +770,6 @@
         alert(`Product "${title}" with ${imagesArray.length} image(s) published live!`);
         document.getElementById('productPublishForm').reset();
         
-        // Reset container to one blank box
         const container = document.getElementById('addProductImageBoxesContainer');
         if (container) {
           container.innerHTML = '';
@@ -797,7 +795,6 @@
       document.getElementById('editTitle').value = prod.title || '';
       document.getElementById('editOfferPrice').value = prod.offerPrice || '';
       
-      // Populate dynamic edit boxes
       const container = document.getElementById('editModalImageBoxesContainer');
       if (container) {
         container.innerHTML = '';
@@ -871,9 +868,8 @@
 
     window.addEventListener('DOMContentLoaded', () => { 
       checkSecurityAuth(); 
-      // Initialize with one default image box on load
       const addContainer = document.getElementById('addProductImageBoxesContainer');
-      if (addProductImageBoxesContainer && addContainer.children.length === 0) {
+      if (addContainer && addContainer.children.length === 0) {
         addBoxToAddProduct();
       }
     });
