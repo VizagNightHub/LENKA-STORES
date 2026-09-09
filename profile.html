@@ -328,17 +328,32 @@
       document.getElementById('detailDrawerModal').classList.add('hidden');
     }
 
+    // Completely wipes saved user profile data and resets fields instantly upon logout
     function handleAuthAction() {
-      if (typeof clientLogOutSession === 'function') {
-          clientLogOutSession();
-      } else {
-          if (!confirm("Are you sure you want to log out?")) return;
-          localStorage.removeItem('lenka_logged_in_phone');
-          localStorage.removeItem('lenka_user_profile');
-          localStorage.removeItem('lenka_cart_v2');
-          sessionStorage.clear();
-          window.location.href = "index.html";
-      }
+      if (!confirm("Are you sure you want to log out?")) return;
+      localStorage.removeItem('lenka_logged_in_phone');
+      localStorage.removeItem('lenka_user_profile');
+      localStorage.removeItem('lenka_cart_v2');
+      sessionStorage.clear();
+
+      // Reset profile object immediately
+      currentProfile = {
+        username: "",
+        phone: "",
+        avatar: "default-avatar.png",
+        isLoggedIn: false
+      };
+
+      // Clear the input fields and text headers right on the screen
+      document.getElementById('profileNameDisplay').innerText = "Guest User";
+      document.getElementById('profilePhoneDisplay').innerText = "No phone linked";
+      document.getElementById('editUsernameInput').value = "";
+      document.getElementById('editPhoneInput').value = "";
+      document.getElementById('profileAvatarImg').src = "default-avatar.png";
+      document.getElementById('liveAvatarPreview').src = "default-avatar.png";
+
+      alert("Logged out successfully!");
+      toggleEditView(false);
     }
 
     window.addEventListener('DOMContentLoaded', initProfile);
