@@ -191,7 +191,7 @@ function setupProductSwipeGestures(sliderId, totalImages) {
 
 window.filterCategory = filterCategory;
 window.slideProductImage = slideProductImage;
-
+window.liveCatalog = liveCatalog;
 window.addEventListener('DOMContentLoaded', () => {
   initStorefrontCatalog();
 });
