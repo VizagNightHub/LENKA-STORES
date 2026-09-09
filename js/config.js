@@ -34,6 +34,7 @@ function initCatalogSync() {
   const localSaved = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
   if (localSaved.length > 0) {
     window.LenkaApp.catalog = localSaved;
+    window.liveCatalog = window.LenkaApp.catalog;
     renderCatalog(window.LenkaApp.activeCategory);
   } else {
     seedDefaultCatalog();
@@ -46,6 +47,7 @@ function initCatalogSync() {
         snapshot.forEach(doc => {
           window.LenkaApp.catalog.push({ id: doc.id, ...doc.data() });
         });
+        window.liveCatalog = window.LenkaApp.catalog;
         localStorage.setItem('lenka_catalog', JSON.stringify(window.LenkaApp.catalog));
         renderCatalog(window.LenkaApp.activeCategory);
       }
@@ -103,6 +105,7 @@ function seedDefaultCatalog() {
       description: '100% Egyptian Giza combed cotton. Structured cuffs.'
     }
   ];
+  window.liveCatalog = window.LenkaApp.catalog;
   localStorage.setItem('lenka_catalog', JSON.stringify(window.LenkaApp.catalog));
   renderCatalog(window.LenkaApp.activeCategory);
 }
@@ -192,6 +195,7 @@ function setProductImage(prodId, index, event) {
 
 function renderCatalog(filter = 'all') {
   window.LenkaApp.activeCategory = filter;
+  window.liveCatalog = window.LenkaApp.catalog;
   const grid = document.getElementById('productGrid');
   const empty = document.getElementById('emptyCatalogState');
   if (!grid) return;
@@ -322,6 +326,7 @@ function toggleFavorite(prodId, event) {
   renderCatalog(window.LenkaApp.activeCategory);
 }
 
+window.liveCatalog = window.LenkaApp.catalog;
 window.initCatalogSync = initCatalogSync;
 window.renderCatalog = renderCatalog;
 window.filterCategory = filterCategory;
