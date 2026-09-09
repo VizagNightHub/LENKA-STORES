@@ -1,40 +1,44 @@
-// LENKA STORES HERO ADS CONTROLLER
+// LENKA STORES DYNAMIC HERO ADS CONTROLLER
 
 let currentHeroIndex = 0;
 let heroAdItems = [];
 
-// Initialize Hero Carousel Ads
 async function initHeroCarousel() {
   heroAdItems = [];
 
-  // Try fetching dedicated hero ads from Firebase Firestore 'heroAds' collection
+  // 1. Try loading from localStorage first for instant rendering
+  try {
+    const localAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
+    if (Array.isArray(localAds) && localAds.length > 0) {
+      heroAdItems = localAds;
+    }
+  } catch (e) {
+    heroAdItems = [];
+  }
+
+  // 2. Sync with Firebase Firestore 'hero_ads' settings document
   if (typeof firebase !== 'undefined' && firebase.apps.length) {
     try {
-      const snapshot = await firebase.firestore().collection('heroAds').get();
-      snapshot.forEach(doc => {
-        heroAdItems.push({ id: doc.id, ...doc.data() });
-      });
+      const docSnap = await firebase.firestore().collection('settings').doc('hero_ads').get();
+      if (docSnap.exists && Array.isArray(docSnap.data().media)) {
+        const cloudAds = docSnap.data().media.filter(ad => ad && ad.url);
+        if (cloudAds.length > 0) {
+          heroAdItems = cloudAds;
+          localStorage.setItem('lenka_hero_ads', JSON.stringify(heroAdItems));
+        }
+      }
     } catch (err) {
-      console.warn("Firestore heroAds fetch note:", err);
+      console.warn("Firestore hero_ads sync note:", err);
     }
   }
 
-  // Fallback to local storage if Firestore is empty
-  if (heroAdItems.length === 0) {
-    try {
-      heroAdItems = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
-    } catch (e) {
-      heroAdItems = [];
-    }
-  }
-
-  // Final fallback if no custom hero ads uploaded yet
+  // 3. Fallback blank state if no ads have been uploaded in Admin Studio yet
   if (heroAdItems.length === 0) {
     heroAdItems = [
       {
-        title: "LENKA STORES EXCLUSIVE",
-        subtitle: "Curated Luxury & Modern Living",
-        videoUrl: "https://videotourl.com/videos/1788946478817-c99553c4-67b1-4b9a-be27-9fd5c205d9e8.mp4"
+        title: "LENKA STORES STUDIO",
+        url: "", // Blank so it forces you to upload via Admin Studio
+        bg: "#F4845F"
       }
     ];
   }
@@ -42,7 +46,6 @@ async function initHeroCarousel() {
   renderHeroCarouselStage();
 }
 
-// Render the active hero ad video stage
 function renderHeroCarouselStage() {
   const stage = document.getElementById('heroCarouselStage');
   const navButtons = document.getElementById('navArrowButtons');
@@ -60,28 +63,37 @@ function renderHeroCarouselStage() {
 
   const slideWrapper = document.createElement('div');
   slideWrapper.className = "relative w-full h-full flex items-center justify-center p-4 transition-all duration-500 ease-out";
-  slideWrapper.innerHTML = `
-    <div class="relative w-full max-w-xl aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-black">
-      <video autoplay loop muted playsinline class="w-full h-full object-cover">
-        <source src="${currentAd.url || currentAd.videoUrl}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <div class="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-between">
-        <div>
-          <h4 class="text-xs font-bold text-white truncate">${currentAd.title || 'Lenka Featured Ad'}</h4>
-          <p class="text-[10px] text-[#C5A880] font-mono mt-0.5">Tap explore to discover more</p>
-        </div>
-        <button type="button" onclick="scrollToLiveCatalog()" class="px-4 py-2 bg-white text-black font-extrabold text-[10px] uppercase tracking-wider rounded-xl shadow hover:bg-[#C5A880] transition-all cursor-pointer">
-          Explore
-        </button>
+  
+  if (!currentAd.url) {
+    slideWrapper.innerHTML = `
+      <div class="relative w-full max-w-xl aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-black/60 flex flex-col items-center justify-center p-6 text-center space-y-2">
+        <h4 class="text-xs font-bold text-white uppercase tracking-wider">No Hero Ad Video Uploaded</h4>
+        <p class="text-[11px] text-slate-400">Open Lenka Studio (admin.html), go to 'Hero Ads Manager', and add your video URL.</p>
       </div>
-    </div>
-  `;
+    `;
+  } else {
+    slideWrapper.innerHTML = `
+      <div class="relative w-full max-w-xl aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-black">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover">
+          <source src="${currentAd.url}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 flex items-center justify-between">
+          <div>
+            <h4 class="text-xs font-bold text-white truncate">${currentAd.title || 'Lenka Featured Ad'}</h4>
+            <p class="text-[10px] text-[#C5A880] font-mono mt-0.5">Tap explore to discover more</p>
+          </div>
+          <button type="button" onclick="scrollToLiveCatalog()" class="px-4 py-2 bg-white text-black font-extrabold text-[10px] uppercase tracking-wider rounded-xl shadow hover:bg-[#C5A880] transition-all cursor-pointer">
+            Explore
+          </button>
+        </div>
+      </div>
+    `;
+  }
 
   stage.appendChild(slideWrapper);
 }
 
-// Navigate Hero Carousel Ads
 function navigateHeroCarousel(direction) {
   if (heroAdItems.length === 0) return;
 
@@ -94,7 +106,6 @@ function navigateHeroCarousel(direction) {
   renderHeroCarouselStage();
 }
 
-// Scroll smoothly down to the live catalog section
 function scrollToLiveCatalog() {
   const catalogEl = document.getElementById('mainStoreCatalog');
   if (catalogEl) {
@@ -102,12 +113,10 @@ function scrollToLiveCatalog() {
   }
 }
 
-// Expose functions globally to window scope
 window.navigateHeroCarousel = navigateHeroCarousel;
 window.scrollToLiveCatalog = scrollToLiveCatalog;
 window.initHeroCarousel = initHeroCarousel;
 
-// Auto initialize hero section on load
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initHeroCarousel);
 } else {
