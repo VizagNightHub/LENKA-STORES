@@ -141,7 +141,7 @@ function slideProductImage(sliderId, direction, totalImages) {
   if (dotsContainer) {
     const dots = dotsContainer.children;
     for (let i = 0; i < dots.length; i++) {
-      dots[i].className = `w-2 h-2 rounded-full bg-white/${i === currentIndex ? '100' : '40'} shadow transition-all`;
+   dots[i].className = `w-2 h-2 rounded-full bg-white/${i === currentIndex ? '100' : '40'} shadow transition-all`;
     }
   }
 }
@@ -177,4 +177,5 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initStorefrontCatalog);
 } else {
   initStorefrontCatalog();
+  window.openCartDrawer = openCartDrawer;
 }
