@@ -189,9 +189,12 @@ function setupProductSwipeGestures(sliderId, totalImages) {
   }
 }
 
+window.liveCatalog = liveCatalog;
 window.filterCategory = filterCategory;
 window.slideProductImage = slideProductImage;
-window.addEventListener('DOMContentLoaded', () => {
-window.liveCatalog = liveCatalog;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initStorefrontCatalog);
+} else {
   initStorefrontCatalog();
-});
+}
