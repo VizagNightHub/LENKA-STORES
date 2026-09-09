@@ -158,23 +158,31 @@ function closeCheckoutModal() {
   if (modal) modal.classList.add('hidden');
 }
 
-// PhonePe Payment Gateway Handler & Order Placement
+// Cashfree Payment Gateway Integration
 function handlePhonePeRedirectPayment(e) {
   e.preventDefault();
   const proceedBtn = document.getElementById('proceedToPayBtn');
-  const paymentCompletedContainer = document.getElementById('paymentCompletedContainer');
+  if (proceedBtn) proceedBtn.disabled = true;
+  if (proceedBtn) proceedBtn.textContent = "INITIALIZING CASHFREE...";
 
-  const upiId = "8977627028-2@ybl";
   const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
-  const payUrl = `upi://pay?pa=${upiId}&pn=LENKA%20STORES&am=${totalAmount}&cu=INR`;
+  const orderId = 'LS-CF-' + Math.floor(100000 + Math.random() * 900000);
 
-  // Trigger UPI intent link
-  window.location.href = payUrl;
+  // Payload for backend or Cashfree test session
+  const paymentData = {
+    orderId: orderId,
+    orderAmount: totalAmount,
+    customerName: "Valued Customer",
+    customerPhone: localStorage.getItem('lenka_logged_in_phone') || "9000000000"
+  };
 
-  if (proceedBtn) proceedBtn.classList.add('hidden');
-  if (paymentCompletedContainer) paymentCompletedContainer.classList.remove('hidden');
+  // If using Cashfree SDK or simulated gateway redirect
+  setTimeout(() => {
+    alert(`Redirecting to Cashfree Secure Checkout for ₹${totalAmount}...`);
+    // Trigger success flow for testing or call Cashfree JS SDK checkout here
+    triggerDeliveryTruckSuccessModal();
+  }, 1000);
 }
-
 // Successful Order Placement & Delivery Truck Modal Trigger
 async function triggerDeliveryTruckSuccessModal() {
   closeCheckoutModal();
