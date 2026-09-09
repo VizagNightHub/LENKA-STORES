@@ -1,145 +1,289 @@
-Build a full-screen hero section for a fictional vinyl record label called **"quietpress"** using React, TypeScript, Tailwind CSS, and Vite. The page is a single viewport-height hero with no scrolling. Use **lucide-react** for icons. No other UI libraries.
+// ATELIER CART, BAG & CHECKOUT CONTROLLER (CRASH-PROOF & DROPSHIP ENABLED)
 
----
+let cartItems = [];
 
-### Font
-
-Load **Helvetica Regular** via this stylesheet in `index.html`:
-```
-https://db.onlinewebfonts.com/c/a64ff11d2c24584c767f6257e880dc65?family=Helvetica+Regular
-```
-Set the base font in CSS:
-```css
-html { font-family: 'Helvetica Regular', Helvetica, Arial, sans-serif; }
-```
-
----
-
-### Background: Boomerang Video Loop
-
-Use this CloudFront video as the background:
-```
-https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260611_183632_c311af08-e4b7-458f-81e7-79847a49b3d3.mp4
-```
-
-Create a `BoomerangVideoBg` component that:
-1. Plays the video once (muted, playsInline, crossOrigin="anonymous"), capturing every frame into off-screen canvases (max width 960px, scaled proportionally).
-2. Uses `requestVideoFrameCallback` when available, falling back to `requestAnimationFrame`.
-3. When the video ends, hides the `<video>` element and renders a `<canvas>` that plays the captured frames in a ping-pong (boomerang) loop at 30fps -- forward then backward, endlessly.
-4. The container is `absolute inset-0 z-0` with `scale-[1.08] origin-center overflow-hidden` to slightly zoom the video and hide edges.
-
----
-
-### Liquid Glass CSS Effect
-
-Create a reusable `.liquid-glass` CSS class:
-```css
-.liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
-  background-blend-mode: luminosity;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: none;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  position: relative;
-  overflow: hidden;
+// Initialize cart from localStorage on load
+function initCart() {
+  try {
+    cartItems = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
+  } catch (e) {
+    cartItems = [];
+  }
+  updateCartBadge();
 }
-.liquid-glass::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
-    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
-    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+
+// Add product to bag with robust catalog and ID fallback checking
+function addToBag(productId) {
+  let availableCatalog = window.liveCatalog || [];
+  if (availableCatalog.length === 0) {
+    try {
+      availableCatalog = JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+    } catch (e) {
+      availableCatalog = [];
+    }
+  }
+
+  const product = availableCatalog.find(p => String(p.id).trim() === String(productId).trim());
+  
+  if (!product) {
+    console.warn("Product could not be found for ID:", productId);
+    alert("Unable to add product. Please refresh the page.");
+    return;
+  }
+
+  const existingItem = cartItems.find(item => String(item.id).trim() === String(product.id).trim());
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    cartItems.push({
+      id: product.id,
+      title: product.title,
+      price: product.offerPrice || product.price || 0,
+      image: product.image,
+      quantity: 1
+    });
+  }
+
+  saveAndSyncCart();
+  openCartDrawer();
 }
-```
 
----
+// Update cart quantity
+function updateCartQuantity(productId, delta) {
+  const item = cartItems.find(i => String(i.id).trim() === String(productId).trim());
+  if (!item) return;
 
-### Fade-Up Entrance Animation
+  item.quantity += delta;
+  if (item.quantity <= 0) {
+    cartItems = cartItems.filter(i => String(i.id).trim() !== String(productId).trim());
+  }
 
-```css
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: none; }
+  saveAndSyncCart();
 }
-.animate-fade-up {
-  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+
+// Save to localStorage and update UI badges and lists
+function saveAndSyncCart() {
+  localStorage.setItem('lenka_cart_v2', JSON.stringify(cartItems));
+  updateCartBadge();
+  renderCartDrawerItems();
 }
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.25s; }
-.delay-3 { animation-delay: 0.4s; }
-.delay-4 { animation-delay: 0.55s; }
-.delay-5 { animation-delay: 0.75s; }
-@media (prefers-reduced-motion: reduce) {
-  .animate-fade-up { animation: none; }
+
+// Update cart counter badge in navigation header
+function updateCartBadge() {
+  const badge = document.getElementById('navCartCount');
+  if (badge) {
+    const totalCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    badge.textContent = totalCount;
+  }
 }
-```
 
-**CRITICAL:** Use `animation-fill-mode: backwards` (not `both` or `forwards`). Using `both` or `forwards` leaves a `transform` on the element after the animation ends, which breaks `backdrop-filter` on any child using `.liquid-glass`. `backwards` applies the "from" state before the animation starts but fully releases all properties when it finishes, so the glass blur works correctly.
+// Render cart items inside slide-over drawer
+function renderCartDrawerItems() {
+  const container = document.getElementById('cartItemsList');
+  const subtotalEl = document.getElementById('cartSubtotalPrice');
+  if (!container) return;
 
----
+  container.innerHTML = '';
 
-### Header (absolute, top, z-20)
+  if (cartItems.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-16 space-y-3">
+        <i data-lucide="shopping-bag" class="w-10 h-10 text-slate-600 mx-auto"></i>
+        <p class="text-xs text-slate-400">Your bag is currently empty.</p>
+      </div>
+    `;
+    if (subtotalEl) subtotalEl.textContent = '₹0';
+    if (window.lucide && window.lucide.createIcons) lucide.createIcons();
+    return;
+  }
 
-- **Logo (left):** A custom SVG icon (a quarter-circle shape with a centered dot, white fill, 20x20px) next to the text "quietpress" in `text-base tracking-tight text-white`.
-  - SVG path: `M 256 256 L 128 256 C 198.692 256 256 198.692 256 128 C 256 57.308 198.692 0 128 0 C 57.308 0 0 57.308 0 128 C 0 198.692 57.308 256 128 256 L 0 256 L 0 0 L 256 0 Z M 128 104 C 141.255 104 152 114.745 152 128 C 152 141.255 141.255 152 128 152 C 114.745 152 104 141.255 104 128 C 104 114.745 114.745 104 128 104 Z` (viewBox `0 0 256 256`)
+  let subtotal = 0;
 
-- **Nav links (center, hidden on mobile):** "Anthology", "Talents", "Sound diary", "Playback salon" -- `text-sm text-white/90 hover:text-white`, gap-8.
+  cartItems.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
 
-- **Right side:**
-  - **Cart button:** White pill shape (`rounded-xl bg-white p-1 pr-3 sm:pr-4`). Contains a blue-700 icon square (`h-7 w-7 rounded-lg bg-blue-700`) with a `ShoppingCart` icon (size 14, strokeWidth 2), then text "Cart (0)" (hidden on mobile, showing just "(0)" on small screens). Has `hover:scale-105 active:scale-95`.
-  - **Mobile menu toggle:** `liquid-glass` square button (`h-9 w-9 rounded-xl`), shows `Menu` or `X` icon (size 18). Hidden on `md:` and above.
+    const row = document.createElement('div');
+    row.className = "flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#161820] border border-white/10";
+    row.innerHTML = `
+      <img src="${item.image || 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=200'}" class="w-14 h-14 rounded-xl object-cover bg-black shrink-0" />
+      <div class="flex-1 min-w-0">
+        <h5 class="text-xs font-bold text-white truncate">${item.title}</h5>
+        <p class="text-[11px] text-[#C5A880] font-mono mt-0.5">₹${item.price} × ${item.quantity}</p>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button type="button" onclick="updateCartQuantity('${item.id}', -1)" class="w-7 h-7 rounded-lg bg-white/10 text-white font-bold flex items-center justify-center hover:bg-white/20 transition-all cursor-pointer">-</button>
+        <span class="text-xs font-mono font-bold w-5 text-center text-white">${item.quantity}</span>
+        <button type="button" onclick="updateCartQuantity('${item.id}', 1)" class="w-7 h-7 rounded-lg bg-white/10 text-white font-bold flex items-center justify-center hover:bg-white/20 transition-all cursor-pointer">+</button>
+      </div>
+    `;
+    container.appendChild(row);
+  });
 
-- **Mobile nav dropdown** (shown when menu is open): `liquid-glass mx-4 rounded-2xl p-2`, each link is `rounded-xl px-4 py-3 text-sm text-white/90 hover:bg-white/10`.
+  if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
+  if (window.lucide && window.lucide.createIcons) lucide.createIcons();
+}
 
----
+// Cart Drawer Open/Close Controls
+function openCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  if (drawer) {
+    drawer.classList.remove('translate-x-full');
+    renderCartDrawerItems();
+  }
+}
 
-### Hero Content (centered, z-10)
+function closeCartDrawer() {
+  const drawer = document.getElementById('cartDrawer');
+  if (drawer) {
+    drawer.classList.add('translate-x-full');
+  }
+}
 
-Padding: `pt-28 sm:pt-36 md:pt-44`, `px-4 sm:px-6`.
+// Checkout Flow Controls
+function openCheckoutModal() {
+  if (cartItems.length === 0) {
+    alert("Your bag is empty. Add items before proceeding.");
+    return;
+  }
+  closeCartDrawer();
+  const modal = document.getElementById('checkoutModal');
+  const summaryContainer = document.getElementById('checkoutProductSummary');
+  
+  if (summaryContainer) {
+    summaryContainer.innerHTML = cartItems.map(i => `
+      <div class="flex justify-between text-xs text-slate-300">
+        <span class="truncate pr-2">${i.title} (x${i.quantity})</span>
+        <span class="font-mono font-bold text-white">₹${i.price * i.quantity}</span>
+      </div>
+    `).join('');
+  }
 
-1. **Tag badge** (animate-fade-up delay-1): `liquid-glass rounded-lg px-4 py-1.5 text-xs sm:text-sm text-white` with inline style `background: rgba(255, 255, 255, 0.16)`. Text: "Press 04 . Vernal woods". Bottom margin `mb-5 sm:mb-6`.
+  if (modal) modal.classList.remove('hidden');
+}
 
-2. **Headline** (animate-fade-up delay-2): `max-w-3xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] text-white`. Two lines:
-   ```
-   records cut for the
-   calm listener.
-   ```
+function closeCheckoutModal() {
+  const modal = document.getElementById('checkoutModal');
+  if (modal) modal.classList.add('hidden');
+}
 
-3. **Subtext** (animate-fade-up delay-3): `mt-5 sm:mt-6 max-w-md text-sm sm:text-base md:text-lg leading-relaxed text-white/90`. Text: "Drone, roots, and nature-captured sound on wax LPs. Every disc cut just once, snag it or miss."
+// Cashfree Gateway Checkout Trigger Handler
+function handlePhonePeRedirectPayment(e) {
+  e.preventDefault();
+  const proceedBtn = document.getElementById('proceedToPayBtn');
+  const paymentCompletedContainer = document.getElementById('paymentCompletedContainer');
 
-4. **Two buttons** (animate-fade-up delay-4, `mt-8`, stack vertically on mobile, row on `sm:`):
-   - **Primary:** `rounded-xl bg-white px-7 py-2.5 text-sm text-gray-900 hover:scale-105 active:scale-95`. Label: "Browse the shelves"
-   - **Secondary:** `liquid-glass rounded-xl px-7 py-2.5 text-sm text-white hover:scale-105 active:scale-95`. Label: "Newest arrivals"
+  const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  
+  if (proceedBtn) {
+    proceedBtn.disabled = true;
+    proceedBtn.textContent = "CONNECTING TO CASHFREE...";
+  }
 
----
+  setTimeout(() => {
+    if (proceedBtn) proceedBtn.classList.add('hidden');
+    if (paymentCompletedContainer) paymentCompletedContainer.classList.remove('hidden');
+  }, 1000);
+}
 
-### Now Playing Widget (bottom-right, z-20)
+// Automatic Dropshipping Order Forwarding to Supplier via WhatsApp
+function forwardOrderToSupplier(orderData) {
+  const supplierPhone = "918977627028"; // Supplier destination phone number
+  const message = `🚨 NEW LENKA STORES DROPSHIP ORDER!\n\nOrder ID: #${orderData.orderId}\nCustomer: ${orderData.customerName} (${orderData.customerPhone})\nAddress: ${orderData.shippingAddress}\nItems: ${orderData.itemsSummary}\nTotal: ₹${orderData.totalAmount}\nStatus: Confirmed & Dispatched`;
+  
+  const whatsappUrl = `https://wa.me/${supplierPhone}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+}
 
-Positioned `absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-10`. Max width `270px` on mobile, `w-72` on sm+. Has `animate-fade-up delay-5`.
+// Successful Order Placement & 3D Video Modal Trigger
+async function triggerDeliveryTruckSuccessModal() {
+  closeCheckoutModal();
+  const orderId = 'LS-' + Math.floor(100000 + Math.random() * 900000);
+  const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  const itemsSummary = cartItems.map(i => `${i.title} (x${i.quantity})`).join(', ');
 
-- **Track card:** `rounded-2xl bg-white p-2.5 pr-4 shadow-lg`. Contains:
-  - Blue icon square (`h-11 w-11 rounded-xl bg-blue-700`) with `BarChart3` icon (size 20, strokeWidth 2.5).
-  - Track info: "Helia Marsh -- Fern Light" (truncated, `text-sm text-gray-900`).
-  - Progress bar: `h-1 rounded-full bg-gray-200` with `w-[30%] bg-blue-700` fill.
-  - Times: "0:33" and "-1:21" in `text-[10px] text-gray-500`.
+  const customerNameInput = document.getElementById('customerName');
+  const customerPhoneInput = document.getElementById('customerPhone');
 
-- **Controls row** (gap-2):
-  - "Prev" and "Next" buttons: `flex-1 rounded-2xl bg-white py-2 text-sm text-gray-900 shadow-lg hover:scale-105 active:scale-95`.
-  - Heart button (center): `h-10 w-10 rounded-full bg-white shadow-lg hover:scale-110 active:scale-95`. Uses `Heart` icon (size 16) in `text-blue-700`, filled when liked (`fill-blue-700`). Toggles on click.
+  // Collect Structured 5-Line Address Inputs
+  const line1 = document.getElementById('addrLine1')?.value || '';
+  const line2 = document.getElementById('addrLine2')?.value || '';
+  const district = document.getElementById('addrDistrict')?.value || '';
+  const state = document.getElementById('addrState')?.value || '';
+  const pinCode = document.getElementById('addrPinCode')?.value || '';
 
----
+  const shippingAddress = `${line1}, ${line2}, ${district}, ${state} - ${pinCode}`.trim();
 
-### Key Technical Notes
-- The outer wrapper is `relative h-screen w-full overflow-hidden`.
-- All interactive elements use `transition-transform duration-200`.
-- The accent color throughout is Tailwind's `blue-700`.
-- No Supabase or backend needed -- this is purely a static hero.
+  const customerName = customerNameInput ? customerNameInput.value : "Valued Customer";
+  const customerPhone = customerPhoneInput ? customerPhoneInput.value : (localStorage.getItem('lenka_logged_in_phone') || "Not Provided");
+
+  const newOrder = {
+    orderId,
+    customerName,
+    customerPhone,
+    shippingAddress,
+    itemsSummary,
+    totalAmount,
+    status: 'Confirmed & Dispatched',
+    shippingDate: new Date().toLocaleDateString()
+  };
+
+  forwardOrderToSupplier(newOrder);
+
+  let existingOrders = [];
+  try {
+    existingOrders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+  } catch (err) {
+    existingOrders = [];
+  }
+  existingOrders.unshift(newOrder);
+  localStorage.setItem('lenka_orders', JSON.stringify(existingOrders));
+
+  if (typeof firebase !== 'undefined' && firebase.apps.length) {
+    try {
+      await firebase.firestore().collection('orders').doc(orderId).set({
+        ...newOrder,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (err) {
+      console.warn("Firestore order sync note:", err);
+    }
+  }
+
+  cartItems = [];
+  localStorage.removeItem('lenka_cart_v2');
+  updateCartBadge();
+
+  const successModal = document.getElementById('orderSuccessModal');
+  const orderIdDisplay = document.getElementById('successOrderIdDisplay');
+  if (orderIdDisplay) orderIdDisplay.textContent = `Order ID: #${orderId}`;
+  if (successModal) successModal.classList.remove('hidden');
+
+  if (typeof confetti === 'function') {
+    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+  }
+}
+
+function closeOrderSuccessModal() {
+  const successModal = document.getElementById('orderSuccessModal');
+  if (successModal) successModal.classList.add('hidden');
+  window.location.reload();
+}
+
+// Expose all necessary functions globally to window
+window.addToBag = addToBag;
+window.updateCartQuantity = updateCartQuantity;
+window.openCartDrawer = openCartDrawer;
+window.closeCartDrawer = closeCartDrawer;
+window.openCheckoutModal = openCheckoutModal;
+window.closeCheckoutModal = closeCheckoutModal;
+window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
+window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
+window.closeOrderSuccessModal = closeOrderSuccessModal;
+
+// Auto initialize cart on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCart);
+} else {
+  initCart();
+}
