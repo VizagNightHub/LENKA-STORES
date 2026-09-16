@@ -131,36 +131,72 @@ function closeCheckoutModal() {
   if (modal) modal.classList.add('hidden');
 }
 
-// Cashfree / Payment Gateway Handler & Order Placement
-function handlePhonePeRedirectPayment(e) {
+async function handlePhonePeRedirectPayment(e) {
   e.preventDefault();
   const proceedBtn = document.getElementById('proceedToPayBtn');
-  const paymentCompletedContainer = document.getElementById('paymentCompletedContainer');
-
-  const totalAmount = cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
   
+  const customerName = document.getElementById('customerName')?.value.trim() || "Valued Customer";
+  const customerPhone = document.getElementById('customerPhone')?.value.trim() || "9999999999";
+  
+  // Calculate total amount in INR from cart items
+  const totalAmount = typeof cartItems !== 'undefined' ? cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0) : 499;
+
   if (proceedBtn) {
     proceedBtn.disabled = true;
-    proceedBtn.textContent = "CONNECTING TO CASHFREE...";
+    proceedBtn.textContent = "OPENING RAZORPAY CHECKOUT...";
   }
 
-  // Initialize Cashfree SDK v3 integration bound to your account
-  try {
-    const cashfree = Cashfree({
-      mode: typeof CASHFREE_CONFIG !== 'undefined' && CASHFREE_CONFIG.environment === "PRODUCTION" ? "production" : "sandbox"
-    });
+  var options = {
+    "key": "rzp_test_Tcg7IyanNeTunP", // Safe public Test Key ID
+    "amount": totalAmount * 100,     // Converted to paise (₹1 = 100 paise)
+    "currency": "INR",
+    "name": "LENKA STORES",
+    "description": "Secure E-Commerce Checkout",
+    "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200",
+    "handler": function (response) {
+      alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+      
+      // Save confirmed order to localStorage history
+      const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
+      orders.unshift({
+        orderId: 'LS-' + Math.floor(100000 + Math.random() * 900000),
+        itemsSummary: typeof cartItems !== 'undefined' ? cartItems.map(i => i.title).join(', ') : 'Curated Item',
+        totalAmount: totalAmount,
+        status: 'Confirmed & Dispatched',
+        paymentId: response.razorpay_payment_id,
+        date: new Date().toLocaleDateString()
+      });
+      localStorage.setItem('lenka_orders', JSON.stringify(orders));
+      localStorage.removeItem('lenka_cart_v2');
 
-    setTimeout(() => {
-      if (proceedBtn) proceedBtn.classList.add('hidden');
-      if (paymentCompletedContainer) paymentCompletedContainer.classList.remove('hidden');
-    }, 1000);
+      // Redirect user to their client profile order tracker
+      window.location.href = "profile.html";
+    },
+    "prefill": {
+      "name": customerName,
+      "contact": customerPhone,
+      "email": "customer@lenkastores.com"
+    },
+    "theme": {
+      "color": "#C5A880"
+    }
+  };
 
-  } catch (err) {
-    console.error("Cashfree initialization error:", err);
+  var rzp1 = new Razorpay(options);
+  
+  rzp1.on('payment.failed', function (response){
+    alert("Payment Failed: " + response.error.description);
     if (proceedBtn) {
       proceedBtn.disabled = false;
-      proceedBtn.textContent = "PROCEED TO CASHFREE";
+      proceedBtn.textContent = "PROCEED TO PAY";
     }
+  });
+  
+  rzp1.open();
+  
+  if (proceedBtn) {
+    proceedBtn.disabled = false;
+    proceedBtn.textContent = "PROCEED TO PAY";
   }
 } 
 
