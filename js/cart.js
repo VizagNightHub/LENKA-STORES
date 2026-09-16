@@ -138,7 +138,7 @@ async function handlePhonePeRedirectPayment(e) {
   const customerName = document.getElementById('customerName')?.value.trim() || "Valued Customer";
   const customerPhone = document.getElementById('customerPhone')?.value.trim() || "9999999999";
   
-  // Calculate total amount from cart
+  // Calculate total amount from bag items
   const totalAmount = typeof cartItems !== 'undefined' ? cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0) : 499;
 
   if (proceedBtn) {
@@ -148,15 +148,15 @@ async function handlePhonePeRedirectPayment(e) {
 
   var options = {
     "key": "rzp_test_Tcg7IyanNeTunP", // Your Razorpay Test Key ID
-    "amount": totalAmount * 100,     // Amount in paise (₹1 = 100 paise)
+    "amount": totalAmount * 100,     // Converted to paise (₹1 = 100 paise)
     "currency": "INR",
     "name": "LENKA STORES",
-    "description": "Secure Checkout Payment",
+    "description": "Store Order Checkout",
     "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200",
     "handler": function (response) {
       alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
       
-      // Save order to history
+      // Save order summary to local storage history
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       orders.unshift({
         orderId: 'LS-' + Math.floor(100000 + Math.random() * 900000),
@@ -169,8 +169,12 @@ async function handlePhonePeRedirectPayment(e) {
       localStorage.setItem('lenka_orders', JSON.stringify(orders));
       localStorage.removeItem('lenka_cart_v2');
 
-      // Redirect or trigger WhatsApp order share
-      submitOrderViaWhatsApp();
+      // Trigger your direct WhatsApp order message and clear bag
+      if (typeof submitOrderViaWhatsApp === 'function') {
+        submitOrderViaWhatsApp();
+      } else {
+        window.location.reload();
+      }
     },
     "prefill": {
       "name": customerName,
