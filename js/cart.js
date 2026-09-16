@@ -169,8 +169,8 @@ async function handlePhonePeRedirectPayment(e) {
       localStorage.setItem('lenka_orders', JSON.stringify(orders));
       localStorage.removeItem('lenka_cart_v2');
 
-      // Redirect to profile page
-      window.location.href = "profile.html";
+      // Redirect or trigger WhatsApp order share
+      submitOrderViaWhatsApp();
     },
     "prefill": {
       "name": customerName,
@@ -220,16 +220,17 @@ async function triggerDeliveryTruckSuccessModal() {
   const customerPhoneInput = document.getElementById('customerPhone');
 
   const customerName = customerNameInput ? customerNameInput.value : "Valued Customer";
-  const customerPhone = customerPhoneInput ? customerPhoneInput.value : (localStorage.getItem('lenka_logged_in_phone') || "Not Provided");
+  const customerPhone = customerPhoneInput ? customerPhoneInput.value : "Not Provided";
 
-  // Collect structured 5-line address fields
+  // Collect structured 5-line address fields or general address field
   const line1 = document.getElementById('addrLine1')?.value || '';
   const line2 = document.getElementById('addrLine2')?.value || '';
   const district = document.getElementById('addrDistrict')?.value || '';
   const state = document.getElementById('addrState')?.value || '';
   const pinCode = document.getElementById('addrPinCode')?.value || '';
+  const generalAddress = document.getElementById('customerAddress')?.value || '';
 
-  const shippingAddress = `${line1}, ${line2}, ${district}, ${state} - ${pinCode}`.trim();
+  const shippingAddress = generalAddress || `${line1}, ${line2}, ${district}, ${state} - ${pinCode}`.trim();
 
   const newOrder = {
     orderId,
@@ -294,7 +295,6 @@ function addToBag(productId) {
     }
   }
 
-  // Flexible match using loose equality or string conversion
   const product = availableCatalog.find(p => String(p.id).trim() === String(productId).trim());
   
   if (!product) {
@@ -320,6 +320,41 @@ function addToBag(productId) {
   openCartDrawer();
 }
 
+// WhatsApp Direct Order Submission Function
+function submitOrderViaWhatsApp() {
+  const customerName = document.getElementById('customerName')?.value.trim() || "Valued Customer";
+  const customerPhone = document.getElementById('customerPhone')?.value.trim() || "Not Provided";
+  const deliveryAddress = document.getElementById('customerAddress')?.value || 
+    `${document.getElementById('addrLine1')?.value || ''}, ${document.getElementById('addrDistrict')?.value || ''}`.trim() || "Not Provided";
+  
+  const cart = cartItems.length > 0 ? cartItems : JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
+  if (cart.length === 0) {
+    alert("Your bag is empty!");
+    return;
+  }
+
+  const totalAmount = cart.reduce((sum, item) => sum + ((item.price || item.offerPrice) * item.quantity), 0);
+  
+  let itemsSummary = cart.map(i => `• ${i.title} (x${i.quantity}) - ₹${(i.price || i.offerPrice) * i.quantity}`).join('\n');
+
+  // Format message for your WhatsApp
+  const whatsappMessage = `🛍️ *NEW LENKA STORES ORDER* 🛍️\n\n` +
+    `*Customer Name:* ${customerName}\n` +
+    `*Phone:* ${customerPhone}\n` +
+    `*Address:* ${deliveryAddress}\n\n` +
+    `*Items Ordered:*\n${itemsSummary}\n\n` +
+    `*Total Amount:* ₹${totalAmount}\n\n` +
+    `Please confirm my order and share live status updates here!`;
+
+  const businessWhatsAppNumber = "918977627028"; 
+  const whatsappUrl = `https://wa.me/${businessWhatsAppNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+  cartItems = [];
+  localStorage.removeItem('lenka_cart_v2');
+  updateCartBadge();
+  window.open(whatsappUrl, '_blank');
+}
+
 // Expose functions globally to window
 window.addToBag = addToBag;
 window.updateCartQuantity = updateCartQuantity;
@@ -331,42 +366,11 @@ window.handlePhonePeRedirectPayment = handlePhonePeRedirectPayment;
 window.triggerDeliveryTruckSuccessModal = triggerDeliveryTruckSuccessModal;
 window.closeOrderSuccessModal = closeOrderSuccessModal;
 window.forwardOrderToSupplier = forwardOrderToSupplier;
+window.submitOrderViaWhatsApp = submitOrderViaWhatsApp;
 
 // Auto initialize cart on load
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initCart);
 } else {
   initCart();
-}
-function submitOrderViaWhatsApp() {
-  const customerName = document.getElementById('customerName')?.value.trim() || "Valued Customer";
-  const customerPhone = document.getElementById('customerPhone')?.value.trim() || "Not Provided";
-  const deliveryAddress = document.getElementById('customerAddress')?.value.trim() || "Not Provided";
-  
-  const cart = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
-  if (cart.length === 0) {
-    alert("Your bag is empty!");
-    return;
-  }
-
-  const totalAmount = cart.reduce((sum, item) => sum + (item.offerPrice * item.quantity), 0);
-  
-  let itemsSummary = cart.map(i => `${i.title} (x${i.quantity}) - ₹${i.offerPrice * i.quantity}`).join('\n');
-
-  // Format message for your WhatsApp
-  const whatsappMessage = `🛍️ *NEW LENKA STORES ORDER* 🛍️\n\n` +
-    `*Customer Name:* ${customerName}\n` +
-    `*Phone:* ${customerPhone}\n` +
-    `*Address:* ${deliveryAddress}\n\n` +
-    `*Items Ordered:*\n${itemsSummary}\n\n` +
-    `*Total Amount:* ₹${totalAmount}\n\n` +
-    `Please confirm my order and share live status updates here!`;
-
-  // Replace with your business WhatsApp number (e.g., 918977627028)
-  const businessWhatsAppNumber = "918977627028"; 
-  const whatsappUrl = `https://wa.me/${businessWhatsAppNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-
-  // Clear cart and redirect to WhatsApp
-  localStorage.removeItem('lenka_cart_v2');
-  window.open(whatsappUrl, '_blank');
 }
