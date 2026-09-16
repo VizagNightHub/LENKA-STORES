@@ -338,3 +338,35 @@ if (document.readyState === 'loading') {
 } else {
   initCart();
 }
+function submitOrderViaWhatsApp() {
+  const customerName = document.getElementById('customerName')?.value.trim() || "Valued Customer";
+  const customerPhone = document.getElementById('customerPhone')?.value.trim() || "Not Provided";
+  const deliveryAddress = document.getElementById('customerAddress')?.value.trim() || "Not Provided";
+  
+  const cart = JSON.parse(localStorage.getItem('lenka_cart_v2') || '[]');
+  if (cart.length === 0) {
+    alert("Your bag is empty!");
+    return;
+  }
+
+  const totalAmount = cart.reduce((sum, item) => sum + (item.offerPrice * item.quantity), 0);
+  
+  let itemsSummary = cart.map(i => `${i.title} (x${i.quantity}) - ₹${i.offerPrice * i.quantity}`).join('\n');
+
+  // Format message for your WhatsApp
+  const whatsappMessage = `🛍️ *NEW LENKA STORES ORDER* 🛍️\n\n` +
+    `*Customer Name:* ${customerName}\n` +
+    `*Phone:* ${customerPhone}\n` +
+    `*Address:* ${deliveryAddress}\n\n` +
+    `*Items Ordered:*\n${itemsSummary}\n\n` +
+    `*Total Amount:* ₹${totalAmount}\n\n` +
+    `Please confirm my order and share live status updates here!`;
+
+  // Replace with your business WhatsApp number (e.g., 918977627028)
+  const businessWhatsAppNumber = "918977627028"; 
+  const whatsappUrl = `https://wa.me/${businessWhatsAppNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+  // Clear cart and redirect to WhatsApp
+  localStorage.removeItem('lenka_cart_v2');
+  window.open(whatsappUrl, '_blank');
+}
