@@ -590,90 +590,95 @@
       });
     }
 
-    // HERO ADS ENGINE
-    function initHeroAdsManager() {
-      const savedAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
-      currentHeroAds = Array.isArray(savedAds) ? savedAds : [];
-      renderHeroAdsForm();
+    // HERO ADS ENGINE (WITH LINK URL SUPPORT)
+function initHeroAdsManager() {
+  const savedAds = JSON.parse(localStorage.getItem('lenka_hero_ads') || '[]');
+  currentHeroAds = Array.isArray(savedAds) ? savedAds : [];
+  renderHeroAdsForm();
 
-      db.collection('settings').doc('hero_ads').get().then(doc => {
-        if (doc.exists && Array.isArray(doc.data().media)) {
-          currentHeroAds = doc.data().media;
-          localStorage.setItem('lenka_hero_ads', JSON.stringify(currentHeroAds));
-          renderHeroAdsForm();
-        }
-      }).catch(err => console.warn(err));
-    }
-
-    function renderHeroAdsForm() {
-      const container = document.getElementById('dynamicAdSlotsContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (currentHeroAds.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center space-y-3">
-            <h4 class="font-bold text-slate-800 text-sm">No Ads Currently Active</h4>
-            <button type="button" onclick="addNewOptionalAdSlot()" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl cursor-pointer">+ Add First Ad Slot</button>
-          </div>
-        `;
-        return;
-      }
-
-      currentHeroAds.forEach((ad, idx) => {
-        const card = document.createElement('div');
-        card.className = "p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4 relative";
-        card.innerHTML = `
-          <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Ad Slot #${idx + 1}</span>
-            <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-red-600 hover:bg-red-50 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          </div>
-          <div class="space-y-3">
-            <div>
-              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">MEDIA URL (MP4 Video or Image URL)</label>
-              <input type="text" id="heroAdUrl-${idx}" value="${ad.url || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900" />
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">BG COLOR (HEX)</label>
-                <input type="text" id="heroAdBg-${idx}" value="${ad.bg || '#F4845F'}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
-              </div>
-              <div>
-                <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">CAMPAIGN TITLE</label>
-                <input type="text" id="heroAdTitle-${idx}" value="${ad.title || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
-              </div>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function addNewOptionalAdSlot() {
-      currentHeroAds.push({ id: currentHeroAds.length, url: '', bg: '#F4845F', title: `Campaign Ad #${currentHeroAds.length + 1}` });
+  db.collection('settings').doc('hero_ads').get().then(doc => {
+    if (doc.exists && Array.isArray(doc.data().media)) {
+      currentHeroAds = doc.data().media;
+      localStorage.setItem('lenka_hero_ads', JSON.stringify(currentHeroAds));
       renderHeroAdsForm();
     }
+  }).catch(err => console.warn(err));
+}
 
-    function removeAdSlot(idx) {
-      currentHeroAds.splice(idx, 1);
-      renderHeroAdsForm();
-    }
+function renderHeroAdsForm() {
+  const container = document.getElementById('dynamicAdSlotsContainer');
+  if (!container) return;
+  container.innerHTML = '';
 
-    async function handleSaveHeroAds(e) {
-      e.preventDefault();
-      const updatedAds = [];
-      for (let i = 0; i < currentHeroAds.length; i++) {
-        const url = document.getElementById(`heroAdUrl-${i}`)?.value.trim() || '';
-        const bg = document.getElementById(`heroAdBg-${i}`)?.value.trim() || '#F4845F';
-        const title = document.getElementById(`heroAdTitle-${i}`)?.value.trim() || 'Hero Ad';
-        if (url) updatedAds.push({ id: i, url, bg, title });
-      }
-      currentHeroAds = updatedAds;
-      localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
-      await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
-      alert("Successfully synced ads to storefront!");
-    }
+  if (currentHeroAds.length === 0) {
+    container.innerHTML = `
+      <div class="col-span-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center space-y-3">
+        <h4 class="font-bold text-slate-800 text-sm">No Ads Currently Active</h4>
+        <button type="button" onclick="addNewOptionalAdSlot()" class="px-4 py-2 bg-black text-white text-xs font-bold rounded-xl cursor-pointer">+ Add First Ad Slot</button>
+      </div>
+    `;
+    return;
+  }
+
+  currentHeroAds.forEach((ad, idx) => {
+    const card = document.createElement('div');
+    card.className = "p-5 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-4 relative";
+    card.innerHTML = `
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-900">Ad Slot #${idx + 1}</span>
+        <button type="button" onclick="removeAdSlot(${idx})" class="p-1 rounded-lg text-red-600 hover:bg-red-50 cursor-pointer"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">1. MEDIA URL (MP4 Video or Image URL)</label>
+          <input type="text" id="heroAdUrl-${idx}" value="${ad.url || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">2. BG COLOR (HEX)</label>
+            <input type="text" id="heroAdBg-${idx}" value="${ad.bg || '#F4845F'}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
+          </div>
+          <div>
+            <label class="text-[9px] font-bold uppercase text-slate-500 block mb-1">3. CAMPAIGN TITLE</label>
+            <input type="text" id="heroAdTitle-${idx}" value="${ad.title || ''}" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs text-slate-900" />
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">4. BUTTON LINK URL (Where Explore button redirects)</label>
+          <input type="text" id="heroAdLink-${idx}" value="${ad.link || '#'}" placeholder="https://yourlink.com or #mainStoreCatalog" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-900" />
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  if (window.lucide) lucide.createIcons();
+}
+
+function addNewOptionalAdSlot() {
+  currentHeroAds.push({ id: currentHeroAds.length, url: '', bg: '#F4845F', title: `Campaign Ad #${currentHeroAds.length + 1}`, link: '#' });
+  renderHeroAdsForm();
+}
+
+function removeAdSlot(idx) {
+  currentHeroAds.splice(idx, 1);
+  renderHeroAdsForm();
+}
+
+async function handleSaveHeroAds(e) {
+  e.preventDefault();
+  const updatedAds = [];
+  for (let i = 0; i < currentHeroAds.length; i++) {
+    const url = document.getElementById(`heroAdUrl-${i}`)?.value.trim() || '';
+    const bg = document.getElementById(`heroAdBg-${i}`)?.value.trim() || '#F4845F';
+    const title = document.getElementById(`heroAdTitle-${i}`)?.value.trim() || 'Hero Ad';
+    const link = document.getElementById(`heroAdLink-${i}`)?.value.trim() || '#mainStoreCatalog';
+    if (url) updatedAds.push({ id: i, url, bg, title, link });
+  }
+  currentHeroAds = updatedAds;
+  localStorage.setItem('lenka_hero_ads', JSON.stringify(updatedAds));
+  await db.collection('settings').doc('hero_ads').set({ media: updatedAds, updatedAt: new Date().toISOString() });
+  alert("Successfully synced ads & redirect links to storefront!");
+}
 
     // PRODUCTS CATALOG ENGINE
     function initProducts() {
