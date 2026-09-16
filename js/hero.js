@@ -38,7 +38,8 @@ async function initHeroCarousel() {
       {
         title: "LENKA STORES STUDIO",
         url: "", // Blank so it forces you to upload via Admin Studio
-        bg: "#F4845F"
+        bg: "#F4845F",
+        link: "#mainStoreCatalog"
       }
     ];
   }
@@ -60,6 +61,7 @@ function renderHeroCarouselStage() {
   }
 
   const currentAd = heroAdItems[currentHeroIndex] || heroAdItems[0];
+  const targetLink = currentAd.link || '#mainStoreCatalog';
 
   const slideWrapper = document.createElement('div');
   slideWrapper.className = "relative w-full h-full flex items-center justify-center p-4 transition-all duration-500 ease-out";
@@ -83,7 +85,7 @@ function renderHeroCarouselStage() {
             <h4 class="text-xs font-bold text-white truncate">${currentAd.title || 'Lenka Featured Ad'}</h4>
             <p class="text-[10px] text-[#C5A880] font-mono mt-0.5">Tap explore to discover more</p>
           </div>
-          <button type="button" onclick="scrollToLiveCatalog()" class="px-4 py-2 bg-white text-black font-extrabold text-[10px] uppercase tracking-wider rounded-xl shadow hover:bg-[#C5A880] transition-all cursor-pointer">
+          <button type="button" onclick="handleAdExploreClick('${targetLink}')" class="px-4 py-2 bg-white text-black font-extrabold text-[10px] uppercase tracking-wider rounded-xl shadow hover:bg-[#C5A880] transition-all cursor-pointer">
             Explore
           </button>
         </div>
@@ -92,6 +94,19 @@ function renderHeroCarouselStage() {
   }
 
   stage.appendChild(slideWrapper);
+}
+
+function handleAdExploreClick(destinationUrl) {
+  if (destinationUrl.startsWith('http://') || destinationUrl.startsWith('https://')) {
+    window.open(destinationUrl, '_blank');
+  } else {
+    const targetEl = document.querySelector(destinationUrl);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = destinationUrl;
+    }
+  }
 }
 
 function navigateHeroCarousel(direction) {
@@ -116,6 +131,7 @@ function scrollToLiveCatalog() {
 window.navigateHeroCarousel = navigateHeroCarousel;
 window.scrollToLiveCatalog = scrollToLiveCatalog;
 window.initHeroCarousel = initHeroCarousel;
+window.handleAdExploreClick = handleAdExploreClick;
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initHeroCarousel);
