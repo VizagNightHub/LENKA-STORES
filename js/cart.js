@@ -138,25 +138,25 @@ async function handlePhonePeRedirectPayment(e) {
   const customerName = document.getElementById('customerName')?.value.trim() || "Valued Customer";
   const customerPhone = document.getElementById('customerPhone')?.value.trim() || "9999999999";
   
-  // Calculate total amount in INR from cart items
+  // Calculate total amount from cart
   const totalAmount = typeof cartItems !== 'undefined' ? cartItems.reduce((sum, i) => sum + (i.price * i.quantity), 0) : 499;
 
   if (proceedBtn) {
     proceedBtn.disabled = true;
-    proceedBtn.textContent = "OPENING RAZORPAY CHECKOUT...";
+    proceedBtn.textContent = "OPENING RAZORPAY...";
   }
 
   var options = {
-    "key": "rzp_test_Tcg7IyanNeTunP", // Safe public Test Key ID
-    "amount": totalAmount * 100,     // Converted to paise (₹1 = 100 paise)
+    "key": "rzp_test_Tcg7IyanNeTunP", // Your Razorpay Test Key ID
+    "amount": totalAmount * 100,     // Amount in paise (₹1 = 100 paise)
     "currency": "INR",
     "name": "LENKA STORES",
-    "description": "Secure E-Commerce Checkout",
+    "description": "Secure Checkout Payment",
     "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200",
     "handler": function (response) {
       alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
       
-      // Save confirmed order to localStorage history
+      // Save order to history
       const orders = JSON.parse(localStorage.getItem('lenka_orders') || '[]');
       orders.unshift({
         orderId: 'LS-' + Math.floor(100000 + Math.random() * 900000),
@@ -169,7 +169,7 @@ async function handlePhonePeRedirectPayment(e) {
       localStorage.setItem('lenka_orders', JSON.stringify(orders));
       localStorage.removeItem('lenka_cart_v2');
 
-      // Redirect user to their client profile order tracker
+      // Redirect to profile page
       window.location.href = "profile.html";
     },
     "prefill": {
@@ -198,7 +198,7 @@ async function handlePhonePeRedirectPayment(e) {
     proceedBtn.disabled = false;
     proceedBtn.textContent = "PROCEED TO PAY";
   }
-} 
+}
 
 // Automatic Dropshipping Order Forwarding to Supplier via WhatsApp
 function forwardOrderToSupplier(orderData) {
