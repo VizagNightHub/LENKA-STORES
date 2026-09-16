@@ -12,6 +12,30 @@ async function initCatalog() {
 
   window.liveCatalog = allProducts;
   renderCatalogGrid(allProducts);
+  renderDynamicCategoryFilters();
+}
+
+// Dynamic Category Filter Bar Generator
+function renderDynamicCategoryFilters() {
+  const filterContainer = document.getElementById('categoryFilterButtonsContainer');
+  if (!filterContainer) return;
+
+  const products = allProducts.length > 0 ? allProducts : JSON.parse(localStorage.getItem('lenka_catalog') || '[]');
+  
+  // Extract unique categories dynamically
+  const categories = ['all', ...new Set(products.map(p => p.category).filter(Boolean))];
+
+  filterContainer.innerHTML = categories.map(cat => {
+    const displayName = cat === 'all' ? 'All Items' : cat;
+    const isActive = (window.activeCategory || 'all') === cat;
+    
+    return `
+      <button type="button" onclick="filterCategory('${cat}')" 
+        class="px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${isActive ? 'bg-white text-black shadow-lg' : 'bg-white/10 text-slate-300 hover:bg-white/20'}">
+        ${displayName}
+      </button>
+    `;
+  }).join('');
 }
 
 // Render the Store Product Cards Grid
@@ -202,14 +226,14 @@ function submitUserReview(productId) {
       product.reviews.unshift(newReview);
       localStorage.setItem('lenka_catalog', JSON.stringify(allProducts));
       alert("Thank you! Your 5-star review and photo have been published.");
-      openProductStickerModal(productId); // Refresh modal
+      openProductStickerModal(productId);
     };
     reader.readAsDataURL(fileInput.files[0]);
   } else {
     product.reviews.unshift(newReview);
     localStorage.setItem('lenka_catalog', JSON.stringify(allProducts));
     alert("Thank you! Your 5-star review has been published.");
-    openProductStickerModal(productId); // Refresh modal
+    openProductStickerModal(productId);
   }
 }
 
@@ -235,8 +259,9 @@ function addItemToBagFromSticker(productId) {
   if (modal) modal.remove();
 }
 
-// Filter category handler
+// Filter category handler with active button state sync
 function filterCategory(categoryName) {
+  window.activeCategory = categoryName;
   const heading = document.getElementById('currentCategoryHeading');
   if (heading) heading.textContent = categoryName === 'all' ? 'Live Catalog' : categoryName;
 
@@ -246,6 +271,8 @@ function filterCategory(categoryName) {
     const filtered = allProducts.filter(p => String(p.category).trim().toLowerCase() === String(categoryName).trim().toLowerCase());
     renderCatalogGrid(filtered);
   }
+
+  renderDynamicCategoryFilters();
 }
 
 // Expose functions globally
@@ -255,6 +282,7 @@ window.openProductStickerModal = openProductStickerModal;
 window.submitUserReview = submitUserReview;
 window.addItemAndPayDirectly = addItemAndPayDirectly;
 window.addItemToBagFromSticker = addItemToBagFromSticker;
+window.renderDynamicCategoryFilters = renderDynamicCategoryFilters;
 
 // Auto initialize catalog on load
 if (document.readyState === 'loading') {
